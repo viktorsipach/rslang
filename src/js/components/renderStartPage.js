@@ -29,6 +29,6 @@ export default function renderStartPage() {
     startGamePage.append(startGameContainer);
 
     fragment.append(startGamePage);
-    
+
     return fragment;
   }
