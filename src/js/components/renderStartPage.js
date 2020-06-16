@@ -1,4 +1,4 @@
-export default function renderGamePage() {
+export default function renderStartPage() {
     const fragment = document.createDocumentFragment();
 
     const closeGame = document.createElement('div');
