@@ -1,0 +1,13 @@
+.button {
+  display: inline-block;
+  background-color: $color-violet;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: $color-light;
+  
+  &:hover {
+    background-color: $color-violet;
+    background-color: darken($color: $color-violet, $amount: 15);
+  }
+}

@@ -1,0 +1,51 @@
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: $color-violet;
+  background-image: none;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.select {
+  position: relative;
+  display: inline-flex;
+  width: 8rem;
+  height: 3rem;
+  line-height: 4rem;
+  background: darken($color: $color-violet, $amount: 10);
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+select {
+  flex: 1;
+  padding: 0 2.5rem;
+  color: $color-light;
+  cursor: pointer;
+}
+
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  top: -0.5rem;
+  right: 0;
+  padding: 0 0.5rem;
+  background: darken($color: $color-violet, $amount: 10);
+  cursor: pointer;
+  pointer-events: none;
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+}
+
+.select:hover::after {
+  color: lighten($color: $color-violet, $amount: 25);
+}
