@@ -11,18 +11,42 @@
 .container {
     max-width: 1100px;
     margin: 0 auto;
+    @include media-laptop {
+      max-width: 760px;
+    }
+    @include media-tablet {
+      max-width: 410px;
+    }
+    @include media-mobile {
+      max-width: 300px;
+    }
 }
 
 .game__title {
     text-transform: uppercase;
     font-size: 5rem;
     padding-top: 30rem;
+    @include media-tablet {
+      font-size: 4.5rem;
+    }
+    @include media-mobile {
+      font-size: 4rem;
+    }
 }
 
 .game__description {
-    padding: 5rem 0;
+    padding: 5rem;
     font-size: 2.5rem;
     line-height: 4rem;
+    @include media-tablet {
+      font-size: 2rem;
+      line-height: 3rem;
+      padding: 5rem 0rem;
+    }
+    @include media-mobile {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
 }
 
 .game__start {
@@ -30,6 +54,12 @@
     text-transform: uppercase;
     padding: 2rem 5rem;
     letter-spacing: 0.5rem;
+    @include media-tablet {
+      font-size: 2.5rem;
+    }
+    @include media-mobile {
+      font-size: 2rem;
+    }
 }
 
 .game__close {
