@@ -1,0 +1,52 @@
+@import '../base/constants';
+
+.savanna {
+    position: relative;
+    height: 100vh;
+    padding: 30px 50px;
+    background: linear-gradient(180deg, rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url('../assets/img/savanna-start.jpg') center no-repeat;
+    background-size: cover;
+    box-sizing: border-box;
+    color: $color-light;
+    &__start {
+        height: 100%;
+    }
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    &__name {
+        text-align: center;
+        font-size: 6rem;
+        text-transform: uppercase;
+        letter-spacing: 1rem;
+    }
+    &__description {
+        margin: 20px 0;
+        text-align: center;
+        font-size: 2.5rem;
+    }
+    &__rules {
+        font-size: 1.5rem;
+        li:first-child {
+            margin-bottom: 5px;
+        }
+    }
+ }
+
+ .button__savanna {
+    position: absolute;
+    width: 200px;
+    height: 60px;
+    margin-top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.5rem;
+    text-transform: uppercase;
+ }
