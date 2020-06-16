@@ -14,10 +14,10 @@ export default class RenderFindWordsGame {
     renderStartPage() {
         this.createElement('div', 'game-info', '');
         this.createElement('div', 'game-info__title', 'НАЙТИ СЛОВА', 'game-info');
-        this.createElement('div', 'game-info__description', '', 'game-info')
-        this.createElement('div', 'game-info__description-first','Соберите слово из букв', 'game-info__description');
-        this.createElement('div', 'game-info__description-second','Какие то правила', 'game-info__description');
-        this.createElement('div', 'game-info__description-third','Еще что-то', 'game-info__description');
-        this.createElement('div', 'button start-button', 'НАЧАТЬ', 'game-info');
+        this.createElement('div', 'game-info__description description', '', 'game-info')
+        this.createElement('div', 'description__first','Соберите слово из букв', 'game-info__description');
+        this.createElement('div', 'description__second','Какие то правила', 'game-info__description');
+        this.createElement('div', 'description__third','Еще что-то', 'game-info__description');
+        this.createElement('div', 'button game-info__start-button', 'НАЧАТЬ', 'game-info');
     }
 }
