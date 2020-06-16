@@ -2,4 +2,6 @@
 import '../css/reset.css';
 import '../scss/style.scss';
 
-console.log('Hello')
+import Sprint from './components/sprint/Sprint';
+
+Sprint.init('.page');
