@@ -1,0 +1,54 @@
+.game__puzzle {
+  min-height: 100vh;
+  &.start__page {
+    background-color: beige;
+  }
+}
+
+.game__title {
+  width: fit-content;
+  margin: 0 auto;
+  padding-top: 22rem;
+  font-size: 5rem;
+  font-weight: 700;
+  @include media-tablet {
+    font-size: 4rem;
+  }
+  @include media-mobile {
+    padding-top: 17rem;
+    font-size: 3rem;
+  }
+}
+
+.game__rules {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  padding: 5rem 0;
+  font-size: 2.5rem;
+  &>* {
+    padding-bottom: 0.25rem;
+  }
+  @include media-tablet {
+    font-size: 1.5rem;
+  }
+  @include media-mobile {
+    font-size: 1.2rem;
+  }
+}
+
+.button.start__button {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 15rem;
+  padding: 5px;
+  width: 15rem;
+  height: 4rem;
+  font-size: 2rem;
+  @include media-tablet {
+    width: 12rem;
+    height: 3rem;
+    font-size: 1.5rem;
+  }
+}
