@@ -1,4 +1,4 @@
-export default async function getRoundData(level, round, wordsPerRound) {
+async function getRoundData(level, round, wordsPerRound) {
   const url = `https://afternoon-falls-25894.herokuapp.com/words?group=${level - 1}&page=${round - 1}&wordsPerExampleSentenceLTE=25&wordsPerPage=${wordsPerRound}`;
   const res = await fetch(url);
   const data = await res.json();
