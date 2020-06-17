@@ -4,7 +4,7 @@ import FindWordsGame from './components/findWords/findWordsGame';
 import initAudioCallGame from './components/audioCallGame/audioCallGame';
 import initPuzzleGame from './components/puzzleGame/puzzleGame';
 import testDataAPI from './API/testGetRoundData';
-import menuHandler from './components/header.components';
+import initApp from './components/app/app.components';
 
 const findWordsGame = new FindWordsGame();
 findWordsGame.initFindWordsGame();
@@ -14,5 +14,6 @@ initPuzzleGame();
 initAudioCallGame();
 
 menuHandler();
+initApp()
 
 testDataAPI();
