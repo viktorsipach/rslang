@@ -1,0 +1,25 @@
+.main__data {
+  max-width: 90%;
+  margin: 0 auto;
+  border: 1px solid $color-primary;
+}
+
+.data-container {
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  height: 4rem;
+  @include media-laptop {
+    font-size: 1.75rem;
+    height: 3.5rem;
+  }
+  @include media-tablet {
+    font-size: 1.2rem;
+    height: 3rem;
+  }
+  @include media-mobile {
+    font-size: 0.9rem;
+    height: 2.5rem;
+  }
+}
