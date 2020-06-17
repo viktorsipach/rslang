@@ -4,6 +4,8 @@ import FindWordsGame from './components/findWords/findWordsGame';
 import initAudioCallGame from './components/audioCallGame/audioCallGame';
 import initPuzzleGame from './components/puzzleGame/puzzleGame';
 import testDataAPI from './API/testGetRoundData';
+import menuHandler from './components/header.components';
+import initSavannaGame from './components/savannaGame/savannaGame';
 import initApp from './components/app/app.components';
 
 const findWordsGame = new FindWordsGame();
@@ -16,4 +18,7 @@ initAudioCallGame();
 menuHandler();
 initApp()
 
+
+
+initSavannaGame();
 testDataAPI();

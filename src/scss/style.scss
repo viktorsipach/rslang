@@ -6,11 +6,12 @@
 @import './base/buttons';
 @import './base/dropdown';
 @import './base/icons';
-@import './components/findWords';
+
 
 
 /* ----- components ----- */
 @import './components/audioCall';
 @import './components/puzzleGame/puzzleGame';
 @import './components/header';
-
+@import './components/savannaGame/savanna';
+@import './components/findWords';
