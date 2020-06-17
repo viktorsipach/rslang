@@ -1,6 +1,6 @@
 import renderSavannaStartPage from './renderSavannaStartPage';
 import renderSavannaMainPage from './renderSavannaMainPage';
-import Image from '../../assets/img/savanna/savanna-main1.jpg';
+import Image from '../../../assets/img/savanna/savanna-main1.jpg';
 
 const initSavannaGame = () => {
     const page = document.querySelector('.page');
@@ -11,8 +11,8 @@ const initSavannaGame = () => {
     savanna.className = 'savanna';
     savanna.append(template);
 
-    // page.innerHTML = '';
-    // page.append(savanna);
+    page.innerHTML = '';
+    page.append(savanna);
 
     const start = document.querySelector('.button__savanna');
     start.addEventListener('click', () => {
@@ -20,8 +20,6 @@ const initSavannaGame = () => {
         savanna.innerHTML = '';
         savanna.append(templateMain);
     })
-
-    // console.log(savanna);
 }
 
 export default initSavannaGame;

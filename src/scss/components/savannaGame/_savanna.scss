@@ -1,4 +1,4 @@
-@import '../base/constants';
+@import '../../base/constants';
 
 .savanna {
     position: relative;
@@ -8,6 +8,9 @@
     background-size: cover;
     box-sizing: border-box;
     color: $color-light;
+    @include media-mobile {
+        padding: 20px 20px;
+    }
     &__start, &__main {
         height: 100%;
     }
@@ -26,6 +29,9 @@
         font-size: 6rem;
         text-transform: uppercase;
         letter-spacing: 1rem;
+        @include media-mobile {
+            font-size: 4rem;
+        }
     }
     &__description {
         margin: 20px 0;
@@ -40,6 +46,10 @@
     }
     &__level {
         text-transform: uppercase;
+        p {
+            display: inline-block;
+            padding-right: 15px;
+        }
     }
     &__hidden-word {
         position: absolute;
@@ -47,24 +57,45 @@
         transform: translateX(-50%);
         font-size: 2rem;
         text-transform: uppercase;
+        @include media-mobile {
+            font-size: 1.5rem;
+        }
+    }
+    &__health {
+        display: flex;
+        justify-content: space-between;
+        width: 150px;
+        span {
+            width: 25px;
+            height: 25px;
+        }
     }
     &__choise {
         display: flex;
         justify-content: space-between;
         width: 500px;
+        @include media-mobile {
+            width: 300px;
+        }
         span {
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 15px;
-            // width: 80px;
-            // height: 25px;
             border: 1px solid $color-primary;
             border-radius: 5px;
             font-size: 1.5rem;
             text-transform: uppercase;
             cursor: pointer;
             box-sizing: border-box;
+            @include media-mobile {
+                padding: 10px;
+                font-size: 1rem;
+            }
+        }
+        span:hover {
+            border: 1px solid $color-correct;
+            color: $color-correct;
         }
         .correct {
             border: 1px solid $color-correct;

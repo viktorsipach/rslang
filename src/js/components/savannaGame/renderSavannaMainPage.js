@@ -20,7 +20,7 @@ const renderSavannaMainPage = () => {
     image.setAttribute('src', './assets/img/weapon.jpg');
     image.setAttribute('alt', 'weapon');
 
-    savannaLevel.innerHTML = '<p>уровень 1</p>';
+    savannaLevel.innerHTML = '<p>уровень 1</p><p>раунд 1</p>';
 
     savannaHealth.innerHTML = '<span>HP1</span><span>HP2</span><span>HP3</span><span>HP4</span><span>HP5</span>';
 
