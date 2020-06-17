@@ -1,0 +1,42 @@
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 2rem;
+}
+
+.icon {
+  &.icon__auto-pronunciation {
+    background-image: url('../assets/img/puzzle/auto-pronunciation.svg');
+  }
+  &.icon__translation {
+    background-image: url('../assets/img/puzzle/translation.svg');
+  }
+  &.icon__sentence-pronunciation {
+    background-image: url('../assets/img/puzzle/sentence-pronunciation.svg');
+  }
+  &.icon__bck-image {
+    background-image: url('../assets/img/puzzle/bck-image.svg');
+  }
+  &.icon__sound,
+  &.icon__sentence {
+    width: 3rem;
+    height: 3rem;
+    background-image: url('../assets/img/puzzle/sound.svg');
+    cursor: pointer;
+    &.active {
+      background-image: url('../assets/img/puzzle/sound-active.svg');
+    }
+    &:hover {
+      background-image: url('../assets/img/puzzle/sound-active.svg');
+    }
+    @include media-laptop {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+    @include media-tablet {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+}
