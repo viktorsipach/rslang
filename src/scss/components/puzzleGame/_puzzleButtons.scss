@@ -1,0 +1,40 @@
+.button {
+  &.start__button{
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 15rem;
+    padding: 5px;
+    width: 15rem;
+    height: 4rem;
+    font-size: 2rem;
+    @include media-tablet {
+      width: 12rem;
+      height: 3rem;
+      font-size: 1.5rem;
+    }
+  }
+
+  &.menu__button {
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-right: 0.5rem;
+    &:hover {
+      background-color: $color-violet;
+      background-color: darken($color: $color-violet, $amount: 15);
+    }
+    &.active {
+      background-color: $color-violet;
+      background-color: darken($color: $color-violet, $amount: 15);
+    }
+  }
+  
+  &.game__button {
+    width: 10rem;
+    height: 3.5rem;
+    margin-left: 1rem;
+    &:hover {
+      background-color: $color-violet;
+      background-color: darken($color: $color-violet, $amount: 15);
+    }
+  }
+}

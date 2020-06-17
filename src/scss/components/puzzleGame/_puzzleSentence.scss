@@ -1,0 +1,22 @@
+.sentence {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  &.result__sentence {
+    display: none;
+    &.active {
+      display: flex;
+    }
+  }
+  @include media-laptop {
+    height: 3.5rem;
+  }
+  @include media-tablet {
+    height: 3rem;
+  }
+  @include media-mobile {
+    height: 2.5rem;
+  }
+}
