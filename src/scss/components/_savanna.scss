@@ -8,14 +8,14 @@
     background-size: cover;
     box-sizing: border-box;
     color: $color-light;
-    &__start {
+    &__start, &__main {
         height: 100%;
     }
     &__header {
         display: flex;
         justify-content: space-between;
     }
-    &__content {
+    &__content, &__gameplay {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -36,6 +36,54 @@
         font-size: 1.5rem;
         li:first-child {
             margin-bottom: 5px;
+        }
+    }
+    &__level {
+        text-transform: uppercase;
+    }
+    &__hidden-word {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2rem;
+        text-transform: uppercase;
+    }
+    &__choise {
+        display: flex;
+        justify-content: space-between;
+        width: 500px;
+        span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            // width: 80px;
+            // height: 25px;
+            border: 1px solid $color-primary;
+            border-radius: 5px;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        .correct {
+            border: 1px solid $color-correct;
+            color: $color-correct;
+        }
+        .wrong {
+            border: 1px solid $color-wrong;
+            color: $color-wrong;
+        }
+    }
+    &__footer {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 100px;
+        img {
+            width: 100%;
+            transform: rotateX(180deg);
         }
     }
  }
