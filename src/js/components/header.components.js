@@ -1,4 +1,4 @@
-export const menuHandler = () => {
+export default function menuHandler() {
     const checkbox = document.querySelector('.menu-checkbox')
     const nav = document.querySelector('.navbar')
     checkbox.addEventListener('change', () => {

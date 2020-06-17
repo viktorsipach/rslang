@@ -14,8 +14,7 @@
     font-size: 2.2rem;
     align-items: center;
     color: white;
-    cursor: pointer;
-
+  
     @include media-laptop {
        position: absolute;
        left: calc(100vw/2 - 5%);
@@ -43,6 +42,7 @@
         left: -50%;
         background-color: #7752be;
         transition: 1s;
+        z-index: 1000;
     }
 
     @include media-mobile {
@@ -55,6 +55,7 @@
         left: -75%;
         background-color: #7752be;   
         transition: 1s;
+        z-index: 1000;
     }
 }
   
@@ -111,7 +112,7 @@ i {
     position: absolute;
     left: 30%;
     background-color: $color-violet;
-    width:50%;
+    width: 55%;
     z-index: 1;
     justify-content: space-around;
 
