@@ -1,0 +1,46 @@
+@import '../base/constants';
+@import '../base/buttons';
+
+@import '../sprint/layout/page';
+@import '../sprint/components/card';
+@import '../sprint/components/counter';
+@import '../sprint/components/exit';
+@import '../sprint/components/sound-control';
+@import '../sprint/components/timer';
+@import '../sprint/components/stack';
+
+.sprint {
+  * {
+    box-sizing: border-box;
+  }
+
+  &__panel {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    &_left {
+      display: flex;
+      justify-content: center;
+      width: 20%;
+    }
+
+    &_main {
+      width: 60%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    &_right {
+      position: relative;
+      width: 20%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+  }
+}

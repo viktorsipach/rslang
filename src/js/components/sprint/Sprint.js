@@ -1,4 +1,4 @@
-import '../../../scss/sprint/layout/_page.scss';
+import '../../../scss/sprint/_sprint.scss';
 
 import Background from './modules/BackgroundHandler';
 import ContentBuilder from './modules/ContentBuilder';

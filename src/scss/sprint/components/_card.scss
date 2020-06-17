@@ -1,0 +1,60 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 44rem;
+  height: 45rem;
+  background-color: $color-primary;
+  border: 1px solid $color-light;
+  border-radius: 1.2rem;
+  color: $color-light;
+  font-size: 3rem;
+
+  &__header {
+    position: relative;
+    height: 18%;
+
+    &_answers-stack {
+      height: 100%;
+    }
+
+    &_repeat {
+      position: absolute;
+      top: 1rem;
+      right: 2rem;
+      height: 4rem;
+      width: 5rem;
+    }
+  }
+
+  &__body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 57%;
+
+    &_image {
+      width: 10rem;
+      height: 10rem;
+      background: $color-light;
+    }
+
+    &_foreign-word {
+      margin: 3rem 0 1rem;
+    }
+  }
+
+  &__control {
+    text-align: center;
+    height: 24%;
+  }
+
+  &__button {
+    width: 15rem;
+    height: 4rem;
+
+    &_true {
+      margin-left: 5rem;
+    }
+  }
+}
