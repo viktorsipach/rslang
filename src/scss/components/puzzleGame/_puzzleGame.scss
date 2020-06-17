@@ -1,7 +1,16 @@
+@import './puzzleIcons';
+@import './puzzleButtons';
+@import './puzzleMenu';
+@import './puzzleWord';
+@import './puzzleSentence';
+@import './puzzleHints';
+@import './puzzleResults';
+@import './puzzleData';
+
 .game__puzzle {
-  min-height: 100vh;
-  &.start__page {
-    background-color: beige;
+  &.main__page {
+    width: 80%;
+    margin:  5rem auto 0;
   }
 }
 
@@ -38,17 +47,9 @@
   }
 }
 
-.button.start__button {
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 15rem;
-  padding: 5px;
-  width: 15rem;
-  height: 4rem;
-  font-size: 2rem;
-  @include media-tablet {
-    width: 12rem;
-    height: 3rem;
-    font-size: 1.5rem;
-  }
+.game__buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+  padding-bottom: 10rem;
 }
