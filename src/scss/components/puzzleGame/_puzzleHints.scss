@@ -1,0 +1,28 @@
+.main__hints {
+  max-width: 100%;
+  width: fit-content;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 3rem;
+  flex-direction: row;
+  @include media-laptop {
+    height: 5rem;
+  }
+}
+
+.hints__sentence {
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 400;
+  @include media-laptop {
+    font-size: 1.75rem;
+  }
+  @include media-tablet {
+    font-size: 1.5rem;
+  }
+  @include media-mobile {
+    font-size: 1.25rem;
+  }
+}
