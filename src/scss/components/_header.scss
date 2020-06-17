@@ -227,3 +227,8 @@ i {
         left: 0;
     }
 }
+
+.active-nav {
+    background-color: darken($color: $color-violet, $amount: 15);
+    border-radius: 1rem;
+}
