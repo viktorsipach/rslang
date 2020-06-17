@@ -1,0 +1,49 @@
+.game__menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  @include media-tablet {
+    flex-direction: column;
+  }
+}
+
+.menu__left {
+  display: flex;
+  flex-direction: row;
+  font-size: 2rem;
+  font-weight: 700;
+  @include media-tablet {
+    font-size: 1.5rem;
+  }
+}
+
+.menu__right {
+  font-size: 2rem;
+  font-weight: 700;
+  @include media-tablet {
+    margin-top: 2rem;
+  }
+}
+
+.menu__level,
+.menu__page {
+  display: flex;
+  flex-direction: row;
+  @include media-tablet {
+    flex-direction: column;
+  }
+}
+
+.menu__page {
+  @include media-tablet {
+    margin-left: 2rem;
+  }
+}
+
+.level__title, 
+.page__title {
+  padding: 0 1rem;
+}
