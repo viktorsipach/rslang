@@ -1,5 +1,8 @@
 import initAudioCallGame from '../audioCallGame/audioCallGame';
 import initPuzzleGame from '../puzzleGame/puzzleGame';
+import FindWordsGame from '../findWords/findWordsGame';
+import initSavannaGame from '../savannaGame/savannaGame';
+import initTrainingGame from '../trainingGame/trainingGame';
 
 export function menuHandler() {
     const checkbox = document.querySelector('.menu-checkbox')
@@ -35,10 +38,11 @@ export function addClickNavHandler() {
     const nav = document.querySelector('.navbar')
     nav.addEventListener('click', (e) => {
         const className = e.target.classList[1];
+        const findWordsGame = new FindWordsGame();
         switch(className) {
             case 'navbar__words': 
                 addActiveClassNav(e)
-                // initTraining();
+                initTrainingGame();
                 break;
             case 'navbar__statistics': 
                 addActiveClassNav(e)
@@ -66,7 +70,7 @@ export function addClickNavHandler() {
                 break;
             case 'navbar__savanna':
                 addActiveClassNav(e)
-                // initSavannaGame()
+                initSavannaGame();
                 break;
             case 'navbar__audioCall':
                 addActiveClassNav(e)
@@ -78,7 +82,7 @@ export function addClickNavHandler() {
                 break;
             case 'navbar__findWord':
                 addActiveClassNav(e)
-                // initFindWordGame();
+                findWordsGame.initFindWordsGame();
                 break;
             case 'navbar__setting':
                 addActiveClassNav(e)

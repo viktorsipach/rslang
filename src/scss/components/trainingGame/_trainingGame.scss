@@ -12,7 +12,7 @@
   }
 }
 
-.game__settings {
+.menu__settings {
   font-size: 2rem;
 }
 
@@ -44,7 +44,7 @@
   }
 }
 
-.game__icons {
+.menu__icons {
   @include media-mobile {
     margin-top: 2rem;
   }
