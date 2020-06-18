@@ -45,6 +45,10 @@ class ContentBuilder {
     this.timerMarkup = `
       <span class="timer__value">57</span>
     `;
+    
+    this.counterMarkup = `
+      <span class="counter__value">0</span>
+    `;
   }
 
   addContentToPage(parentSelector) {
@@ -58,7 +62,7 @@ class ContentBuilder {
     const panelRight = parent.querySelector('.sprint__panel_right');
 
     this.addElementToPage(panelLeft, this.timerMarkup, 'sprint__timer', 'timer');
-    this.addElementToPage(panelMain, '', 'sprint__counter', 'counter');
+    this.addElementToPage(panelMain, this.counterMarkup, 'sprint__counter', 'counter');
     this.addElementToPage(panelMain, this.cardMarkup, 'sprint__card', 'card');
     this.addElementToPage(panelRight, '', 'sprint__exit', 'exit');
     this.addElementToPage(panelRight, this.soundControlMarkup, 'sprint__sound-control', 'sound-control');
