@@ -4,21 +4,21 @@ import FindWordsGame from './components/findWords/findWordsGame';
 import initAudioCallGame from './components/audioCallGame/audioCallGame';
 import initPuzzleGame from './components/puzzleGame/puzzleGame';
 import testDataAPI from './API/testGetRoundData';
-import menuHandler from './components/header.components';
+// import menuHandler from './components/header.components';
 import initSavannaGame from './components/savannaGame/savannaGame';
 import initApp from './components/app/app.components';
+import initTrainingGame from './components/trainingGame/trainingGame';
 
-const findWordsGame = new FindWordsGame();
-findWordsGame.initFindWordsGame();
+// initApp()
 
-console.log('Hello');
-initPuzzleGame();
-initAudioCallGame();
+initTrainingGame();
 
-menuHandler();
-initApp()
+// initPuzzleGame();
+// initAudioCallGame();
+// const findWordsGame = new FindWordsGame();
+// findWordsGame.initFindWordsGame();
+// initSavannaGame();
 
+// menuHandler();
 
-
-initSavannaGame();
-testDataAPI();
+// testDataAPI();

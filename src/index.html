@@ -48,7 +48,65 @@
     <button class="button btn-logout">Выйти</button>
   </header>      
   <section class="wrapper page__wrapper">
-    <div class="page">Insert here page content</div>
+    <div class="page">
+      <!-- Insert here page content -->
+      <div class="game__training">
+        <div class="game__menu">
+          <div class="game__settings">
+            <div>
+              <input type="checkbox" id="new-words" name="new-words" checked>
+              <label for="new-words">Новые слова</label>
+            </div>
+            <div>
+              <input type="checkbox" id="known-words" name="known-words" checked>
+              <label for="known-words">Изученные слова</label>
+            </div>
+          </div>
+          <div class="game__icons">
+            <button class="button menu__button auto-pronunciation">
+              <i class="icon icon__auto-pronunciation"></i>
+            </button>
+            <button class="button menu__button word-translation">
+              <i class="icon icon__word-translation"></i>
+            </button>
+            <button class="button menu__button sentence-translation">
+              <i class="icon icon__sentence-translation"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__top">
+            <div class="card__main-info">
+              <div class="card__word">Word</div>
+              <div class="card__transcription">[hfjdjdbddh]</div>
+            </div>
+            <div class="card__img"></div>
+          </div>
+          <div class="card__bottom">
+            <div class="card__translation">Слово</div>
+            <div class="card__explanation-sentence">Sentence with explanation</div>
+            <div class="card__example-sentence">Sentence with example</div>
+  
+            <input type="text" class="card__input">
+          </div>
+        </div>
+
+        <div class="buttons dictionary__buttons">
+          <button class="button dictionary__button delete">Удалить слово</button>
+          <button class="button dictionary__button hard">Сложное слово</button>
+        </div>
+
+        <div class="buttons game__buttons">
+          <button class="button game__button dontKnow">Не знаю</button>
+          <button class="button game__button next">Далее</button>
+        </div>
+
+      </div>
+     
+
+
+    </div>
   </section>
   <script src="./js/index.js "></script>
 </body>
