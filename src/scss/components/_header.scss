@@ -1,0 +1,234 @@
+.header {
+    display: flex;
+    background-color: $color-violet;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.4);
+    @include media-laptop {
+        justify-content: space-between;
+    }
+}
+
+.logo {
+    display: flex;
+    font-size: 2.2rem;
+    align-items: center;
+    color: white;
+  
+    @include media-laptop {
+       position: absolute;
+       left: calc(100vw/2 - 5%);
+    }
+
+    @include media-mobile {
+        position: absolute;
+        left: calc(100vw/2 - 15%);
+     }
+}
+
+.navbar {
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+   
+    @include media-laptop {
+        width: 50%;
+        height: 100vh;
+        position: absolute;
+        flex-direction: column;
+        justify-content: end;
+        top: 5%;
+        left: -50%;
+        background-color: #7752be;
+        transition: 1s;
+        z-index: 1000;
+    }
+
+    @include media-mobile {
+        width: 75%;
+        height: 100vh;
+        position: absolute;
+        flex-direction: column;
+        justify-content: end;
+        top: 6%;
+        left: -75%;
+        background-color: #7752be;   
+        transition: 1s;
+        z-index: 1000;
+    }
+}
+  
+.navbar p {
+    float: left;
+    font-size: 1.6rem; 
+    color: white;
+    text-align: center;
+    padding: 1.4rem 1.6rem;
+    text-decoration: none;
+    cursor: pointer;
+
+    @include media-laptop {
+        align-self: baseline;
+        margin-left: 5%;
+        font-size: 2rem;
+    } 
+}
+  
+.subnav {
+    float: left;
+    overflow: hidden;
+
+    @include media-laptop {
+        flex-direction: column;
+        align-self: baseline;
+        margin-left: 5%;
+        font-size: 2rem;
+    }
+}
+
+i {
+    margin-right: 1rem;
+}
+
+.subnav .subnavbtn {
+    font-size: 1.6rem;  
+    border: none;
+    outline: none;
+    color: white;
+    padding: 1.4rem 1.6rem;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+
+.navbar p:hover, .subnav:hover .subnavbtn {
+    background-color: darken($color: $color-violet, $amount: 15);
+    border-radius: 1rem;
+}
+
+.subnav-content {
+    display: none;
+    position: absolute;
+    left: 30%;
+    background-color: $color-violet;
+    width: 55%;
+    z-index: 1;
+    justify-content: space-around;
+
+    @include media-laptop {
+        flex-direction: column;
+        left: 0;
+        width: 100%;
+        font-size: 2rem;
+    }
+}
+
+.subnav-content p {
+    float: left;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.subnav-content p:hover {
+    background-color: darken($color: $color-violet, $amount: 15);
+}
+
+.subnav:hover .subnav-content {
+    display: flex;
+}
+
+.btn-logout {
+    margin: 1%;
+    font-size: 1.8rem;
+    background-color: darken($color: $color-violet, $amount: 15);
+    &:hover { 
+        background-color: $color-violet;
+    }
+
+    @include media-mobile {
+        margin: 3%;
+    }
+}
+
+.menuToggle {
+  display: none;
+  position: relative;
+  margin-left: 3%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  -webkit-user-select: none;
+  user-select: none;
+
+  @include media-laptop {
+    display: block;
+  }
+}
+
+.menuToggle input {
+  display: block;
+  width: 40px;
+  height: 32px;
+  position: absolute;
+  top: -7px;
+  left: -5px;
+  cursor: pointer;
+  opacity: 0; 
+  z-index: 2; 
+  -webkit-touch-callout: none;
+}
+
+.menuToggle span {
+  display: block;
+  width: 33px;
+  height: 4px;
+  margin-bottom: 5px;
+  position: relative;
+  background: #cdcdcd;
+  border-radius: 3px;
+  z-index: 1;
+  transform-origin: 4px 0px;
+  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+  opacity 0.55s ease;
+}
+
+.menuToggle span:first-child {
+  transform-origin: 0% 0%;
+}
+
+.menuToggle span:nth-last-child(2) {
+  transform-origin: 0% 100%;
+}
+
+.menuToggle input:checked ~ span {
+  opacity: 1;
+  transform: rotate(-45deg) translate(-2px, -1px);
+  background: #232323;
+}
+
+.menuToggle input:checked ~ span:nth-last-child(2) {
+  opacity: 0;
+  transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+.menuToggle input:checked ~ span:nth-last-child(3) {
+  transform: rotate(45deg) translate(0, -1px);
+}
+
+.show-nav {
+    transition: all .5s ease;
+    -webkit-transition: all .5s ease;
+    @include media-laptop {
+        left: 0; 
+    }
+    @include media-mobile {
+        left: 0;
+    }
+}
+
+.active-nav {
+    background-color: darken($color: $color-violet, $amount: 15);
+    border-radius: 1rem;
+}
