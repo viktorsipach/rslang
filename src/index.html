@@ -53,14 +53,15 @@
       <div class="game__training">
         <div class="game__menu">
           <div class="game__settings">
-            <div>
-              <input type="checkbox" id="new-words" name="new-words" checked>
-              <label for="new-words">Новые слова</label>
-            </div>
-            <div>
-              <input type="checkbox" id="known-words" name="known-words" checked>
-              <label for="known-words">Изученные слова</label>
-            </div>
+            <label class="container new-words">Новые слова
+              <input type="checkbox" checked="checked">
+              <span class="checkmark"></span>
+            </label>
+
+            <label class="container known-words">Изученные слова
+              <input type="checkbox" checked="checked">
+              <span class="checkmark"></span>
+            </label>
           </div>
           <div class="game__icons">
             <button class="button menu__button auto-pronunciation">
@@ -75,20 +76,19 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="training__card">
           <div class="card__top">
-            <div class="card__main-info">
-              <div class="card__word">Word</div>
-              <div class="card__transcription">[hfjdjdbddh]</div>
-            </div>
-            <div class="card__img"></div>
+            <div class="card__word">Wordffvffvf</div>
+            <div class="card__transcription">[hfjdjdbddh]</div> 
+            <div class="card__translation">Слово</div>
+            <image class="card__img"></image>
           </div>
           <div class="card__bottom">
-            <div class="card__translation">Слово</div>
             <div class="card__explanation-sentence">Sentence with explanation</div>
             <div class="card__example-sentence">Sentence with example</div>
-  
-            <input type="text" class="card__input">
+            <div class="input__container">
+              <input type="text" class="card__input" placeholder="Some placeholder">
+            </div>
           </div>
         </div>
 
@@ -98,8 +98,8 @@
         </div>
 
         <div class="buttons game__buttons">
-          <button class="button game__button dontKnow">Не знаю</button>
-          <button class="button game__button next">Далее</button>
+          <button class="button trainingGame__button dontKnow">Не знаю</button>
+          <button class="button trainingGame__button next">Далее</button>
         </div>
 
       </div>

@@ -1,3 +1,6 @@
 export default function  renderTrainingGamePage() {
-  console.log('renderTrainingGamePage');
+  window.onload = function() {
+    const input = document.querySelector('.card__input');
+    input.setAttribute('size', input.getAttribute('placeholder').length);
+  }
 }

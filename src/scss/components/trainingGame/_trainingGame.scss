@@ -1,0 +1,22 @@
+@import './checkbox';
+@import './trainingIcons';
+@import './trainingCard';
+@import './trainingButtons';
+
+.game__training {
+  width: 80%;
+  margin:  2rem auto 0;
+  position: relative;
+}
+
+.game__settings {
+  font-size: 2rem;
+}
+
+.dictionary__buttons {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20rem;
+  right: 5rem;
+}

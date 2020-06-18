@@ -1,0 +1,60 @@
+.training__card {
+  width: 60rem;
+  height: 40rem;
+  margin: 2rem auto;
+  border: 3px solid $color-violet;
+  box-shadow: 0 0 20px rgba(233, 127, 228, 0.904);
+  border-radius: 5px;
+  position: relative;
+
+  &>.card__top {
+    width: fit-content;
+    margin: 5rem 0 7rem 3rem;
+    &>.card__word {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+    }
+    &>.card__transcription {
+      width: fit-content;
+      margin: 0 auto;
+      font-size: 2rem;
+      opacity: 0.5;
+    }
+    &>.card__translation {
+      padding-top: 3rem;
+      font-size: 2.5rem;
+    }
+    &>.card__img {
+      position: absolute;
+      top: 3rem;
+      right: 3rem;
+      width: 20rem;
+      height: 20rem;
+      border: 1px solid $color-primary;
+      border-radius: 5rem;
+    }
+  }
+
+  &>.card__bottom {
+    width: 80%;
+    margin: 0 auto;
+    &>.card__explanation-sentence, 
+    &>.card__example-sentence {
+      font-size: 2rem;
+      padding: 0.5rem 0;
+    }
+    &>.input__container {
+      width: fit-content;
+      margin: 2rem auto 0;
+      &>.card__input {
+        height: 3rem;
+        width: auto;
+        font-size: 2rem;
+        padding-left: 1rem;
+        &::placeholder {
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+}
