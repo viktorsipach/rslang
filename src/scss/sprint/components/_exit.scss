@@ -1,16 +1,7 @@
 .exit {
-  position: relative;
-  top: 4rem;
-  right: 4rem;
   width: 5rem;
   height: 5rem;
-  opacity: 1;
   cursor: pointer;
-
-  @include media-tablet {
-    top: 0;
-    right: 0;
-  }
 
   &:hover {
     opacity: 0.8;

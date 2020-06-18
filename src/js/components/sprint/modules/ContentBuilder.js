@@ -47,9 +47,21 @@ class ContentBuilder {
     this.counterMarkup = `
       <span class="counter__value">0</span>
     `;
+
+    this.gameDescription = `
+      Выбирай правильный ли указан перевод для загаданного слова с помощью кнопок Верно и Неверно или клавиш Вправо и Влево на клавиатуре.
+      Чем больше угаданных ответов подряд, тем больше начисляется очков.
+    `;
+
+    this.curtainMarkup = `
+      <div class="exit curtain__exit"></div>
+      <div class="curtain__game-name"></div>
+      <div class="curtain__game-description">${this.gameDescription}</div>
+      <button class="button curtain__button">Начать</button>
+    `;
   }
 
-  addContentToPage(parentSelector) {
+  addMainPageContent(parentSelector) {
     this.parentSelector = parentSelector;
     const parent = document.querySelector(this.parentSelector || '.page__sprint');
     parent.innerHTML = '';
@@ -84,6 +96,19 @@ class ContentBuilder {
       element.innerHTML = markup;
     }
     parent.append(element);
+    return this;
+  }
+
+  addStartPageContent(parentSelector, gameName) {
+    this.gameName = gameName || 'Спринт';
+    const parent = document.querySelector(parentSelector || '.page__sprint');
+    const curtain = document.createElement('div');
+    curtain.classList.add('sprint__curtain', 'curtain');
+    curtain.innerHTML = this.curtainMarkup;
+    const gameNameEl = curtain.querySelector('.curtain__game-name');
+    gameNameEl.textContent = gameName;
+    parent.innerHTML = '';
+    parent.append(curtain);
     return this;
   }
 }

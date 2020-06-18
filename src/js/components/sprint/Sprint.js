@@ -8,7 +8,9 @@ class Sprint {
     const parent = document.querySelector(`${parentSelector}`);
     parent.classList.add('page__sprint', 'sprint');
     Background.setBackgroundImage(parentSelector);
-    ContentBuilder.addContentToPage('.page__sprint');
+
+    ContentBuilder.addStartPageContent('.page__sprint', 'Спринт');
+    ContentBuilder.addMainPageContent('.page__sprint');
     return this;
   }
 

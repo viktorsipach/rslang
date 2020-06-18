@@ -3,6 +3,7 @@
 @import '../base/buttons';
 
 @import '../sprint/layout/page';
+@import '../sprint/components/curtain';
 @import '../sprint/components/card';
 @import '../sprint/components/counter';
 @import '../sprint/components/exit';
@@ -67,5 +68,17 @@
 
   &__counter {
     margin-bottom: 2rem;
+  }
+
+  &__exit {
+    position: relative;
+    top: 4rem;
+    right: 4rem;
+    opacity: 1;
+
+    @include media-tablet {
+      top: 0;
+      right: 0;
+    }
   }
 }
