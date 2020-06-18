@@ -4,29 +4,27 @@ import RepeatImg from '../../../../assets/img/sprint/repeat.svg';
 class ContentBuilder {
   constructor() {
     this.cardMarkup = `
-      <div class="sprint__card card">
-        <div class="card__header">
-          <div class="card__header_answers-stack stack">
-            <span class="stack__element stack__element_1 stack__element_active"></span>
-            <span class="stack__element stack__element_2 stack__element_active"></span>
-            <span class="stack__element stack__element_3"></span>
-          </div>
-          <div class="card__header_repeat">
-          <object type="image/svg+xml" data="${RepeatImg}">
-            Repeat
-          </object>
-          </div>
+      <div class="card__header">
+        <div class="card__header_answers-stack stack">
+          <span class="stack__element stack__element_1 stack__element_active"></span>
+          <span class="stack__element stack__element_2 stack__element_active"></span>
+          <span class="stack__element stack__element_3"></span>
         </div>
-        <div class="card__body">
-          <div class="card__body_image">
-          </div>
-          <div class="card__body_foreign-word">Bland</div>
-          <div class="card__body_translated-word">пресный</div>
+        <div class="card__header_repeat">
+        <object type="image/svg+xml" data="${RepeatImg}">
+          Repeat
+        </object>
         </div>
-        <div class="card__control">
-          <button class="button card__button card__button_false">Неверно</button>
-          <button class="button card__button card__button_true">Верно</button>
+      </div>
+      <div class="card__body">
+        <div class="card__body_image">
         </div>
+        <div class="card__body_foreign-word">Bland</div>
+        <div class="card__body_translated-word">пресный</div>
+      </div>
+      <div class="card__control">
+        <button class="button card__button card__button_false">Неверно</button>
+        <button class="button card__button card__button_true">Верно</button>
       </div>
     `;
 
@@ -45,7 +43,7 @@ class ContentBuilder {
     this.timerMarkup = `
       <span class="timer__value">57</span>
     `;
-    
+
     this.counterMarkup = `
       <span class="counter__value">0</span>
     `;

@@ -1,4 +1,5 @@
 @import '../base/constants';
+@import '../base/mixins';
 @import '../base/buttons';
 
 @import '../sprint/layout/page';
@@ -23,6 +24,12 @@
       display: flex;
       justify-content: center;
       width: 20%;
+
+      @include media-tablet {
+        position: absolute;
+        justify-content: left;
+        width: 40%;
+      }
     }
 
     &_main {
@@ -32,6 +39,12 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
+
+      @include media-tablet {
+        position: relative;
+        top: 6rem;
+        width: 100%;
+      }
     }
 
     &_right {
@@ -41,6 +54,14 @@
       flex-direction: column;
       align-items: flex-end;
       flex-wrap: wrap;
+
+      @include media-tablet {
+        position: absolute;
+        right: 0;
+        width: 60%;
+        flex-direction: row-reverse;
+        align-items: baseline;
+      }
     }
   }
 

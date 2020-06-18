@@ -10,6 +10,16 @@
   color: $color-light;
   font-size: 3rem;
 
+  @include media-tablet {
+    width: 38rem;
+  }
+
+  @include media-mobile {
+    width: 28rem;
+    height: 38rem;
+    font-size: 2rem;
+  }
+
   &__header {
     position: relative;
     height: 18%;
@@ -24,6 +34,13 @@
       right: 2rem;
       height: 4rem;
       width: 5rem;
+
+      @include media-mobile {
+        top: 1.5rem;
+        right: 2rem;
+        height: 4rem;
+        width: 4rem;
+      }
     }
   }
 
@@ -53,8 +70,16 @@
     width: 15rem;
     height: 4rem;
 
+    @include media-mobile {
+      width: 11rem;
+    }
+
     &_true {
       margin-left: 5rem;
+
+      @include media-tablet {
+        margin-left: 1rem;
+      }
     }
   }
 }
