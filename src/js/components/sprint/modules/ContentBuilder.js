@@ -54,19 +54,23 @@ class ContentBuilder {
     const parent = document.querySelector(this.parentSelector || '.page__sprint');
     parent.innerHTML = '';
 
-    this.addElementToPage(parent, this.sprintMarkup, 'sprint__panel');
-    const panelLeft = parent.querySelector('.sprint__panel_left');
-    const panelMain = parent.querySelector('.sprint__panel_main');
-    const panelRight = parent.querySelector('.sprint__panel_right');
+    const fragment = document.createDocumentFragment();
 
-    this.addElementToPage(panelLeft, this.timerMarkup, 'sprint__timer', 'timer');
-    this.addElementToPage(panelMain, this.counterMarkup, 'sprint__counter', 'counter');
-    this.addElementToPage(panelMain, this.cardMarkup, 'sprint__card', 'card');
-    this.addElementToPage(panelRight, '', 'sprint__exit', 'exit');
-    this.addElementToPage(panelRight, this.soundControlMarkup, 'sprint__sound-control', 'sound-control');
+    this.addElementToFragment(fragment, this.sprintMarkup, 'sprint__panel');
+    const panelLeft = fragment.querySelector('.sprint__panel_left');
+    const panelMain = fragment.querySelector('.sprint__panel_main');
+    const panelRight = fragment.querySelector('.sprint__panel_right');
+
+    this.addElementToFragment(panelLeft, this.timerMarkup, 'sprint__timer', 'timer');
+    this.addElementToFragment(panelMain, this.counterMarkup, 'sprint__counter', 'counter');
+    this.addElementToFragment(panelMain, this.cardMarkup, 'sprint__card', 'card');
+    this.addElementToFragment(panelRight, '', 'sprint__exit', 'exit');
+    this.addElementToFragment(panelRight, this.soundControlMarkup, 'sprint__sound-control', 'sound-control');
+
+    parent.append(fragment);
   }
 
-  addElementToPage(parent, markup, ...classes) {
+  addElementToFragment(parent, markup, ...classes) {
     const element = document.createElement('div');
     const [class1, class2] = classes;
     if (class1) {
