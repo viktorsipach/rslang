@@ -3,6 +3,11 @@
     width: 10rem;
     height: 10rem;
     margin-bottom: 2rem;
+    @include media-laptop {
+     margin-bottom: 0;
+     margin-left: 2rem;
+     height: 4rem;
+    }
   }
   &.trainingGame__button {
     width: 10rem;

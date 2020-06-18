@@ -1,28 +1,53 @@
 .training__card {
   width: 60rem;
-  height: 40rem;
+  min-height: 40rem;
   margin: 2rem auto;
   border: 3px solid $color-violet;
   box-shadow: 0 0 20px rgba(233, 127, 228, 0.904);
   border-radius: 5px;
   position: relative;
-
+  @include media-laptop {
+    margin-top: 5rem;
+  }
+  @include media-tablet {
+    width: 36rem;
+  }
+  @include media-mobile {
+    width: 26rem;
+  }
   &>.card__top {
     width: fit-content;
     margin: 5rem 0 7rem 3rem;
+    @include media-tablet {
+      margin: 2rem auto 5rem;
+    }
     &>.card__word {
       font-size: 5rem;
       margin-bottom: 1rem;
+      @include media-tablet {
+        font-size: 4rem;
+      }
+      @include media-mobile {
+        font-size: 2.5rem;
+      }
     }
     &>.card__transcription {
       width: fit-content;
       margin: 0 auto;
       font-size: 2rem;
       opacity: 0.5;
+      @include media-tablet {
+        font-size: 1.5rem;
+      }
+      @include media-mobile {
+        font-size: 1.25rem;
+      }
     }
     &>.card__translation {
       padding-top: 3rem;
       font-size: 2.5rem;
+      width: fit-content;
+      margin: 0 auto;
     }
     &>.card__img {
       position: absolute;
@@ -32,27 +57,64 @@
       height: 20rem;
       border: 1px solid $color-primary;
       border-radius: 5rem;
+      @include media-tablet{
+        position: relative;
+        margin-left: calc(50% - 6rem);
+      }
+      @include media-mobile{
+        position: relative;
+        margin-left: calc(50% - 5rem);
+        width: 16rem;
+        height: 16rem;
+      }
     }
   }
-
   &>.card__bottom {
     width: 80%;
     margin: 0 auto;
-    &>.card__explanation-sentence, 
-    &>.card__example-sentence {
-      font-size: 2rem;
-      padding: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    @include media-tablet {
+      flex-direction: column-reverse;
+    }
+    &>.sentences__container {
+      @include media-tablet {
+        padding: 2rem 0;
+      }
+      &>* {
+        font-size: 2rem;
+        padding: 0.5rem 0;
+        @include media-tablet {
+          font-size: 1rem;        
+        }
+      }
     }
     &>.input__container {
       width: fit-content;
       margin: 2rem auto 0;
+      @include media-tablet {
+        margin-top: 0;
+      }
       &>.card__input {
         height: 3rem;
-        width: auto;
         font-size: 2rem;
+        @include media-tablet {
+          font-size: 1.5rem;
+          height: 2.5rem;
+        }
+        @include media-mobile {
+          font-size: 1.25rem;
+          height: 2rem;
+        }
         padding-left: 1rem;
         &::placeholder {
           font-size: 2rem;
+          @include media-tablet {
+            font-size: 1.5rem;
+          }
+          @include media-mobile {
+            font-size: 1.25rem;
+          }
         }
       }
     }
