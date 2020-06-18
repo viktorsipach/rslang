@@ -1,0 +1,51 @@
+@import './checkbox';
+@import './trainingIcons';
+@import './trainingCard';
+@import './trainingButtons';
+
+.game__training {
+  width: 80%;
+  margin:  2rem auto 0;
+  position: relative;
+  @include media-tablet {
+    width: 90%;
+  }
+}
+
+.menu__settings {
+  font-size: 2rem;
+}
+
+.dictionary__buttons {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20rem;
+  right: 5rem;
+  @include media-laptop {
+    flex-direction: row;
+    top: 8.5rem;
+    right: 0; 
+    left: calc(50% - 14rem);
+  }
+  @include media-mobile {
+    top: 14rem;
+    left: calc(50% - 13rem);
+  }
+}
+
+.game__menu {
+  &.trainingGame__menu {
+    display: flex;
+    flex-direction: row;
+    @include media-mobile {
+      flex-direction: column;
+    }
+  }
+}
+
+.menu__icons {
+  @include media-mobile {
+    margin-top: 2rem;
+  }
+}
