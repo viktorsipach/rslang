@@ -1,15 +1,11 @@
-@import '../base/constants';
-@import '../base/mixins';
-@import '../base/buttons';
-
-@import '../sprint/layout/page';
-@import '../sprint/components/curtain';
-@import '../sprint/components/card';
-@import '../sprint/components/counter';
-@import '../sprint/components/exit';
-@import '../sprint/components/sound-control';
-@import '../sprint/components/timer';
-@import '../sprint/components/stack';
+@import './layout/page';
+@import './components/curtain';
+@import './components/card';
+@import './components/counter';
+@import './components/exit';
+@import './components/sound-control';
+@import './components/timer';
+@import './components/stack';
 
 .sprint {
   * {
