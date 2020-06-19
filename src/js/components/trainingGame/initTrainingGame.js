@@ -11,10 +11,9 @@ export default async function initTrainingGame() {
   const trainingGame = new TrainingGame({ newWordsPerDay, maxCardsPerDay });
   await trainingGame.getData();
 
-  trainingGame.renderData(trainingGame.data[0]);
+  trainingGame.renderData(trainingGame.data);
 
-  window.onload = function() {
-    const input = document.querySelector('.card__input');
-    input.setAttribute('size', input.getAttribute('placeholder').length);
-  }
+  document.querySelector('.trainingGame__button.next').addEventListener('click', () => {
+    trainingGame.checkInput(trainingGame.data);
+  })
 }

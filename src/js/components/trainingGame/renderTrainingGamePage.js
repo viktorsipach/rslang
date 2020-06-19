@@ -102,13 +102,17 @@ function  renderCardBottom() {
   
   const input = document.createElement('input');
   input.className = 'card__input';
+  input.spellcheck = false;
   input.type = 'text';
-  input.placeholder = 'Some placeholder';
+
+  const wordLettersContainer = document.createElement('div');
+  wordLettersContainer.className = 'letters-container hidden';
 
   const inputContainer = document.createElement('div');
   inputContainer.className = 'input__container';
   inputContainer.append(input);
-
+  inputContainer.append(wordLettersContainer);
+  
   const cardBottom = document.createElement('div');
   cardBottom.className = 'card__bottom';
   cardBottom.append(sentencesContainer);
