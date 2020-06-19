@@ -23,11 +23,11 @@ function renderMenuSettings() {
 }
 
 function renderMenuIcon(buttonClass, buttonIconClass) {
-  const buttonIcon = document.createElement('i');
+  const buttonIcon = document.createElement('icon');
   buttonIcon.className = `icon ${buttonIconClass}`;
 
   const button = document.createElement('button');
-  button.className = `button menu__button ${buttonClass}`;
+  button.className = `button ${buttonClass}`;
   button.append(buttonIcon);
   return button;  
 }
@@ -35,8 +35,8 @@ function renderMenuIcon(buttonClass, buttonIconClass) {
 function renderMenuIcons() {
   const menuIcons = document.createElement('div');
   menuIcons.className = 'menu__icons';
-  menuIcons.append(renderMenuIcon('auto-pronunciation', 'icon__auto-pronunciation'));
-  menuIcons.append(renderMenuIcon('word-translation', 'icon__word-translation'));
+  menuIcons.append(renderMenuIcon('menu__button auto-pronunciation', 'icon__auto-pronunciation'));
+  menuIcons.append(renderMenuIcon('menu__button word-translation', 'icon__word-translation'));
   return menuIcons;
 }
 
@@ -77,7 +77,7 @@ function  renderCardBottom() {
   const explanationContainer = document.createElement('div');
   explanationContainer.className = 'explanation-container';
   explanationContainer.append(explanationSentence);
-  explanationContainer.append(renderMenuIcon('sentence-translation', 'icon__sentence-translation'));
+  explanationContainer.append(renderMenuIcon('card__button sentence-translation', 'icon__sentence-translation'));
 
   const exampleSentence = document.createElement('div');
   exampleSentence.className = 'card__example-sentence';
@@ -85,7 +85,7 @@ function  renderCardBottom() {
   const exampleContainer = document.createElement('div');
   exampleContainer.className = 'example-container';
   exampleContainer.append(exampleSentence);
-  exampleContainer.append(renderMenuIcon('sentence-translation', 'icon__sentence-translation'));
+  exampleContainer.append(renderMenuIcon('card__button sentence-translation', 'icon__sentence-translation'));
 
   const explanationSentenceTranslation = document.createElement('div');
   explanationSentenceTranslation.className = 'card__explanation-sentence-translation';

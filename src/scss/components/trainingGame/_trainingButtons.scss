@@ -1,12 +1,13 @@
 .button {
   &.dictionary__button {
-    width: 10rem;
+    width: 7rem;
     height: 10rem;
     margin-bottom: 2rem;
     @include media-laptop {
-     margin-bottom: 0;
-     margin-left: 2rem;
-     height: 4rem;
+      width: 10rem;
+      margin-bottom: 0;
+      margin-left: 2rem;
+      height: 4rem;
     }
   }
   &.trainingGame__button {
@@ -14,4 +15,13 @@
     height: 3.5rem;
     margin-left: 1rem;
   } 
+  &.card__button {
+    padding: 0 2px;
+    width: 3.5rem;
+    height: 3.5rem;
+    @include media-tablet {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
 }

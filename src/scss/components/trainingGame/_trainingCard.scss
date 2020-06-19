@@ -1,5 +1,5 @@
 .training__card {
-  width: 60rem;
+  width: 74rem;
   min-height: 40rem;
   margin: 2rem auto;
   border: 3px solid $color-violet;
@@ -7,7 +7,8 @@
   border-radius: 5px;
   position: relative;
   @include media-laptop {
-    margin-top: 5rem;
+    width: 68rem;
+    margin-top: 7rem;
   }
   @include media-tablet {
     width: 36rem;
@@ -17,12 +18,15 @@
   }
   &>.card__top {
     width: fit-content;
-    margin: 5rem 0 7rem 3rem;
+    min-height: 15rem;
+    margin: 3rem 0 5rem 3rem;
     @include media-tablet {
-      margin: 2rem auto 5rem;
+      margin: 2rem auto 4rem;
     }
     &>.card__word {
       font-size: 5rem;
+      width: fit-content;
+      margin: 0 auto;
       margin-bottom: 1rem;
       @include media-tablet {
         font-size: 4rem;
@@ -44,33 +48,34 @@
       }
     }
     &>.card__translation {
-      padding-top: 3rem;
-      font-size: 2.5rem;
       width: fit-content;
-      margin: 0 auto;
+      margin: 1rem auto;
+      font-size: 2.5rem;
     }
     &>.card-img__container {
       position: absolute;
-      top: 3rem;
+      top: 1rem;
       right: 3rem;
-      width: 20rem;
+      width: 25rem;
       height: 20rem;
       border: 1px solid $color-primary;
       border-radius: 5rem;
+      background-size: cover;
+      background-position: center;
       @include media-tablet{
         position: relative;
-        margin-left: calc(50% - 6rem);
+        margin-left: calc(50% - 9.5rem);
       }
       @include media-mobile{
         position: relative;
-        margin-left: calc(50% - 5rem);
-        width: 16rem;
+        margin-left: calc(50% - 7rem);
+        width: 20rem;
         height: 16rem;
       }
     }
   }
   &>.card__bottom {
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -81,8 +86,19 @@
       @include media-tablet {
         padding: 2rem 0;
       }
+      &>.explanation-container,
+      &>.example-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 2rem;
+      }
+      &>.card__explanation-sentence-translation,
+      &>.card__example-sentence-translation {
+        min-height: 2rem;
+      }
       &>* {
-        font-size: 2rem;
+        font-size: 1.75rem;
         padding: 0.5rem 0;
         @include media-tablet {
           font-size: 1rem;        
@@ -91,9 +107,9 @@
     }
     &>.input__container {
       width: fit-content;
-      margin: 2rem auto 0;
+      margin: 2rem auto;
       @include media-tablet {
-        margin-top: 0;
+        margin: 0 auto;
       }
       &>.card__input {
         height: 3rem;
