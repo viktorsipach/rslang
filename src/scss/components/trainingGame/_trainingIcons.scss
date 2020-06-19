@@ -4,5 +4,9 @@
   }
   &.icon__sentence-translation {
     background-image: url('../assets/img/puzzle/translation.svg');
+    @include media-tablet {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
   }
 }
