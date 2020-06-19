@@ -4,6 +4,7 @@ import FindWordsGame from '../findWords/findWordsGame';
 import initSavannaGame from '../savannaGame/savannaGame';
 import initTrainingGame from '../trainingGame/trainingGame';
 import Sprint from '../sprintGame/Sprint';
+import initSpeakItGame from '../speakitGame/app.speakit';
 
 export function menuHandler() {
     const checkbox = document.querySelector('.menu-checkbox')
@@ -63,7 +64,7 @@ export function addClickNavHandler() {
                 break;
             case 'navbar__speakit':
                 addActiveClassNav(e)
-                // initSpeakItGame();
+                initSpeakItGame();
                 break;
             case 'navbar__puzzle':
                 addActiveClassNav(e)
