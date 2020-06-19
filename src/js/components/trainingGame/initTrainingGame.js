@@ -15,5 +15,11 @@ export default async function initTrainingGame() {
 
   document.querySelector('.trainingGame__button.next').addEventListener('click', () => {
     trainingGame.checkInput(trainingGame.data);
-  })
+  });
+
+  document.addEventListener('keypress', (event) => {
+    if (event.code === 'Enter' && document.querySelector('.game__training')) {
+      trainingGame.checkInput(trainingGame.data);
+    }
+  });
 }
