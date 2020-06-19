@@ -17,6 +17,10 @@ export default async function initTrainingGame() {
     trainingGame.checkInput(trainingGame.data);
   });
 
+  document.querySelector('.trainingGame__button.dontKnow').addEventListener('click', () => {
+    trainingGame.showWord();
+  });
+
   document.addEventListener('keypress', (event) => {
     if (event.code === 'Enter' && document.querySelector('.game__training')) {
       trainingGame.checkInput(trainingGame.data);

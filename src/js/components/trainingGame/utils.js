@@ -1,4 +1,5 @@
 function renderWordData(wordData) {
+  console.log(wordData);
   document.querySelector('.card__word').textContent = wordData.word;
   document.querySelector('.card__transcription').textContent = wordData.transcription;
   document.querySelector('.card__translation').textContent = wordData.wordTranslate;
@@ -8,6 +9,7 @@ function renderWordData(wordData) {
   document.querySelector('.card__example-sentence-translation').innerHTML = wordData.textExampleTranslate;
   document.querySelector('.card-img__container').style.backgroundImage = `url('https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/${wordData.image}')`;
   const input = document.querySelector('.card__input');
+  input.value = '';
   input.setAttribute('placeholder', wordData.word);
   input.setAttribute('size', wordData.word.length);
   input.setAttribute('maxlength', wordData.word.length);

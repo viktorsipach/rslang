@@ -1,6 +1,5 @@
 import { getRoundData } from '../../API/dataAPI';
 import { showAnswer, hideAnswer, renderWordData } from './utils';
-
 export default class TrainingGame {
   constructor({ newWordsPerDay, maxCardsPerDay }) {
     this.newWordsPerDay = newWordsPerDay;
@@ -17,16 +16,14 @@ export default class TrainingGame {
     console.log(this.data);
   }
 
-  renderData(data) {
-    const wordData = data[this.wordCount]; 
-    console.log(wordData);
-    renderWordData(wordData);
+  renderData() {
+    this.wordData = this.data[this.wordCount]; 
+    renderWordData(this.wordData);
   }
 
-  createWordLetters(data){
+  createWordLetters(){
     const fragment = document.createDocumentFragment();
-
-    data[this.wordCount].word.split('').forEach(element => {
+    this.data[this.wordCount].word.split('').forEach(element => {
       const letter = document.createElement('span');
       letter.textContent = element;
       fragment.append(letter);
@@ -34,17 +31,17 @@ export default class TrainingGame {
     return fragment;
   }
 
-  checkInput(data) {
+  checkInput() {
     const input = document.querySelector('.card__input');
 
     document.querySelector('.letters-container').innerHTML = '';
-    document.querySelector('.letters-container').append(this.createWordLetters(data));
+    document.querySelector('.letters-container').append(this.createWordLetters());
 
     const inputValue = input.value;
     const inputLetters = inputValue.split('');
 
     const wordLetters = document.querySelectorAll('.letters-container>*');
-    const lettersCount = data[this.wordCount].word.length;
+    const lettersCount = this.wordData.word.length;
     let errorCount = 0;
     for(let i=0; i< wordLetters.length; i += 1) {
       if (wordLetters[i].textContent === inputLetters[i]) {
@@ -59,15 +56,24 @@ export default class TrainingGame {
       this.wordCount += 1;
       console.log(this.wordCount);
       if (this.wordCount === this.maxCardsPerDay) {
+        showAnswer(errorCount, lettersCount);
+        setTimeout(hideAnswer, 5000, this.data[this.wordCount]);
         console.log('stop game');
-      } else {showAnswer(errorCount, lettersCount);
-        setTimeout(hideAnswer, 5000, data[this.wordCount].word);
-        const wordData = data[this.wordCount]; 
-        setTimeout(renderWordData, 5000, wordData);
+      } else {
+        showAnswer(errorCount, lettersCount);
+        setTimeout(hideAnswer, 5000, this.data[this.wordCount]);
+        setTimeout(renderWordData, 5000, this.data[this.wordCount]);
       }
     } else {
       showAnswer(errorCount, lettersCount);
-      setTimeout(hideAnswer, 5000, data[this.wordCount].word);
+      setTimeout(hideAnswer, 5000, this.data[this.wordCount].word);
     }
+  }
+
+  showWord() {
+    const input = document.querySelector('.card__input');
+    input.value = this.data[this.wordCount].word;
+    this.wordCount += 1;
+    setTimeout(renderWordData, 5000, this.data[this.wordCount]);
   }
 }   
