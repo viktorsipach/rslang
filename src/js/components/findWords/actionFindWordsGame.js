@@ -14,17 +14,6 @@ export default class ActionFindWordsGame {
         start.addEventListener(this.click, () => {
             this.page.innerHTML = '';
             this.renderFindWordsGame.renderMainPage();
-
-            document.querySelectorAll('.game-field__card-eng').forEach((el) => {
-               setTimeout(() => {
-                el.classList.add('rotate');
-               }, 500);
-            });
-            document.querySelectorAll('.game-field__card-ru').forEach((el) => {
-                setTimeout(() => {
-                 el.classList.add('rotate');
-                }, 500);
-             });
         });
     }
 
@@ -38,7 +27,10 @@ export default class ActionFindWordsGame {
                 event.target.parentElement.classList.remove('rotate');
                 this.previous.push(event.target.parentElement.classList[2]);
                 this.checkCard(event);
-            })
+                if (document.querySelectorAll('.rotate').length === 0) {
+                    this.renderFindWordsGame.renderMainPageResult();
+                }
+            });
         })
     }
 

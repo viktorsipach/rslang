@@ -1,8 +1,10 @@
 import Image from '../../../assets/img/icon-audio.png';
+import {getRoundData} from '../../API/dataAPI';
 
 export default class RenderFindWordsGame {
     constructor() {
         this.target = 'page';
+        this.getWords = getRoundData;
     }
 
     createElement(tag, className, textContent, target = this.target, index = 0) {
@@ -30,6 +32,7 @@ export default class RenderFindWordsGame {
 
         this.renderMainPageControls();
         this.renderMainPageGameField();
+        this.renderMainPageWords();
     }
 
     renderMainPageControls() {
@@ -58,11 +61,11 @@ export default class RenderFindWordsGame {
 
         for (let i = 0; i < 10; i += 1) {
             this.createElement('div', `game-field__card-eng card-eng eng-couple${i}`, '', 'game-field');
-            this.createElement('div', 'card-eng__front', 'Word', 'game-field__card-eng', i);
+            this.createElement('div', 'card-eng__front', '', 'game-field__card-eng', i);
             this.createElement('div', 'card-eng__back', '', 'game-field__card-eng', i);
 
             this.createElement('div', `game-field__card-ru card-ru ru-couple${i}`, '', 'game-field');
-            this.createElement('div', 'card-ru__front', 'Слово', 'game-field__card-ru', i);
+            this.createElement('div', 'card-ru__front', '', 'game-field__card-ru', i);
             this.createElement('div', 'card-ru__back', '', 'game-field__card-ru', i);
         }
 
@@ -79,5 +82,39 @@ export default class RenderFindWordsGame {
         shuffle('card-eng', 'game-field');
         shuffle('card-ru', 'game-field');
         document.querySelector('.page').dispatchEvent(event);
+    }
+
+    async renderMainPageWords() {
+        const event = new Event('wordLoad');
+        const level = 1;
+        const round = 1;
+        const wordsPerRound = 10;
+        const data = await this.getWords(level, round, wordsPerRound);
+
+        data.forEach((elem, i) => {
+            document.querySelector(`.eng-couple${i}`).firstElementChild.textContent = `${elem.word}`;
+            document.querySelector(`.ru-couple${i}`).firstElementChild.textContent = `${elem.wordTranslate}`;
+        })
+
+        const cardArr = document.querySelector('.game-field').children;
+        for(let i = 0; i < cardArr.length; i += 1) {
+            setTimeout(() => {
+                setTimeout(() => {
+                    cardArr[i].classList.add('rotate');
+                   }, i * 100);
+            }, 1000);
+        }
+
+        document.querySelectorAll('.card-ru').forEach((elem) => {
+            elem.classList.add('visible');
+        });
+        document.querySelectorAll('.card-eng').forEach((elem) => {
+            elem.classList.add('visible');
+        });
+        document.querySelector('.page').dispatchEvent(event);
+    }
+
+    renderMainPageResult() {
+
     }
 }
