@@ -1,0 +1,80 @@
+@import './layout/page';
+@import './components/curtain';
+@import './components/card';
+@import './components/counter';
+@import './components/exit';
+@import './components/sound-control';
+@import './components/timer';
+@import './components/stack';
+
+.sprint {
+  * {
+    box-sizing: border-box;
+  }
+
+  &__panel {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    &_left {
+      display: flex;
+      justify-content: center;
+      width: 20%;
+
+      @include media-tablet {
+        position: absolute;
+        justify-content: left;
+        width: 40%;
+      }
+    }
+
+    &_main {
+      width: 60%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      @include media-tablet {
+        position: relative;
+        top: 6rem;
+        width: 100%;
+      }
+    }
+
+    &_right {
+      position: relative;
+      width: 20%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      flex-wrap: wrap;
+
+      @include media-tablet {
+        position: absolute;
+        right: 0;
+        width: 60%;
+        flex-direction: row-reverse;
+        align-items: baseline;
+      }
+    }
+  }
+
+  &__counter {
+    margin-bottom: 2rem;
+  }
+
+  &__exit {
+    position: relative;
+    top: 4rem;
+    right: 4rem;
+    opacity: 1;
+
+    @include media-tablet {
+      top: 0;
+      right: 0;
+    }
+  }
+}
