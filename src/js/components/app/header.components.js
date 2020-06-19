@@ -2,7 +2,7 @@ import initAudioCallGame from '../audioCallGame/audioCallGame';
 import initPuzzleGame from '../puzzleGame/puzzleGame';
 import FindWordsGame from '../findWords/findWordsGame';
 import initSavannaGame from '../savannaGame/savannaGame';
-import initTrainingGame from '../trainingGame/trainingGame';
+import initTrainingGame from '../trainingGame/initTrainingGame';
 
 export function menuHandler() {
     const checkbox = document.querySelector('.menu-checkbox')

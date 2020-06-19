@@ -37,7 +37,6 @@ function renderMenuIcons() {
   menuIcons.className = 'menu__icons';
   menuIcons.append(renderMenuIcon('auto-pronunciation', 'icon__auto-pronunciation'));
   menuIcons.append(renderMenuIcon('word-translation', 'icon__word-translation'));
-  menuIcons.append(renderMenuIcon('sentence-translation', 'icon__sentence-translation'));
   return menuIcons;
 }
 
@@ -52,22 +51,15 @@ function renderTrainingGameMenu() {
 function  renderCardTop() {
   const cardWord = document.createElement('div');
   cardWord.className = 'card__word';
-  cardWord.textContent = 'SomeWord';
 
   const cardTranscription = document.createElement('div');
   cardTranscription.className = 'card__transcription';
-  cardTranscription.textContent = '[SomeWord]';
 
   const cardTranslation = document.createElement('div');
   cardTranslation.className = 'card__translation';
-  cardTranslation.textContent = 'WordTranslation';
-
-  const cardImage = document.createElement('image');
-  cardImage.className = 'card__img';
 
   const imgContainer = document.createElement('div');
   imgContainer.className = 'card-img__container';
-  imgContainer.append(cardImage);
   
   const cardTop = document.createElement('div');
   cardTop.className = 'card__top';
@@ -81,16 +73,32 @@ function  renderCardTop() {
 function  renderCardBottom() {
   const explanationSentence = document.createElement('div');
   explanationSentence.className = 'card__explanation-sentence';
-  explanationSentence.textContent = 'Sentence with explanation';
+
+  const explanationContainer = document.createElement('div');
+  explanationContainer.className = 'explanation-container';
+  explanationContainer.append(explanationSentence);
+  explanationContainer.append(renderMenuIcon('sentence-translation', 'icon__sentence-translation'));
 
   const exampleSentence = document.createElement('div');
   exampleSentence.className = 'card__example-sentence';
-  exampleSentence.textContent = 'Sentence with example';
+
+  const exampleContainer = document.createElement('div');
+  exampleContainer.className = 'example-container';
+  exampleContainer.append(exampleSentence);
+  exampleContainer.append(renderMenuIcon('sentence-translation', 'icon__sentence-translation'));
+
+  const explanationSentenceTranslation = document.createElement('div');
+  explanationSentenceTranslation.className = 'card__explanation-sentence-translation';
+
+  const exampleSentenceTranslation = document.createElement('div');
+  exampleSentenceTranslation.className = 'card__example-sentence-translation';
 
   const sentencesContainer = document.createElement('div');
   sentencesContainer.className = 'sentences__container';
-  sentencesContainer.append(explanationSentence);
-  sentencesContainer.append(exampleSentence);
+  sentencesContainer.append(explanationContainer);
+  sentencesContainer.append(explanationSentenceTranslation);
+  sentencesContainer.append(exampleContainer);
+  sentencesContainer.append(exampleSentenceTranslation);
   
   const input = document.createElement('input');
   input.className = 'card__input';
