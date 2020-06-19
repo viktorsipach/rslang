@@ -7,7 +7,7 @@ export default async function initTrainingGame() {
   PAGECONTAINER.append(renderTrainingGamePage());
 
   const newWordsPerDay = 25;
-  const maxCardsPerDay  = 50;
+  const maxCardsPerDay  = 10;
   const trainingGame = new TrainingGame({ newWordsPerDay, maxCardsPerDay });
   await trainingGame.getData();
 

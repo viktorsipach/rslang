@@ -1,5 +1,5 @@
 import { getRoundData } from '../../API/dataAPI';
-import { showAnswer, hideAnswer } from './utils';
+import { showAnswer, hideAnswer, renderWordData } from './utils';
 
 export default class TrainingGame {
   constructor({ newWordsPerDay, maxCardsPerDay }) {
@@ -11,35 +11,22 @@ export default class TrainingGame {
   async getData() {
     this.level = 1;
     this.round = 1;
-    this.word = 1;
+    this.wordCount = 0;
     const data = await getRoundData(this.level, this.round, this.newWordsPerDay);
     this.data = data;
     console.log(this.data);
   }
 
   renderData(data) {
-    const wordData = data[this.word]; 
+    const wordData = data[this.wordCount]; 
     console.log(wordData);
-    document.querySelector('.card__word').textContent = wordData.word;
-    document.querySelector('.card__transcription').textContent = wordData.transcription;
-    document.querySelector('.card__translation').textContent = wordData.wordTranslate;
-    document.querySelector('.card__explanation-sentence').innerHTML = wordData.textMeaning;
-    document.querySelector('.card__explanation-sentence-translation').innerHTML = wordData.textMeaningTranslate;
-    document.querySelector('.card__example-sentence').innerHTML = wordData.textExample;
-    document.querySelector('.card__example-sentence-translation').innerHTML = wordData.textExampleTranslate;
-    document.querySelector('.card-img__container').style.backgroundImage = `url('https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/${wordData.image}')`;
-    const input = document.querySelector('.card__input');
-    input.setAttribute('placeholder', wordData.word);
-    
-    input.setAttribute('size', wordData.word.length);
-    input.setAttribute('maxlength', wordData.word.length);
-    input.focus();
+    renderWordData(wordData);
   }
 
   createWordLetters(data){
     const fragment = document.createDocumentFragment();
 
-    data[this.word].word.split('').forEach(element => {
+    data[this.wordCount].word.split('').forEach(element => {
       const letter = document.createElement('span');
       letter.textContent = element;
       fragment.append(letter);
@@ -57,17 +44,30 @@ export default class TrainingGame {
     const inputLetters = inputValue.split('');
 
     const wordLetters = document.querySelectorAll('.letters-container>*');
-    const lettersCount = data[this.word].word.length;
+    const lettersCount = data[this.wordCount].word.length;
     let errorCount = 0;
     for(let i=0; i< wordLetters.length; i += 1) {
       if (wordLetters[i].textContent === inputLetters[i]) {
-        wordLetters[i].classList.add('true');
+        wordLetters[i].dataset.isRight = 'green';
       } else {
-        wordLetters[i].classList.add('false');
+        wordLetters[i].dataset.isRight = 'yellow';
         errorCount += 1;
       }
     }
-    showAnswer(errorCount, lettersCount);
-    setTimeout(hideAnswer, 5000, data[this.word].word);
+    if (errorCount === 0) {
+      input.value = '';
+      this.wordCount += 1;
+      console.log(this.wordCount);
+      if (this.wordCount === this.maxCardsPerDay) {
+        console.log('stop game');
+      } else {showAnswer(errorCount, lettersCount);
+        setTimeout(hideAnswer, 5000, data[this.wordCount].word);
+        const wordData = data[this.wordCount]; 
+        setTimeout(renderWordData, 5000, wordData);
+      }
+    } else {
+      showAnswer(errorCount, lettersCount);
+      setTimeout(hideAnswer, 5000, data[this.wordCount].word);
+    }
   }
 }   

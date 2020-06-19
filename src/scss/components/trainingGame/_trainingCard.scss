@@ -152,11 +152,14 @@
     display: none;
   }
   &>*{
-    &.true {
+    &[data-is-right="green"]  {
       color: green;
     }
-    &.false {
+    &[data-is-right="red"]  {
       color: red;
+    }
+    &[data-is-right="yellow"]  {
+      color: yellow;
     }
   }
 }
