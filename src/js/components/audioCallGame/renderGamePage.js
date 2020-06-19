@@ -1,4 +1,15 @@
-export default function renderGamePage() {
+function shuffleWords (array) {
+    array.sort(() => Math.random() - 0.5);
+}
+
+function playSound(voiceEn) {
+    const audioElement = new Audio(`https://raw.githubusercontent.com/irinainina/rslang-data/master/${voiceEn}`);
+    audioElement.play();
+}
+
+export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
+    shuffleWords(arrWordsRus);
+
     const fragment = document.createDocumentFragment();
 
     const gameProgress = document.createElement('div');
@@ -14,23 +25,24 @@ export default function renderGamePage() {
     gameImage.className = 'image';
 
     const gameSrcImage = document.createElement('img');
-    gameSrcImage.src = 'assets/img/empty-audiocall.jpg';
+    gameSrcImage.src = `https://raw.githubusercontent.com/zhenikusss/rslang-data/master/${imageEn}`;
 
     const gameBlockVoice = document.createElement('div');
     gameBlockVoice.className = 'game__voice-word';
 
     const gameVoice = document.createElement('div');
     gameVoice.className = 'game__voice';
+    playSound(voiceEn);
 
     const gameWord = document.createElement('div');
     gameWord.className = 'game__word';
-    gameWord.innerText = 'empty';
+    gameWord.innerText = wordEn.toLowerCase();
 
     const gameWordsBlock = document.createElement('div');
     gameWordsBlock.className = 'game__words words';
 
     const gameButton = document.createElement('div');
-    gameButton.className = 'game__button button';
+    gameButton.className = 'game__btn button';
     gameButton.innerText = 'Не знаю';
 
 
@@ -40,41 +52,18 @@ export default function renderGamePage() {
     gameBlockVoice.append(gameVoice);
     gameBlockVoice.append(gameWord);
 
-    for (let i = 1; i < 6; i += 1) {
+    for (let i = 0; i < 5; i += 1) {
         const gameWordsItem = document.createElement('div');
         gameWordsItem.className = 'words__item';
 
         const gameWordsNumber = document.createElement('div');
         gameWordsNumber.className = 'words__number';
-        gameWordsNumber.innerText = i;
+        gameWordsNumber.innerText = i + 1;
         
         const gameWordsName = document.createElement('div');
         gameWordsName.className = 'words__name';
+        gameWordsName.innerText = arrWordsRus[i].toLowerCase();
         
-        switch(i) {
-            case 1:
-                gameWordsName.innerText = 'проход';
-                break;
-
-            case 2:  
-                gameWordsName.innerText = 'тупой';
-                break;
-
-            case 3:  
-                gameWordsName.innerText = 'пустой';
-                break;
-
-            case 4:  
-                gameWordsName.innerText = 'чужой';
-                break;
-
-            case 5:  
-                gameWordsName.innerText = 'частый';
-                break;
-            default:
-                break; 
-        }
-
         gameWordsBlock.append(gameWordsItem);
         gameWordsItem.append(gameWordsNumber);
         gameWordsItem.append(gameWordsName);
@@ -95,6 +84,6 @@ export default function renderGamePage() {
     gamePage.append(gameContainer);
     
     fragment.append(gamePage);
-    
+
     return fragment;
 }

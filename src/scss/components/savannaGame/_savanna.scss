@@ -1,0 +1,131 @@
+@import '../../base/constants';
+
+.savanna {
+    position: relative;
+    height: 100vh;
+    padding: 30px 50px;
+    background: linear-gradient(180deg, rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url('../assets/img/savanna-start.jpg') center no-repeat;
+    background-size: cover;
+    box-sizing: border-box;
+    color: $color-light;
+    @include media-mobile {
+        padding: 20px 20px;
+    }
+    &__start, &__main {
+        height: 100%;
+    }
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__content, &__gameplay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    &__name {
+        text-align: center;
+        font-size: 6rem;
+        text-transform: uppercase;
+        letter-spacing: 1rem;
+        @include media-mobile {
+            font-size: 4rem;
+        }
+    }
+    &__description {
+        margin: 20px 0;
+        text-align: center;
+        font-size: 2.5rem;
+    }
+    &__rules {
+        font-size: 1.5rem;
+        li:first-child {
+            margin-bottom: 5px;
+        }
+    }
+    &__level {
+        text-transform: uppercase;
+        p {
+            display: inline-block;
+            padding-right: 15px;
+        }
+    }
+    &__hidden-word {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2rem;
+        text-transform: uppercase;
+        @include media-mobile {
+            font-size: 1.5rem;
+        }
+    }
+    &__health {
+        display: flex;
+        justify-content: space-between;
+        width: 150px;
+        span {
+            width: 25px;
+            height: 25px;
+        }
+    }
+    &__choise {
+        display: flex;
+        justify-content: space-between;
+        width: 500px;
+        @include media-mobile {
+            width: 300px;
+        }
+        span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid $color-primary;
+            border-radius: 5px;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-sizing: border-box;
+            @include media-mobile {
+                padding: 10px;
+                font-size: 1rem;
+            }
+        }
+        span:hover {
+            border: 1px solid $color-correct;
+            color: $color-correct;
+        }
+        .correct {
+            border: 1px solid $color-correct;
+            color: $color-correct;
+        }
+        .wrong {
+            border: 1px solid $color-wrong;
+            color: $color-wrong;
+        }
+    }
+    &__footer {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 100px;
+        img {
+            width: 100%;
+            transform: rotateX(180deg);
+        }
+    }
+ }
+
+ .button__savanna {
+    position: absolute;
+    width: 200px;
+    height: 60px;
+    margin-top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.5rem;
+    text-transform: uppercase;
+ }

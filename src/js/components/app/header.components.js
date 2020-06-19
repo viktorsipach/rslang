@@ -1,5 +1,9 @@
 import initAudioCallGame from '../audioCallGame/audioCallGame';
 import initPuzzleGame from '../puzzleGame/puzzleGame';
+import FindWordsGame from '../findWords/findWordsGame';
+import initSavannaGame from '../savannaGame/savannaGame';
+import initTrainingGame from '../trainingGame/initTrainingGame';
+import Sprint from '../sprintGame/Sprint';
 
 export function menuHandler() {
     const checkbox = document.querySelector('.menu-checkbox')
@@ -9,7 +13,7 @@ export function menuHandler() {
             nav.classList.add('show-nav')
         } else {
             nav.classList.remove('show-nav')
-        }  
+        }
     })
 }
 
@@ -35,28 +39,29 @@ export function addClickNavHandler() {
     const nav = document.querySelector('.navbar')
     nav.addEventListener('click', (e) => {
         const className = e.target.classList[1];
+        const findWordsGame = new FindWordsGame();
         switch(className) {
-            case 'navbar__words': 
+            case 'navbar__words':
                 addActiveClassNav(e)
-                // initTraining();
+                initTrainingGame();
                 break;
-            case 'navbar__statistics': 
+            case 'navbar__statistics':
                 addActiveClassNav(e)
                 // initStatistics();
                 break;
-            case 'navbar__studying': 
+            case 'navbar__studying':
             addActiveClassNav(e)
                 // initStudyingWords();
                 break;
-            case 'navbar__difficult': 
+            case 'navbar__difficult':
                 addActiveClassNav(e)
                 // initDifficultWords();
                 break;
-            case 'navbar__removed': 
+            case 'navbar__removed':
                 addActiveClassNav(e)
                 // initRemovedWords();
                 break;
-            case 'navbar__speakit': 
+            case 'navbar__speakit':
                 addActiveClassNav(e)
                 // initSpeakItGame();
                 break;
@@ -66,7 +71,7 @@ export function addClickNavHandler() {
                 break;
             case 'navbar__savanna':
                 addActiveClassNav(e)
-                // initSavannaGame()
+                initSavannaGame();
                 break;
             case 'navbar__audioCall':
                 addActiveClassNav(e)
@@ -74,11 +79,11 @@ export function addClickNavHandler() {
                 break;
             case 'navbar__sprint':
                 addActiveClassNav(e)
-                // initSprintGame();
+                Sprint.init('.page');
                 break;
             case 'navbar__findWord':
                 addActiveClassNav(e)
-                // initFindWordGame();
+                findWordsGame.initFindWordsGame();
                 break;
             case 'navbar__setting':
                 addActiveClassNav(e)
@@ -92,7 +97,7 @@ export function addClickNavHandler() {
                 addActiveClassNav(e)
                 // initAbout();
                 break;
-            default: 
+            default:
                 return null;
         }
         if (nav.classList.contains('show-nav')) {
