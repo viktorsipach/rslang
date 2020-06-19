@@ -1,15 +1,16 @@
 import Image from '../../../assets/img/icon-audio.png';
+
 export default class RenderFindWordsGame {
     constructor() {
         this.target = 'page';
     }
 
-    createElement(tag, className, textContent, target = this.target) {
+    createElement(tag, className, textContent, target = this.target, index = 0) {
         const elem = document.createElement(tag);
         elem.className = className;
         if (textContent) elem.textContent = textContent;
 
-        document.querySelector(`.${target}`).append(elem);
+        document.querySelectorAll(`.${target}`)[index].append(elem);
     }
 
     renderStartPage() {
@@ -53,8 +54,30 @@ export default class RenderFindWordsGame {
     }
 
     renderMainPageGameField() {
-        for (let i = 1; i < 21; i += 1) {
-            this.createElement('div', 'game-field__card', '', 'game-field');
+        const event = new Event('gameFieldLoad');
+
+        for (let i = 0; i < 10; i += 1) {
+            this.createElement('div', `game-field__card-eng card-eng eng-couple${i}`, '', 'game-field');
+            this.createElement('div', 'card-eng__front', 'Word', 'game-field__card-eng', i);
+            this.createElement('div', 'card-eng__back', '', 'game-field__card-eng', i);
+
+            this.createElement('div', `game-field__card-ru card-ru ru-couple${i}`, '', 'game-field');
+            this.createElement('div', 'card-ru__front', 'Слово', 'game-field__card-ru', i);
+            this.createElement('div', 'card-ru__back', '', 'game-field__card-ru', i);
         }
+
+        const shuffle = (element, target) => {
+            document.querySelectorAll(`.${element}`).forEach((e) => {
+                if (Math.random() > 0.5) {
+                    document.querySelector(`.${target}`).append(e);
+                }
+                if (Math.random() < 0.5) {
+                    document.querySelector(`.${target}`).prepend(e);
+                }
+            });
+        }
+        shuffle('card-eng', 'game-field');
+        shuffle('card-ru', 'game-field');
+        document.querySelector('.page').dispatchEvent(event);
     }
 }

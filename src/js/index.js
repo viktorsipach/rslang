@@ -10,10 +10,10 @@ const findWordsGame = new FindWordsGame();
 findWordsGame.initFindWordsGame();
 
 console.log('Hello');
-initPuzzleGame();
-initAudioCallGame();
+// initPuzzleGame();
+// initAudioCallGame();
 
-menuHandler();
+// menuHandler();
 initApp()
 
 testDataAPI();
