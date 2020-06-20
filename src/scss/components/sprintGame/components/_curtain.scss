@@ -1,0 +1,45 @@
+.curtain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(50, 55, 70, 0.7);
+
+  &__exit {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+
+    @include media-tablet {
+      top: 2rem;
+      right: 0rem;
+    }
+  }
+
+  &__game-name {
+    padding: 3rem 1rem;
+    font-size: 4rem;
+    color: $color-violet;
+  }
+
+  &__game-description {
+    width: 100rem;
+    padding: 1rem;
+    font-size: 1.5rem;
+    line-height: 3rem;
+    text-align: center;
+    color: $color-word;
+
+    @include media-laptop {
+      width: 80%;
+    }
+  }
+
+  &__button {
+    margin: 2rem 1rem;
+    padding: 1rem 3rem;
+    font-size: 2rem;
+  }
+}
