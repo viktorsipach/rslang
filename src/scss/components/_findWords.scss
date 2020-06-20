@@ -1,5 +1,13 @@
 @import './base/constants';
+$color-overlay: #474747e0;
 
+.find-words {
+    width: inherit;
+    height: inherit;
+    background-color: #fff;
+    background-position: center;
+    background-size: cover;
+}
 .game-info {
     width: fit-content;
     padding: 15px;
@@ -11,12 +19,11 @@
     align-items: center;
     justify-content: space-evenly;
     height: 25rem;
-    -webkit-user-select: none;
-    -ms-user-select: none;
     user-select: none;
-    background-color: #a0a0a0b5;
+    background-color: $color-overlay;
     border-radius: 20px;
     text-align: center;
+    color: #fff;
 }
 
 .game-info__title {
@@ -67,13 +74,13 @@
 }
 .game-container__controls {
     width: 90%;
-    margin: 0 auto;
-    background-color: #a0a0a0b5;
+    margin: 5rem auto 0;
+    background-color: $color-overlay;
     border-radius: 10px;
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    margin-top: 10px;
+    color: #fff;
 }
 .controls__level,
 .controls__page,
@@ -103,7 +110,7 @@
 .game-container__game-field {
     width: 90%;
     height: 80%;
-    background-color: hsla(0,0%,62.7%,.71);
+    background-color: $color-overlay;
     margin: 0 auto;
     border-radius: 10px;
     display: flex;
@@ -153,7 +160,7 @@
     width: inherit;
     height: inherit;
     backface-visibility: hidden;
-    background-color: rgb(252, 190, 161);
+    background-color: #c7c7c7;
 }
 .card-eng__back,
 .card-ru__back {
@@ -163,5 +170,8 @@
     height: inherit;
     transform: rotateY(180deg);
     backface-visibility: hidden;
-    background-color: rgb(159, 230, 240);
+    background-color: #ffffff;
+    background-image: url('../assets/img/findWords/cardBackground.jpg');
+    background-size: cover;
+    background-position: center;
 }

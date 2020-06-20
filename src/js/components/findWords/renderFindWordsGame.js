@@ -1,4 +1,6 @@
-import Image from '../../../assets/img/icon-audio.png';
+import StartPageBackground from '../../../assets/img/findWords/startPageBackground.jpg';
+import MainPageBackground from '../../../assets/img/findWords/mainPageBackground.jpg';
+import cardBackground from '../../../assets/img/findWords/cardBackground.jpg';
 import {getRoundData} from '../../API/dataAPI';
 
 export default class RenderFindWordsGame {
@@ -16,7 +18,9 @@ export default class RenderFindWordsGame {
     }
 
     renderStartPage() {
-        this.createElement('div', 'game-info', '');
+        this.createElement('div', 'find-words','')
+        document.querySelector('.find-words').style.backgroundImage = `url(${StartPageBackground})`;
+        this.createElement('div', 'game-info', '', 'find-words');
         this.createElement('div', 'game-info__title', 'НАЙДИ СЛОВА', 'game-info');
         this.createElement('div', 'game-info__description description', '', 'game-info')
         this.createElement('div', 'description__first','Кликай по карточкам и запоминай', 'game-info__description');
@@ -26,7 +30,9 @@ export default class RenderFindWordsGame {
     }
 
     renderMainPage() {
-        this.createElement('div', 'game-container', '');
+        this.createElement('div', 'find-words','');
+        document.querySelector('.find-words').style.backgroundImage = `url(${MainPageBackground})`;
+        this.createElement('div', 'game-container', '', 'find-words');
         this.createElement('div', 'game-container__controls controls', '', 'game-container');
         this.createElement('div', 'game-container__game-field game-field', '', 'game-container');
 
@@ -37,23 +43,18 @@ export default class RenderFindWordsGame {
 
     renderMainPageControls() {
         this.createElement('div', 'controls__level level', '', 'game-container__controls');
-        this.createElement('div', 'level__head', 'Level', 'controls__level');
+        this.createElement('div', 'level__head', 'Уровень', 'controls__level');
         this.createElement('select', 'select level__select level-select', '', 'controls__level');
         for (let i = 1; i < 7; i += 1 ) {
             this.createElement('option', 'level-select__item', i, 'level-select')
         }
 
         this.createElement('div', 'controls__page _page', '', 'game-container__controls');
-        this.createElement('div', 'page__head', 'Page', 'controls__page');
+        this.createElement('div', 'page__head', 'Раунд', 'controls__page');
         this.createElement('select', 'select page__select page-select', '', 'controls__page');
         for (let i = 1; i < 61; i += 1 ) {
             this.createElement('option', 'page-select__item', i, 'page-select')
         }
-
-        this.createElement('div', 'controls__repeat repeat', '', 'game-container__controls');
-        this.createElement('div', 'repeat__head', 'Repeat', 'controls__repeat');
-        this.createElement('div', 'button repeat__icon', '', 'controls__repeat');
-        document.querySelector('.repeat__icon').style.backgroundImage = `url(${Image})`;
     }
 
     renderMainPageGameField() {
@@ -114,7 +115,7 @@ export default class RenderFindWordsGame {
         document.querySelector('.page').dispatchEvent(event);
     }
 
-    renderMainPageResult() {
+    // renderMainPageResult() {
 
-    }
+    // }
 }
