@@ -1,6 +1,9 @@
 class RenderSavannaMainPage  {
-    constructor(word) {
+    constructor(word, translate, arr) {
         this.word = word;
+        this.translate = translate;
+        this.arr = arr;
+        // console.log(this.arr);
     }
 
 
@@ -31,8 +34,9 @@ class RenderSavannaMainPage  {
         savannaHealth.innerHTML = '<span>HP1</span><span>HP2</span><span>HP3</span><span>HP4</span><span>HP5</span>';
 
         savannaHiddenWord.innerHTML = `${this.word}`;
+        savannaHiddenWord.setAttribute('id', `${this.translate}`);
 
-        savannaChoise.innerHTML = '<span>ответ 1</span><span>ответ 2</span><span>ответ 3</span><span>ответ 4</span>';
+        savannaChoise.innerHTML = `<span id='Digit1'>${this.arr[0]}</span><span id='Digit2'>${this.arr[1]}</span><span id='Digit3'>${this.arr[2]}</span><span id='Digit4'>${this.arr[3]}</span>`;
 
         savannaHeader.append(savannaLevel);
         savannaHeader.append(savannaHealth);
