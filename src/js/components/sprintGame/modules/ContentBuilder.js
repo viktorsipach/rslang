@@ -4,28 +4,28 @@ import Background from './BackgroundHandler';
 
 class ContentBuilder {
   constructor() {
-    this.cardMarkup = `
-      <div class="card__header">
-        <div class="card__header_answers-stack stack">
+    this.boardMarkup = `
+      <div class="board__header">
+        <div class="board__header_answers-stack stack">
           <span class="stack__element stack__element_1 stack__element_active"></span>
           <span class="stack__element stack__element_2 stack__element_active"></span>
           <span class="stack__element stack__element_3"></span>
         </div>
-        <div class="card__header_repeat">
+        <div class="board__header_repeat">
         <object type="image/svg+xml" data="${RepeatImg}">
           Repeat
         </object>
         </div>
       </div>
-      <div class="card__body">
-        <div class="card__body_image">
+      <div class="board__body">
+        <div class="board__body_image">
         </div>
-        <div class="card__body_foreign-word">Bland</div>
-        <div class="card__body_translated-word">пресный</div>
+        <div class="board__body_foreign-word">Bland</div>
+        <div class="board__body_translated-word">пресный</div>
       </div>
-      <div class="card__control">
-        <button class="button card__button card__button_false">Неверно</button>
-        <button class="button card__button card__button_true">Верно</button>
+      <div class="board__control">
+        <button class="button board__button board__button_false">Неверно</button>
+        <button class="button board__button board__button_true">Верно</button>
       </div>
     `;
 
@@ -72,7 +72,7 @@ class ContentBuilder {
 
     this.addElementToFragment(panelLeft, this.timerMarkup, 'sprint__timer', 'timer');
     this.addElementToFragment(panelMain, this.counterMarkup, 'sprint__counter', 'counter');
-    this.addElementToFragment(panelMain, this.cardMarkup, 'sprint__card', 'card');
+    this.addElementToFragment(panelMain, this.boardMarkup, 'sprint__board', 'board');
     this.addElementToFragment(panelRight, '', 'sprint__exit', 'exit');
     this.addElementToFragment(panelRight, this.soundControlMarkup, 'sprint__sound-control', 'sound-control');
 
