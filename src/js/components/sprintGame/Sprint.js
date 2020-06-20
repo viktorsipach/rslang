@@ -1,11 +1,19 @@
 import ContentBuilder from './modules/ContentBuilder';
 
 class Sprint {
-  init(parentSelector = '.page') {
-    ContentBuilder.addStartPageContent(parentSelector, 'Спринт');
-    ContentBuilder.addMainPageContent(parentSelector);
+  constructor() {
+    this.gameContainer = `
+      <div class='sprint__panel'></div>
+    `;
+    this.gameContainerSelector = '.sprint__panel';
+    this.gameName = 'Спринт';
+  }
 
-    return this;
+  init(parentSelector = '.page') {
+    const parent = document.querySelector(parentSelector);
+    parent.innerHTML = this.gameContainer;
+    ContentBuilder.addStartPageContent(this.gameContainerSelector, this.gameName);
+    ContentBuilder.addMainPageContent(this.gameContainerSelector);
   }
 }
 

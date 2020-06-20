@@ -29,12 +29,6 @@ class ContentBuilder {
       </div>
     `;
 
-    this.sprintMarkup = `
-      <section class="sprint__panel_left"></section>
-      <section class="sprint__panel_main"></section>
-      <section class="sprint__panel_right"></section>
-    `;
-
     this.soundControlMarkup = `
       <object type="image/svg+xml" data="${SoundImg}">
         Sound
@@ -68,8 +62,10 @@ class ContentBuilder {
     parent.innerHTML = '';
 
     const fragment = document.createDocumentFragment();
+    this.addElementToFragment(fragment, '', 'sprint__panel_left');
+    this.addElementToFragment(fragment, '', 'sprint__panel_main');
+    this.addElementToFragment(fragment, '', 'sprint__panel_right');
 
-    this.addElementToFragment(fragment, this.sprintMarkup, 'sprint__panel');
     const panelLeft = fragment.querySelector('.sprint__panel_left');
     const panelMain = fragment.querySelector('.sprint__panel_main');
     const panelRight = fragment.querySelector('.sprint__panel_right');
@@ -81,7 +77,6 @@ class ContentBuilder {
     this.addElementToFragment(panelRight, this.soundControlMarkup, 'sprint__sound-control', 'sound-control');
 
     parent.append(fragment);
-    Background.setBackgroundImage('.sprint__panel');
   }
 
   addElementToFragment(parent, markup, ...classes) {
@@ -112,7 +107,7 @@ class ContentBuilder {
     gameNameEl.textContent = gameName;
     parent.innerHTML = '';
     parent.append(curtain);
-    Background.setBackgroundImage('.sprint__curtain');
+    Background.setBackgroundImage('.sprint__panel');
     return this;
   }
 }
