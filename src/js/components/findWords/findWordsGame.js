@@ -10,5 +10,6 @@ export default class FindWordsGame {
     initFindWordsGame() {
         this.renderFindWordsGame.renderStartPage();
         this.actionFindWordsGame.startGame();
+        this.actionFindWordsGame.clickCard();
     }
 }
