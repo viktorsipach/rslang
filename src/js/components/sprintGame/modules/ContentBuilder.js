@@ -63,7 +63,7 @@ class ContentBuilder {
 
   addMainPageContent(parentSelector) {
     this.parentSelector = parentSelector;
-    const parent = document.querySelector(this.parentSelector || '.page__sprint');
+    const parent = document.querySelector(this.parentSelector);
     parent.innerHTML = '';
 
     const fragment = document.createDocumentFragment();
@@ -100,8 +100,9 @@ class ContentBuilder {
   }
 
   addStartPageContent(parentSelector, gameName) {
+    this.parentSelector = parentSelector;
     this.gameName = gameName || 'Спринт';
-    const parent = document.querySelector(parentSelector || '.page__sprint');
+    const parent = document.querySelector(this.parentSelector);
     const curtain = document.createElement('div');
     curtain.classList.add('sprint__curtain', 'curtain');
     curtain.innerHTML = this.curtainMarkup;

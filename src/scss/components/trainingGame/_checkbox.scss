@@ -1,4 +1,4 @@
-.container {
+.checkbox-container {
   display: block;
   position: relative;
   padding-left: 3.5rem;
@@ -11,7 +11,7 @@
   user-select: none;
 }
 
-.container input {
+.checkbox-container input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -34,11 +34,11 @@
   display: none;
 }
 
-.container input:checked ~ .checkmark:after {
+.checkbox-container input:checked ~ .checkmark:after {
   display: block;
 }
 
-.container .checkmark:after {
+.checkbox-container .checkmark:after {
   left: 0.7rem;
   top: 2px;
   width: 0.5rem;
