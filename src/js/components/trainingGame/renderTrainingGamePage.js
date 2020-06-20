@@ -7,7 +7,7 @@ function renderCheckBoxElement(containerClass, textContent) {
   checkMark.className = 'checkmark';
 
   const container = document.createElement('label');
-  container.className = `container ${containerClass}`;
+  container.className = `checkbox-container ${containerClass}`;
   container.textContent = textContent;
   container.append(input);
   container.append(checkMark);
