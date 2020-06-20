@@ -1,14 +1,15 @@
 import renderSavannaStartPage from './renderSavannaStartPage';
-import renderSavannaMainPage from './renderSavannaMainPage';
 import Image from '../../../assets/img/savanna/savanna-main1.jpg';
+import savannaRound from './savannaGetRoundData';
+import { savannaGameplayKeyboard } from './savannaGameplay';
 
 const initSavannaGame = () => {
     const page = document.querySelector('.page');
     const savanna = document.createElement('div');
     const template = renderSavannaStartPage();
-    const templateMain = renderSavannaMainPage();
+    // const templateMain = RenderSavannaMainPage();
 
-    savanna.className = 'savanna';
+    savanna.className = 'savanna'; 
     savanna.append(template);
 
     page.innerHTML = '';
@@ -18,8 +19,10 @@ const initSavannaGame = () => {
     start.addEventListener('click', () => {
         savanna.style.cssText = `background: linear-gradient(180deg, rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url(${Image}) center no-repeat; background-size: cover;`;
         savanna.innerHTML = '';
-        savanna.append(templateMain);
+        // savanna.append(templateMain);
+        savannaRound(0);
     })
+    savannaGameplayKeyboard();
 }
 
 export default initSavannaGame;
