@@ -59,8 +59,8 @@
 }
 
 .game-container {
-    width: 100vw;
-    min-height: 100vh;
+    max-width: 140rem;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -111,14 +111,32 @@
     justify-content: space-evenly;
     align-items: center;
     margin-top: 20px;
+    &.event-none {
+        pointer-events: none;
+    }
 }
-.game-field__card {
+.game-field__card-eng,
+.game-field__card-ru {
+    font-size: 4rem;
+    text-align: center;
+    line-height: 13rem;
     width: 20rem;
     height: 14rem;
-    background-color: #faebd7;
-    border-radius: 10px;
     margin: 10px;
+    transform-style: preserve-3d;
+    transition: 0.5s;
+    opacity: 0;
     cursor: pointer;
+    &.rotate {
+        transform: rotateY(180deg);
+    }
+    &.scale {
+        transform: scale(1.1);
+    }
+    &.visible {
+        opacity: 1;
+    }
+    
     @include media-tablet {
         width: 18rem;
         height: 12rem;
@@ -127,4 +145,23 @@
         width: 12rem;
         height: 8rem;
     }
+}
+.card-eng__front,
+.card-ru__front {
+    border-radius: 10px;
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    backface-visibility: hidden;
+    background-color: rgb(252, 190, 161);
+}
+.card-eng__back,
+.card-ru__back {
+    border-radius: 10px;
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+    background-color: rgb(159, 230, 240);
 }
