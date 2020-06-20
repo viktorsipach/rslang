@@ -1,5 +1,6 @@
 import SoundImg from '../../../../assets/img/sprint/sound_on.svg';
 import RepeatImg from '../../../../assets/img/sprint/repeat.svg';
+import Background from './BackgroundHandler';
 
 class ContentBuilder {
   constructor() {
@@ -80,6 +81,7 @@ class ContentBuilder {
     this.addElementToFragment(panelRight, this.soundControlMarkup, 'sprint__sound-control', 'sound-control');
 
     parent.append(fragment);
+    Background.setBackgroundImage('.sprint__panel');
   }
 
   addElementToFragment(parent, markup, ...classes) {
@@ -110,6 +112,7 @@ class ContentBuilder {
     gameNameEl.textContent = gameName;
     parent.innerHTML = '';
     parent.append(curtain);
+    Background.setBackgroundImage('.sprint__curtain');
     return this;
   }
 }
