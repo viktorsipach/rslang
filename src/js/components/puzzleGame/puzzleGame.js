@@ -23,7 +23,7 @@ export default function initPuzzleGame() {
       // click events
       document.querySelector('.game__puzzle').addEventListener('click', (event) => {
         const SELECTLEVELOPTION = document.querySelector('.select__level>#slct');
-          const SELECTROUNDOPTION = document.querySelector('.select__round>#slct');
+        const SELECTROUNDOPTION = document.querySelector('.select__round>#slct');
           
 
         if (event.target.closest('.select__round')) {
@@ -35,6 +35,33 @@ export default function initPuzzleGame() {
           game.round = 1;
           game.startNewLevelRound();
         }
+
+        if (event.target.closest('.menu__button.auto-pronunciation')) {
+          if (localStorage.getItem('autoPronunciation') === 'true') {
+            localStorage.setItem('autoPronunciation', 'false');
+          } else {
+            localStorage.setItem('autoPronunciation', 'true');
+          }
+        } else if (event.target.closest('.menu__button.translation')) {
+          if (localStorage.getItem('translation') === 'true') {
+            localStorage.setItem('translation', 'false');
+          } else {
+            localStorage.setItem('translation', 'true');
+          }
+        } else if (event.target.closest('.menu__button.sentence-pronunciation')) {
+          if (localStorage.getItem('sentencePronunciation') === 'true') {
+            localStorage.setItem('sentencePronunciation', 'false');
+          } else {
+            localStorage.setItem('sentencePronunciation', 'true');
+          }
+        } else if (event.target.closest('.menu__button.bck-image')) {
+          if (localStorage.getItem('bckImage') === 'true') {
+            localStorage.setItem('bckImage', 'false');
+          } else {
+            localStorage.setItem('bckImage', 'true');
+          }
+        }
+        checkActiveHints();
 
         if (event.target.closest('.data__sentence') && event.target.classList.contains('data__word')) {
           document.querySelector('.result__sentence>.word-container:empty').append(event.target);
@@ -57,88 +84,38 @@ export default function initPuzzleGame() {
               SELECTROUNDOPTION.value = game.round;
               game.startNewLevelRound();
             } else {
-              // finish();
-              console.log('game FINISHED');
+              document.querySelector('.hints__sentence').textContent = 'Congratulations! You have completed all levels!';
               game.isFinished = true;
             }
           }
         } else if (event.target.classList.contains('results') && event.target.classList.contains('game__button')) {
-          // STATISTICSECTION.classList.remove('hidden');
-          // GAMESECTION.classList.add('hidden');
-          // document.querySelector('.statistic-title').textContent = `Level ${game.iLevel} Page ${game.iPage}`;
-          // const iDontKnowFragment = document.createDocumentFragment();
-          // const iKnowFragment = document.createDocumentFragment();
-          // game.dataSentencesObjects.forEach((el) => {
-          //   if (el.status === 'iDontKnow') {
-          //     const sentence = createStatisticSentence(el);
-          //     iDontKnowFragment.append(sentence);
-          //   }
-          //   if (el.status === 'iKnow') {
-          //     const sentence = createStatisticSentence(el);
-          //     iKnowFragment.append(sentence);
-          //   }
-          // });
-          // IDONTKNOWSENTENCES.innerHTML = '';
-          // IDONTKNOWSENTENCES.append(iDontKnowFragment);
-          // IKNOWSENTENCES.innerHTML = '';
-          // IKNOWSENTENCES.append(iKnowFragment);
-          // if (game.iPage < game.pagesAmountInLevel) {
-          //   game.iPage += 1;
-          //   SELECTLEVELOPTION.value = game.iLevel;
-          //   SELECTPAGEOPTION.value = game.iPage;
-          //   game.updateUserSettings();
-          // } else if (game.iLevel < 6) {
-          //   game.iLevel += 1;
-          //   game.iPage = 1;
-          //   SELECTLEVELOPTION.value = game.iLevel;
-          //   SELECTPAGEOPTION.value = game.iPage;
-          //   game.updateUserSettings();
-          // } else {
-          //   game.isFinished = true;
-          // }
-        }
-    
-        
-          if (event.target.closest('.menu__button.auto-pronunciation')) {
-            if (localStorage.getItem('autoPronunciation') === 'true') {
-              localStorage.setItem('autoPronunciation', 'false');
-            } else {
-              localStorage.setItem('autoPronunciation', 'true');
-            }
-          } else if (event.target.closest('.menu__button.translation')) {
-            if (localStorage.getItem('translation') === 'true') {
-              localStorage.setItem('translation', 'false');
-            } else {
-              localStorage.setItem('translation', 'true');
-            }
-          } else if (event.target.closest('.menu__button.sentence-pronunciation')) {
-            if (localStorage.getItem('sentencePronunciation') === 'true') {
-              localStorage.setItem('sentencePronunciation', 'false');
-            } else {
-              localStorage.setItem('sentencePronunciation', 'true');
-            }
-          } else if (event.target.closest('.menu__button.bck-image')) {
-            if (localStorage.getItem('bckImage') === 'true') {
-              localStorage.setItem('bckImage', 'false');
-            } else {
-              localStorage.setItem('bckImage', 'true');
-            }
-          }
-          checkActiveHints();
-
-        
-        
-
-        
+          game.showRoundStatistic();
           
-    
-    
+          document.querySelector('.puzzle__statistic').addEventListener('click', () => {
+            const statisticElement = document.querySelector('.puzzle__statistic');
+            statisticElement.parentNode.removeChild(statisticElement);
+          });
+          
+          if (game.round < game.roundsInLevel) {
+            game.round += 1;
+            SELECTLEVELOPTION.value = game.level;
+            SELECTROUNDOPTION.value = game.round;
+          } else if (game.level < 6) {
+            game.level += 1;
+            game.round = 1;
+            SELECTLEVELOPTION.value = game.level;
+            SELECTROUNDOPTION.value = game.round;
+          } else {
+            document.querySelector('.hints__sentence').textContent = 'CONGRATULATIONS! You have completed all levels!';
+            game.isFinished = true;
+          }
+        }
+
         if (event.target.classList.contains('icon__sound')) {
           if (document.querySelector('.menu__button.sentence-pronunciation').classList.contains('active')) {
             game.pronounceCurrentSentence();
           }
         }
-        
         game.checkGameStatus();
       });
 
@@ -179,7 +156,4 @@ export default function initPuzzleGame() {
 
     }
   });
-
-  
-
 }

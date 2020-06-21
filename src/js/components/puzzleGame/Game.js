@@ -1,6 +1,7 @@
 import { getRoundsAmountInLevel, getSCustomRoundData } from '../../API/dataAPI';
-import { checkActiveHints } from './utils';
+import { checkActiveHints, createStatisticSentence } from './utils';
 import Sentence from './Sentence';
+import renderStatisticsModal from './renderStatistics';
 
 export default class Game {
   constructor({ level, round }) {
@@ -177,5 +178,28 @@ export default class Game {
     if (!this.currentDataSentenceObject.isBckImageHintUsed) {
       this.showCurrentBckImage();
     }
+  }
+
+  showRoundStatistic() {
+    document.querySelector('.page'). append(renderStatisticsModal());
+
+    document.querySelector('.statistic-title').textContent = `Level ${this.level} Round ${this.round}`;
+    const iDontKnowFragment = document.createDocumentFragment();
+    const iKnowFragment = document.createDocumentFragment();
+    this.dataSentencesObjects.forEach((el) => {
+      if (el.status === 'iDontKnow') {
+        const sentence = createStatisticSentence(el);
+        iDontKnowFragment.append(sentence);
+      }
+      if (el.status === 'iKnow') {
+        const sentence = createStatisticSentence(el);
+        iKnowFragment.append(sentence);
+      }
+    });
+
+    const IDONTKNOWSENTENCES = document.querySelector('.iDontKnowSentences');
+    const IKNOWSENTENCES = document.querySelector('.iKnowSentences');
+    IDONTKNOWSENTENCES.append(iDontKnowFragment);
+    IKNOWSENTENCES.append(iKnowFragment);
   }
 }
