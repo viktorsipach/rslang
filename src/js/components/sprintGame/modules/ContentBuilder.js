@@ -52,7 +52,15 @@ class ContentBuilder {
       <div class="exit curtain__exit"></div>
       <div class="curtain__game-name"></div>
       <div class="curtain__game-description">${this.gameDescription}</div>
-      <button class="button curtain__button">Начать</button>
+      <button class="button curtain__button curtain__button_start">Начать</button>
+    `;
+
+    this.gameGetReadyText = 'Приготовьтесь!';
+
+    this.getReadyMarkup = `
+      <div class="exit curtain__exit"></div>
+      <div class="curtain__timer timer"></div>
+      <div class="curtain__get-ready">${this.gameGetReadyText}</div>
     `;
   }
 
@@ -79,6 +87,27 @@ class ContentBuilder {
     parent.append(fragment);
   }
 
+  addStartPageContent(parentSelector, gameName) {
+    this.parentSelector = parentSelector;
+    this.gameName = gameName || 'Спринт';
+    const parent = document.querySelector(this.parentSelector);
+    const curtain = document.createElement('div');
+    curtain.classList.add('sprint__curtain', 'curtain');
+    curtain.innerHTML = this.curtainMarkup;
+    const gameNameEl = curtain.querySelector('.curtain__game-name');
+    gameNameEl.textContent = gameName;
+    parent.innerHTML = '';
+    parent.append(curtain);
+    Background.setBackgroundImage('.sprint__panel');
+    return this;
+  }
+
+  addGetReadyContent(parentSelector) {
+    const parent = document.querySelector(parentSelector);
+    parent.innerHTML = this.getReadyMarkup;
+    return this;
+  }
+
   addElementToFragment(parent, markup, ...classes) {
     const element = document.createElement('div');
     const [class1, class2] = classes;
@@ -96,20 +125,6 @@ class ContentBuilder {
     return this;
   }
 
-  addStartPageContent(parentSelector, gameName) {
-    this.parentSelector = parentSelector;
-    this.gameName = gameName || 'Спринт';
-    const parent = document.querySelector(this.parentSelector);
-    const curtain = document.createElement('div');
-    curtain.classList.add('sprint__curtain', 'curtain');
-    curtain.innerHTML = this.curtainMarkup;
-    const gameNameEl = curtain.querySelector('.curtain__game-name');
-    gameNameEl.textContent = gameName;
-    parent.innerHTML = '';
-    parent.append(curtain);
-    Background.setBackgroundImage('.sprint__panel');
-    return this;
-  }
 }
 
 export default new ContentBuilder();

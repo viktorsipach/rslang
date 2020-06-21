@@ -13,7 +13,39 @@ class Sprint {
     const parent = document.querySelector(parentSelector);
     parent.innerHTML = this.gameContainer;
     ContentBuilder.addStartPageContent(this.gameContainerSelector, this.gameName);
-    ContentBuilder.addMainPageContent(this.gameContainerSelector);
+    this.addStartScreenFunctionality();
+  }
+
+  addStartScreenFunctionality() {
+    const startButton = document.querySelector('.curtain__button_start');
+    startButton.addEventListener('click', () => {
+      ContentBuilder.addGetReadyContent('.sprint__curtain');
+      this.startTimer('.curtain__timer', 5);
+      setTimeout(() => {
+        ContentBuilder.addMainPageContent(this.gameContainerSelector);
+        this.startGame();
+      }, 5000);
+    });
+  }
+
+  startGame() {
+    this.startTimer('.sprint__timer', 60);
+    return this;
+  }
+
+  startTimer(timerSelector, startPoint) {
+    const timer = document.querySelector(timerSelector);
+    let timerValue = startPoint;
+    timer.textContent = timerValue;
+    const interval = setInterval(() => {
+      timerValue -= 1;
+      if (timerValue === -1) {
+        clearInterval(interval);
+      } else {
+        timer.textContent = timerValue;
+      }
+    }, 1000);
+    return this;
   }
 }
 
