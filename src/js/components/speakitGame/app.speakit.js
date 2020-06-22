@@ -10,7 +10,8 @@ import {
     removeCardsResults, 
     removeCards, 
     addStar,  
-    removeStars
+    removeStars,
+    renderRoundOptions
 } from './dom.speakit';
 
 
@@ -202,7 +203,7 @@ const addClickRestartBtnHandler = () => {
         removeCards()
         removeCardsResults()
         restart()
-        getRoundData(properties.level, properties.page, properties.wordsPerRound).then(json => getDataCards(json))
+        getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))
     })
 }
 
@@ -210,17 +211,17 @@ const addClickNewGameBtnHandler = () => {
     const btnNewGame = document.querySelector('.btn-new-game__speakit');
     const main = document.querySelector('.main__speakit');
     const results = document.querySelector('.results__speakit')
-    const page = document.querySelector('.page__speakit');
+    const round = document.querySelector('.page__speakit');
     
     btnNewGame.addEventListener('click', () => {
-        page.value = properties.page + 1;
-        properties.page = Number(page.value);
+        round.value = properties.round + 1;
+        properties.round = Number(round.value);
         main.classList.remove('hidden')
         results.classList.add('hidden')
         removeCards()
         removeCardsResults()
         restart()
-        getRoundData(properties.level, properties.page, properties.wordsPerRound).then(json => getDataCards(json))
+        getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))
     })
 }
 
@@ -274,23 +275,23 @@ const addClickResultsHandler = () => {
 }
 
 const changeLevelHandler = () => {
-    const level = document.querySelector('.level__speakit');
-    const page = document.querySelector('.page__speakit');
+    const level = document.getElementById('selectLevel');
+    const round = document.getElementById('selectRound');
     level.onchange = () => {
         properties.level = Number(level.value);
-        properties.page =  Number(page.value);
+        properties.round = Number(round.value);
         removeCards()
         removeCardsResults()
         restart()
-        getRoundData(properties.level, properties.page, properties.wordsPerRound).then(json => getDataCards(json))   
+        getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))   
     }
-    page.onchange = () => {
+    round.onchange = () => {
         properties.level = Number(level.value);
-        properties.page =  Number(page.value);
+        properties.round =  Number(round.value);
         removeCards()
         removeCardsResults()
         restart()
-        getRoundData(properties.level, properties.page, properties.wordsPerRound).then(json => getDataCards(json))
+        getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))
     }
 }
 
@@ -305,5 +306,6 @@ export default function initSpeakItGame() {
     addClickReturnBtnHandler()
     addClickNewGameBtnHandler()
     addClickResultsHandler()
-    getRoundData(properties.level, properties.page, properties.wordsPerRound).then(json => getDataCards(json))
+    renderRoundOptions()
+    getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))
 }
