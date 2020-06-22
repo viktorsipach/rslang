@@ -1,9 +1,9 @@
-function createWordElement(word) {
+function createWordElement(word, numb) {
   const wordContainer = document.createElement('span');
   wordContainer.className = 'word-container';
   const wordElement = document.createElement('span');
   wordElement.className = 'word data__word';
-  wordElement.dataset.word = word.replace(/[.]/, '');
+  wordElement.dataset.word = `w${numb}`;
   wordElement.setAttribute('draggable', 'true');
   wordElement.textContent = word;
   wordContainer.append(wordElement);

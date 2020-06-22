@@ -26,8 +26,8 @@ export default class Sentence {
     const sentenceArrayMixed = mixArrayElements(sentenceArray);
 
     const fragment = document.createDocumentFragment();
-    sentenceArrayMixed.forEach((el) => {
-      fragment.append(createWordElement(el));
+    sentenceArrayMixed.forEach((el, index) => {
+      fragment.append(createWordElement(el, index));
     });
 
     sentenceElement.append(fragment);

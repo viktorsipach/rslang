@@ -38,24 +38,6 @@ export default class Game {
     SELECTROUNDCONTAINER.append(fr);
   }
 
-  async renderRoundData() {
-    const fragment = document.createDocumentFragment();
-    const roundData = await getSCustomRoundData(this.level, this.round, this.wordsPerSentence, this.wordsPerRound);
-    roundData.forEach((el) => {
-      let sentence = new Sentence(el);
-      this.dataSentencesObjects.push(sentence);
-      sentence.textExample = sentence.textExample.replace(/<b>/, '').replace(/<\/b>/, '');
-      sentence.status = 'iKnow';
-      sentence = sentence.createDataSentence();
-      this.dataSentences.push(sentence);
-      const sentenceContainer = document.createElement('div');
-      sentenceContainer.className = 'sentence result__sentence';
-      fragment.append(sentenceContainer);
-    });
-    document.querySelector('.results-container').innerHTML = '';
-    document.querySelector('.results-container').append(fragment);
-  }
-
   async startRound() {
     const CHECKBUTTON = document.querySelector('.game__buttons>.check');
     const CONTINUEBUTTON = document.querySelector('.game__buttons>.continue');
@@ -75,6 +57,24 @@ export default class Game {
     document.querySelectorAll('.results-container>.result__sentence').forEach((el) => this.resultSentences.push(el));
     checkActiveHints();
     this.startSentence();
+  }
+
+  async renderRoundData() {
+    const fragment = document.createDocumentFragment();
+    const roundData = await getSCustomRoundData(this.level, this.round, this.wordsPerSentence, this.wordsPerRound);
+    roundData.forEach((el) => {
+      let sentence = new Sentence(el);
+      this.dataSentencesObjects.push(sentence);
+      sentence.textExample = sentence.textExample.replace(/<b>/, '').replace(/<\/b>/, '');
+      sentence.status = 'iKnow';
+      sentence = sentence.createDataSentence();
+      this.dataSentences.push(sentence);
+      const sentenceContainer = document.createElement('div');
+      sentenceContainer.className = 'sentence result__sentence';
+      fragment.append(sentenceContainer);
+    });
+    document.querySelector('.results-container').innerHTML = '';
+    document.querySelector('.results-container').append(fragment);
   }
 
   startSentence() {
@@ -101,23 +101,25 @@ export default class Game {
   }
 
   checkGameStatus() {
-    const IDONTKNOWBUTTON = document.querySelector('.game__buttons>.dontKnow');
-    const CHECKBUTTON = document.querySelector('.game__buttons>.check');
-    const CONTINUEBUTTON = document.querySelector('.game__buttons>.continue');
+    if (this.currentDataSentenceObject) {
+      const IDONTKNOWBUTTON = document.querySelector('.game__buttons>.dontKnow');
+      const CHECKBUTTON = document.querySelector('.game__buttons>.check');
+      const CONTINUEBUTTON = document.querySelector('.game__buttons>.continue');
 
-    const resultSentenceLength = document.querySelectorAll('.result__sentence.current>.word-container>.data__word').length;
-    const dataSentenceLength = this.currentDataSentenceObject.length;
-    if (this.isSentenceCompleted === true) {
-      this.showHintsAtEnd();
-      CONTINUEBUTTON.classList.remove('hidden');
-      CHECKBUTTON.classList.add('hidden');
-      IDONTKNOWBUTTON.classList.add('hidden');
-    } else if (dataSentenceLength === resultSentenceLength) {
-      CHECKBUTTON.classList.remove('hidden');
-    } else if (dataSentenceLength !== resultSentenceLength) {
-      CONTINUEBUTTON.classList.add('hidden');
-      CHECKBUTTON.classList.add('hidden');
-      IDONTKNOWBUTTON.classList.remove('hidden');
+      const resultSentenceLength = document.querySelectorAll('.result__sentence.current>.word-container>.data__word').length;
+      const dataSentenceLength = this.currentDataSentenceObject.length;
+      if (this.isSentenceCompleted === true) {
+        this.showHintsAtEnd();
+        CONTINUEBUTTON.classList.remove('hidden');
+        CHECKBUTTON.classList.add('hidden');
+        IDONTKNOWBUTTON.classList.add('hidden');
+      } else if (dataSentenceLength === resultSentenceLength) {
+        CHECKBUTTON.classList.remove('hidden');
+      } else if (dataSentenceLength !== resultSentenceLength) {
+        CONTINUEBUTTON.classList.add('hidden');
+        CHECKBUTTON.classList.add('hidden');
+        IDONTKNOWBUTTON.classList.remove('hidden');
+      }
     }
   }
 
@@ -135,8 +137,10 @@ export default class Game {
   }
 
   buildCurrentSentence() {
-    this.currentDataSentenceObject.status = 'iDontKnow';
-    this.currentDataSentenceObject.buildSentence();
+    if (this.currentDataSentenceObject) {
+      this.currentDataSentenceObject.status = 'iDontKnow';
+      this.currentDataSentenceObject.buildSentence();
+    }
   }
 
   pronounceCurrentSentence() {
