@@ -1,7 +1,6 @@
 function renderDropdownElement(containerClass, titleClass, title, selectClass) {
   const selectElement = document.createElement('select');
-  selectElement.name = 'slct';
-  selectElement.id = 'slct';
+  selectElement.id = 'select';
  
   const selectContainer = document.createElement('div');
   selectContainer.className = `select ${selectClass}`;
