@@ -21,8 +21,8 @@ export default function initPuzzleGame() {
 
     // click events
     document.querySelector('.game__puzzle').addEventListener('click', (event) => {
-      const SELECTLEVELOPTION = document.querySelector('.select__level>#select');
-      const SELECTROUNDOPTION = document.querySelector('.select__round>#select');
+      const SELECTLEVELOPTION = document.getElementById('selectLevel');
+      const SELECTROUNDOPTION = document.getElementById('selectRound');
  
       if (event.target.closest('.select__round')) {
         game.round = parseInt(SELECTROUNDOPTION.value, 10);

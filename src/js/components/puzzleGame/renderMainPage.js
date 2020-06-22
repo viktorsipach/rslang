@@ -1,6 +1,6 @@
-function renderDropdownElement(containerClass, titleClass, title, selectClass) {
+function renderDropdownElement(containerClass, titleClass, title, selectClass, selectId) {
   const selectElement = document.createElement('select');
-  selectElement.id = 'select';
+  selectElement.id = selectId;
  
   const selectContainer = document.createElement('div');
   selectContainer.className = `select ${selectClass}`;
@@ -64,8 +64,8 @@ function renderLevelsOptions(selectContainer) {
 function renderMainPageMenu() {
   const menuLeft = document.createElement('div');
   menuLeft.className = 'menu__left';
-  menuLeft.append(renderDropdownElement('menu__level', 'level__title', 'Level', 'select__level'));
-  menuLeft.append(renderDropdownElement('menu__round', 'round__title', 'Round', 'select__round'));
+  menuLeft.append(renderDropdownElement('menu__level', 'level__title', 'Level', 'select__level', 'selectLevel'));
+  menuLeft.append(renderDropdownElement('menu__round', 'round__title', 'Round', 'select__round', 'selectRound'));
   renderLevelsOptions(menuLeft);
   
 
