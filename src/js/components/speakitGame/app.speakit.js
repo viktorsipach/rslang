@@ -218,12 +218,15 @@ const addClickNewGameBtnHandler = () => {
     const results = document.querySelector('.results__speakit')
     const level = document.getElementById('selectLevel');
     const round = document.getElementById('selectRound');
+
+    const MAX_ROUND = 60;
+    const MAX_LEVEL = 6;
     
     btnNewGame.addEventListener('click', () => {
-        if (properties.round < 60) {
+        if (properties.round < MAX_ROUND) {
             properties.round += 1;
             round.value = properties.round;
-        } else if (properties.level < 6) {
+        } else if (properties.level < MAX_LEVEL) {
             properties.level += 1;
             properties.round = 1;
             level.value = properties.level;
