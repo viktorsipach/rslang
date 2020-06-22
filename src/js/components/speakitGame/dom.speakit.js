@@ -1,4 +1,5 @@
 import { LINKS, CHILDREN } from './constants.speakit';
+import playAudio from './audioPlayer.speakit';
 
 export const renderDom = () => {
     const page = document.querySelector('.page')
@@ -48,9 +49,9 @@ export const renderDom = () => {
         </div>
     </div>
     <div class="results__speakit hidden">
-        <p class="error__speakit">Error<span class="error__speakit_curr">10</span></p>
+        <p class="error__speakit">Не знаю<span class="error__speakit_curr">10</span></p>
         <div class="results__item_error"></div>
-        <p class="correct__speakit">Correct<span class="correct__speakit_curr">0</span></p>
+        <p class="correct__speakit">Знаю<span class="correct__speakit_curr">0</span></p>
         <div class="results__item_correct"></div>
         <div class="btn-results__speakit">
             <button class="button btn-return__speakit">Назад</button></button>
@@ -112,6 +113,7 @@ export const addStar = () => {
         star.src = LINKS.STAR_WIN_SRC;
         star.classList = 'star';
         stars[CHILDREN.FIRST].before(star)
+        playAudio(LINKS.AUDIO_CORRECT);
     }
 }
 

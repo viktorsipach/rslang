@@ -197,6 +197,11 @@ const restart = () => {
     removeStars()
 }
 
+const saveLevelAndRound = () => {
+    localStorage.setItem('levelSpeakit', document.getElementById('selectLevel').value); 
+    localStorage.setItem('roundSpeakit', document.getElementById('selectRound').value); 
+}
+
 const addClickRestartBtnHandler = () => {
     const btnRestart = document.querySelector('.btn-restart__speakit');
     btnRestart.addEventListener('click', () => {
@@ -211,16 +216,30 @@ const addClickNewGameBtnHandler = () => {
     const btnNewGame = document.querySelector('.btn-new-game__speakit');
     const main = document.querySelector('.main__speakit');
     const results = document.querySelector('.results__speakit')
-    const round = document.querySelector('.page__speakit');
+    const level = document.getElementById('selectLevel');
+    const round = document.getElementById('selectRound');
     
     btnNewGame.addEventListener('click', () => {
-        round.value = properties.round + 1;
-        properties.round = Number(round.value);
+        if (properties.round < 60) {
+            properties.round += 1;
+            round.value = properties.round;
+        } else if (properties.level < 6) {
+            properties.level += 1;
+            properties.round = 1;
+            level.value = properties.level;
+            round.value = properties.round;
+        } else {
+            properties.level = 1;
+            properties.round = 1;
+            level.value = properties.level;
+            round.value = properties.round;
+        }
         main.classList.remove('hidden')
         results.classList.add('hidden')
         removeCards()
         removeCardsResults()
         restart()
+        saveLevelAndRound()
         getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))
     })
 }
@@ -270,7 +289,7 @@ const addClickResultsHandler = () => {
         const parent = e.path[CHILDREN.SECOND]
         const audio = parent.children[CHILDREN.SECOND].innerText
         playAudio(audio)
-        } 
+    } 
     })
 }
 
@@ -283,15 +302,31 @@ const changeLevelHandler = () => {
         removeCards()
         removeCardsResults()
         restart()
+        saveLevelAndRound()
         getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))   
     }
     round.onchange = () => {
         properties.level = Number(level.value);
-        properties.round =  Number(round.value);
+        properties.round = Number(round.value);
         removeCards()
         removeCardsResults()
         restart()
+        saveLevelAndRound()
         getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))
+    }
+}
+
+const startSetting = () => {
+    const level = document.getElementById('selectLevel')
+    const round = document.getElementById('selectRound')
+
+    if (localStorage.getItem('levelSpeakit')) {
+        level.value = localStorage.getItem('levelSpeakit');
+        properties.level = Number(level.value);
+    }
+    if (localStorage.getItem('roundSpeakit')) {
+        round.value = localStorage.getItem('roundSpeakit');
+        properties.round = Number(round.value);
     }
 }
 
@@ -307,5 +342,6 @@ export default function initSpeakItGame() {
     addClickNewGameBtnHandler()
     addClickResultsHandler()
     renderRoundOptions()
+    startSetting()
     getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))
 }
