@@ -130,7 +130,7 @@
     font-size: 5rem;
     text-transform: lowercase;
     margin-left: 3rem;
-    color: #ffffff;
+    color: $color-light;
     font-weight: bold;
     opacity: 0;
     position: absolute;
@@ -195,7 +195,7 @@
     transition: 0.2s;
 
     &:hover {
-      background: #ffffff26;
+      background: $color-word-active;
     }
     
     @include media-tablet {
@@ -207,7 +207,7 @@
 }
 .words__item.true {
   opacity: 1;
-  background: #ffffff26;
+  background: $color-word-active;
 }
 .words__item.line-through {
   text-decoration: line-through;
@@ -220,7 +220,7 @@
     right: 0;
     left: 0;
     width: 20%;
-    background: #ffffff;
+    background: $color-light;
     height: .3rem;
 }
 .game__dropdown.game__dropdown_audioCall {
