@@ -1,14 +1,19 @@
-import Background from './modules/BackgroundHandler';
 import ContentBuilder from './modules/ContentBuilder';
 
 class Sprint {
+  constructor() {
+    this.gameContainer = `
+      <div class='sprint__panel'></div>
+    `;
+    this.gameContainerSelector = '.sprint__panel';
+    this.gameName = 'Спринт';
+  }
+
   init(parentSelector = '.page') {
-    ContentBuilder.addStartPageContent(parentSelector, 'Спринт');
-    ContentBuilder.addMainPageContent(parentSelector);
-
-    Background.setBackgroundImage('.sprint__panel');
-
-    return this;
+    const parent = document.querySelector(parentSelector);
+    parent.innerHTML = this.gameContainer;
+    ContentBuilder.addStartPageContent(this.gameContainerSelector, this.gameName);
+    ContentBuilder.addMainPageContent(this.gameContainerSelector);
   }
 }
 
