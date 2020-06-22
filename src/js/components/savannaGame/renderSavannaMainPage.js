@@ -52,6 +52,28 @@ class RenderSavannaMainPage  {
 
         return savannaMain;
     }
+
+    renderResults() {
+        const savannaWord = document.createElement('div');
+        const savannaEng = document.createElement('p');
+        const savannaRus = document.createElement('span');
+        const savannaMark = document.createElement('span');
+
+        savannaWord.className = 'savanna-word';
+        savannaEng.className = 'savanna-word__eng';
+        savannaRus.className = 'savanna-word__rus';
+        savannaMark.className = 'savanna-mark';
+
+        savannaEng.innerHTML = `${this.word}`;
+        savannaRus.innerHTML = `${this.translate}`;
+        savannaMark.innerHTML = '-';
+
+        savannaEng.append(savannaRus);
+        savannaWord.append(savannaEng);
+        savannaWord.append(savannaMark);
+
+        return savannaWord;
+    }
 }
 
 export default RenderSavannaMainPage;

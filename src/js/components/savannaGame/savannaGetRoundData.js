@@ -37,7 +37,7 @@ const getRandomTranslateAnswer = (data, ind) => {
   return randomAnswer;
 }
 
-export default async function savannaRound(index) {
+async function savannaRound(index) {
     const data = await savannaRoundDataAPI();
     const savanna = document.querySelector('.savanna');
 
@@ -53,3 +53,60 @@ export default async function savannaRound(index) {
 
     savannaGameplayMouse(data, index);
 }
+
+const generateWordsRound = (data) => {
+  let roundWords = [];
+  data.forEach(elem => {
+    roundWords.push(new RenderSavannaMainPage(elem.word, elem.wordTranslate))
+  })
+  return roundWords;
+}
+
+async function RenderSavannaShortStatistic() {
+  const data = await savannaRoundDataAPI();
+  const savannaShortStatistics = document.querySelector('.savanna__short-statistics');
+
+  const savannaTotal = document.createElement('div');
+  const error = document.createElement('p');
+  const savannaError = document.createElement('span');
+  const correct = document.createElement('p');
+  const savannaCorrect = document.createElement('span');
+  const savannaWords = document.createElement('div');
+  const savannaAction = document.createElement('div');
+  const buttonGo = document.createElement('button');
+  const buttonExit = document.createElement('button');
+
+  savannaTotal.className = 'savanna__total';
+  savannaError.className = 'savanna__error';
+  savannaCorrect.className = 'savanna__correct';
+  savannaWords.className = 'savanna__words';
+  savannaAction.className = 'savanna__action';
+  buttonGo.className = 'button';
+  buttonGo.classList.add('savanna__btn');
+  buttonExit.className = 'button';
+  buttonExit.classList.add('savanna__btn')
+
+  error.innerHTML = 'Error: ';
+  savannaError.innerHTML = '10';
+  correct.innerHTML = 'Correct: ';
+  savannaCorrect.innerHTML = '0';
+  error.append(savannaError);
+  correct.append(savannaCorrect);
+  savannaTotal.append(error);
+  savannaTotal.append(correct);
+
+  generateWordsRound(data).forEach(el => {
+    savannaWords.append(el.renderResults());
+  })
+
+  buttonGo.innerHTML = 'продолжить тренировку';
+  buttonExit.innerHTML = 'выход';
+  savannaAction.append(buttonGo);
+  savannaAction.append(buttonExit);
+
+  savannaShortStatistics.append(savannaTotal);
+  savannaShortStatistics.append(savannaWords);
+  savannaShortStatistics.append(savannaAction);
+}
+
+export { savannaRound, RenderSavannaShortStatistic };

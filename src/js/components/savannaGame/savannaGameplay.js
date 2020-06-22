@@ -1,4 +1,4 @@
-import savannaRound from './savannaGetRoundData';
+import { savannaRound } from './savannaGetRoundData';
 
 let count = 0;
 

@@ -1,0 +1,44 @@
+.savanna {
+    &__short-statistics {
+        visibility: hidden;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        width: 300px;
+        height: 300px;
+        border: 2px solid $color-primary;
+        border-radius: 10px;
+    }
+    &__total {
+        display: flex;
+        justify-content: space-between;
+        width: 90%;
+        font-size: 1.5rem;
+    }
+    &__words {
+        width: 90%;
+        font-size: 1.5rem;
+    }
+    &-word {
+        display: flex;
+        justify-content: space-between;
+        &__rus {
+            margin-left: 10px;
+        }
+    }
+    &__action {
+        display: flex;
+        justify-content: space-between;
+        width: 90%;
+    }
+    &__btn {
+        padding: 5px 10px;
+        text-transform: uppercase;
+        font-size: 1.2rem;
+    }
+}
