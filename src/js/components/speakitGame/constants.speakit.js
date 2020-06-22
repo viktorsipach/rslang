@@ -8,7 +8,7 @@ export const LINKS = {
 
 export const properties = {
     level: 1,
-    page: 1,
+    round: 1,
     wordsPerRound: 10
 }
 

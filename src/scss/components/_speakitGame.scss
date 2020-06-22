@@ -183,9 +183,24 @@
     }
 }
 
+.start-page__btn_speakit {
+    width: 10rem;
+    height: 3.5rem;
+}
+
+.btn-return__speakit {
+    width: 10rem;
+    height: 3.5rem;
+}
+
+.btn-new-game__speakit {
+    width: 10rem;
+    height: 3.5rem;
+}
+
 .btn-speak__speakit {
-    padding: 1rem;
     width: 70%;
+    height: 3.5rem;
 
     @include media-tablet {
         width: 40%;
