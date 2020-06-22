@@ -1,6 +1,3 @@
-import StartPageBackground from '../../../assets/img/findWords/startPageBackground.jpg';
-import MainPageBackground from '../../../assets/img/findWords/mainPageBackground.jpg';
-import cardBackground from '../../../assets/img/findWords/cardBackground.jpg';
 import {getRoundData} from '../../API/dataAPI';
 
 export default class RenderFindWordsGame {
@@ -18,8 +15,7 @@ export default class RenderFindWordsGame {
     }
 
     renderStartPage() {
-        this.createElement('div', 'find-words','')
-        document.querySelector('.find-words').style.backgroundImage = `url(${StartPageBackground})`;
+        this.createElement('div', 'find-words start-find-words','')
         this.createElement('div', 'game-info', '', 'find-words');
         this.createElement('div', 'game-info__title', 'НАЙДИ СЛОВА', 'game-info');
         this.createElement('div', 'game-info__description description', '', 'game-info')
@@ -30,9 +26,7 @@ export default class RenderFindWordsGame {
     }
 
     renderMainPage() {
-        this.createElement('div', 'find-words','');
-        document.querySelector('.find-words').style.backgroundImage = `url(${MainPageBackground})`;
-        this.createElement('div', 'game-container', '', 'find-words');
+        this.createElement('div', 'game-container hide-game-container', '', 'find-words');
         this.createElement('div', 'game-container__controls controls', '', 'game-container');
         this.createElement('div', 'game-container__game-field game-field', '', 'game-container');
 
@@ -86,7 +80,6 @@ export default class RenderFindWordsGame {
     }
 
     async renderMainPageWords() {
-        const event = new Event('wordLoad');
         const level = 1;
         const round = 1;
         const wordsPerRound = 10;
@@ -112,7 +105,6 @@ export default class RenderFindWordsGame {
         document.querySelectorAll('.card-eng').forEach((elem) => {
             elem.classList.add('visible');
         });
-        document.querySelector('.page').dispatchEvent(event);
     }
 
     // renderMainPageResult() {

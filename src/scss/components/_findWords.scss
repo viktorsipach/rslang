@@ -1,12 +1,26 @@
 @import './base/constants';
 $color-overlay: #474747e0;
+$color-game-info-fonts: #fff;
+$color-game-container__controls-fonts: #fff;
+$color-card-front: #c7c7c7;
+$color-box-shadow-common: #ffffff8a;
+$color-correct: #56ff978a;
+$color-error: #ff56568a;
+$color-card-back: #32889e;
 
 .find-words {
     width: inherit;
     height: inherit;
-    background-color: #fff;
+    background-color: #2c2340;
     background-position: center;
     background-size: cover;
+    transition: 1s;
+    &.start-find-words {
+        background-image: url('../assets/img/findWords/startPageBackground.jpg');
+    }
+    &.main-find-words {
+        background-image: url('../assets/img/findWords/mainPageBackground.jpg');
+    }
 }
 .game-info {
     width: fit-content;
@@ -23,7 +37,11 @@ $color-overlay: #474747e0;
     background-color: $color-overlay;
     border-radius: 20px;
     text-align: center;
-    color: #fff;
+    color: $color-game-info-fonts;
+    transition: 1s;
+    &.hide-game-info {
+        opacity: 0;
+    }
 }
 
 .game-info__title {
@@ -71,6 +89,10 @@ $color-overlay: #474747e0;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    transition: 1s;
+    &.hide-game-container {
+        opacity: 0;
+    }
 }
 .game-container__controls {
     width: 90%;
@@ -80,7 +102,8 @@ $color-overlay: #474747e0;
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    color: #fff;
+    color: $color-game-container__controls-fonts;
+    box-shadow: 0 0 10px 2px $color-box-shadow-common;
 }
 .controls__level,
 .controls__page,
@@ -118,6 +141,7 @@ $color-overlay: #474747e0;
     justify-content: space-evenly;
     align-items: center;
     margin-top: 20px;
+    box-shadow: 0 0 10px 2px $color-box-shadow-common;
     &.event-none {
         pointer-events: none;
     }
@@ -127,6 +151,7 @@ $color-overlay: #474747e0;
     font-size: 4rem;
     text-align: center;
     line-height: 13rem;
+    border-radius: 10px;
     width: 20rem;
     height: 14rem;
     margin: 10px;
@@ -137,13 +162,15 @@ $color-overlay: #474747e0;
     &.rotate {
         transform: rotateY(180deg);
     }
-    &.scale {
-        transform: scale(1.1);
+    &:hover {
+        box-shadow: 0 0 10px 2px $color-box-shadow-common;
+    }
+    &.correct {
+        box-shadow: 0 0 10px 2px $color-correct;
     }
     &.visible {
         opacity: 1;
     }
-    
     @include media-tablet {
         width: 18rem;
         height: 12rem;
@@ -160,7 +187,7 @@ $color-overlay: #474747e0;
     width: inherit;
     height: inherit;
     backface-visibility: hidden;
-    background-color: #c7c7c7;
+    background-color: $color-card-front;
 }
 .card-eng__back,
 .card-ru__back {
@@ -170,7 +197,7 @@ $color-overlay: #474747e0;
     height: inherit;
     transform: rotateY(180deg);
     backface-visibility: hidden;
-    background-color: #ffffff;
+    background-color: $color-card-back;
     background-image: url('../assets/img/findWords/cardBackground.jpg');
     background-size: cover;
     background-position: center;
