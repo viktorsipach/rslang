@@ -28,9 +28,11 @@ export default class RenderFindWordsGame {
     renderMainPage() {
         this.createElement('div', 'game-container hide-game-container', '', 'find-words');
         this.createElement('div', 'game-container__controls controls', '', 'game-container');
+        this.createElement('div', 'game-container__progress-bar progress-bar', '', 'game-container');
         this.createElement('div', 'game-container__game-field game-field', '', 'game-container');
 
         this.renderMainPageControls();
+        this.renderMainPageProgressBar();
         this.renderMainPageGameField();
         this.renderMainPageWords();
     }
@@ -49,6 +51,13 @@ export default class RenderFindWordsGame {
         for (let i = 1; i < 61; i += 1 ) {
             this.createElement('option', 'page-select__item', i, 'page-select')
         }
+    }
+
+    renderMainPageProgressBar() {
+        this.createElement('div', 'progress-bar__progress progress', '', 'progress-bar');
+        this.createElement('div', 'progress__line', '', 'progress');
+        document.querySelector('.progress__line').style.width = '0%';
+        this.createElement('div', 'progress__value', '', 'progress');
     }
 
     renderMainPageGameField() {

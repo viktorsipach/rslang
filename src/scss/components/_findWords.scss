@@ -4,13 +4,13 @@ $color-game-info-fonts: #fff;
 $color-game-container__controls-fonts: #fff;
 $color-card-front: #c7c7c7;
 $color-box-shadow-common: #ffffff8a;
-$color-correct: #56ff978a;
+$color-correct: #23ff77bd;
 $color-error: #ff56568a;
 $color-card-back: #32889e;
 
 .find-words {
-    width: inherit;
-    height: inherit;
+    width: 100%;
+    min-height: 100%;
     background-color: #2c2340;
     background-position: center;
     background-size: cover;
@@ -96,7 +96,7 @@ $color-card-back: #32889e;
 }
 .game-container__controls {
     width: 90%;
-    margin: 5rem auto 0;
+    margin: 2rem auto 0;
     background-color: $color-overlay;
     border-radius: 10px;
     display: flex;
@@ -129,6 +129,35 @@ $color-card-back: #32889e;
     height: 3rem;
     background-size: cover;
     background-position: center;
+}
+.progress-bar {
+    width: 90%;
+    height: 3rem;
+    background-color: $color-overlay;
+    margin: 2rem auto 0;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px 2px $color-box-shadow-common;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.progress-bar__progress {
+    width: 99%;
+    height: 70%;
+    border-radius: 1rem;
+    overflow: hidden;
+    color: $color-game-container__controls-fonts;
+    font-size: 2rem;
+    display: flex;
+}
+.progress__line {
+    height: 100%;
+    background-color: $color-correct;
+    transition: 0.5s;
+}
+.progress__value {
+    position: absolute;
+    left: 49%;
 }
 .game-container__game-field {
     width: 90%;
