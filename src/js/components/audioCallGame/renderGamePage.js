@@ -12,6 +12,41 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
 
     const fragment = document.createDocumentFragment();
 
+    const dropdownMenu = document.createElement('div');
+    dropdownMenu.className = 'game__dropdown game__dropdown_audioCall';
+
+    const dropdownLevel = document.createElement('div');
+    dropdownLevel.className = 'game__lvl_audioCall lvl_audioCall';
+
+    const levelTitle = document.createElement('div');
+    levelTitle.className = 'lvl__title_audioCall';
+    levelTitle.innerText = 'уровень';
+
+    const levelDiv = document.createElement('div');
+    levelDiv.className = 'select lvl__select_audioCall'
+
+    const levelSelect = document.createElement('select');
+
+    const levelOption = document.createElement('option');
+    levelOption.className = 'lvl__option';
+    levelOption.innerText = '1';
+
+    const dropdownRound = document.createElement('div');
+    dropdownRound.className = 'game__round_audioCall round_audioCall';
+
+    const roundTitle = document.createElement('div');
+    roundTitle.className = 'round__title_audioCall';
+    roundTitle.innerText = 'раунд';
+
+    const roundDiv = document.createElement('div');
+    roundDiv.className = 'select round__select_audioCall'
+
+    const roundSelect = document.createElement('select');
+
+    const roundOption = document.createElement('option');
+    roundOption.className = 'round__option';
+    roundOption.innerText = '1';
+
     const gameProgress = document.createElement('div');
     gameProgress.className = 'game__progress';
 
@@ -22,7 +57,7 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
     gameBlockImage.className = 'game__image';
 
     const gameImage = document.createElement('div');
-    gameImage.className = 'image';
+    gameImage.className = 'image image_audioCall';
 
     const gameSrcImage = document.createElement('img');
     gameSrcImage.src = `https://raw.githubusercontent.com/zhenikusss/rslang-data/master/${imageEn}`;
@@ -45,6 +80,18 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
     gameButton.className = 'game__btn button';
     gameButton.innerText = 'Не знаю';
 
+    dropdownRound.append(roundTitle);
+    roundDiv.append(roundSelect);
+    roundSelect.append(roundOption);
+    dropdownRound.append(roundDiv);
+
+    dropdownLevel.append(levelTitle);
+    levelDiv.append(levelSelect);
+    levelSelect.append(levelOption);
+    dropdownLevel.append(levelDiv);
+
+    dropdownMenu.append(dropdownRound);
+    dropdownMenu.append(dropdownLevel);
 
     gameBlockImage.append(gameImage);
     gameImage.append(gameSrcImage);
@@ -70,17 +117,17 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
     }
 
     const gameContainer = document.createElement('div');
-    gameContainer.className = 'container';
+    gameContainer.className = 'container container_audioCall';
     gameContainer.append(gameBlockImage);
     gameContainer.append(gameBlockVoice);
     gameContainer.append(gameWordsBlock);
     gameContainer.append(gameButton);
 
-
     const gamePage = document.createElement('div');
-    gamePage.className = 'game';
+    gamePage.className = 'game game_audioCall';
     gamePage.append(gameProgress);
     gamePage.append(closeGame);
+    gamePage.append(dropdownMenu);
     gamePage.append(gameContainer);
     
     fragment.append(gamePage);
