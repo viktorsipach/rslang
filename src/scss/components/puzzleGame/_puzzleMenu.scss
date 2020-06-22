@@ -29,7 +29,7 @@
 }
 
 .menu__level,
-.menu__page {
+.menu__round {
   display: flex;
   flex-direction: row;
   @include media-tablet {
@@ -37,13 +37,13 @@
   }
 }
 
-.menu__page {
+.menu__round {
   @include media-tablet {
     margin-left: 2rem;
   }
 }
 
 .level__title, 
-.page__title {
+.round__title {
   padding: 0 1rem;
 }

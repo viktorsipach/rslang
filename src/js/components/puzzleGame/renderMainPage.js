@@ -1,13 +1,7 @@
-function renderDropdownElement(containerClass, titleClass, title, selectClass) {
-  const option = document.createElement('option');
-  option.value = '1';
-  option.textContent = 1;
-
+function renderDropdownElement(containerClass, titleClass, title, selectClass, selectId) {
   const selectElement = document.createElement('select');
-  selectElement.name = 'slct';
-  selectElement.id = 'slct';
-  selectElement.append(option);
-
+  selectElement.id = selectId;
+ 
   const selectContainer = document.createElement('div');
   selectContainer.className = `select ${selectClass}`;
   selectContainer.append(selectElement);
@@ -46,18 +40,34 @@ function renderHints() {
 
   const hintSentence = document.createElement('div');
   hintSentence.className = 'hints__sentence';
-  hintSentence.textContent = 'Hint text';
 
   hints.append(iconContainer);
   hints.append(hintSentence);
   return hints;  
 }
 
+
+function renderLevelsOptions(selectContainer) {
+  const levels = 6;
+  const SELECTLEVELCONTAINER = selectContainer.querySelector('.select__level>select');
+  const fr = document.createDocumentFragment();
+  for (let i = 1; i <= levels; i += 1) {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = i;
+    fr.append(opt);
+  }
+  SELECTLEVELCONTAINER.innerHTML = '';
+  SELECTLEVELCONTAINER.append(fr);
+}
+
 function renderMainPageMenu() {
   const menuLeft = document.createElement('div');
   menuLeft.className = 'menu__left';
-  menuLeft.append(renderDropdownElement('menu__level', 'level__title', 'Level', 'select__level'));
-  menuLeft.append(renderDropdownElement('menu__page', 'page__title', 'Page', 'select__page'));
+  menuLeft.append(renderDropdownElement('menu__level', 'level__title', 'Level', 'select__level', 'selectLevel'));
+  menuLeft.append(renderDropdownElement('menu__round', 'round__title', 'Round', 'select__round', 'selectRound'));
+  renderLevelsOptions(menuLeft);
+  
 
   const menuButtons = document.createElement('div');
   menuButtons.className = 'buttons menu__buttons';
@@ -108,9 +118,9 @@ function renderGameButtons() {
   const gameButtons = document.createElement('div');
   gameButtons.className = 'buttons game__buttons';
   gameButtons.append(renderGameButton('dontKnow', 'I don`t know'));
-  gameButtons.append(renderGameButton('check', 'Check'));
-  gameButtons.append(renderGameButton('continue', 'Continue'));
-  gameButtons.append(renderGameButton('results', 'Results'));
+  gameButtons.append(renderGameButton('check hidden', 'Check'));
+  gameButtons.append(renderGameButton('continue hidden', 'Continue'));
+  gameButtons.append(renderGameButton('results hidden', 'Results'));
   return gameButtons;
 }
 
