@@ -10,6 +10,7 @@ class ContentBuilder {
           <span class="stack__element stack__element_1 stack__element_active"></span>
           <span class="stack__element stack__element_2 stack__element_active"></span>
           <span class="stack__element stack__element_3"></span>
+          <span class="stack__element stack__element_4"></span>
         </div>
         <div class="board__header_repeat">
         <object type="image/svg+xml" data="${RepeatImg}">
@@ -20,12 +21,12 @@ class ContentBuilder {
       <div class="board__body">
         <div class="board__body_image">
         </div>
-        <div class="board__body_foreign-word">Bland</div>
-        <div class="board__body_translated-word">пресный</div>
+        <div class="board__body_foreign-word"></div>
+        <div class="board__body_translated-word"></div>
       </div>
       <div class="board__control">
-        <button class="button board__button board__button_false">Неверно</button>
-        <button class="button board__button board__button_true">Верно</button>
+      <button class="button board__button board__button_true">Верно</button>
+      <button class="button board__button board__button_false">Неверно</button>
       </div>
     `;
 
@@ -36,7 +37,7 @@ class ContentBuilder {
     `;
 
     this.timerMarkup = `
-      <span class="timer__value">57</span>
+      <span class="timer__value"></span>
     `;
 
     this.counterMarkup = `
