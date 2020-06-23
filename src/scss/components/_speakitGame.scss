@@ -60,50 +60,10 @@
     width: 65%;
     height: 10%;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    @include media-laptop {
-        flex-direction: column;
-        justify-content: center;
-        margin-top: 2%;
-      }
-}
-
-.level__container_speakit {
-    width: 32%;
-    font-size: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    @include media-laptop {
-        width: 60%;
-    }
-
-    @include media-tablet {
-        width: 145%;
-    }
-}
-
-.level__speakit {
-    margin-left: 1rem;
-    margin-right: 1rem;
-    padding: 0 1rem;
-    font-size: 2rem;
-    color:#ffffff;
-    border: 0;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.4);
-    background: #5f3ca1;
-}
-
-.page__speakit {
-    margin-left: 1rem;
-    font-size: 2rem;
-    color:#ffffff;
-    border: 0;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.4);
-    background: #5f3ca1;
+    margin-top: 1rem;
 }
 
 .image__container_speakit {

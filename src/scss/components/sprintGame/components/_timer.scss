@@ -3,17 +3,14 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  top: 3rem;
   width: 8rem;
   height: 8rem;
   border: 2px solid $color-light;
-  border-radius: 4rem;
+  border-radius: 6rem;
   color: $color-light;
   font-size: 4rem;
 
   @include media-tablet {
-    top: 2rem;
-    left: 2rem;
     width: 6rem;
     height: 6rem;
     font-size: 3rem;
