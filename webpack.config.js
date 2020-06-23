@@ -27,7 +27,7 @@ function setDMode() {
 }
 
 const config = {
-  target: "web", 
+  target: "web",
   entry: './src/js/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -97,7 +97,8 @@ const config = {
             options: {
               outputPath: 'assets/img',
               name: '[name].[ext]'
-            }},
+            }
+          },
           {
             loader: 'image-webpack-loader',
             options: {
@@ -117,7 +118,19 @@ const config = {
             outputPath: 'fonts'
           }
         }]
-      }
+      },
+      {
+        test: /\.(mp3|wav)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'assets/audio',
+              name: '[name].[ext]'
+            },
+          },
+        ]
+      },
     ]
   },
 

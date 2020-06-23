@@ -1,4 +1,5 @@
 import { LINKS, CHILDREN } from './constants.speakit';
+import playAudio from './audioPlayer.speakit';
 
 export const renderDom = () => {
     const page = document.querySelector('.page')
@@ -13,18 +14,27 @@ export const renderDom = () => {
     </div>
     <div class="main__speakit hidden">
         <div class="header__speakit">
-            <div class="level__container_speakit">
-                <label for="level">Уровень</label>
-                <select name="Level" class="level__speakit" id="level">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                </select>
-                <label for="page">Страница</label>
-                <input type="number" name="Page" class="page__speakit" id="page__speakit" min="1" max="60" value="1">
+            <div class="menu__left">
+                <div class="menu__level">
+                    <span class="level__title">Уровень</span>
+                    <div class="select select__level">
+                        <select id="selectLevel">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="menu__round">
+                    <span class="round__title">Раунд</span>
+                    <div class="select select__round">
+                        <select id="selectRound">
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="wrapper__stars"><img class="star hidden" src="./assets/img/star-win.svg"></div>
         </div>
@@ -39,9 +49,9 @@ export const renderDom = () => {
         </div>
     </div>
     <div class="results__speakit hidden">
-        <p class="error__speakit">Error<span class="error__speakit_curr">10</span></p>
+        <p class="error__speakit">Не знаю<span class="error__speakit_curr">10</span></p>
         <div class="results__item_error"></div>
-        <p class="correct__speakit">Correct<span class="correct__speakit_curr">0</span></p>
+        <p class="correct__speakit">Знаю<span class="correct__speakit_curr">0</span></p>
         <div class="results__item_correct"></div>
         <div class="btn-results__speakit">
             <button class="button btn-return__speakit">Назад</button></button>
@@ -103,6 +113,7 @@ export const addStar = () => {
         star.src = LINKS.STAR_WIN_SRC;
         star.classList = 'star';
         stars[CHILDREN.FIRST].before(star)
+        playAudio(LINKS.AUDIO_CORRECT);
     }
 }
 
@@ -114,3 +125,17 @@ export const removeStars = () => {
         }
     })
 }
+
+export const renderRoundOptions = () => {
+    const ROUNDS_INL_EVEL = 60;
+    const SELECTROUNDCONTAINER = document.querySelector('.select__round>select');
+    const fr = document.createDocumentFragment();
+    for (let i = 1; i <= ROUNDS_INL_EVEL; i += 1) {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = i;
+      fr.append(opt);
+    }
+    SELECTROUNDCONTAINER.innerHTML = '';
+    SELECTROUNDCONTAINER.append(fr);
+  }
