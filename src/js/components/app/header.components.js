@@ -1,6 +1,6 @@
 import initAudioCallGame from '../audioCallGame/audioCallGame';
 import initPuzzleGame from '../puzzleGame/puzzleGame';
-import FindWordsGame from '../findWords/findWordsGame';
+import FindWordsGame from '../findWordsGame/findWordsGame';
 import initSavannaGame from '../savannaGame/savannaGame';
 import initTrainingGame from '../trainingGame/initTrainingGame';
 import Sprint from '../sprintGame/Sprint';
