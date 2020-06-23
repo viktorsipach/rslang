@@ -10,4 +10,9 @@
     background-color: $color-violet;
     background-color: darken($color: $color-violet, $amount: 15);
   }
+
+  &.active { // 
+    background-color: $color-violet;
+    background-color: darken($color: $color-violet, $amount: 15);
+  } //
 }

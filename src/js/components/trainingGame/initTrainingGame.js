@@ -6,24 +6,72 @@ export default async function initTrainingGame() {
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderTrainingGamePage());
 
-  const newWordsPerDay = 25;
-  const maxCardsPerDay  = 10;
-  const trainingGame = new TrainingGame({ newWordsPerDay, maxCardsPerDay });
-  await trainingGame.getData();
+  
+  const settings = {
+    newWordsPerDay: 25,
+    maxCardsPerDay: 3,
+    cardSettings: {
+      showTranslation: true,
+      showExplanationSentence: true,
+      showExampleSentence: true,
+      showTranscription: true,
+      showAssociatedPicture: true
+    },
+    autoPronunciation: true,
+    showDeleteButton: true,
+    showHardButton: true
 
-  trainingGame.renderData(trainingGame.data);
+  }
+ 
+  
+
+  const trainingGame = new TrainingGame(settings);
+  trainingGame.data = await trainingGame.getData();
+  console.log(trainingGame.data);
+  trainingGame.cardData = trainingGame.data[trainingGame.currentCardNumber];
+  trainingGame.renderCardData();
 
   document.querySelector('.trainingGame__button.next').addEventListener('click', () => {
     trainingGame.checkInput(trainingGame.data);
-  });
-
-  document.querySelector('.trainingGame__button.dontKnow').addEventListener('click', () => {
-    trainingGame.showWord();
   });
 
   document.addEventListener('keypress', (event) => {
     if (event.code === 'Enter' && document.querySelector('.game__training')) {
       trainingGame.checkInput(trainingGame.data);
     }
+    else {
+      trainingGame.hideAnswer();
+    }
   });
+
+  document.querySelector('.card__input').addEventListener('click', () => {
+    trainingGame.hideAnswer();
+  });
+
+  document.querySelector('.game__training').addEventListener('click', (event) => {
+    if (event.target.closest('.menu__button') || event.target.closest('.card__button')) {
+      const element = event.target.closest('.menu__button') || event.target.closest('.card__button');
+      console.log(element);
+      element.classList.toggle('active');
+      if (event.target.closest('.auto-pronunciation')) {
+        if (trainingGame.autoPronunciation) {
+          trainingGame.autoPronunciation = false;
+        } else {
+          trainingGame.autoPronunciation = true;
+        }
+      }
+      if (event.target.closest('.word-translation')) {
+        if (trainingGame.cardSettings.showTranslation) {
+          trainingGame.cardSettings.showTranslation = false;
+        } else {
+          trainingGame.cardSettings.showTranslation = true;
+        }
+      }
+    }
+  })
+
+  document.querySelector('.trainingGame__button.dontKnow').addEventListener('click', () => {
+    trainingGame.showWordWithoutTraining();
+  });
+
 }
