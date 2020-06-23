@@ -46,13 +46,14 @@ export default class ActionFindWordsGame {
 
     checkCard(event) {
         const progress = document.querySelector('.progress__line').style.width;
+        const progressStep = 10;
 
         if (this.previous.length < 2) return;
 
         if (this.previous[0].slice(-1) === this.previous[1].slice(-1)) {
             document.querySelector(`.${this.previous[0]}`).classList.add('correct');
             document.querySelector(`.${this.previous[1]}`).classList.add('correct');
-            document.querySelector('.progress__line').style.width = `${parseInt(progress, 10) + 10}%`;
+            document.querySelector('.progress__line').style.width = `${parseInt(progress, 10) + progressStep}%`;
             document.querySelector('.progress__value').textContent = document.querySelector('.progress__line').style.width;
             this.previous.splice(0);
             return;
