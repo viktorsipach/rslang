@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>rslang</title>
+    <title>RSLang</title>
     <link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-  <header class="header">
-    <h1 class="logo">RSLang</h1>
+  <header class="header hidden">
+    <h2 class="logo">RSLang</h2>
     <div class="menuToggle">
       <input class="menu-checkbox" type="checkbox"/>
       <span></span>
@@ -46,8 +46,27 @@
       <p class="nav navbar__about">О команде</p>
     </nav>
     <button class="button btn-logout">Выйти</button>
-  </header>      
-  <main class="page"></main>
+  </header>
+  <section class="login-page">
+    <h1 class="logo-main">RSLang</h1>
+    <div class="error-message"></div>
+    <div class="login__description">
+      <span class="signIn-description">Sign in to continue</span>
+      <span class="signUp-description">Sign up to register</span>
+    </div>
+    <form action="POST" class="login__form">
+      <div class="inputs">
+        <input type="text" name="email" id="email" class="email" placeholder="type email" maxlength="50">
+        <input type="text" name="password" id="password" class="password" placeholder="type password">
+        <div class="password-message">The password must contain at least 8 characters, at least one uppercase letter, one uppercase letter, one number and one special character from + -_ @ $!% *? & #.,;: [] {}</div>
+      </div>
+      <div class="buttons login__buttons">
+        <button class="button login__button button__signIn">Sign in</button>
+        <button class="button login__button button__signUp">Sign up</button>
+      </div>
+    </form>
+  </section>      
+  <main class="page hidden"></main>
   <script src="./js/index.js "></script>
 </body>
 </html>
