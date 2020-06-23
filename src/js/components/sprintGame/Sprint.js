@@ -30,6 +30,7 @@ class Sprint {
     startButton.addEventListener('click', async () => {
       const wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
       const wordsArray = [];
+      const curtainTimerStartPoint = 3;
       wordsApiArray.forEach((element) => {
         const {
           word,
@@ -40,7 +41,7 @@ class Sprint {
       });
       this.wordsArray = wordsArray;
       ContentBuilder.addGetReadyContent('.sprint__curtain');
-      this.startTimer('.curtain__timer', 3);
+      this.startTimer('.curtain__timer', curtainTimerStartPoint);
       setTimeout(() => {
         ContentBuilder.addMainPageContent(this.gameContainerSelector);
         this.startGame();
@@ -52,12 +53,13 @@ class Sprint {
     const board = document.querySelector('.sprint__board');
     const buttonTrue = board.querySelector('.board__button_true');
     const buttonFalse = board.querySelector('.board__button_false');
+    const gameTimerStartPoint = 60;
     const wordAudio = this.setNewWord(this.wordsArray);
     const gameButtonsListener = (event) => {
       this.startGameButtonsHandler(event, wordAudio, buttonTrue, buttonFalse);
     };
     this.gameIsActive = true;
-    this.startTimer('.sprint__timer', 60);
+    this.startTimer('.sprint__timer', gameTimerStartPoint);
     wordAudio.play();
     board.addEventListener('click', gameButtonsListener);
     setTimeout(() => {
