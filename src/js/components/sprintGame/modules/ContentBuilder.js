@@ -1,4 +1,5 @@
-import SoundImg from '../../../../assets/img/sprint/sound_on.svg';
+import SoundOnImg from '../../../../assets/img/sprint/sound_on.svg';
+import SoundOffImg from '../../../../assets/img/sprint/sound_off.svg';
 import RepeatImg from '../../../../assets/img/sprint/repeat.svg';
 import Background from './BackgroundHandler';
 
@@ -13,9 +14,9 @@ class ContentBuilder {
           <span class="stack__element stack__element_4"></span>
         </div>
         <div class="board__header_repeat">
-        <object type="image/svg+xml" data="${RepeatImg}">
-          Repeat
-        </object>
+          <div class="repeat-button">
+            <img class="repeat-button__icon" src="${RepeatImg}">
+          </div>
         </div>
       </div>
       <div class="board__body">
@@ -31,9 +32,8 @@ class ContentBuilder {
     `;
 
     this.soundControlMarkup = `
-      <object type="image/svg+xml" data="${SoundImg}">
-        Sound
-      </object>
+      <img class="sound-control__icon sound-control__icon_on sound-control__icon_active" src="${SoundOnImg}">
+      <img class="sound-control__icon sound-control__icon_off" src="${SoundOffImg}">
     `;
 
     this.timerMarkup = `

@@ -1,0 +1,94 @@
+.login-page {
+  display: block;
+  height: 100vh;
+  &.hidden {
+    display: none;
+  }
+}
+
+.logo-main {
+  text-align: center;
+  color: $color-violet;
+  font-size: 3rem;
+  font-weight: 900;
+  padding-top: 3%;
+}
+
+.error-message {
+  width: fit-content;
+  height: 5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: red;
+  margin: 0 auto;
+  padding: 3rem 0;
+  @include media-tablet {
+    font-size: 1.25rem;
+  }
+  @include media-mobile {
+    font-size: 1rem;
+  }
+}
+
+.login__description {
+  width: fit-content;
+  margin: 0 auto;
+  font-size: 2rem;
+}
+
+.signIn-description, 
+.signUp-description {
+  display: block;
+  width: fit-content;
+  margin: auto;
+}
+
+.login__form {
+  margin: 5rem auto;
+  width: 45rem;
+  @include media-tablet {
+    width: 35rem;
+  }
+  @include media-mobile {
+    width: 25rem;
+  }
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+}
+
+.email, 
+.password {
+  margin-top: 1.5rem;
+  height: 3rem;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 2rem;
+  padding-left: 1rem;
+  border: 3px solid $color-violet;
+  border-radius: 5px;
+  @include media-laptop {
+    font-size: 1.8rem;
+  }
+}
+
+.login__buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 5rem;
+  padding-bottom: 15rem;
+}
+
+.password-message {
+  width: fit-content;
+  margin: 2rem auto;
+}
+
+.login__button {
+  width: 10rem;
+  height: 3.5rem;
+}
+

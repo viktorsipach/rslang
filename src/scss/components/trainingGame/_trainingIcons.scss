@@ -1,12 +1,5 @@
 .icon {
-  &.icon__word-translation {
+  &.icon__show-translation {
     background-image: url('../assets/img/training/word-translation.svg');
-  }
-  &.icon__sentence-translation {
-    background-image: url('../assets/img/puzzle/translation.svg');
-    @include media-tablet {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
   }
 }
