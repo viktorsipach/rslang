@@ -160,15 +160,11 @@
     display: none;
   }
   &>*{
-    &[data-is-right="green"]  {
+    &[data-is-correct="true"]  {
       color: green;
     }
-    &[data-is-right="red"]  {
-      color: red;
-    }
-    &[data-is-right="yellow"]  {
+    &[data-is-correct="false"]  {
       color: yellow;
     }
   }
 }
-

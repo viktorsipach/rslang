@@ -9,7 +9,7 @@ export default async function initTrainingGame() {
   
   const settings = {
     newWordsPerDay: 25,
-    maxCardsPerDay: 3,
+    maxCardsPerDay: 20,
     cardSettings: {
       showTranslation: true,
       showExplanationSentence: true,
@@ -20,17 +20,11 @@ export default async function initTrainingGame() {
     autoPronunciation: true,
     showDeleteButton: true,
     showHardButton: true
-
   }
  
-  
-
   const trainingGame = new TrainingGame(settings);
-  trainingGame.data = await trainingGame.getData();
-  console.log(trainingGame.data);
-  trainingGame.cardData = trainingGame.data[trainingGame.currentCardNumber];
-  trainingGame.renderCardData();
-
+  trainingGame.start();
+  
   document.querySelector('.trainingGame__button.next').addEventListener('click', () => {
     trainingGame.checkInput(trainingGame.data);
   });
@@ -40,6 +34,7 @@ export default async function initTrainingGame() {
       trainingGame.checkInput(trainingGame.data);
     }
     else {
+      trainingGame.checkInputLength();
       trainingGame.hideAnswer();
     }
   });
@@ -51,7 +46,6 @@ export default async function initTrainingGame() {
   document.querySelector('.game__training').addEventListener('click', (event) => {
     if (event.target.closest('.menu__button') || event.target.closest('.card__button')) {
       const element = event.target.closest('.menu__button') || event.target.closest('.card__button');
-      console.log(element);
       element.classList.toggle('active');
       if (event.target.closest('.auto-pronunciation')) {
         if (trainingGame.autoPronunciation) {
@@ -60,7 +54,7 @@ export default async function initTrainingGame() {
           trainingGame.autoPronunciation = true;
         }
       }
-      if (event.target.closest('.word-translation')) {
+      if (event.target.closest('.show-translation')) {
         if (trainingGame.cardSettings.showTranslation) {
           trainingGame.cardSettings.showTranslation = false;
         } else {
@@ -73,5 +67,4 @@ export default async function initTrainingGame() {
   document.querySelector('.trainingGame__button.dontKnow').addEventListener('click', () => {
     trainingGame.showWordWithoutTraining();
   });
-
 }
