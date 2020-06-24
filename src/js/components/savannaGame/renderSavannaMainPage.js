@@ -3,7 +3,6 @@ class RenderSavannaMainPage  {
         this.word = word;
         this.translate = translate;
         this.arr = arr;
-        // console.log(this.arr);
     }
 
 

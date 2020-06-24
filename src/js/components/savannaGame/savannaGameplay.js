@@ -13,30 +13,17 @@ const savannaGameplayMouse = (data, index) => {
     
     clickBtn.forEach(elem => {
         elem.addEventListener('click', () => {
-            // console.log(elem.innerText);
             count += 1;
             console.log(count);
             if (count < 10) {
                 if (elem.innerText === data[index].wordTranslate.toUpperCase()) {
                     span[index].innerHTML = '+';
                     countCorrect += 1;
-                    // span.forEach(el => {
-                    //     if (el.dataset.word.toUpperCase() === elem.innerText) {
-                    //         el.innerHTML = '+';
-                    //     }
-                    //     console.log(el.dataset.word.innerHTML);
-                    // })
                     elem.classList.add('correct');
                     setTimeout(() => savannaRound(count), 500);
-                    // console.log(countCorrect);
-                    // error.innerHTML = 10 - `${countCorrect}`;
-                    // correct.innerHTML = `${countCorrect}`;
                 } else {
                     elem.classList.add('wrong');
                     setTimeout(() => savannaRound(count), 500);
-                    // console.log(countCorrect);
-                    // error.innerHTML = 10 - `${countCorrect}`;
-                    // correct.innerHTML = `${countCorrect}`;
                 }                
             } else {
                 if (elem.innerText === data[index].wordTranslate.toUpperCase()) {
@@ -48,7 +35,6 @@ const savannaGameplayMouse = (data, index) => {
                     hiddenMainPage.classList.add('savanna-hidden');
                     error.innerHTML = 10 - `${countCorrect}`
                     correct.innerHTML = `${countCorrect}`;
-                    // console.log(countCorrect);
                 } else {
                     elem.classList.add('wrong');
                     console.log('the end!');
@@ -56,7 +42,6 @@ const savannaGameplayMouse = (data, index) => {
                     hiddenMainPage.classList.add('savanna-hidden');
                     error.innerHTML = 10 - `${countCorrect}`;
                     correct.innerHTML = `${countCorrect}`;
-                    // console.log(countCorrect);
                 }
             }
         })
@@ -72,23 +57,16 @@ const savannaGameplayKeyboard = () => {
         const error = document.querySelector('.savanna__error');
         const correct = document.querySelector('.savanna__correct');
         const hiddenWord = document.querySelector('.savanna__hidden-word');
-        // console.log(event.code);
-        // console.log(document.getElementById(event.code));
-        // console.log(document.getElementById(event.code).innerText);
-        // console.log(hiddenWord.id.toUpperCase());
         count += 1;
-        // console.log(count);
         if (count < 10) {
             if (document.getElementById(event.code).innerText === hiddenWord.id.toUpperCase()) {
                 document.getElementById(event.code).classList.add('correct');
                 span[count - 1].innerHTML = '+';
                 countCorrect += 1;
                 setTimeout(() => savannaRound(count), 500);
-                // console.log(countCorrect);
             } else {
                 document.getElementById(event.code).classList.add('wrong');
                 setTimeout(() => savannaRound(count), 500);
-                // console.log(countCorrect);
             }                
         } else {
             if (document.getElementById(event.code).innerText === hiddenWord.id.toUpperCase()) {
@@ -100,7 +78,6 @@ const savannaGameplayKeyboard = () => {
                 hiddenMainPage.classList.add('savanna-hidden');
                 error.innerHTML = 10 - `${countCorrect}`;
                 correct.innerHTML = `${countCorrect}`;
-                // console.log(countCorrect);
             } else {
                 document.getElementById(event.code).classList.add('wrong');
                 console.log('the end!');
@@ -108,7 +85,6 @@ const savannaGameplayKeyboard = () => {
                 hiddenMainPage.classList.add('savanna-hidden');
                 error.innerHTML = 10 - `${countCorrect}`;
                 correct.innerHTML = `${countCorrect}`;
-                // console.log(countCorrect);
             }
         }
     })
