@@ -18,16 +18,21 @@
   height: -webkit-fill-available;
   margin: 5rem auto;
   background-color: lighten($color-violet, $amount: 25);
+  @include media-tablet {
+    width: 90%;
+  }
 }
 
-.notification-title,
-.notification-text {
+.notification-title {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 4rem;
   font-weight: 700;
   padding-top: 10rem;
+  @include media-laptop {
+    padding-top: 5rem;
+  }
   @include media-tablet {
     font-size: 2.5rem;
   }
@@ -37,12 +42,34 @@
 }
 
 .notification-text {
-  font-size: 2.5rem;
-  padding: 10rem 0;
+  font-size: 2rem;
+  padding: 5rem 5rem;
+  line-height: 4rem;
+  @include media-laptop {
+    font-size: 1.5rem;
+    line-height: 3rem;
+  }
+  @include media-tablet {
+    font-size: 1.25rem;
+    line-height: 2.5rem;
+  }
+  @include media-mobile {
+    font-size: 1rem;
+    line-height: 1.75rem;
+  }
 }
 
 .notification__buttons {
   display: flex;
   justify-content: center;
+  align-items: center;
   padding-bottom: 15rem;
+  @include media-mobile {
+    flex-direction: column;
+  }
+  &>.game__button {
+    @include media-mobile {
+      margin-bottom: 1rem;
+    }
+  }
 }
