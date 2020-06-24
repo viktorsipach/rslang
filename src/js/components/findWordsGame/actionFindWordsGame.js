@@ -5,7 +5,7 @@ export default class ActionFindWordsGame {
         this.renderFindWordsGame = new RenderFindWordsGame();
         this.page = document.querySelector('.page');
         this.click = 'click';
-        this.previous = [];
+        this.stackCard = [];
         this.coupleStat = {};
     }
 
@@ -20,76 +20,88 @@ export default class ActionFindWordsGame {
     }
 
     startRound() {
+        const delayFirst = 1000;
+        const delaySecond = 1100;
+        const reset = 0;
+
         document.querySelector('.find-words').firstChild.style.opacity = 0;
 
         setTimeout(() => {
             document.querySelector('.find-words').innerHTML = '';
             this.renderFindWordsGame.renderMainPage();
             
-            document.querySelectorAll('.card-eng').forEach(( elem, i) => {
-            this.coupleStat[`couple${i}`] = 0;
+            document.querySelectorAll('.card-eng').forEach(( elem) => {
+            this.coupleStat[`${elem.dataset.couple}`] = reset;
             });
-            this.coupleStat.total = 0;
-        }, 1000);
+            this.coupleStat.total = reset;
+        }, delayFirst);
+
         setTimeout(() => {
             document.querySelector('.game-container').classList.remove('hide-game-container');
-        }, 1100);
+        }, delaySecond);
 
     }
 
     clickCard() {
         this.page.addEventListener('mainPageLoad', () => {
             const gameField = document.querySelector('.game-container__game-field');
+            const delay = 1000;
 
             gameField.addEventListener(this.click, (event) => {
                 if (!event.target.className.includes('__back')) return;
 
                 event.target.parentElement.classList.remove('rotate');
-                this.previous.push(event.target.parentElement.classList[2]);
+                this.stackCard.push(event.target.parentElement.dataset.couple);
                 this.checkCard(event);
 
-                if (document.querySelectorAll('.rotate').length === 0) {
+                if (!document.querySelectorAll('.rotate').length) {
                     setTimeout(() => {
                         this.renderFindWordsGame.renderMainPageResult(this.coupleStat);
-                    }, 1000);
+                    }, delay);
                 }
             });
         })
     }
 
     checkCard(event) {
-        const progress = document.querySelector('.progress__line').style.width;
         const progressStep = 10;
+        const radix = 10;
+        const increment = 1;
+        const twoElements = 2;
+        const gameField = document.querySelector('.game-field');
+        const progressLine = document.querySelector('.progress__line');
+        const progressValue = document.querySelector('.progress__value');
 
-        if (this.previous.length < 2) return;
+        if (this.stackCard.length < twoElements) return;
 
-        if (this.previous[0].slice(-1) === this.previous[1].slice(-1)) {
-            document.querySelector(`.${this.previous[0]}`).classList.add('correct');
-            document.querySelector(`.${this.previous[1]}`).classList.add('correct');
+        const secondCard = this.stackCard.pop();
+        const firstCard = this.stackCard.pop();
 
-            document.querySelector('.progress__line').style.width = `${parseInt(progress, 10) + progressStep}%`;
-            document.querySelector('.progress__value').textContent = document.querySelector('.progress__line').style.width;
+        if (firstCard === secondCard) {
+            document.querySelector(`.ru-${firstCard}`).classList.add('correct');
+            document.querySelector(`.eng-${firstCard}`).classList.add('correct');
+            console.log(progressLine.style.width)
+            progressLine.style.width = `${parseInt(progressLine.style.width, radix) + progressStep}%`;
+            progressValue.textContent = progressLine.style.width;
+            console.log(progressLine.style.width)
+            this.coupleStat[`${firstCard}`] += increment;
+            this.coupleStat.total += increment;
 
-            this.coupleStat[`${this.previous[0].slice(-7)}`] += 1;
-            this.coupleStat.total += 1;
-            
-            this.previous.splice(0);
             return;
         }
-        if (this.previous[0].slice(-1) !== this.previous[1].slice(-1)) {
-            document.querySelector('.game-field').classList.add('event-none');
+        if (firstCard !== secondCard) {
+            gameField.classList.add('event-none');
             
-            this.coupleStat[`${this.previous[0].slice(-7)}`] += 1;
-            this.coupleStat.total += 1;
+            this.coupleStat[`${firstCard}`] += increment;
+            this.coupleStat.total += increment;
 
             setTimeout(() => {
-                document.querySelector(`.${this.previous[0]}`).classList.add('rotate');
+                document.querySelector(`.ru-${firstCard}`).classList.add('rotate');
+                document.querySelector(`.eng-${firstCard}`).classList.add('rotate');
                 event.target.parentElement.classList.add('rotate');
-                document.querySelector('.game-field').classList.remove('event-none');
-                this.previous.splice(0);
+                gameField.classList.remove('event-none');
             }, 1000);
         }
-        
     }
 
     repeatRoundButton() {

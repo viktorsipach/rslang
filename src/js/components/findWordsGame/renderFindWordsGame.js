@@ -70,10 +70,12 @@ export default class RenderFindWordsGame {
             this.createElement('div', `game-field__card-eng card-eng eng-couple${i}`, '', 'game-field');
             this.createElement('div', 'card-eng__front', '', 'game-field__card-eng', i);
             this.createElement('div', 'card-eng__back', '', 'game-field__card-eng', i);
+            document.querySelector(`.eng-couple${i}`).setAttribute('data-couple', `couple${i}`);
 
             this.createElement('div', `game-field__card-ru card-ru ru-couple${i}`, '', 'game-field');
             this.createElement('div', 'card-ru__front', '', 'game-field__card-ru', i);
             this.createElement('div', 'card-ru__back', '', 'game-field__card-ru', i);
+            document.querySelector(`.ru-couple${i}`).setAttribute('data-couple', `couple${i}`);
         }
 
         const shuffle = (element, target) => {
@@ -94,6 +96,8 @@ export default class RenderFindWordsGame {
         const level = 1;
         const round = 1;
         const wordsPerRound = 10;
+        const delayField = 1000;
+        const delayCards = 20;
         const data = await this.getWords(level, round, wordsPerRound);
 
         data.forEach((elem) => {
@@ -110,8 +114,8 @@ export default class RenderFindWordsGame {
             setTimeout(() => {
                 setTimeout(() => {
                     cardArr[i].classList.add('rotate');
-                   }, i * 20);
-            }, 1000);
+                   }, i * delayCards);
+            }, delayField);
         }
 
         document.querySelectorAll('.card-ru').forEach((elem) => {

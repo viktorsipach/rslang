@@ -1,12 +1,11 @@
 @import './base/constants';
 $color-find-words-overlay: #41414180;
-$color-game-info-fonts: #fff;
-$color-game-container__controls-fonts: #fff;
 $color-card-front: #c7c7c7;
 $color-box-shadow-common: #ffffff8a;
 $color-correct: #23ff77bd;
 $color-error: #ff56568a;
 $color-card-back: #32889e;
+$color-statistics-row: #faebd7;
 
 .find-words {
     width: 100%;
@@ -38,7 +37,7 @@ $color-card-back: #32889e;
     background-color: $color-find-words-overlay;
     border-radius: 20px;
     text-align: center;
-    color: $color-game-info-fonts;
+    color: $color-light;
     transition: 1s;
     box-shadow: 0 0 10px 2px $color-box-shadow-common;
     &.hide-game-info {
@@ -104,19 +103,17 @@ $color-card-back: #32889e;
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    color: $color-game-container__controls-fonts;
+    color: $color-light;
     box-shadow: 0 0 10px 2px $color-box-shadow-common;
 }
 .controls__level,
-.controls__page,
-.controls__repeat {
+.controls__page {
     display: flex;
     align-items: center;
     margin: 10px 10px;
 }
 .level__head,
-.page__head,
-.repeat__head {
+.page__head {
     font-size: 3rem;
     margin-right: 10px;
     @include media-tablet {
@@ -125,12 +122,6 @@ $color-card-back: #32889e;
     @include media-mobile {
         font-size: 2rem;
     }
-}
-.repeat__icon {
-    width: 3rem;
-    height: 3rem;
-    background-size: cover;
-    background-position: center;
 }
 .progress-bar {
     width: 90%;
@@ -147,7 +138,7 @@ $color-card-back: #32889e;
     height: 70%;
     border-radius: 1rem;
     overflow: hidden;
-    color: $color-game-container__controls-fonts;
+    color: $color-light;
     font-size: 2rem;
     display: flex;
 }
@@ -247,7 +238,7 @@ $color-card-back: #32889e;
 .statistics__modal {
     width: 60%;
     padding: 2rem 0;
-    background-color: #ffffff;
+    background-color: $color-light;
     border-radius: 1rem;
     font-size: 2rem;
     display: flex;
@@ -267,7 +258,7 @@ $color-card-back: #32889e;
 .statistics__row {
     width: 100%;
     height: 3rem;
-    background-color: antiquewhite;
+    background-color: $color-statistics-row;
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
