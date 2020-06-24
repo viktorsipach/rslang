@@ -6,7 +6,8 @@ import { getPartSpeech } from './partOfSpeech';
 let option = true;
 
 function randomNumber(min, max) {
-  const rand = min + Math.random() * (max + 10 - min);
+  const num = 10;
+  const rand = min + Math.random() * (max + num - min);
   return Math.floor(rand);
 }
 
