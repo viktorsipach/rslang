@@ -1,4 +1,5 @@
-import SoundImg from '../../../../assets/img/sprint/sound_on.svg';
+import SoundOnImg from '../../../../assets/img/sprint/sound_on.svg';
+import SoundOffImg from '../../../../assets/img/sprint/sound_off.svg';
 import RepeatImg from '../../../../assets/img/sprint/repeat.svg';
 import Background from './BackgroundHandler';
 
@@ -10,33 +11,33 @@ class ContentBuilder {
           <span class="stack__element stack__element_1 stack__element_active"></span>
           <span class="stack__element stack__element_2 stack__element_active"></span>
           <span class="stack__element stack__element_3"></span>
+          <span class="stack__element stack__element_4"></span>
         </div>
         <div class="board__header_repeat">
-        <object type="image/svg+xml" data="${RepeatImg}">
-          Repeat
-        </object>
+          <div class="repeat-button">
+            <img class="repeat-button__icon" src="${RepeatImg}">
+          </div>
         </div>
       </div>
       <div class="board__body">
         <div class="board__body_image">
         </div>
-        <div class="board__body_foreign-word">Bland</div>
-        <div class="board__body_translated-word">пресный</div>
+        <div class="board__body_foreign-word"></div>
+        <div class="board__body_translated-word"></div>
       </div>
       <div class="board__control">
-        <button class="button board__button board__button_false">Неверно</button>
-        <button class="button board__button board__button_true">Верно</button>
+      <button class="button board__button board__button_true">Верно</button>
+      <button class="button board__button board__button_false">Неверно</button>
       </div>
     `;
 
     this.soundControlMarkup = `
-      <object type="image/svg+xml" data="${SoundImg}">
-        Sound
-      </object>
+      <img class="sound-control__icon sound-control__icon_on sound-control__icon_active" src="${SoundOnImg}">
+      <img class="sound-control__icon sound-control__icon_off" src="${SoundOffImg}">
     `;
 
     this.timerMarkup = `
-      <span class="timer__value">57</span>
+      <span class="timer__value"></span>
     `;
 
     this.counterMarkup = `
@@ -52,7 +53,15 @@ class ContentBuilder {
       <div class="exit curtain__exit"></div>
       <div class="curtain__game-name"></div>
       <div class="curtain__game-description">${this.gameDescription}</div>
-      <button class="button curtain__button">Начать</button>
+      <button class="button curtain__button curtain__button_start">Начать</button>
+    `;
+
+    this.gameGetReadyText = 'Приготовьтесь!';
+
+    this.getReadyMarkup = `
+      <div class="exit curtain__exit"></div>
+      <div class="curtain__timer timer"></div>
+      <div class="curtain__get-ready">${this.gameGetReadyText}</div>
     `;
   }
 
@@ -79,6 +88,27 @@ class ContentBuilder {
     parent.append(fragment);
   }
 
+  addStartPageContent(parentSelector, gameName) {
+    this.parentSelector = parentSelector;
+    this.gameName = gameName || 'Спринт';
+    const parent = document.querySelector(this.parentSelector);
+    const curtain = document.createElement('div');
+    curtain.classList.add('sprint__curtain', 'curtain');
+    curtain.innerHTML = this.curtainMarkup;
+    const gameNameEl = curtain.querySelector('.curtain__game-name');
+    gameNameEl.textContent = gameName;
+    parent.innerHTML = '';
+    parent.append(curtain);
+    Background.setBackgroundImage('.sprint__panel');
+    return this;
+  }
+
+  addGetReadyContent(parentSelector) {
+    const parent = document.querySelector(parentSelector);
+    parent.innerHTML = this.getReadyMarkup;
+    return this;
+  }
+
   addElementToFragment(parent, markup, ...classes) {
     const element = document.createElement('div');
     const [class1, class2] = classes;
@@ -96,20 +126,6 @@ class ContentBuilder {
     return this;
   }
 
-  addStartPageContent(parentSelector, gameName) {
-    this.parentSelector = parentSelector;
-    this.gameName = gameName || 'Спринт';
-    const parent = document.querySelector(this.parentSelector);
-    const curtain = document.createElement('div');
-    curtain.classList.add('sprint__curtain', 'curtain');
-    curtain.innerHTML = this.curtainMarkup;
-    const gameNameEl = curtain.querySelector('.curtain__game-name');
-    gameNameEl.textContent = gameName;
-    parent.innerHTML = '';
-    parent.append(curtain);
-    Background.setBackgroundImage('.sprint__panel');
-    return this;
-  }
 }
 
 export default new ContentBuilder();

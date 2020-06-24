@@ -1,10 +1,11 @@
 @import './components/curtain';
-@import './components/card';
+@import './components/board';
 @import './components/counter';
 @import './components/exit';
 @import './components/sound-control';
 @import './components/timer';
 @import './components/stack';
+@import './components/repeat-button';
 
 .sprint {
   * {
@@ -18,6 +19,7 @@
     flex-wrap: wrap;
     width: 100%;
     height: 100%;
+    background-size: cover;
 
     &_left {
       display: flex;
@@ -59,7 +61,6 @@
         right: 0;
         width: 60%;
         flex-direction: row-reverse;
-        align-items: baseline;
       }
     }
   }
@@ -75,8 +76,17 @@
     opacity: 1;
 
     @include media-tablet {
-      top: 0;
+      top: 2rem;
       right: 0;
+    }
+  }
+
+  &__timer {
+    top: 3rem;
+
+    @include media-tablet {
+      top: 2rem;
+      left: 2rem;
     }
   }
 }

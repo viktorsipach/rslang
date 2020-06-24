@@ -12,8 +12,17 @@ export default class ActionFindWordsGame {
         const start = document.querySelector('.game-info__start-button');
 
         start.addEventListener(this.click, () => {
-            this.page.innerHTML = '';
-            this.renderFindWordsGame.renderMainPage();
+            document.querySelector('.find-words').classList.remove('start-find-words');
+            document.querySelector('.find-words').classList.add('main-find-words');
+            document.querySelector('.game-info').classList.add('hide-game-info');
+            setTimeout(() => {
+                document.querySelector('.find-words').innerHTML = '';
+                this.renderFindWordsGame.renderMainPage();
+            }, 1000);
+            setTimeout(() => {
+                document.querySelector('.game-container').classList.remove('hide-game-container');
+            }, 1100);
+            
         });
     }
 
@@ -27,6 +36,7 @@ export default class ActionFindWordsGame {
                 event.target.parentElement.classList.remove('rotate');
                 this.previous.push(event.target.parentElement.classList[2]);
                 this.checkCard(event);
+
                 if (document.querySelectorAll('.rotate').length === 0) {
                     this.renderFindWordsGame.renderMainPageResult();
                 }
@@ -35,11 +45,16 @@ export default class ActionFindWordsGame {
     }
 
     checkCard(event) {
+        const progress = document.querySelector('.progress__line').style.width;
+        const progressStep = 10;
+
         if (this.previous.length < 2) return;
 
         if (this.previous[0].slice(-1) === this.previous[1].slice(-1)) {
-            document.querySelector(`.${this.previous[0]}`).classList.add('scale');
-            document.querySelector(`.${this.previous[1]}`).classList.add('scale');
+            document.querySelector(`.${this.previous[0]}`).classList.add('correct');
+            document.querySelector(`.${this.previous[1]}`).classList.add('correct');
+            document.querySelector('.progress__line').style.width = `${parseInt(progress, 10) + progressStep}%`;
+            document.querySelector('.progress__value').textContent = document.querySelector('.progress__line').style.width;
             this.previous.splice(0);
             return;
         }

@@ -14,6 +14,7 @@
     font-size: 2.2rem;
     align-items: center;
     color: white;
+    font-weight: 900;
   
     @include media-laptop {
        position: absolute;
@@ -87,8 +88,9 @@
     }
 }
 
-i {
+.header i {
     margin-right: 1rem;
+    margin-left: 1rem;
 }
 
 .subnav .subnavbtn {
