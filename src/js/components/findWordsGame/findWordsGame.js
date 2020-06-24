@@ -11,5 +11,7 @@ export default class FindWordsGame {
         this.renderFindWordsGame.renderStartPage();
         this.actionFindWordsGame.startGame();
         this.actionFindWordsGame.clickCard();
+        this.actionFindWordsGame.statButton();
+        this.actionFindWordsGame.repeatRoundButton();
     }
 }
