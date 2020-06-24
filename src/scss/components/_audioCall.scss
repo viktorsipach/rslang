@@ -5,7 +5,6 @@
     text-align: center;
     color: #ffffffc7;
     position: relative;
-
 }
 
 .container.container_audioCall {
@@ -65,10 +64,10 @@
 
 .game__close {
     position: absolute;
-    right: 32px;
-    top: 32px;
-    width: 32px;
-    height: 32px;
+    right: 3rem;
+    top: 3rem;
+    width: 3rem;
+    height: 3rem;
     opacity: 1;
     &:hover {
       opacity: 0.3;
@@ -77,10 +76,10 @@
     &::before, 
     &::after {
       position: absolute;
-      left: 15px;
+      left: 1.5rem;
       content: "";
-      height: 33px;
-      width: 2px;
+      height: 3rem;
+      width: 0.2rem;
       background-color: #ffffffc7;
     }
     &::before {
@@ -225,8 +224,8 @@
 }
 .game__dropdown.game__dropdown_audioCall {
     position: absolute;
-    left: 32px;
-    top: 32px;
+    left: 3rem;
+    top: 3rem;
     display: flex;
     align-items: center;
     @include media-tablet {
@@ -255,4 +254,18 @@
       margin-left: 0;
       margin-top: 1rem;
     }
+}
+.game__iconSound {
+  position: absolute;
+  left: 3rem;
+  top: 12rem;
+  width: 3rem;
+  height: 3rem;
+  background: url('/../../assets/img/speaker.svg');
+  &:hover {
+    cursor: pointer;
+  }
+}
+.game__iconSound.active {
+  background: url('/../../assets/img/mute.svg');
 }
