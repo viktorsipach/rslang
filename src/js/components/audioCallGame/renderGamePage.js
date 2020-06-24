@@ -7,8 +7,13 @@ function playSound(voiceEn) {
     audioElement.play();
 }
 
-export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
+export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wordRus) { 
     shuffleWords(arrWordsRus);
+
+    const newArrWordsRus = arrWordsRus.slice(0, 4);
+
+    newArrWordsRus.push(wordRus);
+    shuffleWords(newArrWordsRus);
 
     const fragment = document.createDocumentFragment();
 
@@ -99,6 +104,9 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
     gameBlockVoice.append(gameVoice);
     gameBlockVoice.append(gameWord);
 
+    const iconSound = document.createElement('div');
+    iconSound.className = 'game__iconSound';
+
     for (let i = 0; i < 5; i += 1) {
         const gameWordsItem = document.createElement('div');
         gameWordsItem.className = 'words__item';
@@ -109,7 +117,7 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
         
         const gameWordsName = document.createElement('div');
         gameWordsName.className = 'words__name';
-        gameWordsName.innerText = arrWordsRus[i].toLowerCase();
+        gameWordsName.innerText = newArrWordsRus[i].toLowerCase();
         
         gameWordsBlock.append(gameWordsItem);
         gameWordsItem.append(gameWordsNumber);
@@ -128,6 +136,7 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
     gamePage.append(gameProgress);
     gamePage.append(closeGame);
     gamePage.append(dropdownMenu);
+    gamePage.append(iconSound);
     gamePage.append(gameContainer);
     
     fragment.append(gamePage);
