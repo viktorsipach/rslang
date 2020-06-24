@@ -1,0 +1,48 @@
+.notification-container {
+  display: block;
+  height: 100%;
+  background-color: $color-overlay;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.modal-container {
+  width: 80%;
+  height: -webkit-fill-available;
+  margin: 5rem auto;
+  background-color: lighten($color-violet, $amount: 25);
+}
+
+.notification-title,
+.notification-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: 700;
+  padding-top: 10rem;
+  @include media-tablet {
+    font-size: 2.5rem;
+  }
+  @include media-mobile {
+    font-size: 1.75rem;
+  }
+}
+
+.notification-text {
+  font-size: 2.5rem;
+  padding: 10rem 0;
+}
+
+.notification__buttons {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15rem;
+}

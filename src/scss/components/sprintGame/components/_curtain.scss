@@ -20,8 +20,9 @@
 
   &__game-name {
     padding: 3rem 1rem;
-    font-size: 4rem;
-    color: $color-violet;
+    font-size: 6rem;
+    color: $color-word;
+    text-transform: uppercase;
   }
 
   &__game-description {
@@ -35,6 +36,17 @@
     @include media-laptop {
       width: 80%;
     }
+
+  }
+
+  &__get-ready {
+    width: 30rem;
+    padding: 5rem 1rem;
+    font-size: 3rem;
+    line-height: 5rem;
+    text-align: center;
+    color: $color-word;
+
   }
 
   &__button {

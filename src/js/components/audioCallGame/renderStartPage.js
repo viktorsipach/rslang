@@ -17,14 +17,14 @@ export default function renderStartPage() {
     startGameButton.innerText = 'Начать';
 
     const startGameContainer = document.createElement('div');
-    startGameContainer.className = 'container';
+    startGameContainer.className = 'container container_audioCall';
 
     startGameContainer.append(startGameTitle);
     startGameContainer.append(startGameDescription);
     startGameContainer.append(startGameButton);
 
     const startGamePage = document.createElement('div');
-    startGamePage.className = 'game';
+    startGamePage.className = 'game game_audioCall';
     startGamePage.append(closeGame);
     startGamePage.append(startGameContainer);
 

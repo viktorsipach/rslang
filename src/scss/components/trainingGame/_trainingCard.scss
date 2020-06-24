@@ -86,16 +86,25 @@
       @include media-tablet {
         padding: 2rem 0;
       }
-      &>.explanation-container,
-      &>.example-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        min-height: 2rem;
+      &>.card__explanation-sentence>span,
+      &>.card__example-sentence>span {
+        display: inline;
+        font-weight: 700;
+        color: $color-violet;
+        &.hidden {
+          color: transparent;
+          text-decoration: none;
+          border-bottom: 2px solid $color-violet;
+        }
       }
+
       &>.card__explanation-sentence-translation,
       &>.card__example-sentence-translation {
+        display: inline-block;
         min-height: 2rem;
+        &.hidden {
+          display: none;
+        }
       }
       &>* {
         font-size: 1.75rem;
@@ -107,7 +116,6 @@
     }
     &>.input__container {
       position: relative;
-     //  display: flex;
       width: fit-content;
       margin: 2rem auto;
       @include media-tablet {
@@ -152,13 +160,10 @@
     display: none;
   }
   &>*{
-    &[data-is-right="green"]  {
+    &[data-is-correct="true"]  {
       color: green;
     }
-    &[data-is-right="red"]  {
-      color: red;
-    }
-    &[data-is-right="yellow"]  {
+    &[data-is-correct="false"]  {
       color: yellow;
     }
   }
