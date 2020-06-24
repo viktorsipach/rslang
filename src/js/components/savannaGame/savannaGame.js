@@ -18,6 +18,7 @@ const initSavannaGame = () => {
     page.innerHTML = '';
     page.append(savanna);
     page.append(savannaShortStatistics);
+    RenderSavannaShortStatistic();
 
     const start = document.querySelector('.button__savanna');
     start.addEventListener('click', () => {
@@ -25,7 +26,7 @@ const initSavannaGame = () => {
         savanna.innerHTML = '';
         // savanna.append(templateMain);
         savannaRound(0);
-        RenderSavannaShortStatistic();
+        
     })
     savannaGameplayKeyboard();
 }

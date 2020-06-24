@@ -63,6 +63,7 @@ class RenderSavannaMainPage  {
         savannaEng.className = 'savanna-word__eng';
         savannaRus.className = 'savanna-word__rus';
         savannaMark.className = 'savanna-mark';
+        savannaMark.setAttribute('data-word', `${this.word}`);
 
         savannaEng.innerHTML = `${this.word}`;
         savannaRus.innerHTML = `${this.translate}`;

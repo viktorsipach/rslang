@@ -41,4 +41,10 @@
         text-transform: uppercase;
         font-size: 1.2rem;
     }
+    &-active {
+        visibility: visible;
+    }
+    &-hidden {
+        visibility: hidden;
+    }
 }
