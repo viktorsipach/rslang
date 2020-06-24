@@ -35,8 +35,8 @@ function renderMenuIcon(buttonClass, buttonIconClass) {
 function renderMenuIcons() {
   const menuIcons = document.createElement('div');
   menuIcons.className = 'menu__icons';
-  menuIcons.append(renderMenuIcon('menu__button auto-pronunciation', 'icon__auto-pronunciation'));
-  menuIcons.append(renderMenuIcon('menu__button word-translation', 'icon__word-translation'));
+  menuIcons.append(renderMenuIcon('menu__button auto-pronunciation ', 'icon__auto-pronunciation'));
+  menuIcons.append(renderMenuIcon('menu__button show-translation ', 'icon__show-translation'));
   return menuIcons;
 }
 
@@ -49,9 +49,6 @@ function renderTrainingGameMenu() {
 }
 
 function  renderCardTop() {
-  const cardWord = document.createElement('div');
-  cardWord.className = 'card__word';
-
   const cardTranscription = document.createElement('div');
   cardTranscription.className = 'card__transcription';
 
@@ -63,9 +60,8 @@ function  renderCardTop() {
   
   const cardTop = document.createElement('div');
   cardTop.className = 'card__top';
-  cardTop.append(cardWord);
-  cardTop.append(cardTranscription);
   cardTop.append(cardTranslation);
+  cardTop.append(cardTranscription);
   cardTop.append(imgContainer);
   return cardTop;
 }
@@ -74,30 +70,20 @@ function  renderCardBottom() {
   const explanationSentence = document.createElement('div');
   explanationSentence.className = 'card__explanation-sentence';
 
-  const explanationContainer = document.createElement('div');
-  explanationContainer.className = 'explanation-container';
-  explanationContainer.append(explanationSentence);
-  explanationContainer.append(renderMenuIcon('card__button sentence-translation', 'icon__sentence-translation'));
-
   const exampleSentence = document.createElement('div');
   exampleSentence.className = 'card__example-sentence';
 
-  const exampleContainer = document.createElement('div');
-  exampleContainer.className = 'example-container';
-  exampleContainer.append(exampleSentence);
-  exampleContainer.append(renderMenuIcon('card__button sentence-translation', 'icon__sentence-translation'));
-
   const explanationSentenceTranslation = document.createElement('div');
-  explanationSentenceTranslation.className = 'card__explanation-sentence-translation';
+  explanationSentenceTranslation.className = 'card__explanation-sentence-translation hidden';
 
   const exampleSentenceTranslation = document.createElement('div');
-  exampleSentenceTranslation.className = 'card__example-sentence-translation';
+  exampleSentenceTranslation.className = 'card__example-sentence-translation hidden';
 
   const sentencesContainer = document.createElement('div');
   sentencesContainer.className = 'sentences__container';
-  sentencesContainer.append(explanationContainer);
+  sentencesContainer.append(explanationSentence);
   sentencesContainer.append(explanationSentenceTranslation);
-  sentencesContainer.append(exampleContainer);
+  sentencesContainer.append(exampleSentence);
   sentencesContainer.append(exampleSentenceTranslation);
   
   const input = document.createElement('input');
