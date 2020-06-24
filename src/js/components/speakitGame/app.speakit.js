@@ -130,7 +130,7 @@ const startSpeak = () => {
             cards.forEach((el) => {
                 const word = el.id
                 const image = el.children[CHILDREN.THIRD].innerText
-                if (word === resultSpeaking.innerText || word === result.toLowerCase()) {
+                if ((word === resultSpeaking.innerText) || (word === resultSpeaking.innerText.toLowerCase())) {
                     const card = document.getElementById(`${word}`)
                     card.classList.add('active-card__speakit')
                     showImage(image)
