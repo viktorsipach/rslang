@@ -92,18 +92,6 @@ export default class ActionFindWordsGame {
         
     }
 
-    statButton() {
-        this.page.addEventListener('mainPageLoad', () => {
-            const statButton = document.querySelector('.game-container__statistics-button');
-
-            statButton.addEventListener(this.click, () => {
-                setTimeout(() => {
-                    this.renderFindWordsGame.renderMainPageResult(this.coupleStat);
-                }, 500);
-            })
-        })
-    }
-
     repeatRoundButton() {
         this.page.addEventListener('statLoad', () => {
             const repeatButton = document.querySelector('.statistics__repeat-button');

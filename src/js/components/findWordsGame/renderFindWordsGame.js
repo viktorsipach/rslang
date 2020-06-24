@@ -39,8 +39,6 @@ export default class RenderFindWordsGame {
         this.renderMainPageGameField();
         this.renderMainPageWords();
 
-        this.createElement('div', 'button game-container__statistics-button', 'Статистика', 'game-container');
-
         document.querySelector('.page').dispatchEvent(event);
     }
 
