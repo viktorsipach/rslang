@@ -137,6 +137,28 @@ function renderGameButtons() {
   return gameButtons;
 }
 
+function renderProgressBar() {
+  const progressLine = document.createElement('span');
+  progressLine.className = 'progress__line';
+
+  const progressLineContainer = document.createElement('span');
+  progressLineContainer.className = 'progress__line-container';
+  progressLineContainer.append(progressLine);
+
+  const progressValue = document.createElement('span');
+  progressValue.className = 'progress__value';
+
+  const progressBar = document.createElement('div');
+  progressBar.className = 'progress__bar training__progress';
+  progressBar.append(progressValue);
+  progressBar.append(progressLineContainer);
+
+  const progressBarContainer = document.createElement('div');
+  progressBarContainer.className = 'progress__bar-container ';
+  progressBarContainer.append(progressBar);
+  return progressBarContainer;
+}
+
 export default function  renderTrainingGamePage() {
   const mainPage = document.createElement('div');
   mainPage.className = 'game__training';
@@ -144,5 +166,6 @@ export default function  renderTrainingGamePage() {
   mainPage.append(renderTrainingCard());
   mainPage.append(renderDictionaryButtons());
   mainPage.append(renderGameButtons());
+  mainPage.append(renderProgressBar());
   return mainPage;
 }

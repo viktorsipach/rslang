@@ -32,6 +32,7 @@ export default class TrainingGame {
   async getData() {
     this.currentCardNumber = 0;
     const data = await getRoundData(this.level, this.round, this.newWordsPerDay);
+    this.progress = 0;
     return data;
   }
 
@@ -54,6 +55,7 @@ export default class TrainingGame {
       this.renderExplanationSentence();
       this.renderExampleSentence();
       this.renderInput();
+      this.showProgress(); //
     } else {
       let isLastWordsInApp = false;
       if (this.level === this.levelsAmount && this.round === this.roundsAmount) {
@@ -171,7 +173,6 @@ export default class TrainingGame {
     const INPUT = document.querySelector('.card__input');
     const amountOfPrintedLetters = 1;
     this.lettersCount = this.data[this.currentCardNumber].word.length
-    console.log(this.lettersCount, INPUT.value.split('').length + amountOfPrintedLetters);
     if (this.lettersCount === INPUT.value.split('').length + amountOfPrintedLetters) {
       const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
       enableButton(NEXTBUTTON_SELECTOR);
@@ -274,7 +275,7 @@ export default class TrainingGame {
     }
     if (this.isWordWithoutTraining) {
       this.currentCardNumber += 1;
-
+      this.showProgress();
       if (this.autoPronunciation) {     
         this.showAnswer();
         this.playCardSounds();  
@@ -295,6 +296,8 @@ export default class TrainingGame {
 
   correctAnswer() {
     this.isAnswerCorrect = true;
+    this.progress += 100/this.maxCardsPerDay;
+    this.showProgress();
     if (this.autoPronunciation) {     
       this.showAnswer();
       this.playCardSounds();  
@@ -312,6 +315,12 @@ export default class TrainingGame {
   showWordWithoutTraining() {
     this.isAnswerCorrect = false;
     this.isWordWithoutTraining = true;
+    this.progress += 100/this.maxCardsPerDay;
     this.checkInput();
+  }
+
+  showProgress() {
+    document.querySelector('.progress__value').textContent = `${this.currentCardNumber} / ${this.maxCardsPerDay}`;
+    document.querySelector('.progress__line').style.width = `${this.progress}%`;
   }
 }   

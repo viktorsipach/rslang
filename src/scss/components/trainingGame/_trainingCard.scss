@@ -3,7 +3,7 @@
   min-height: 40rem;
   margin: 2rem auto;
   border: 3px solid $color-violet;
-  box-shadow: 0 0 20px rgba(233, 127, 228, 0.904);
+  box-shadow: 0 0 20px $color-shadow;
   border-radius: 5px;
   position: relative;
   @include media-laptop {

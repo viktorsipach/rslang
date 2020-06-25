@@ -8,8 +8,8 @@ export default async function initTrainingGame() {
 
   
   const settings = {
-    newWordsPerDay: 20,
-    maxCardsPerDay: 3,
+    newWordsPerDay: 10,
+    maxCardsPerDay: 10,
     cardSettings: {
       showTranslation: true,
       showExplanationSentence: true,
