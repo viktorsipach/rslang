@@ -10,12 +10,12 @@ export const renderDom = () => {
         <h1 class="title__speakit">Говори</h1>
         <h3 class="start-page__text_speakit">Нажми на слово, чтобы послушать.
             <br>Нажми на кнопку говорить и говори слова.</h3>
-        <button class="button start-page__btn_speakit">Старт</button>
+        <button class="button start-page__btn_speakit">Начать</button>
     </div>
     <div class="main__speakit hidden">
         <div class="header__speakit">
             <div class="menu__left">
-                <div class="menu__level">
+                <div class="menu__level menu__speakit">
                     <span class="level__title">Уровень</span>
                     <div class="select select__level">
                         <select id="selectLevel">
@@ -28,7 +28,7 @@ export const renderDom = () => {
                         </select>
                     </div>
                 </div>
-                <div class="menu__round">
+                <div class="menu__round menu__speakit">
                     <span class="round__title">Раунд</span>
                     <div class="select select__round">
                         <select id="selectRound">
@@ -57,7 +57,8 @@ export const renderDom = () => {
             <button class="button btn-return__speakit">Назад</button></button>
             <button class="button btn-new-game__speakit">Новая игра</button>
         </div>
-    </div>`
+    </div>
+    <div class="game__close_speakit close"></div>`
     page.append(wrapper)
 }
 
