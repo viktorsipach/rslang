@@ -1,0 +1,44 @@
+.game-statistics {
+  &__popup {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 50rem;
+    height: 45rem;
+    border-radius: 2rem;
+    background-color: $color-light;
+  }
+
+  &__header {
+    width: 100%;
+    height: 18%;
+  }
+
+  &__main {
+    width: 100%;
+    height: 57%;
+  }
+
+  &__footer {
+    width: 100%;
+    height: 18%;
+    text-align: center;
+  }
+
+  &__score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 4rem;
+  }
+
+  &__button {
+    &_exit {
+      margin: 2rem 1rem;
+      padding: 1rem 3rem;
+      font-size: 2rem;
+    }
+  }
+}
