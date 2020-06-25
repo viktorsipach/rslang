@@ -27,7 +27,8 @@ export default class Sentence {
 
     const fragment = document.createDocumentFragment();
     sentenceArrayMixed.forEach((el, index) => {
-      fragment.append(createWordElement(el, index));
+      const wordLength = 1;
+      fragment.append(createWordElement(el, index, wordLength));
     });
 
     sentenceElement.append(fragment);
@@ -37,8 +38,9 @@ export default class Sentence {
   buildSentence() {
     const sentenceArray = this.textExample.split(' ');
     const fragment = document.createDocumentFragment();
-    sentenceArray.forEach((el) => {
-      fragment.append(createWordElement(el));
+    sentenceArray.forEach((el, index) => {
+      const wordLength = el.length;
+      fragment.append(createWordElement(el, index, wordLength));
     });
     document.querySelector('.result__sentence.current').innerHTML = '';
     fragment.querySelectorAll('.word-container').forEach((el) => {
@@ -82,6 +84,21 @@ export default class Sentence {
   showBckImage() {
     this.isBckImageHintUsed = true;
     console.log('showBckImage');
+    console.log('add backgr');
+    const words = document.querySelectorAll('.result__sentence.current>.word-container>.data__word');
+    Array.from(words).forEach((el) => {
+      el.style.backgroundColor = 'transparent';
+    });
+
+    const wordContainers = document.querySelectorAll('.result__sentence.current>.word-container');
+    Array.from(wordContainers).forEach((el) => {
+      // el.style.border = 'none';
+      // el.style.boxShadow = 'none';
+    });
+
+    const currentResultSentence = document.querySelector('.result__sentence.current');
+    currentResultSentence.style.backgroundColor = 'transparent';
+
   }
 
   showSentenceTranslation() {

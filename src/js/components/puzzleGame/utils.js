@@ -1,6 +1,7 @@
-function createWordElement(word, numb) {
+function createWordElement(word, numb, wordLength) {
   const wordContainer = document.createElement('span');
   wordContainer.className = 'word-container';
+  wordContainer.style.flexGrow = wordLength;
   const wordElement = document.createElement('span');
   wordElement.className = 'word data__word';
   wordElement.dataset.word = `w${numb}`;

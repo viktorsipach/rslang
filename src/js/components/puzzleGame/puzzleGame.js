@@ -62,7 +62,10 @@ export default function initPuzzleGame() {
       checkActiveHints();
 
       if (event.target.closest('.data__sentence') && event.target.classList.contains('data__word')) {
-        document.querySelector('.result__sentence>.word-container:empty').append(event.target);
+        const element = document.querySelector('.result__sentence>.word-container:empty');
+        element.append(event.target);
+        const wordLength = event.target.textContent.length; //
+        element.style.flexGrow = wordLength; //
       } else if (event.target.closest('.result__sentence') && event.target.classList.contains('data__word')) {
         document.querySelector('.data__sentence>.word-container:empty').append(event.target);
       } else if (event.target.classList.contains('dontKnow')) {
@@ -70,6 +73,12 @@ export default function initPuzzleGame() {
       } else if (event.target.classList.contains('check')) {
         game.checkCurrentSentence();
       } else if (event.target.classList.contains('continue')) {
+        const wordContainers = document.querySelectorAll('.result__sentence.current>.word-container');
+        Array.from(wordContainers).forEach((el) => { //
+          el.style.border = 'none'; //
+          el.style.boxShadow = 'none'; //
+        }); //
+
         if (!game.isFinished) {
           if (game.currentSentenceNumber < 10) {
             game.startSentence();
@@ -140,6 +149,7 @@ export default function initPuzzleGame() {
 
     document.ondrop = function onDrop(event) {
       event.preventDefault();
+
       const data = event.dataTransfer.getData('text/plain');
       const dropStartElement = document.querySelector(`[data-word=${data}]`);
       const dropStartContainer = dropStartElement.parentElement;
@@ -147,9 +157,17 @@ export default function initPuzzleGame() {
       if (event.target.classList.contains('word-container') && event.target.closest('.result__sentence')) {
         dropEndElement.append(dropStartElement);
         dropEndElement.classList.remove('dragOver');
+        console.log(dropEndElement);
+        const wordLength = dropStartElement.textContent.length; //
+        console.log(wordLength); // 
+        dropEndElement.style.flexGrow = wordLength; //
       } else if (event.target.classList.contains('data__word') && event.target.closest('.result__sentence')) {
         const dropEndContainer = dropEndElement.parentElement;
+        // console.log(dropEndElement);
         dropEndContainer.append(dropStartElement);
+        // const wordLength = event.target.textContent.length; //
+        // dropEndContainer.style.flexGrow = wordLength; //
+
         dropStartContainer.append(dropEndElement);
         dropEndContainer.classList.remove('dragOver');
       }

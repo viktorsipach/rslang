@@ -67,10 +67,11 @@ export default class Game {
       this.dataSentencesObjects.push(sentence);
       sentence.textExample = sentence.textExample.replace(/<b>/, '').replace(/<\/b>/, '');
       sentence.status = 'iKnow';
-      sentence = sentence.createDataSentence();
+      sentence = sentence.createDataSentence(); 
       this.dataSentences.push(sentence);
       const sentenceContainer = document.createElement('div');
       sentenceContainer.className = 'sentence result__sentence';
+
       fragment.append(sentenceContainer);
     });
     document.querySelector('.results-container').innerHTML = '';
@@ -81,6 +82,7 @@ export default class Game {
     document.querySelector('.hints__sentence').textContent = '';
     this.isSentenceCompleted = false;
     const dataWords = document.querySelectorAll('.result__sentence.current>.word-container');
+    // console.log(dataWords);
     dataWords.forEach((el) => el.classList.remove('true'));
     this.resultSentences.forEach((el) => el.classList.remove('current'));
     this.currentDataSentence = this.dataSentences[this.currentSentenceNumber];
@@ -92,6 +94,7 @@ export default class Game {
     for (let i = 0; i < this.currentDataSentenceObject.length; i += 1) {
       const wordContainer = document.createElement('span');
       wordContainer.className = 'word-container';
+      wordContainer.style.flexGrow = 1; //
       this.currentResultSentence.append(wordContainer);
     }
     document.querySelector('.data-container').innerHTML = '';

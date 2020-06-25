@@ -3,9 +3,11 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  height: 4rem;
+  height: 4.6rem;
+  flex-grow: 1;
+  background-color: $color-light;
   &.result__sentence {
-    display: none;
+    // border: 1px solid red;
     &.active {
       display: flex;
     }
