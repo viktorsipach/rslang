@@ -2,7 +2,7 @@ class RenderSavannaMainPage  {
     constructor(word, translate, arr) {
         this.word = word;
         this.translate = translate;
-        this.arr = arr;
+        this.arr = arr; 
     }
 
 
@@ -54,24 +54,13 @@ class RenderSavannaMainPage  {
 
     renderResults() {
         const savannaWord = document.createElement('div');
-        const savannaEng = document.createElement('p');
-        const savannaRus = document.createElement('span');
-        const savannaMark = document.createElement('span');
-
         savannaWord.className = 'savanna-word';
-        savannaEng.className = 'savanna-word__eng';
-        savannaRus.className = 'savanna-word__rus';
-        savannaMark.className = 'savanna-mark';
-        savannaMark.setAttribute('data-word', `${this.word}`);
-
-        savannaEng.innerHTML = `${this.word}`;
-        savannaRus.innerHTML = `${this.translate}`;
-        savannaMark.innerHTML = '-';
-
-        savannaEng.append(savannaRus);
-        savannaWord.append(savannaEng);
-        savannaWord.append(savannaMark);
-
+        savannaWord.innerHTML = `
+        <p class='savanna-word__eng'>${this.word}
+            <span class='savanna-word__rus'>${this.translate}</span>
+        </p>
+        <span class='savanna-mark' data-word='${this.word}'>-</span>
+        `;
         return savannaWord;
     }
 }

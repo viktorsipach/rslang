@@ -55,47 +55,23 @@ async function RenderSavannaShortStatistic() {
   const data = await savannaRoundDataAPI();
   const savannaShortStatistics = document.querySelector('.savanna__short-statistics');
 
-  const savannaTotal = document.createElement('div');
-  const error = document.createElement('p');
-  const savannaError = document.createElement('span');
-  const correct = document.createElement('p');
-  const savannaCorrect = document.createElement('span');
-  const savannaWords = document.createElement('div');
-  const savannaAction = document.createElement('div');
-  const buttonGo = document.createElement('button');
-  const buttonExit = document.createElement('button');
-
-  savannaTotal.className = 'savanna__total';
-  savannaError.className = 'savanna__error';
-  savannaCorrect.className = 'savanna__correct';
-  savannaWords.className = 'savanna__words';
-  savannaAction.className = 'savanna__action';
-  buttonGo.className = 'button';
-  buttonGo.classList.add('savanna__btn');
-  buttonExit.className = 'button';
-  buttonExit.classList.add('savanna__btn')
-
-  error.innerHTML = 'Error: ';
-  savannaError.innerHTML = '10';
-  correct.innerHTML = 'Correct: ';
-  savannaCorrect.innerHTML = '0';
-  error.append(savannaError);
-  correct.append(savannaCorrect);
-  savannaTotal.append(error);
-  savannaTotal.append(correct);
+  savannaShortStatistics.innerHTML = `
+  <div class="savanna__total">
+    <p>Error: <span class="savanna__error">10</span></p>
+    <p>Correct: <span class="savanna__correct">0</span></p>
+  </div>
+  <div class="savanna__words"></div>
+  <div class="savanna__action">
+    <button class="button savanna__btn">продолжить тренировку</button>
+    <button class="button savanna__btn">выход</button>
+  </div>
+  `;
+  
+  const savannaWords = document.querySelector('.savanna__words');
 
   generateWordsRound(data).forEach(el => {
     savannaWords.append(el.renderResults());
-  })
-
-  buttonGo.innerHTML = 'продолжить тренировку';
-  buttonExit.innerHTML = 'выход';
-  savannaAction.append(buttonGo);
-  savannaAction.append(buttonExit);
-
-  savannaShortStatistics.append(savannaTotal);
-  savannaShortStatistics.append(savannaWords);
-  savannaShortStatistics.append(savannaAction);
+  }) 
 }
 
 export { savannaRound, RenderSavannaShortStatistic };
