@@ -14,6 +14,9 @@ class Sprint {
     this.gameRound = 1;
     this.wordsPerRound = 80;
     this.filesUrlPrefix = 'https://raw.githubusercontent.com/DenisKhatsuk/rslang-data/master/';
+    this.soundIsEnabled = true;
+    this.curtainTimerStartPoint = 3;
+    this.gameTimerStartPoint = 60;
     this.currentRewardPoints = 10;
     this.currentStack = 0;
   }
@@ -30,7 +33,6 @@ class Sprint {
     startButton.addEventListener('click', async () => {
       const wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
       const wordsArray = [];
-      const curtainTimerStartPoint = 3;
       wordsApiArray.forEach((element) => {
         const {
           word,
@@ -41,7 +43,7 @@ class Sprint {
       });
       this.wordsArray = wordsArray;
       ContentBuilder.addGetReadyContent('.sprint__curtain');
-      this.startTimer('.curtain__timer', curtainTimerStartPoint);
+      this.startTimer('.curtain__timer', this.curtainTimerStartPoint);
       setTimeout(() => {
         ContentBuilder.addMainPageContent(this.gameContainerSelector);
         this.startGame();
@@ -53,22 +55,32 @@ class Sprint {
     const board = document.querySelector('.sprint__board');
     const buttonTrue = board.querySelector('.board__button_true');
     const buttonFalse = board.querySelector('.board__button_false');
-    const gameTimerStartPoint = 60;
+    const buttonRepeat = board.querySelector('.repeat-button__icon');
+    const controlPanel = document.querySelector('.sprint__panel_right');
+    const soundControlButtonOn = controlPanel.querySelector('.sound-control__icon_on');
+    const soundControlButtonOff = controlPanel.querySelector('.sound-control__icon_off');
     const wordAudio = this.setNewWord(this.wordsArray);
-    const gameButtonsListener = (event) => {
-      this.startGameButtonsHandler(event, wordAudio, buttonTrue, buttonFalse);
+    const boardButtonsListener = (event) => {
+      this.startBoardButtonsHandler(event, wordAudio, buttonTrue, buttonFalse, buttonRepeat);
     };
+    controlPanel.addEventListener('click', (event) => {
+      if (event.target === soundControlButtonOn || event.target === soundControlButtonOff) {
+        this.soundIsEnabled = !this.soundIsEnabled;
+        soundControlButtonOn.classList.toggle('sound-control__icon_active');
+        soundControlButtonOff.classList.toggle('sound-control__icon_active');
+      }
+    });
     this.gameIsActive = true;
-    this.startTimer('.sprint__timer', gameTimerStartPoint);
-    wordAudio.play();
-    board.addEventListener('click', gameButtonsListener);
+    this.startTimer('.sprint__timer', this.gameTimerStartPoint);
+    if (this.soundIsEnabled) wordAudio.play();
+    board.addEventListener('click', boardButtonsListener);
     setTimeout(() => {
       this.gameIsActive = false;
-      board.removeEventListener('click', gameButtonsListener);
+      board.removeEventListener('click', boardButtonsListener);
     }, 60000);
   }
 
-  startGameButtonsHandler(event, currentWordAudio, buttonTrue, buttonFalse) {
+  startBoardButtonsHandler(event, currentWordAudio, buttonTrue, buttonFalse, buttonRepeat) {
     const counter = document.querySelector('.counter__value');
     let wordAudio = currentWordAudio;
     const audioCorrect = new Audio(CorrectSound);
@@ -76,27 +88,30 @@ class Sprint {
     switch (event.target) {
       case buttonTrue:
         if (this.isRandom) {
-          audioWrong.play();
+          if (this.soundIsEnabled) audioWrong.play();
           this.currentRewardPoints = 10;
         } else {
-          audioCorrect.play();
+          if (this.soundIsEnabled) audioCorrect.play();
           this.increaseScore(counter);
           this.increaseStack();
         }
         wordAudio = this.setNewWord(this.wordsArray);
-        wordAudio.play();
+        if (this.soundIsEnabled) wordAudio.play();
         break;
       case buttonFalse:
         if (this.isRandom) {
-          audioCorrect.play();
+          if (this.soundIsEnabled) audioCorrect.play();
           this.increaseScore(counter);
           this.increaseStack();
         } else {
-          audioWrong.play();
+          if (this.soundIsEnabled) audioWrong.play();
           this.currentRewardPoints = 10;
         }
         wordAudio = this.setNewWord(this.wordsArray);
-        wordAudio.play();
+        if (this.soundIsEnabled) wordAudio.play();
+        break;
+      case buttonRepeat:
+        if (this.soundIsEnabled) this.currentWordAudio.play();
         break;
       default:
         break;
@@ -122,6 +137,7 @@ class Sprint {
     wordFieldTranslated.textContent = isRandom ? randomWordTranslate : currentWordTranslate;
 
     const audioElement = new Audio(`${this.filesUrlPrefix}${currentWord.audio}`);
+    this.currentWordAudio = audioElement;
     return audioElement;
   }
 

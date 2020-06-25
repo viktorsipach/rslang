@@ -3,7 +3,7 @@
   min-height: 40rem;
   margin: 2rem auto;
   border: 3px solid $color-violet;
-  box-shadow: 0 0 20px rgba(233, 127, 228, 0.904);
+  box-shadow: 0 0 20px $color-shadow;
   border-radius: 5px;
   position: relative;
   @include media-laptop {
@@ -19,7 +19,8 @@
   &>.card__top {
     width: fit-content;
     min-height: 15rem;
-    margin: 3rem 0 5rem 3rem;
+    margin: 3rem 0;
+    margin-left: calc(50% - 19rem);
     @include media-tablet {
       margin: 2rem auto 4rem;
     }
@@ -58,7 +59,6 @@
       right: 3rem;
       width: 25rem;
       height: 20rem;
-      border: 1px solid $color-primary;
       border-radius: 5rem;
       background-size: cover;
       background-position: center;
@@ -90,7 +90,9 @@
       &>.card__example-sentence>span {
         display: inline;
         font-weight: 700;
-        color: $color-violet;
+        color: $color-light;
+        box-shadow: 0 0 20px $color-shadow;
+
         &.hidden {
           color: transparent;
           text-decoration: none;
@@ -110,7 +112,8 @@
         font-size: 1.75rem;
         padding: 0.5rem 0;
         @include media-tablet {
-          font-size: 1rem;        
+          font-size: 1rem;  
+          line-height: 1.5rem;      
         }
       }
     }
@@ -118,6 +121,7 @@
       position: relative;
       width: fit-content;
       margin: 2rem auto;
+      font-weight: 700;
       @include media-tablet {
         margin: 0 auto;
       }
@@ -161,10 +165,10 @@
   }
   &>*{
     &[data-is-correct="true"]  {
-      color: green;
+      color: $color-green;
     }
     &[data-is-correct="false"]  {
-      color: yellow;
+      color: $color-yellow;
     }
   }
 }
