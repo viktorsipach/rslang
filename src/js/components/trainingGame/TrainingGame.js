@@ -40,6 +40,7 @@ export default class TrainingGame {
     const IDONTKNOWBUTTON_SELECTOR = '.trainingGame__button.dontKnow';
     disableButton(NEXTBUTTON_SELECTOR);
     enableButton(IDONTKNOWBUTTON_SELECTOR);
+    this.isWordWithoutTraining = false;
 
     if (this.currentCardNumber < this.maxCardsPerDay) {
       document.querySelector('.letters-container').classList.add('hidden');
@@ -220,7 +221,7 @@ export default class TrainingGame {
     } 
     document.querySelector('.letters-container').classList.remove('hidden'); 
 
-    if (this.isAnswerCorrect) {
+    if (this.isAnswerCorrect || this.isWordWithoutTraining) {
       const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
       const IDONTKNOWBUTTON_SELECTOR = '.trainingGame__button.dontKnow';
       disableButton(NEXTBUTTON_SELECTOR);
@@ -257,7 +258,6 @@ export default class TrainingGame {
   checkInput() {
     const INPUT = document.querySelector('.card__input');
     const LETTERS_CONTAINER = document.querySelector('.letters-container');
-
     LETTERS_CONTAINER.innerHTML = '';
     LETTERS_CONTAINER.append(this.createWordLetters());
 
@@ -272,6 +272,18 @@ export default class TrainingGame {
         this.errorCount += 1;
       }
     }
+    if (this.isWordWithoutTraining) {
+      this.currentCardNumber += 1;
+
+      if (this.autoPronunciation) {     
+        this.showAnswer();
+        this.playCardSounds();  
+      } else {
+        this.showAnswer();
+        setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
+      }
+
+    } else
     if (this.errorCount === 0) {
       INPUT.value = '';
       this.currentCardNumber += 1;
@@ -298,15 +310,8 @@ export default class TrainingGame {
   }
 
   showWordWithoutTraining() {
-    this.isAnswerCorrect = true;
-    this.showAnswer();
-    const INPUT = document.querySelector('.card__input');
-    INPUT.value = this.data[this.currentCardNumber].word;
-    this.currentCardNumber += 1;
-    if (this.autoPronunciation) {
-      this.playCardSounds();
-    } else {
-      setTimeout(function fn(){ this.renderCardData() }.bind(this), this.timeOut);
-    }
+    this.isAnswerCorrect = false;
+    this.isWordWithoutTraining = true;
+    this.checkInput();
   }
 }   
