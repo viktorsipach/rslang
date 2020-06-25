@@ -1,6 +1,8 @@
 const renderSavannaStartPage = () => {
     const savannaStart = document.createElement('div');
     const savannaHeader = document.createElement('div');
+    const hints = document.createElement('div');
+    const buttonSound = document.createElement('button');
     const select = document.createElement('div');
     const selectOption = document.createElement('select');
     const buttonClose = document.createElement('button');
@@ -10,6 +12,8 @@ const renderSavannaStartPage = () => {
 
     savannaStart.className = 'savanna__start';
     savannaHeader.className = 'savanna__header';
+    hints.className = 'savanna__hints';
+    buttonSound.className = 'button savanna-button__icon';
     select.className = 'select';
     select.classList.add('select__level');
     selectOption.setAttribute('name', 'slct');
@@ -21,6 +25,8 @@ const renderSavannaStartPage = () => {
     buttonStart.className = 'button';
     buttonStart.classList.add('button__savanna');
 
+    buttonSound.innerHTML = '<i class="fa fa-bell-slash-o"></i>';
+
     select.append(selectOption);
     selectOption.innerHTML = '<option value="1">1</option>';
     selectOption.innerHTML += '<option value="2">2</option>';
@@ -29,7 +35,10 @@ const renderSavannaStartPage = () => {
     selectOption.innerHTML += '<option value="5">5</option>';
     selectOption.innerHTML += '<option value="6">6</option>';
 
-    savannaHeader.append(select);
+    hints.append(buttonSound);
+    hints.append(select);
+
+    savannaHeader.append(hints);
 
     buttonClose.innerHTML = 'выйти';
 

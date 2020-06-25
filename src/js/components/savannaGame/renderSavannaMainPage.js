@@ -2,8 +2,7 @@ class RenderSavannaMainPage  {
     constructor(word, translate, arr) {
         this.word = word;
         this.translate = translate;
-        this.arr = arr;
-        // console.log(this.arr);
+        this.arr = arr; 
     }
 
 
@@ -51,6 +50,18 @@ class RenderSavannaMainPage  {
         savannaMain.append(savannaFooter);
 
         return savannaMain;
+    }
+
+    renderResults() {
+        const savannaWord = document.createElement('div');
+        savannaWord.className = 'savanna-word';
+        savannaWord.innerHTML = `
+        <p class='savanna-word__eng'>${this.word}
+            <span class='savanna-word__rus'>${this.translate}</span>
+        </p>
+        <span class='savanna-mark' data-word='${this.word}'>-</span>
+        `;
+        return savannaWord;
     }
 }
 
