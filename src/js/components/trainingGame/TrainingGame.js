@@ -11,8 +11,8 @@ export default class TrainingGame {
     this.autoPronunciation = settings.autoPronunciation;
     this.showDeleteButton = settings.showDeleteButton;
     this.showHardButton = settings.showHardButton;
-    this.level = 6;
-    this.round = 29;
+    this.level = 1;
+    this.round = 1;
     this.timeOut = 2500;
     this.maxWordsPerSentence = 50;
     this.levelsAmount = 6;
@@ -169,6 +169,8 @@ export default class TrainingGame {
   checkInputLength() {
     const INPUT = document.querySelector('.card__input');
     const amountOfPrintedLetters = 1;
+    this.lettersCount = this.data[this.currentCardNumber].word.length
+    console.log(this.lettersCount, INPUT.value.split('').length + amountOfPrintedLetters);
     if (this.lettersCount === INPUT.value.split('').length + amountOfPrintedLetters) {
       const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
       enableButton(NEXTBUTTON_SELECTOR);
