@@ -28,4 +28,9 @@
       height: 2rem;
     }
   }
+  &.training-icon {
+    &.active {
+      box-shadow: 0 0 1rem $color-shadow;
+    }
+  }
 }

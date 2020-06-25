@@ -35,8 +35,8 @@ function renderMenuIcon(buttonClass, buttonIconClass) {
 function renderMenuIcons() {
   const menuIcons = document.createElement('div');
   menuIcons.className = 'menu__icons';
-  menuIcons.append(renderMenuIcon('menu__button auto-pronunciation ', 'icon__auto-pronunciation'));
-  menuIcons.append(renderMenuIcon('menu__button show-translation ', 'icon__show-translation'));
+  menuIcons.append(renderMenuIcon('menu__button training-icon auto-pronunciation ', 'icon__auto-pronunciation'));
+  menuIcons.append(renderMenuIcon('menu__button training-icon show-translation ', 'icon__show-translation'));
   return menuIcons;
 }
 
@@ -131,7 +131,7 @@ function renderDictionaryButtons() {
 
 function renderGameButtons() {
   const gameButtons = document.createElement('div');
-  gameButtons.className = 'buttons game__buttons';
+  gameButtons.className = 'buttons game__buttons training-game';
   gameButtons.append(renderButton('trainingGame__button dontKnow', 'Не знаю'));
   gameButtons.append(renderButton('trainingGame__button next', 'Далее'));
   return gameButtons;
@@ -167,5 +167,10 @@ export default function  renderTrainingGamePage() {
   mainPage.append(renderDictionaryButtons());
   mainPage.append(renderGameButtons());
   mainPage.append(renderProgressBar());
-  return mainPage;
+
+  const mainPageWrapper = document.createElement('div');
+  mainPageWrapper.className = 'game__training-wrapper';
+  mainPageWrapper.append(mainPage);
+
+  return mainPageWrapper;
 }

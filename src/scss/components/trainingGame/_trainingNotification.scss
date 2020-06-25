@@ -7,7 +7,7 @@
   position: absolute;
   top: 0;
   left: 0;
-
+  color: $color-violet;
   &.hidden {
     display: none;
   }
@@ -17,7 +17,8 @@
   width: 80%;
   height: -webkit-fill-available;
   margin: 5rem auto;
-  background-color: lighten($color-violet, $amount: 25);
+  border-radius: 5rem;
+  background-color: $color-statistic-modal;
   @include media-tablet {
     width: 90%;
   }
