@@ -12,7 +12,7 @@ class Sprint {
     this.gameName = 'Спринт';
     this.gameLevel = 1;
     this.gameRound = 1;
-    this.wordsPerRound = 80;
+    this.wordsPerRound = 120;
     this.filesUrlPrefix = 'https://raw.githubusercontent.com/DenisKhatsuk/rslang-data/master/';
     this.soundIsEnabled = true;
     this.curtainTimerStartPoint = 3;

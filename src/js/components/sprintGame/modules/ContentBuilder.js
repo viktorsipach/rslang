@@ -63,6 +63,26 @@ class ContentBuilder {
       <div class="curtain__timer timer"></div>
       <div class="curtain__get-ready">${this.gameGetReadyText}</div>
     `;
+
+    this.currentGameStatsMarkup = `
+      <div class="game-statistics__popup">
+        <div class="game-statistics__header">
+          <div class="game-statistics__score">
+          </div>
+        </div>
+        <div class="game-statistics__main">
+          <div class="game-statistics__errors">
+          </div>
+          <div class="game-statistics__correct-answers">
+          </div>
+        </div>
+        <div class="game-statistics__footer">
+          <button class="button game-statistics__button_exit">
+            Закрыть
+          </button>
+        </div>
+      </div>
+    `;
   }
 
   addMainPageContent(parentSelector) {
