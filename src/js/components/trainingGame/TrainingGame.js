@@ -13,12 +13,15 @@ export default class TrainingGame {
     this.showHardButton = settings.showHardButton;
     this.level = 1;
     this.round = 1;
-    this.timeOut = 5000;
+    this.timeOut = 2500;
+    this.maxWordsPerSentence = 50;
+    this.levelsAmount = 6;
   }
 
   async start() {
-    const roundsAmount = await getRoundsAmountInLevel(this.level, 100, this.newWordsPerDay) ;
-    console.log(`roundsAmount ${roundsAmount}`);
+    console.log(`this.level ${this.level}, this.round ${this.round}`);
+    this.roundsAmount = await getRoundsAmountInLevel(this.level, this.maxWordsPerSentence, this.newWordsPerDay) ;
+    console.log(`roundsAmount ${this.roundsAmount}`);
     this.data = await this.getData();
     console.log(this.data);
     this.cardData = this.data[this.currentCardNumber];
@@ -29,6 +32,7 @@ export default class TrainingGame {
   async getData() {
     this.currentCardNumber = 0;
     const data = await getRoundData(this.level, this.round, this.newWordsPerDay);
+    this.progress = 0;
     return data;
   }
 
@@ -37,6 +41,7 @@ export default class TrainingGame {
     const IDONTKNOWBUTTON_SELECTOR = '.trainingGame__button.dontKnow';
     disableButton(NEXTBUTTON_SELECTOR);
     enableButton(IDONTKNOWBUTTON_SELECTOR);
+    this.isWordWithoutTraining = false;
 
     if (this.currentCardNumber < this.maxCardsPerDay) {
       document.querySelector('.letters-container').classList.add('hidden');
@@ -50,16 +55,38 @@ export default class TrainingGame {
       this.renderExplanationSentence();
       this.renderExampleSentence();
       this.renderInput();
+      this.showProgress(); //
     } else {
-      document.querySelector('.page').append(renderNotificationModal()); 
+      let isLastWordsInApp = false;
+      if (this.level === this.levelsAmount && this.round === this.roundsAmount) {
+        isLastWordsInApp = true;
+        document.querySelector('.page').append(renderNotificationModal(isLastWordsInApp)); 
+      } else {
+        document.querySelector('.page').append(renderNotificationModal(isLastWordsInApp)); 
+      }
+      
       document.querySelector('.notification__buttons').addEventListener('click', (event) => {
         const notificationContainer = document.querySelector('.notification-container');
         notificationContainer.parentNode.removeChild(notificationContainer);
-        if (event.target.classList.contains('continue')) {
-          console.log('next level , new round');
-        } else if (event.target.classList.contains('close')) {
-          console.log('close');
-          // initAppMainPage()
+        if (event.target.classList.contains('continue')) {          
+          if (this.round < this.roundsAmount) {
+            this.round += 1;
+            this.start();
+          } else if (this.level < this.levelsAmount) { 
+            this.level += 1;
+            this.round = 1;
+            this.start();
+          }           
+        } else if (event.target.classList.contains('mini-games')) {
+          console.log('goToMainPage');
+          // goToMainPage
+        } else if (event.target.classList.contains('settings')) {
+          console.log('goToSettingsPage');
+          // goToSettingPage
+        } else if (event.target.classList.contains('again')) {
+          this.level = 1;
+          this.round = 1;
+          this.start();
         }
       });
     }
@@ -145,6 +172,7 @@ export default class TrainingGame {
   checkInputLength() {
     const INPUT = document.querySelector('.card__input');
     const amountOfPrintedLetters = 1;
+    this.lettersCount = this.data[this.currentCardNumber].word.length
     if (this.lettersCount === INPUT.value.split('').length + amountOfPrintedLetters) {
       const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
       enableButton(NEXTBUTTON_SELECTOR);
@@ -185,7 +213,6 @@ export default class TrainingGame {
     const INPUT = document.querySelector('.card__input');
     INPUT.setAttribute('placeholder', '');
     INPUT.value = '';
-    console.log(`errorCount ${this.errorCount} lettersCount ${this.lettersCount}`);
     if (this.errorCount >= this.lettersCount/2) {
       const wordLetters = document.querySelectorAll('.letters-container>*');
       Array.from(wordLetters).forEach((element) => {
@@ -195,7 +222,7 @@ export default class TrainingGame {
     } 
     document.querySelector('.letters-container').classList.remove('hidden'); 
 
-    if (this.isAnswerCorrect) {
+    if (this.isAnswerCorrect || this.isWordWithoutTraining) {
       const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
       const IDONTKNOWBUTTON_SELECTOR = '.trainingGame__button.dontKnow';
       disableButton(NEXTBUTTON_SELECTOR);
@@ -232,7 +259,6 @@ export default class TrainingGame {
   checkInput() {
     const INPUT = document.querySelector('.card__input');
     const LETTERS_CONTAINER = document.querySelector('.letters-container');
-
     LETTERS_CONTAINER.innerHTML = '';
     LETTERS_CONTAINER.append(this.createWordLetters());
 
@@ -247,6 +273,18 @@ export default class TrainingGame {
         this.errorCount += 1;
       }
     }
+    if (this.isWordWithoutTraining) {
+      this.currentCardNumber += 1;
+      this.showProgress();
+      if (this.autoPronunciation) {     
+        this.showAnswer();
+        this.playCardSounds();  
+      } else {
+        this.showAnswer();
+        setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
+      }
+
+    } else
     if (this.errorCount === 0) {
       INPUT.value = '';
       this.currentCardNumber += 1;
@@ -258,6 +296,8 @@ export default class TrainingGame {
 
   correctAnswer() {
     this.isAnswerCorrect = true;
+    this.progress += 100/this.maxCardsPerDay;
+    this.showProgress();
     if (this.autoPronunciation) {     
       this.showAnswer();
       this.playCardSounds();  
@@ -273,16 +313,14 @@ export default class TrainingGame {
   }
 
   showWordWithoutTraining() {
-    this.isAnswerCorrect = true;
-    this.showAnswer();
-    const INPUT = document.querySelector('.card__input');
-    INPUT.value = this.data[this.currentCardNumber].word;
-    this.currentCardNumber += 1;
-    if (this.autoPronunciation) {
-      this.playCardSounds();
-    } else {
-      setTimeout(function fn(){ this.renderCardData() }.bind(this), this.timeOut);
-    }
+    this.isAnswerCorrect = false;
+    this.isWordWithoutTraining = true;
+    this.progress += 100/this.maxCardsPerDay;
+    this.checkInput();
   }
 
+  showProgress() {
+    document.querySelector('.progress__value').textContent = `${this.currentCardNumber} / ${this.maxCardsPerDay}`;
+    document.querySelector('.progress__line').style.width = `${this.progress}%`;
+  }
 }   
