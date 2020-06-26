@@ -65,8 +65,7 @@ export default class Sentence {
 
   showBckImage(level, round) {
     this.isBckImageHintUsed = true;
-    const imgSrcName = getPaintingImageSrc(level, round);
-    const imgSrcPath = `url('https://raw.githubusercontent.com/YekaterinaKarakulina/rslang_data_paintings/master/${imgSrcName}')`;
+    const imgSrcPath = getPaintingImageSrc(level, round);
 
     const wordContainers = document.querySelectorAll('.current.word-container');
       Array.from(wordContainers).forEach((el) => {

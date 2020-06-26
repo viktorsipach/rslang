@@ -1,6 +1,6 @@
 import { Array } from 'core-js';
 import { getRoundsAmountInLevel, getSCustomRoundData } from '../../API/dataAPI';
-import { checkActiveHints, createStatisticSentence, mixSentenceWords, getPaintingInfo } from './utils';
+import { checkActiveHints, createStatisticSentence, mixSentenceWords, getPaintingInfo, getPaintingImageSrc } from './utils';
 import Sentence from './Sentence';
 import renderStatisticsModal from './renderStatistics';
 
@@ -177,10 +177,15 @@ export default class Game {
   }
 
   buildCurrentSentence() {
-    Array.from(this.correctWordsOrder).forEach((el) => {
-      document.querySelector('.result__sentence.current').append(el);
-    })
-    
+    if (this.currentDataSentenceObject) {
+      this.currentDataSentenceObject.status = 'iDontKnow';
+      this.correctWordsOrder.forEach((el) => {
+        document.querySelector('.result__sentence.current').append(el);
+      });
+      // Array.from(this.correctWordsOrder).forEach((el) => {
+      //   document.querySelector('.result__sentence.current').append(el);
+      // });
+    }
     
   }
 
@@ -227,16 +232,26 @@ export default class Game {
 
   showRoundStatistic() {
     document.querySelector('.page'). append(renderStatisticsModal());
+    const paintingSrc = getPaintingImageSrc(this.level, this.round);
+    document.querySelector('.painting__image').style.backgroundImage = paintingSrc;
+
+    const paintingInfo = getPaintingInfo(this.level, this.round);
+    document.querySelector('.painting__info').textContent = paintingInfo;
 
     document.querySelector('.statistic-title').textContent = `Level ${this.level} Round ${this.round}`;
     const iDontKnowFragment = document.createDocumentFragment();
     const iKnowFragment = document.createDocumentFragment();
+    let iKnowSentencesCount = 0;
+    let iDontKnowSentencesCount = 0;
+
     this.dataSentencesObjects.forEach((el) => {
       if (el.status === 'iDontKnow') {
+        iDontKnowSentencesCount += 1;
         const sentence = createStatisticSentence(el);
         iDontKnowFragment.append(sentence);
       }
       if (el.status === 'iKnow') {
+        iKnowSentencesCount += 1;
         const sentence = createStatisticSentence(el);
         iKnowFragment.append(sentence);
       }
@@ -246,5 +261,8 @@ export default class Game {
     const IKNOWSENTENCES = document.querySelector('.iKnowSentences');
     IDONTKNOWSENTENCES.append(iDontKnowFragment);
     IKNOWSENTENCES.append(iKnowFragment);
+
+    document.querySelector('.iKnowSentences-count').textContent = iKnowSentencesCount;
+    document.querySelector('.iDontKnowSentences-count').textContent = iDontKnowSentencesCount;
   }
 }

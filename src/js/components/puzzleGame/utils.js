@@ -87,7 +87,7 @@ function createStatisticSentence(sentenceObj) {
   sentence.className = 'statistic-sentence';
 
   const icon = document.createElement('i');
-  icon.className = 'icon icon__sentence';
+  icon.className = 'icon icon__sentence icon__statistic';
   icon.dataset.audio = sentenceObj.audioExample;
 
   const iconContainer = document.createElement('span');
@@ -142,11 +142,12 @@ function getPaintingsDataFile(level) {
 function getPaintingImageSrc(level, round) {
   console.log(level, round);
   const paintingsData = getPaintingsDataFile(level);
-  return paintingsData[round - 1].imageSrc;
+  const imgSrc = paintingsData[round - 1].imageSrc;
+  const imgSrcPath = `url('https://raw.githubusercontent.com/YekaterinaKarakulina/rslang_data_paintings/master/${imgSrc}')`;
+  return imgSrcPath;
 }
 
 function getPaintingInfo(level, round) {
-  console.log(level, round);
   const paintingsData = getPaintingsDataFile(level);
   const paintingAuthor = paintingsData[round - 1].author;
   const paintingName = paintingsData[round - 1].name;

@@ -232,3 +232,5 @@ const paintings4 = [
     "year": "1914"
   },
 ];
+
+export default paintings4;
