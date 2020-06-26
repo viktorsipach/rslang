@@ -24,13 +24,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 4rem;
+  font-size: 2.5rem;
   font-weight: 700;
+  padding: 1rem 0;
   @include media-tablet {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   @include media-mobile {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -38,10 +39,29 @@
   margin-right: 2rem;
 }
 
+.painting__container {
+  width: fit-content;
+  margin: 0 auto 2rem;
+}
+
+.painting__image {
+  width: 27rem;
+  height: 17rem;
+  margin: 1rem auto;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.painting__info {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 .statistic-container {
   display: block;
   width: 60%;
-  margin: 3rem auto;
+  margin: 1rem auto 2rem;
   font-size: 1.5rem;
   font-weight: 400;
   @include media-tablet {
@@ -55,7 +75,7 @@
 
 .iDontKnowSentences-title,
 .iKnowSentences-title {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
   @include media-tablet {
@@ -64,6 +84,23 @@
   @include media-mobile {
     font-size: 1.25rem;
   }
+}
+
+.iKnowSentences-count,
+.iDontKnowSentences-count {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 1rem;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.iKnowSentences-count {
+  background-color: $color-correct;
+}
+
+.iDontKnowSentences-count {
+  background-color: $color-wrong;
 }
 
 .statistic-sentence {

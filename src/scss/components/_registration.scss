@@ -34,6 +34,8 @@
   width: fit-content;
   margin: 0 auto;
   font-size: 2rem;
+  line-height: 3rem;
+  text-align: center;
 }
 
 .signIn-description, 
@@ -79,7 +81,11 @@
   align-items: center;
   justify-content: space-evenly;
   margin-top: 5rem;
-  padding-bottom: 15rem;
+  @include media-mobile {
+    height: 12rem;
+    flex-direction: column;
+    margin: 0;
+  }
 }
 
 .password-message {
@@ -88,7 +94,10 @@
 }
 
 .login__button {
-  width: 10rem;
+  width: 15rem;
   height: 3.5rem;
+  @include media-mobile {
+    width: 25rem;
+  }
 }
 

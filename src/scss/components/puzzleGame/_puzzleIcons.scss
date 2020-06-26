@@ -24,6 +24,18 @@
     height: 3rem;
     background-image: url('../assets/img/puzzle/sound.svg');
     cursor: pointer;
+    &.icon__statistic {
+      width: 2rem;
+      height: 2rem;
+      @include media-laptop {
+        width: 2rem;
+        height: 2rem;
+      }
+      @include media-tablet {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
     &.active {
       background-image: url('../assets/img/puzzle/sound-active.svg');
     }

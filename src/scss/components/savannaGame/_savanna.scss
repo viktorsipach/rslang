@@ -1,4 +1,5 @@
-@import '../../base/constants';
+// @import '../../base/constants';
+@import './savannaShortStatistics';
 
 .savanna {
     position: relative;
@@ -116,6 +117,11 @@
             width: 100%;
             transform: rotateX(180deg);
         }
+    }
+    &-button__icon {
+        width: 3rem;
+        height: 3rem;
+        margin-right: 5px;
     }
  }
 

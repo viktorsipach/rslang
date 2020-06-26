@@ -35,8 +35,8 @@ function renderMenuIcon(buttonClass, buttonIconClass) {
 function renderMenuIcons() {
   const menuIcons = document.createElement('div');
   menuIcons.className = 'menu__icons';
-  menuIcons.append(renderMenuIcon('menu__button auto-pronunciation ', 'icon__auto-pronunciation'));
-  menuIcons.append(renderMenuIcon('menu__button show-translation ', 'icon__show-translation'));
+  menuIcons.append(renderMenuIcon('menu__button training-icon auto-pronunciation ', 'icon__auto-pronunciation'));
+  menuIcons.append(renderMenuIcon('menu__button training-icon show-translation ', 'icon__show-translation'));
   return menuIcons;
 }
 
@@ -131,10 +131,32 @@ function renderDictionaryButtons() {
 
 function renderGameButtons() {
   const gameButtons = document.createElement('div');
-  gameButtons.className = 'buttons game__buttons';
+  gameButtons.className = 'buttons game__buttons training-game';
   gameButtons.append(renderButton('trainingGame__button dontKnow', 'Не знаю'));
   gameButtons.append(renderButton('trainingGame__button next', 'Далее'));
   return gameButtons;
+}
+
+function renderProgressBar() {
+  const progressLine = document.createElement('span');
+  progressLine.className = 'progress__line';
+
+  const progressLineContainer = document.createElement('span');
+  progressLineContainer.className = 'progress__line-container';
+  progressLineContainer.append(progressLine);
+
+  const progressValue = document.createElement('span');
+  progressValue.className = 'progress__value';
+
+  const progressBar = document.createElement('div');
+  progressBar.className = 'progress__bar training__progress';
+  progressBar.append(progressValue);
+  progressBar.append(progressLineContainer);
+
+  const progressBarContainer = document.createElement('div');
+  progressBarContainer.className = 'progress__bar-container ';
+  progressBarContainer.append(progressBar);
+  return progressBarContainer;
 }
 
 export default function  renderTrainingGamePage() {
@@ -144,5 +166,11 @@ export default function  renderTrainingGamePage() {
   mainPage.append(renderTrainingCard());
   mainPage.append(renderDictionaryButtons());
   mainPage.append(renderGameButtons());
-  return mainPage;
+  mainPage.append(renderProgressBar());
+
+  const mainPageWrapper = document.createElement('div');
+  mainPageWrapper.className = 'game__training-wrapper';
+  mainPageWrapper.append(mainPage);
+
+  return mainPageWrapper;
 }
