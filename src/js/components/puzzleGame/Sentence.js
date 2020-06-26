@@ -1,4 +1,4 @@
-import { createWordElement, getActualSentence, mixArrayElements } from './utils';
+import { createWordElement, getActualSentence, getPaintingImageSrc } from './utils';
 
 export default class Sentence {
   constructor({
@@ -22,29 +22,13 @@ export default class Sentence {
 
     const sentenceArray = this.textExample.split(' ');
     this.length = sentenceArray.length;
-
-    const sentenceArrayMixed = mixArrayElements(sentenceArray);
-
     const fragment = document.createDocumentFragment();
-    sentenceArrayMixed.forEach((el, index) => {
-      fragment.append(createWordElement(el, index));
+    sentenceArray.forEach((el, index) => {
+      const wordLength = el.length;
+      fragment.append(createWordElement(el, index, wordLength));
     });
-
     sentenceElement.append(fragment);
     return sentenceElement;
-  }
-
-  buildSentence() {
-    const sentenceArray = this.textExample.split(' ');
-    const fragment = document.createDocumentFragment();
-    sentenceArray.forEach((el) => {
-      fragment.append(createWordElement(el));
-    });
-    document.querySelector('.result__sentence.current').innerHTML = '';
-    fragment.querySelectorAll('.word-container').forEach((el) => {
-      document.querySelector('.result__sentence.current').append(el);
-    });
-    document.querySelector('.data-container').innerHTML = '';
   }
 
   checkSentence() {
@@ -79,9 +63,16 @@ export default class Sentence {
     this.isPronunciationHintUsed = true;
   }
 
-  showBckImage() {
+  showBckImage(level, round) {
     this.isBckImageHintUsed = true;
-    console.log('showBckImage');
+    const imgSrcPath = getPaintingImageSrc(level, round);
+    const wordContainers = document.querySelectorAll('.current.word-container');
+    wordContainers.forEach((el) => {
+      const currentWord = el;
+      currentWord.style.boxShadow = 'none';
+      currentWord.style.borderRadius = '0';
+      currentWord.style.backgroundImage =  imgSrcPath;
+    }); 
   }
 
   showSentenceTranslation() {

@@ -1,10 +1,10 @@
 .word-container {
   display: flex;
-  min-width: 3rem;
-  min-height: 3rem;
-  margin-left: 1rem;
-  border: 2px solid $color-violet;
+  min-width: 5rem;
+  height: 100%;
   border-radius: 5px;
+  box-sizing: border-box;
+  border: 2px solid $color-violet;
   &.dragOver {
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
@@ -34,7 +34,6 @@
 
 .word {
   display: inline-flex;
-  background-color: $color-word;
   width: 100%;
   align-items: center;
   justify-content: center;

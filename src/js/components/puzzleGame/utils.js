@@ -1,6 +1,14 @@
-function createWordElement(word, numb) {
+import paintings1 from './paintingsData/level1';
+import paintings2 from './paintingsData/level2';
+import paintings3 from './paintingsData/level3';
+import paintings4 from './paintingsData/level4';
+import paintings5 from './paintingsData/level5';
+import paintings6 from './paintingsData/level6';
+
+function createWordElement(word, numb, wordLength) {
   const wordContainer = document.createElement('span');
-  wordContainer.className = 'word-container';
+  wordContainer.className = 'word-container current';
+  wordContainer.style.flexGrow = wordLength;
   const wordElement = document.createElement('span');
   wordElement.className = 'word data__word';
   wordElement.dataset.word = `w${numb}`;
@@ -79,7 +87,7 @@ function createStatisticSentence(sentenceObj) {
   sentence.className = 'statistic-sentence';
 
   const icon = document.createElement('i');
-  icon.className = 'icon icon__sentence';
+  icon.className = 'icon icon__sentence icon__statistic';
   icon.dataset.audio = sentenceObj.audioExample;
 
   const iconContainer = document.createElement('span');
@@ -95,7 +103,59 @@ function createStatisticSentence(sentenceObj) {
   return sentence;
 }
 
+function mixSentenceWords() {
+  const sentenceArray = document.querySelectorAll('.data__sentence>.word-container');
+    const sentenceArrayMixed = mixArrayElements(Array.from(sentenceArray));
+    document.querySelector('.data__sentence').innerHTML = '';
+    sentenceArrayMixed.forEach((el) => {
+      document.querySelector('.data__sentence').append(el);
+    });
+}
+
+function getPaintingsDataFile(level) {
+  let paintingsData;
+  switch (level) {
+    case 1:
+      paintingsData = paintings1;
+      break;
+    case 2:
+      paintingsData = paintings2;
+      break;
+    case 3:
+      paintingsData = paintings3;
+      break;
+    case 4:
+      paintingsData = paintings4;
+      break;
+    case 5:
+      paintingsData = paintings5;
+      break;
+    case 6:
+      paintingsData = paintings6;
+      break;
+    default:
+      break;
+  }
+  return paintingsData;
+}
+
+function getPaintingImageSrc(level, round) {
+  const paintingsData = getPaintingsDataFile(level);
+  const imgSrc = paintingsData[round - 1].imageSrc;
+  const imgSrcPath = `url('https://raw.githubusercontent.com/YekaterinaKarakulina/rslang_data_paintings/master/${imgSrc}')`;
+  return imgSrcPath;
+}
+
+function getPaintingInfo(level, round) {
+  const paintingsData = getPaintingsDataFile(level);
+  const paintingAuthor = paintingsData[round - 1].author;
+  const paintingName = paintingsData[round - 1].name;
+  const paintingYear = paintingsData[round - 1].year;
+  const paintingInfo = `${paintingAuthor} - ${paintingName} (${paintingYear})`;
+  return paintingInfo;
+}
+
 export {
-  createWordElement, getActualSentence, mixArrayElements,
-  checkActiveHints, createStatisticSentence,
+  createWordElement, getActualSentence, checkActiveHints, createStatisticSentence, 
+  mixSentenceWords, getPaintingImageSrc, getPaintingInfo
 };
