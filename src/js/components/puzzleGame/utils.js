@@ -140,7 +140,6 @@ function getPaintingsDataFile(level) {
 }
 
 function getPaintingImageSrc(level, round) {
-  console.log(level, round);
   const paintingsData = getPaintingsDataFile(level);
   const imgSrc = paintingsData[round - 1].imageSrc;
   const imgSrcPath = `url('https://raw.githubusercontent.com/YekaterinaKarakulina/rslang_data_paintings/master/${imgSrc}')`;
@@ -157,6 +156,6 @@ function getPaintingInfo(level, round) {
 }
 
 export {
-  createWordElement, getActualSentence,
-  checkActiveHints, createStatisticSentence, mixSentenceWords, getPaintingImageSrc, getPaintingInfo
+  createWordElement, getActualSentence, checkActiveHints, createStatisticSentence, 
+  mixSentenceWords, getPaintingImageSrc, getPaintingInfo
 };

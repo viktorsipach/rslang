@@ -8,7 +8,7 @@
   background-color: $color-light;
   &.result__sentence {
     &.current {
-      border: 1px solid red;
+      border: 1px solid $color-violet;
     }
     &.active {
       display: flex;

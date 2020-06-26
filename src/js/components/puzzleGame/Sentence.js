@@ -66,14 +66,13 @@ export default class Sentence {
   showBckImage(level, round) {
     this.isBckImageHintUsed = true;
     const imgSrcPath = getPaintingImageSrc(level, round);
-
     const wordContainers = document.querySelectorAll('.current.word-container');
-      Array.from(wordContainers).forEach((el) => {
-        const currentWord = el;
-        currentWord.style.boxShadow = 'none';
-        currentWord.style.borderRadius = '0';
-        currentWord.style.backgroundImage =  imgSrcPath;
-      }); 
+    wordContainers.forEach((el) => {
+      const currentWord = el;
+      currentWord.style.boxShadow = 'none';
+      currentWord.style.borderRadius = '0';
+      currentWord.style.backgroundImage =  imgSrcPath;
+    }); 
   }
 
   showSentenceTranslation() {

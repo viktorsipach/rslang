@@ -14,9 +14,6 @@
   &.false {
     box-shadow: 0 0 20px rgba(255,69,0,0.5);
   }
-  &.current {
-    ///// 
-  }
   @include media-laptop {
     min-width: 2.5rem;
     min-height: 2.5rem;

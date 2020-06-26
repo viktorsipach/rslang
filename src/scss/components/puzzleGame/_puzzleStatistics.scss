@@ -50,6 +50,7 @@
   margin: 1rem auto;
   background-repeat: no-repeat;
   background-size: contain;
+  background-position: center;
 }
 
 .painting__info {
@@ -97,10 +98,10 @@
 .iKnowSentences-count {
   background-color: $color-correct;
 }
+
 .iDontKnowSentences-count {
   background-color: $color-wrong;
 }
-
 
 .statistic-sentence {
   display: flex;
