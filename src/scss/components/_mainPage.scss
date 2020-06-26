@@ -4,6 +4,9 @@
 	background-image: url('../assets/img/bg-main-page.jpg');
 	background-size: cover;
 	background-repeat: no-repeat;
+	@include media-laptop {
+		background: none;
+    }
 }
 
 .container__cards {
