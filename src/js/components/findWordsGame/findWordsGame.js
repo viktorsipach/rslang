@@ -12,6 +12,7 @@ class FindWordsGame {
         this.actionFindWordsGame.startGame();
         this.actionFindWordsGame.clickCard();
         this.actionFindWordsGame.repeatRoundButton();
+        this.actionFindWordsGame.changeLevelRound();
     }
 }
 

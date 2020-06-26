@@ -5,6 +5,9 @@ class RenderFindWordsGame {
         this.target = 'page';
         this.getWords = getRoundData;
         this.words = [];
+        this.delayField = 1000;
+        this.delayCards = 20;
+        this.middle = 0.5;
     }
 
     createElement(tag, className, textContent, target = this.target, index = 0) {
@@ -83,26 +86,25 @@ class RenderFindWordsGame {
             document.querySelector(`.ru-couple${i}`).setAttribute('data-couple', `couple${i}`);
         }
 
-        const shuffle = (element, target) => {
-            document.querySelectorAll(`.${element}`).forEach((e) => {
-                if (Math.random() > 0.5) {
-                    document.querySelector(`.${target}`).append(e);
-                }
-                if (Math.random() < 0.5) {
-                    document.querySelector(`.${target}`).prepend(e);
-                }
-            });
-        }
-        shuffle('card-eng', 'game-field');
-        shuffle('card-ru', 'game-field');
+        this.shuffle('card-eng', 'game-field');
+        this.shuffle('card-ru', 'game-field');
+    }
+
+    shuffle(element, target)  {
+        document.querySelectorAll(`.${element}`).forEach((e) => {
+            if (Math.random() > this.middle) {
+                document.querySelector(`.${target}`).append(e);
+            }
+            if (Math.random() < this.middle) {
+                document.querySelector(`.${target}`).prepend(e);
+            }
+        });
     }
 
     async renderMainPageWords() {
-        const level = 1;
-        const round = 1;
+        const level = document.querySelector('.level-select').value;
+        const round = document.querySelector('.page-select').value;
         const wordsPerRound = 10;
-        const delayField = 1000;
-        const delayCards = 20;
         const data = await this.getWords(level, round, wordsPerRound);
 
         data.forEach((elem) => {
@@ -114,20 +116,24 @@ class RenderFindWordsGame {
             document.querySelector(`.ru-couple${i}`).firstElementChild.textContent = `${elem.wordTranslate}`;
         })
 
-        const cardArr = document.querySelector('.game-field').children;
-        for(let i = 0; i < cardArr.length; i += 1) {
-            setTimeout(() => {
-                setTimeout(() => {
-                    cardArr[i].classList.add('rotate');
-                   }, i * delayCards);
-            }, delayField);
-        }
+        setTimeout(() => {
+            this.cardsRotate();
+        }, this.delayField);
 
         document.querySelectorAll('.card-ru').forEach((elem) => {
             elem.classList.add('visible');
         });
         document.querySelectorAll('.card-eng').forEach((elem) => {
             elem.classList.add('visible');
+        });
+    }
+
+    cardsRotate() {
+        const cardArr = document.querySelector('.game-field').childNodes;
+        cardArr.forEach((elem, idx) => {
+            setTimeout(() => {
+                elem.classList.add('rotate');
+            }, idx * this.delayCards);
         });
     }
 

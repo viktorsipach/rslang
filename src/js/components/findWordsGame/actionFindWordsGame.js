@@ -6,6 +6,7 @@ class ActionFindWordsGame {
         this.click = 'click';
         this.stackCard = [];
         this.coupleStat = {};
+        this.reset = 0;
     }
 
     startGame() {
@@ -21,7 +22,6 @@ class ActionFindWordsGame {
     startRound() {
         const delayFirst = 1000;
         const delaySecond = 1100;
-        const reset = 0;
 
         document.querySelector('.find-words').childNodes.forEach((elem) => {
             const el = elem;
@@ -33,9 +33,9 @@ class ActionFindWordsGame {
             this.renderFindWordsGame.renderMainPage();
             
             document.querySelectorAll('.card-eng').forEach(( elem) => {
-            this.coupleStat[`${elem.dataset.couple}`] = reset;
+            this.coupleStat[`${elem.dataset.couple}`] = this.reset;
             });
-            this.coupleStat.total = reset;
+            this.coupleStat.total = this.reset;
         }, delayFirst);
 
         setTimeout(() => {
@@ -73,6 +73,7 @@ class ActionFindWordsGame {
         const gameField = document.querySelector('.game-field');
         const progressLine = document.querySelector('.progress__line');
         const progressValue = document.querySelector('.progress__value');
+        const delayRotate = 800;
 
         if (this.stackCard.length < twoElements) return;
 
@@ -100,8 +101,49 @@ class ActionFindWordsGame {
                 document.querySelector(`.eng-${firstCard}`).classList.add('rotate');
                 event.target.parentElement.classList.add('rotate');
                 gameField.classList.remove('event-none');
-            }, 1000);
+            }, delayRotate);
         }
+    }
+
+    changeLevelRound() {
+        document.querySelector('.find-words').addEventListener('mainPageLoad', () => {
+            const level = document.querySelector('.level-select');
+            const round = document.querySelector('.page-select');
+
+            level.addEventListener('change', () => {
+                this.progressReset();
+                this.changeCards();
+            });
+
+            round.addEventListener('change', () => {
+                this.progressReset();
+                this.changeCards();
+            });
+        })
+    }
+
+    progressReset() {
+        const progressLine = document.querySelector('.progress__line');
+        const progressValue = document.querySelector('.progress__value');
+
+        progressLine.style.width = this.reset;
+        progressValue.textContent = '';
+    }
+
+    changeCards() {
+        const cards = document.querySelector('.game-field').childNodes;
+        const gameField = document.querySelector('.game-field');
+
+        cards.forEach((elem) => {
+            const card = elem;
+            card.firstChild.textContent = '';
+            card.classList.remove('visible');
+        });
+        setTimeout(() => {
+            gameField.innerHTML = '';
+            this.renderFindWordsGame.renderMainPageGameField();
+            this.renderFindWordsGame.renderMainPageWords();
+        }, 500);
     }
 
     repeatRoundButton() {
