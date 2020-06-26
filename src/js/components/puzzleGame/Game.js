@@ -1,7 +1,9 @@
+import { Array } from 'core-js';
 import { getRoundsAmountInLevel, getSCustomRoundData } from '../../API/dataAPI';
-import { checkActiveHints, createStatisticSentence } from './utils';
+import { checkActiveHints, createStatisticSentence, mixSentenceWords } from './utils';
 import Sentence from './Sentence';
 import renderStatisticsModal from './renderStatistics';
+
 
 export default class Game {
   constructor({ level, round }) {
@@ -67,11 +69,10 @@ export default class Game {
       this.dataSentencesObjects.push(sentence);
       sentence.textExample = sentence.textExample.replace(/<b>/, '').replace(/<\/b>/, '');
       sentence.status = 'iKnow';
-      sentence = sentence.createDataSentence(); 
+      sentence = sentence.createDataSentence();
       this.dataSentences.push(sentence);
       const sentenceContainer = document.createElement('div');
       sentenceContainer.className = 'sentence result__sentence';
-
       fragment.append(sentenceContainer);
     });
     document.querySelector('.results-container').innerHTML = '';
@@ -82,7 +83,6 @@ export default class Game {
     document.querySelector('.hints__sentence').textContent = '';
     this.isSentenceCompleted = false;
     const dataWords = document.querySelectorAll('.result__sentence.current>.word-container');
-    // console.log(dataWords);
     dataWords.forEach((el) => el.classList.remove('true'));
     this.resultSentences.forEach((el) => el.classList.remove('current'));
     this.currentDataSentence = this.dataSentences[this.currentSentenceNumber];
@@ -91,14 +91,42 @@ export default class Game {
     this.currentResultSentence.classList.add('active');
     this.currentResultSentence.classList.add('current');
 
-    for (let i = 0; i < this.currentDataSentenceObject.length; i += 1) {
-      const wordContainer = document.createElement('span');
-      wordContainer.className = 'word-container';
-      wordContainer.style.flexGrow = 1; //
-      this.currentResultSentence.append(wordContainer);
-    }
     document.querySelector('.data-container').innerHTML = '';
     document.querySelector('.data-container').append(this.currentDataSentence);
+    console.log(this.currentDataSentence);
+
+    const words = document.querySelectorAll('.data__sentence>.word-container');
+    let posX = 0;
+    let posY = 0;
+    let bufferX = 0;
+    const sizeX = 832;
+    const sizeY = 468;
+    console.log(`currentSentenceNumber ${this.currentSentenceNumber}`);
+    Array.from(words).forEach((el) => {
+      posY = this.currentSentenceNumber*(-46);
+      el.style.backgroundImage =   `url('https://raw.githubusercontent.com/YekaterinaKarakulina/rslang_data_paintings/master/level1/riverla2.jpg')`;
+      el.style.backgroundSize = `${sizeX}px ${sizeY}px`;
+      el.style.backgroundPosition = `${posX}px ${posY}px`;
+     
+      el.style.maxWidth = `${el.offsetWidth}px`;
+      bufferX += el.offsetWidth;
+      posX = sizeX - bufferX;
+      
+    });
+    this.correctWordsOrder = words;
+    console.log(this.correctWordsOrder);
+
+    mixSentenceWords();
+
+    // mix elements 
+    // const sentenceArray = document.querySelectorAll('.data__sentence>.word-container');
+    // const sentenceArrayMixed = mixArrayElements(Array.from(sentenceArray));
+    // document.querySelector('.data__sentence').innerHTML = '';
+    // sentenceArrayMixed.forEach((el) => {
+    //   document.querySelector('.data__sentence').append(el);
+    // })
+
+
     this.checkGameStatus();
     this.showHintsAtBegin();
   }
@@ -140,10 +168,11 @@ export default class Game {
   }
 
   buildCurrentSentence() {
-    if (this.currentDataSentenceObject) {
-      this.currentDataSentenceObject.status = 'iDontKnow';
-      this.currentDataSentenceObject.buildSentence();
-    }
+    Array.from(this.correctWordsOrder).forEach((el) => {
+      document.querySelector('.result__sentence.current').append(el);
+    })
+    
+    
   }
 
   pronounceCurrentSentence() {

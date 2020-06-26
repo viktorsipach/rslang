@@ -7,7 +7,9 @@
   flex-grow: 1;
   background-color: $color-light;
   &.result__sentence {
-    // border: 1px solid red;
+    &.current {
+      border: 1px solid red;
+    }
     &.active {
       display: flex;
     }

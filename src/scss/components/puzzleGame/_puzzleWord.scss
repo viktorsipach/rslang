@@ -4,6 +4,7 @@
   height: 100%;
   border: 2px solid $color-violet;
   border-radius: 5px;
+  box-sizing: border-box;
   &.dragOver {
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
@@ -33,7 +34,6 @@
 
 .word {
   display: inline-flex;
-  background-color: $color-word;
   width: 100%;
   align-items: center;
   justify-content: center;

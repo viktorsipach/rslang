@@ -62,23 +62,17 @@ export default function initPuzzleGame() {
       checkActiveHints();
 
       if (event.target.closest('.data__sentence') && event.target.classList.contains('data__word')) {
-        const element = document.querySelector('.result__sentence>.word-container:empty');
-        element.append(event.target);
-        const wordLength = event.target.textContent.length; //
-        element.style.flexGrow = wordLength; //
+        const element = document.querySelector('.result__sentence.current');
+        element.append(event.target.parentNode);
       } else if (event.target.closest('.result__sentence') && event.target.classList.contains('data__word')) {
-        document.querySelector('.data__sentence>.word-container:empty').append(event.target);
+        const element = document.querySelector('.data__sentence');
+        element.append(event.target.parentNode);
+
       } else if (event.target.classList.contains('dontKnow')) {
         game.buildCurrentSentence();
       } else if (event.target.classList.contains('check')) {
         game.checkCurrentSentence();
       } else if (event.target.classList.contains('continue')) {
-        const wordContainers = document.querySelectorAll('.result__sentence.current>.word-container');
-        Array.from(wordContainers).forEach((el) => { //
-          el.style.border = 'none'; //
-          el.style.boxShadow = 'none'; //
-        }); //
-
         if (!game.isFinished) {
           if (game.currentSentenceNumber < 10) {
             game.startSentence();
@@ -157,17 +151,9 @@ export default function initPuzzleGame() {
       if (event.target.classList.contains('word-container') && event.target.closest('.result__sentence')) {
         dropEndElement.append(dropStartElement);
         dropEndElement.classList.remove('dragOver');
-        console.log(dropEndElement);
-        const wordLength = dropStartElement.textContent.length; //
-        console.log(wordLength); // 
-        dropEndElement.style.flexGrow = wordLength; //
       } else if (event.target.classList.contains('data__word') && event.target.closest('.result__sentence')) {
         const dropEndContainer = dropEndElement.parentElement;
-        // console.log(dropEndElement);
         dropEndContainer.append(dropStartElement);
-        // const wordLength = event.target.textContent.length; //
-        // dropEndContainer.style.flexGrow = wordLength; //
-
         dropStartContainer.append(dropEndElement);
         dropEndContainer.classList.remove('dragOver');
       }

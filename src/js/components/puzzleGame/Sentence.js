@@ -1,4 +1,4 @@
-import { createWordElement, getActualSentence, mixArrayElements } from './utils';
+import { createWordElement, getActualSentence } from './utils';
 
 export default class Sentence {
   constructor({
@@ -22,31 +22,13 @@ export default class Sentence {
 
     const sentenceArray = this.textExample.split(' ');
     this.length = sentenceArray.length;
-
-    const sentenceArrayMixed = mixArrayElements(sentenceArray);
-
-    const fragment = document.createDocumentFragment();
-    sentenceArrayMixed.forEach((el, index) => {
-      const wordLength = 1;
-      fragment.append(createWordElement(el, index, wordLength));
-    });
-
-    sentenceElement.append(fragment);
-    return sentenceElement;
-  }
-
-  buildSentence() {
-    const sentenceArray = this.textExample.split(' ');
     const fragment = document.createDocumentFragment();
     sentenceArray.forEach((el, index) => {
       const wordLength = el.length;
       fragment.append(createWordElement(el, index, wordLength));
     });
-    document.querySelector('.result__sentence.current').innerHTML = '';
-    fragment.querySelectorAll('.word-container').forEach((el) => {
-      document.querySelector('.result__sentence.current').append(el);
-    });
-    document.querySelector('.data-container').innerHTML = '';
+    sentenceElement.append(fragment);
+    return sentenceElement;
   }
 
   checkSentence() {
@@ -84,21 +66,17 @@ export default class Sentence {
   showBckImage() {
     this.isBckImageHintUsed = true;
     console.log('showBckImage');
-    console.log('add backgr');
-    const words = document.querySelectorAll('.result__sentence.current>.word-container>.data__word');
-    Array.from(words).forEach((el) => {
-      el.style.backgroundColor = 'transparent';
-    });
 
     const wordContainers = document.querySelectorAll('.result__sentence.current>.word-container');
-    Array.from(wordContainers).forEach((el) => {
-      // el.style.border = 'none';
-      // el.style.boxShadow = 'none';
-    });
+        Array.from(wordContainers).forEach((el) => {
+          const currentWord = el;
+          currentWord.style.border = 'none';
+          currentWord.style.borderRadius = '0';
+          currentWord.style.boxShadow = 'none';
+        }); 
 
-    const currentResultSentence = document.querySelector('.result__sentence.current');
-    currentResultSentence.style.backgroundColor = 'transparent';
-
+   
+    
   }
 
   showSentenceTranslation() {

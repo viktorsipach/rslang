@@ -96,7 +96,16 @@ function createStatisticSentence(sentenceObj) {
   return sentence;
 }
 
+function mixSentenceWords() {
+  const sentenceArray = document.querySelectorAll('.data__sentence>.word-container');
+    const sentenceArrayMixed = mixArrayElements(Array.from(sentenceArray));
+    document.querySelector('.data__sentence').innerHTML = '';
+    sentenceArrayMixed.forEach((el) => {
+      document.querySelector('.data__sentence').append(el);
+    });
+}
+
 export {
-  createWordElement, getActualSentence, mixArrayElements,
-  checkActiveHints, createStatisticSentence,
+  createWordElement, getActualSentence,
+  checkActiveHints, createStatisticSentence, mixSentenceWords
 };
