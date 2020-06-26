@@ -1,6 +1,6 @@
 import { getRoundData } from '../../API/dataAPI';
 import RenderSavannaMainPage from './renderSavannaMainPage';
-import { savannaGameplayMouse } from './savannaGameplay';
+import { fallWord, savannaGameplayMouse } from './savannaGameplay';
 
 async function savannaRoundDataAPI() {
   const level = 1;
@@ -39,6 +39,7 @@ async function savannaRound(index) {
 
     savanna.innerHTML = '';
     savanna.append(templateMain.render());
+    fallWord();
 
     savannaGameplayMouse(data, index);
 }

@@ -30,7 +30,13 @@ class RenderSavannaMainPage  {
 
         savannaLevel.innerHTML = '<p>уровень 1</p><p>раунд 1</p>';
 
-        savannaHealth.innerHTML = '<span>HP1</span><span>HP2</span><span>HP3</span><span>HP4</span><span>HP5</span>';
+        savannaHealth.innerHTML = `
+        <span><i class="fa fa-heart"></i></span>
+        <span><i class="fa fa-heart"></i></span>
+        <span><i class="fa fa-heart"></i></span>
+        <span><i class="fa fa-heart"></i></span>
+        <span><i class="fa fa-heart"></i></span>
+        `;
 
         savannaHiddenWord.innerHTML = `${this.word}`;
         savannaHiddenWord.setAttribute('id', `${this.translate}`);
