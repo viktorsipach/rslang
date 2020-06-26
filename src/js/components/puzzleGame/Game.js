@@ -101,7 +101,7 @@ export default class Game {
     let bufferX = 0;
     const sizeX = 832;
     const sizeY = 468;
-    console.log(`currentSentenceNumber ${this.currentSentenceNumber}`);
+    // console.log(`currentSentenceNumber ${this.currentSentenceNumber}`);
     Array.from(words).forEach((el) => {
       posY = this.currentSentenceNumber*(-46);
       el.style.backgroundImage =   `url('https://raw.githubusercontent.com/YekaterinaKarakulina/rslang_data_paintings/master/level1/riverla2.jpg')`;
@@ -114,18 +114,9 @@ export default class Game {
       
     });
     this.correctWordsOrder = words;
-    console.log(this.correctWordsOrder);
+    // console.log(this.correctWordsOrder);
 
     mixSentenceWords();
-
-    // mix elements 
-    // const sentenceArray = document.querySelectorAll('.data__sentence>.word-container');
-    // const sentenceArrayMixed = mixArrayElements(Array.from(sentenceArray));
-    // document.querySelector('.data__sentence').innerHTML = '';
-    // sentenceArrayMixed.forEach((el) => {
-    //   document.querySelector('.data__sentence').append(el);
-    // })
-
 
     this.checkGameStatus();
     this.showHintsAtBegin();

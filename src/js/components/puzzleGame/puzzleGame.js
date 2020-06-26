@@ -145,17 +145,23 @@ export default function initPuzzleGame() {
       event.preventDefault();
 
       const data = event.dataTransfer.getData('text/plain');
-      const dropStartElement = document.querySelector(`[data-word=${data}]`);
-      const dropStartContainer = dropStartElement.parentElement;
-      const dropEndElement = event.target;
-      if (event.target.classList.contains('word-container') && event.target.closest('.result__sentence')) {
-        dropEndElement.append(dropStartElement);
-        dropEndElement.classList.remove('dragOver');
-      } else if (event.target.classList.contains('data__word') && event.target.closest('.result__sentence')) {
-        const dropEndContainer = dropEndElement.parentElement;
-        dropEndContainer.append(dropStartElement);
-        dropStartContainer.append(dropEndElement);
-        dropEndContainer.classList.remove('dragOver');
+      const dropStartElement = document.querySelector(`[data-word=${data}]`).parentElement;
+      console.log(event.target);
+      console.log(dropStartElement);
+
+      let dropEndElement = event.target;
+      if (event.target.closest('.result__sentence.current')) {
+        if (event.target.classList.contains('word-container')) {
+          console.log('word-container');
+        } else if (event.target.classList.contains('data__word')) {
+          console.log('data__word');
+          dropEndElement = event.target.parentNode.parentNode;
+          const siblingElement = event.target.parentNode;
+          dropEndElement.insertBefore(dropStartElement,  siblingElement );
+          siblingElement.classList.remove('dragOver');
+        } else {
+          dropEndElement.append(dropStartElement);
+        }
       }
       game.checkGameStatus();
     };
