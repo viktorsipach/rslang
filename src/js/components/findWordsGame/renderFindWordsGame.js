@@ -16,8 +16,9 @@ export default class RenderFindWordsGame {
     }
 
     renderStartPage() {
-        this.createElement('div', 'find-words start-find-words','')
+        this.createElement('div', 'find-words start-find-words','');
         this.createElement('div', 'game-info', '', 'find-words');
+        this.createElement('div', 'find-words__exit', '', 'find-words');
         this.createElement('div', 'game-info__title', 'НАЙДИ СЛОВА', 'game-info');
         this.createElement('div', 'game-info__description description', '', 'game-info')
         this.createElement('div', 'description__first','Кликай по карточкам и запоминай', 'game-info__description');
@@ -30,6 +31,8 @@ export default class RenderFindWordsGame {
         const event = new Event('mainPageLoad');
 
         this.createElement('div', 'game-container hide-game-container', '', 'find-words');
+        this.createElement('div', 'find-words__exit', '', 'find-words');
+        this.createElement('div', 'find-words__title', 'НАЙДИ СЛОВА', 'find-words');
         this.createElement('div', 'game-container__controls controls', '', 'game-container');
         this.createElement('div', 'game-container__progress-bar progress-bar', '', 'game-container');
         this.createElement('div', 'game-container__game-field game-field', '', 'game-container');
@@ -43,14 +46,14 @@ export default class RenderFindWordsGame {
     }
 
     renderMainPageControls() {
-        this.createElement('div', 'controls__level level', '', 'game-container__controls');
+        this.createElement('div', 'controls__level level', '', 'controls');
         this.createElement('div', 'level__head', 'Уровень', 'controls__level');
         this.createElement('select', 'select level__select level-select', '', 'controls__level');
         for (let i = 1; i < 7; i += 1 ) {
             this.createElement('option', 'level-select__item', i, 'level-select')
         }
 
-        this.createElement('div', 'controls__page _page', '', 'game-container__controls');
+        this.createElement('div', 'controls__page _page', '', 'controls');
         this.createElement('div', 'page__head', 'Раунд', 'controls__page');
         this.createElement('select', 'select page__select page-select', '', 'controls__page');
         for (let i = 1; i < 61; i += 1 ) {
@@ -130,7 +133,7 @@ export default class RenderFindWordsGame {
         const event = new Event('statLoad');
         const cards = document.querySelectorAll('.card-eng__front');
 
-        this.createElement('div', 'statistics', '', 'game-container');
+        this.createElement('div', 'statistics', '', 'find-words');
         this.createElement('div', 'statistics__modal', '', 'statistics');
         this.createElement('div', `statistics__header`, 'Статистика Раунда', 'statistics__modal');
         this.createElement('div', `statistics__subheader`, '', 'statistics__modal');

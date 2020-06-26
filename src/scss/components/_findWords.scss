@@ -6,6 +6,7 @@ $color-correct: #23ff77bd;
 $color-error: #ff56568a;
 $color-card-back: #32889e;
 $color-statistics-row: #faebd7;
+$color-exit: #ffffffc7;
 
 .find-words {
     width: 100%;
@@ -15,12 +16,54 @@ $color-statistics-row: #faebd7;
     background-size: cover;
     transition: 1s;
     display: flex;
+    position: relative;
     &.start-find-words {
         background-image: url('../assets/img/findWords/startPageBackground.jpg');
     }
     &.main-find-words {
         background-image: url('../assets/img/findWords/mainPageBackground.jpg');
     }
+}
+.find-words__exit {
+    position: absolute;
+    right: 3rem;
+    top: 3rem;
+    width: 3rem;
+    height: 3rem;
+    opacity: 1;
+    z-index: 5;
+    &::before {
+        position: absolute;
+        left: 1.5rem;
+        content: "";
+        height: 3rem;
+        width: .2rem;
+        background-color: $color-exit;
+        transform: rotate(45deg);
+    }
+    &::after {
+        position: absolute;
+        left: 1.5rem;
+        content: "";
+        height: 3rem;
+        width: .2rem;
+        background-color: $color-exit;
+        transform: rotate(-45deg);
+    }
+    &:hover {
+        opacity: 0.3;
+        cursor: pointer;
+    }
+}
+.find-words__title {
+    position: absolute;
+    color: $color-light;
+    font-size: 3rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+    margin-top: 3rem;
+    width: 90%;
+    text-align: center;
 }
 .game-info {
     width: fit-content;
@@ -86,7 +129,7 @@ $color-statistics-row: #faebd7;
 
 .game-container {
     max-width: 140rem;
-    margin: 0 auto;
+    margin: 9rem auto 0;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -98,6 +141,7 @@ $color-statistics-row: #faebd7;
 }
 .game-container__controls {
     width: 90%;
+    margin-bottom: 2rem;
     background-color: $color-find-words-overlay;
     border-radius: 10px;
     display: flex;
@@ -126,6 +170,7 @@ $color-statistics-row: #faebd7;
 .progress-bar {
     width: 90%;
     height: 3rem;
+    margin-bottom: 2rem;
     background-color: $color-find-words-overlay;
     border-radius: 1rem;
     box-shadow: 0 0 10px 2px $color-box-shadow-common;
@@ -153,6 +198,7 @@ $color-statistics-row: #faebd7;
 }
 .game-container__game-field {
     width: 90%;
+    margin-bottom: 2rem;
     background-color: $color-find-words-overlay;
     border-radius: 10px;
     display: flex;
@@ -234,6 +280,7 @@ $color-statistics-row: #faebd7;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: 0.5s;
 }
 .statistics__modal {
     width: 60%;
@@ -289,3 +336,4 @@ $color-statistics-row: #faebd7;
 .statistics__next-button {
     padding: 0.5rem 1rem;
 }
+
