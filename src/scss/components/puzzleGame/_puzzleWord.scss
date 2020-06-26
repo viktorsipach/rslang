@@ -2,9 +2,9 @@
   display: flex;
   min-width: 5rem;
   height: 100%;
-  border: 2px solid $color-violet;
   border-radius: 5px;
   box-sizing: border-box;
+  border: 2px solid $color-violet;
   &.dragOver {
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
@@ -13,6 +13,9 @@
   }
   &.false {
     box-shadow: 0 0 20px rgba(255,69,0,0.5);
+  }
+  &.current {
+    ///// 
   }
   @include media-laptop {
     min-width: 2.5rem;

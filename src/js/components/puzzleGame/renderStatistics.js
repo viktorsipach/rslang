@@ -14,7 +14,6 @@ export default function renderStatisticsModal() {
 
     <div class="buttons statistic__buttons">
       <button class="button game__button continue">Continue</button>
-      <button class="button game__button statistic">Statistic</button>
     </div>
   </div>`;
   return puzzleStatistic;

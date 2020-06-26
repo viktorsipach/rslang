@@ -1,6 +1,13 @@
+import paintings1 from './paintingsData/level1';
+import paintings2 from './paintingsData/level2';
+import paintings3 from './paintingsData/level3';
+import paintings4 from './paintingsData/level4';
+import paintings5 from './paintingsData/level5';
+import paintings6 from './paintingsData/level6';
+
 function createWordElement(word, numb, wordLength) {
   const wordContainer = document.createElement('span');
-  wordContainer.className = 'word-container';
+  wordContainer.className = 'word-container current';
   wordContainer.style.flexGrow = wordLength;
   const wordElement = document.createElement('span');
   wordElement.className = 'word data__word';
@@ -105,7 +112,50 @@ function mixSentenceWords() {
     });
 }
 
+function getPaintingsDataFile(level) {
+  let paintingsData;
+  switch (level) {
+    case 1:
+      paintingsData = paintings1;
+      break;
+    case 2:
+      paintingsData = paintings2;
+      break;
+    case 3:
+      paintingsData = paintings3;
+      break;
+    case 4:
+      paintingsData = paintings4;
+      break;
+    case 5:
+      paintingsData = paintings5;
+      break;
+    case 6:
+      paintingsData = paintings6;
+      break;
+    default:
+      break;
+  }
+  return paintingsData;
+}
+
+function getPaintingImageSrc(level, round) {
+  console.log(level, round);
+  const paintingsData = getPaintingsDataFile(level);
+  return paintingsData[round - 1].imageSrc;
+}
+
+function getPaintingInfo(level, round) {
+  console.log(level, round);
+  const paintingsData = getPaintingsDataFile(level);
+  const paintingAuthor = paintingsData[round - 1].author;
+  const paintingName = paintingsData[round - 1].name;
+  const paintingYear = paintingsData[round - 1].year;
+  const paintingInfo = `${paintingAuthor} - ${paintingName} (${paintingYear})`;
+  return paintingInfo;
+}
+
 export {
   createWordElement, getActualSentence,
-  checkActiveHints, createStatisticSentence, mixSentenceWords
+  checkActiveHints, createStatisticSentence, mixSentenceWords, getPaintingImageSrc, getPaintingInfo
 };

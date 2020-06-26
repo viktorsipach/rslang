@@ -1,4 +1,4 @@
-import { createWordElement, getActualSentence } from './utils';
+import { createWordElement, getActualSentence, getPaintingImageSrc } from './utils';
 
 export default class Sentence {
   constructor({
@@ -63,20 +63,18 @@ export default class Sentence {
     this.isPronunciationHintUsed = true;
   }
 
-  showBckImage() {
+  showBckImage(level, round) {
     this.isBckImageHintUsed = true;
-    console.log('showBckImage');
+    const imgSrcName = getPaintingImageSrc(level, round);
+    const imgSrcPath = `url('https://raw.githubusercontent.com/YekaterinaKarakulina/rslang_data_paintings/master/${imgSrcName}')`;
 
-    const wordContainers = document.querySelectorAll('.result__sentence.current>.word-container');
-        Array.from(wordContainers).forEach((el) => {
-          const currentWord = el;
-          currentWord.style.border = 'none';
-          currentWord.style.borderRadius = '0';
-          currentWord.style.boxShadow = 'none';
-        }); 
-
-   
-    
+    const wordContainers = document.querySelectorAll('.current.word-container');
+      Array.from(wordContainers).forEach((el) => {
+        const currentWord = el;
+        currentWord.style.boxShadow = 'none';
+        currentWord.style.borderRadius = '0';
+        currentWord.style.backgroundImage =  imgSrcPath;
+      }); 
   }
 
   showSentenceTranslation() {

@@ -1,9 +1,8 @@
 import { Array } from 'core-js';
 import { getRoundsAmountInLevel, getSCustomRoundData } from '../../API/dataAPI';
-import { checkActiveHints, createStatisticSentence, mixSentenceWords } from './utils';
+import { checkActiveHints, createStatisticSentence, mixSentenceWords, getPaintingInfo } from './utils';
 import Sentence from './Sentence';
 import renderStatisticsModal from './renderStatistics';
-
 
 export default class Game {
   constructor({ level, round }) {
@@ -80,11 +79,17 @@ export default class Game {
   }
 
   startSentence() {
+    
+
     document.querySelector('.hints__sentence').textContent = '';
     this.isSentenceCompleted = false;
     const dataWords = document.querySelectorAll('.result__sentence.current>.word-container');
     dataWords.forEach((el) => el.classList.remove('true'));
+    dataWords.forEach((el) => el.classList.remove('current'));
+
     this.resultSentences.forEach((el) => el.classList.remove('current'));
+
+    
     this.currentDataSentence = this.dataSentences[this.currentSentenceNumber];
     this.currentResultSentence = this.resultSentences[this.currentSentenceNumber];
     this.currentDataSentenceObject = this.dataSentencesObjects[this.currentSentenceNumber];
@@ -104,7 +109,7 @@ export default class Game {
     // console.log(`currentSentenceNumber ${this.currentSentenceNumber}`);
     Array.from(words).forEach((el) => {
       posY = this.currentSentenceNumber*(-46);
-      el.style.backgroundImage =   `url('https://raw.githubusercontent.com/YekaterinaKarakulina/rslang_data_paintings/master/level1/riverla2.jpg')`;
+      el.style.backgroundImage =   `none`;
       el.style.backgroundSize = `${sizeX}px ${sizeY}px`;
       el.style.backgroundPosition = `${posX}px ${posY}px`;
      
@@ -114,7 +119,6 @@ export default class Game {
       
     });
     this.correctWordsOrder = words;
-    // console.log(this.correctWordsOrder);
 
     mixSentenceWords();
 
@@ -155,6 +159,20 @@ export default class Game {
     }
     if (this.currentSentenceNumber === 10) {
       RESULTBUTTON.classList.remove('hidden');
+      //
+      const words = document.querySelectorAll('.word-container');
+      words.forEach((el) => {
+        el.style.border = 'none';
+      });
+
+      const sentences = document.querySelectorAll('.result__sentence');
+      sentences.forEach((el) => {
+        el.classList.remove('current');
+      })
+
+      const pictureInfo = getPaintingInfo(this.level, this.round);
+      document.querySelector('.data-container').textContent = pictureInfo;
+
     }
   }
 
@@ -175,7 +193,7 @@ export default class Game {
   }
 
   showCurrentBckImage() {
-    this.currentDataSentenceObject.showBckImage();
+    this.currentDataSentenceObject.showBckImage(this.level, this.round);
   }
 
   showHintsAtBegin() {
