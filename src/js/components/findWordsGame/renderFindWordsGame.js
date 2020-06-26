@@ -48,14 +48,16 @@ export default class RenderFindWordsGame {
     renderMainPageControls() {
         this.createElement('div', 'controls__level level', '', 'controls');
         this.createElement('div', 'level__head', 'Уровень', 'controls__level');
-        this.createElement('select', 'select level__select level-select', '', 'controls__level');
+        this.createElement('div', 'select level__select', '', 'controls__level');
+        this.createElement('select', 'level-select', '', 'level__select');
         for (let i = 1; i < 7; i += 1 ) {
             this.createElement('option', 'level-select__item', i, 'level-select')
         }
 
         this.createElement('div', 'controls__page _page', '', 'controls');
         this.createElement('div', 'page__head', 'Раунд', 'controls__page');
-        this.createElement('select', 'select page__select page-select', '', 'controls__page');
+        this.createElement('div', 'select page__select', '', 'controls__page');
+        this.createElement('select', 'page-select', '', 'page__select');
         for (let i = 1; i < 61; i += 1 ) {
             this.createElement('option', 'page-select__item', i, 'page-select')
         }
