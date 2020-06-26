@@ -24,7 +24,10 @@ export default class ActionFindWordsGame {
         const delaySecond = 1100;
         const reset = 0;
 
-        document.querySelector('.find-words').firstChild.style.opacity = 0;
+        document.querySelector('.find-words').childNodes.forEach((elem) => {
+            const el = elem;
+            el.style.opacity = 0;
+        });
 
         setTimeout(() => {
             document.querySelector('.find-words').innerHTML = '';
