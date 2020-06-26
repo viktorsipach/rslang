@@ -85,6 +85,8 @@ function startGame() {
   const imageEn = objectGameWords[numberWordCount].image;
   const wordRus = objectGameWords[numberWordCount].wordTranslate;
   const wordPartSpeech = objectGameWords[numberWordCount].partOfSpeech;
+  const endIndexWords = 4;
+
   let arrWordsRus = [];
 
   for (let i = 0; i < newArrObjectWords.length; i += 1) {
@@ -94,7 +96,7 @@ function startGame() {
   }
 
   shuffleWords(arrWordsRus);
-  arrWordsRus = arrWordsRus.slice(0, 4);
+  arrWordsRus = arrWordsRus.slice(0, endIndexWords);
 
   arrWordsRus.push(wordRus);
   shuffleWords(arrWordsRus);
