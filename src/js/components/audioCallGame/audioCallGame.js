@@ -2,26 +2,28 @@ import renderStartPage from './renderStartPage';
 import renderGamePage from './renderGamePage';
 import { getRoundData } from '../../API/dataAPI';
 import { getPartSpeech } from './partOfSpeech';
+import { statisticsWords } from './statistics';
 
+const arrTrueAnswer = [];
+const arrFalseAnswer = [];
 let option = true;
+let arrAllWordsOption = [];
+let numberWordCount = 0; 
 
-function randomNumber(min, max) {
-  const num = 10;
-  const rand = min + Math.random() * (max + num - min);
-  return Math.floor(rand);
-}
-
-function optionAnswer(event, wordRus, optionSound) {
+function optionAnswer(event, wordRus, wordEn, optionSound) {
   const gameBtn = document.querySelector('.game .game__btn.button')
   const getWordRus = event.target.parentElement;
   const getWordRusText = getWordRus.lastElementChild.outerText;
   const allWords = document.querySelectorAll('.words__item');
   const gameActive = document.querySelector('.game');
+
   option = optionSound;
 
   gameActive.classList.add('active');
 
   if (getWordRusText === wordRus) {
+    arrTrueAnswer.push(wordEn);
+    
     const audioElement = new Audio('../../../assets/audio/correct.mp3');
 
     if (option) {
@@ -36,6 +38,8 @@ function optionAnswer(event, wordRus, optionSound) {
     getWordRus.classList.remove('false');
     getWordRus.classList.add('true');
   } else {
+    arrFalseAnswer.push(wordEn);
+
     const audioElement = new Audio('../../../assets/audio/error.mp3');
 
     if (option) {
@@ -54,10 +58,51 @@ function optionAnswer(event, wordRus, optionSound) {
   gameBtn.innerText = 'Далее';
 }
 
-function startGame(arrWordsRus, wordEn, voiceEn, imageEn, wordRus) {
+function getWords(newArrObjectWords) {
+  const numberOfRound = 20;
+  const objectGameWords = [];
+  for (let i = 0; i < numberOfRound; i += 1) {
+    objectGameWords.push(newArrObjectWords[i]);
+  }
+  return objectGameWords;
+}
+
+function shuffleWords (array) {
+  array.sort(() => Math.random() - 0.5);
+}
+
+function startGame() {
+  const newArrObjectWords = arrAllWordsOption;
+  const objectGameWords = getWords(newArrObjectWords);
+
+  if (numberWordCount === objectGameWords.length) {
+    statisticsWords(arrTrueAnswer, arrFalseAnswer);
+    document.querySelector('.statistics-audioCall').classList.remove('modal-audioCall-hidden');
+  }
+
+  const wordEn = objectGameWords[numberWordCount].word;
+  const voiceEn = objectGameWords[numberWordCount].audio;
+  const imageEn = objectGameWords[numberWordCount].image;
+  const wordRus = objectGameWords[numberWordCount].wordTranslate;
+  const wordPartSpeech = objectGameWords[numberWordCount].partOfSpeech;
+  let arrWordsRus = [];
+
+  for (let i = 0; i < newArrObjectWords.length; i += 1) {
+    if (wordPartSpeech === newArrObjectWords[i].partOfSpeech && wordRus !== newArrObjectWords[i].wordTranslate) {
+      arrWordsRus.push(newArrObjectWords[i].wordTranslate);
+    }
+  }
+
+  shuffleWords(arrWordsRus);
+  arrWordsRus = arrWordsRus.slice(0, 4);
+
+  arrWordsRus.push(wordRus);
+  shuffleWords(arrWordsRus);
+
   document.querySelector('.game').remove();
+
   const pageContent = document.querySelector('.page');
-  pageContent.append(renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wordRus));
+  pageContent.append(renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn));
 
   const audioBtn = document.querySelector('.game__voice');
   const gameWords = document.querySelector('.game__words');
@@ -86,59 +131,59 @@ function startGame(arrWordsRus, wordEn, voiceEn, imageEn, wordRus) {
 
   gameBtn.addEventListener('click', (event) => {
     if (event.target.outerText === 'НЕ ЗНАЮ') {
-      optionAnswer(event, wordRus, option);
+      optionAnswer(event, wordRus, wordEn, option);
+      numberWordCount += 1;
     } else {
-      getDataAPI();
+      startGame();
     }
   });
 
   gameWords.addEventListener('click', (event) => {
     if (event.target.parentElement.className === 'words__item') {
-      optionAnswer(event, wordRus, option);
+      numberWordCount += 1;
+      optionAnswer(event, wordRus, wordEn, option);
     }
   });
+}
+
+async function getPartOfSpeech(objectWords) {
+
+  arrAllWordsOption = objectWords;
+
+  const promises = [];
+  if (objectWords) {
+    objectWords.forEach((value, index) => {
+      const wordCheck = objectWords[index].word;
+      promises.push(getPartSpeech(wordCheck));
+    });
+    const wordsPartOfSpeech = await Promise.all(promises);
+    if (wordsPartOfSpeech) {
+      wordsPartOfSpeech.forEach((value, index) => {
+        arrAllWordsOption[index].partOfSpeech = value[0].meanings[0].partOfSpeechCode;
+      });
+    }
+  }
 }
 
 async function getDataAPI() {
   const level = 1;
   const round = 1;
-  const wordsPerRound = 150;
+  const wordsPerRound = 30;
   const data = await getRoundData(level, round, wordsPerRound);
+  let objectWords = [];
 
-  const numberIndex = randomNumber(0, wordsPerRound);
-  const wordEn = data[numberIndex].word;
-  const voiceEn = data[numberIndex].audio;
-  const imageEn = data[numberIndex].image;
-  const wordRus = data[numberIndex].wordTranslate;
-
-  const dataTest = await getPartSpeech(wordEn);
-  const partOfSpeechEnWord = dataTest[0].meanings[0].partOfSpeechCode;
-
-  const arrWordsRus = [];
-  
-  const promises = [];
-
-  if (data) {
-    data.forEach((value, index) => {
-      const wordCheck = data[index].word;
-      promises.push(getPartSpeech(wordCheck));
-    });
-    const wordsPartOfSpeech = await Promise.all(promises);
-    if (wordsPartOfSpeech) {
-      wordsPartOfSpeech.forEach(e => {
-        if (partOfSpeechEnWord === e[0].meanings[0].partOfSpeechCode) {
-          if (wordRus !== e[0].meanings[0].translation.text) {
-            arrWordsRus.push(e[0].meanings[0].translation.text);
-          }
-        }
-      });
-    }
-  }
-  startGame(arrWordsRus, wordEn, voiceEn, imageEn, wordRus);
+  objectWords = data;
+  getPartOfSpeech(objectWords);
 }
 
 export default function initAudioCallGame() {
   const pageContent = document.querySelector('.page');
   pageContent.append(renderStartPage());
-  document.querySelector('.game__start').addEventListener('click', getDataAPI);
+  numberWordCount = 0;
+  getDataAPI();
+  arrTrueAnswer.length = 0;
+  arrFalseAnswer.length = 0;
+  document.querySelector('.game__start').addEventListener('click', () => {  
+    startGame();
+  });
 }

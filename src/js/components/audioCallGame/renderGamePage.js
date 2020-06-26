@@ -1,20 +1,9 @@
-function shuffleWords (array) {
-    array.sort(() => Math.random() - 0.5);
-}
-
 function playSound(voiceEn) {
     const audioElement = new Audio(`https://raw.githubusercontent.com/irinainina/rslang-data/master/${voiceEn}`);
     audioElement.play();
 }
 
-export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wordRus) { 
-    shuffleWords(arrWordsRus);
-
-    const newArrWordsRus = arrWordsRus.slice(0, 4);
-
-    newArrWordsRus.push(wordRus);
-    shuffleWords(newArrWordsRus);
-
+export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) { 
     const fragment = document.createDocumentFragment();
 
     const dropdownMenu = document.createElement('div');
@@ -25,7 +14,7 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wo
 
     const levelTitle = document.createElement('div');
     levelTitle.className = 'lvl__title_audioCall';
-    levelTitle.innerText = 'уровень';
+    levelTitle.innerText = 'раунд';
 
     const levelDiv = document.createElement('div');
     levelDiv.className = 'select lvl__select_audioCall'
@@ -41,7 +30,7 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wo
 
     const roundTitle = document.createElement('div');
     roundTitle.className = 'round__title_audioCall';
-    roundTitle.innerText = 'раунд';
+    roundTitle.innerText = 'уровень';
 
     const roundDiv = document.createElement('div');
     roundDiv.className = 'select round__select_audioCall'
@@ -85,6 +74,13 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wo
     gameButton.className = 'game__btn button';
     gameButton.innerText = 'Не знаю';
 
+    const gameStatistics = document.createElement('div');
+    gameStatistics.className = 'game__statistics_audioCall button';
+    gameStatistics.innerText = 'Статистика';
+
+    const statisticsDom = document.createElement('div');
+    statisticsDom.classList = 'statistics-audioCall modal-audioCall-hidden';
+
     dropdownRound.append(roundTitle);
     roundDiv.append(roundSelect);
     roundSelect.append(roundOption);
@@ -117,7 +113,7 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wo
         
         const gameWordsName = document.createElement('div');
         gameWordsName.className = 'words__name';
-        gameWordsName.innerText = newArrWordsRus[i].toLowerCase();
+        gameWordsName.innerText = arrWordsRus[i];
         
         gameWordsBlock.append(gameWordsItem);
         gameWordsItem.append(gameWordsNumber);
@@ -138,6 +134,7 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wo
     gamePage.append(dropdownMenu);
     gamePage.append(iconSound);
     gamePage.append(gameContainer);
+    gamePage.append(statisticsDom);
     
     fragment.append(gamePage);
 
