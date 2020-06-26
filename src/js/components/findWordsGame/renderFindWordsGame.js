@@ -18,7 +18,7 @@ class RenderFindWordsGame {
     renderStartPage() {
         this.createElement('div', 'find-words start-find-words','');
         this.createElement('div', 'game-info', '', 'find-words');
-        this.createElement('div', 'find-words__exit', '', 'find-words');
+        this.createElement('div', 'find-words__exit close', '', 'find-words');
         this.createElement('div', 'game-info__title', 'НАЙДИ СЛОВА', 'game-info');
         this.createElement('div', 'game-info__description description', '', 'game-info')
         this.createElement('div', 'description__first','Кликай по карточкам и запоминай', 'game-info__description');
@@ -31,7 +31,7 @@ class RenderFindWordsGame {
         const event = new Event('mainPageLoad');
 
         this.createElement('div', 'game-container hide-game-container', '', 'find-words');
-        this.createElement('div', 'find-words__exit', '', 'find-words');
+        this.createElement('div', 'find-words__exit close', '', 'find-words');
         this.createElement('div', 'find-words__title', 'НАЙДИ СЛОВА', 'find-words');
         this.createElement('div', 'game-container__controls controls', '', 'game-container');
         this.createElement('div', 'game-container__progress-bar progress-bar', '', 'game-container');
