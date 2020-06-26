@@ -1,9 +1,8 @@
 import RenderFindWordsGame from './renderFindWordsGame';
 
-export default class ActionFindWordsGame {
+class ActionFindWordsGame {
     constructor() {
-        this.renderFindWordsGame = new RenderFindWordsGame();
-        this.page = document.querySelector('.page');
+        this.renderFindWordsGame = RenderFindWordsGame;
         this.click = 'click';
         this.stackCard = [];
         this.coupleStat = {};
@@ -46,7 +45,7 @@ export default class ActionFindWordsGame {
     }
 
     clickCard() {
-        this.page.addEventListener('mainPageLoad', () => {
+        document.querySelector('.find-words').addEventListener('mainPageLoad', () => {
             const gameField = document.querySelector('.game-container__game-field');
             const delay = 1000;
 
@@ -83,10 +82,8 @@ export default class ActionFindWordsGame {
         if (firstCard === secondCard) {
             document.querySelector(`.ru-${firstCard}`).classList.add('correct');
             document.querySelector(`.eng-${firstCard}`).classList.add('correct');
-            console.log(progressLine.style.width)
             progressLine.style.width = `${parseInt(progressLine.style.width, radix) + progressStep}%`;
             progressValue.textContent = progressLine.style.width;
-            console.log(progressLine.style.width)
             this.coupleStat[`${firstCard}`] += increment;
             this.coupleStat.total += increment;
 
@@ -108,7 +105,7 @@ export default class ActionFindWordsGame {
     }
 
     repeatRoundButton() {
-        this.page.addEventListener('statLoad', () => {
+        document.querySelector('.find-words').addEventListener('statLoad', () => {
             const repeatButton = document.querySelector('.statistics__repeat-button');
 
             repeatButton.addEventListener(this.click, () => {
@@ -117,3 +114,5 @@ export default class ActionFindWordsGame {
         })
     }
 }
+
+export default new ActionFindWordsGame();

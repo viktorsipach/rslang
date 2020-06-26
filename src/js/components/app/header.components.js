@@ -40,7 +40,7 @@ export function addClickNavHandler() {
     const nav = document.querySelector('.navbar')
     nav.addEventListener('click', (e) => {
         const className = e.target.classList[1];
-        const findWordsGame = new FindWordsGame();
+        const findWordsGame = FindWordsGame;
         switch(className) {
             case 'navbar__words':
                 addActiveClassNav(e)

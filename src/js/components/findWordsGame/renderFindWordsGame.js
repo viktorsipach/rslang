@@ -1,6 +1,6 @@
 import {getRoundData} from '../../API/dataAPI';
 
-export default class RenderFindWordsGame {
+class RenderFindWordsGame {
     constructor() {
         this.target = 'page';
         this.getWords = getRoundData;
@@ -42,7 +42,7 @@ export default class RenderFindWordsGame {
         this.renderMainPageGameField();
         this.renderMainPageWords();
 
-        document.querySelector('.page').dispatchEvent(event);
+        document.querySelector('.find-words').dispatchEvent(event);
     }
 
     renderMainPageControls() {
@@ -160,6 +160,8 @@ export default class RenderFindWordsGame {
         this.createElement('div', 'button statistics__repeat-button', 'Повторить раунд', 'statistics__controls');
         this.createElement('div', 'button statistics__next-button', 'Следующий раунд', 'statistics__controls');
 
-        document.querySelector('.page').dispatchEvent(event);
+        document.querySelector('.find-words').dispatchEvent(event);
     }
 }
+
+export default new RenderFindWordsGame();
