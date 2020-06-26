@@ -1,6 +1,9 @@
 .login-page {
   display: block;
   height: 100vh;
+  background-image: url('../assets/img/bg-registration.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
   &.hidden {
     display: none;
   }
