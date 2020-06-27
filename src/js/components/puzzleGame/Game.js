@@ -1,5 +1,5 @@
 import { getRoundsAmountInLevel, getSCustomRoundData } from '../../API/dataAPI';
-import { checkActiveHints, createStatisticSentence } from './utils';
+import { checkActiveHints, createStatisticSentence, mixSentenceWords, getPaintingInfo, getPaintingImageSrc } from './utils';
 import Sentence from './Sentence';
 import renderStatisticsModal from './renderStatistics';
 
@@ -54,7 +54,8 @@ export default class Game {
     RESULTBUTTON.classList.add('hidden');
     
     await this.renderRoundData();
-    document.querySelectorAll('.results-container>.result__sentence').forEach((el) => this.resultSentences.push(el));
+    const RESULT_SENTENCE_WORDS = document.querySelectorAll('.results-container>.result__sentence');
+    RESULT_SENTENCE_WORDS.forEach((element) => this.resultSentences.push(element));
     checkActiveHints();
     this.startSentence();
   }
@@ -62,8 +63,8 @@ export default class Game {
   async renderRoundData() {
     const fragment = document.createDocumentFragment();
     const roundData = await getSCustomRoundData(this.level, this.round, this.wordsPerSentence, this.wordsPerRound);
-    roundData.forEach((el) => {
-      let sentence = new Sentence(el);
+    roundData.forEach((element) => {
+      let sentence = new Sentence(element);
       this.dataSentencesObjects.push(sentence);
       sentence.textExample = sentence.textExample.replace(/<b>/, '').replace(/<\/b>/, '');
       sentence.status = 'iKnow';
@@ -73,29 +74,52 @@ export default class Game {
       sentenceContainer.className = 'sentence result__sentence';
       fragment.append(sentenceContainer);
     });
-    document.querySelector('.results-container').innerHTML = '';
-    document.querySelector('.results-container').append(fragment);
+    const RESULTS_CONTAINER = document.querySelector('.results-container');
+    RESULTS_CONTAINER.innerHTML = '';
+    RESULTS_CONTAINER.append(fragment);
+  }
+
+  setSentenceWordsBackgroundSetting() {
+    const words = document.querySelectorAll('.data__sentence>.word-container');
+    let posX = 0;
+    let posY = 0;
+    let bufferX = 0;
+    const sizeX = 832;
+    const sizeY = 468;
+    words.forEach((element) => {
+      const wordElement = element;
+      posY = this.currentSentenceNumber*(-46);
+      wordElement.style.backgroundImage =   `none`;
+      wordElement.style.backgroundSize = `${sizeX}px ${sizeY}px`;
+      wordElement.style.backgroundPosition = `${posX}px ${posY}px`;
+      wordElement.style.maxWidth = `${element.offsetWidth}px`;
+      bufferX += element.offsetWidth;
+      posX = sizeX - bufferX;
+    });
+    this.correctWordsOrder = words;
   }
 
   startSentence() {
     document.querySelector('.hints__sentence').textContent = '';
     this.isSentenceCompleted = false;
+
     const dataWords = document.querySelectorAll('.result__sentence.current>.word-container');
-    dataWords.forEach((el) => el.classList.remove('true'));
-    this.resultSentences.forEach((el) => el.classList.remove('current'));
+    dataWords.forEach((element) => element.classList.remove('true'));
+    dataWords.forEach((element) => element.classList.remove('current'));
+
+    this.resultSentences.forEach((element) => element.classList.remove('current'));
     this.currentDataSentence = this.dataSentences[this.currentSentenceNumber];
     this.currentResultSentence = this.resultSentences[this.currentSentenceNumber];
     this.currentDataSentenceObject = this.dataSentencesObjects[this.currentSentenceNumber];
     this.currentResultSentence.classList.add('active');
     this.currentResultSentence.classList.add('current');
 
-    for (let i = 0; i < this.currentDataSentenceObject.length; i += 1) {
-      const wordContainer = document.createElement('span');
-      wordContainer.className = 'word-container';
-      this.currentResultSentence.append(wordContainer);
-    }
-    document.querySelector('.data-container').innerHTML = '';
-    document.querySelector('.data-container').append(this.currentDataSentence);
+    const DATA_CONTAINER = document.querySelector('.data-container');
+    DATA_CONTAINER.innerHTML = '';
+    DATA_CONTAINER.append(this.currentDataSentence);
+
+    this.setSentenceWordsBackgroundSetting();
+    mixSentenceWords();
     this.checkGameStatus();
     this.showHintsAtBegin();
   }
@@ -131,16 +155,32 @@ export default class Game {
       this.isSentenceCompleted = true;
       this.currentSentenceNumber += 1;
     }
+
     if (this.currentSentenceNumber === 10) {
       RESULTBUTTON.classList.remove('hidden');
+      const words = document.querySelectorAll('.word-container');
+      words.forEach((element) => {
+        const wordElement = element;
+        wordElement.style.border = 'none';
+      });
+
+      const sentences = document.querySelectorAll('.result__sentence');
+      sentences.forEach((element) => {
+        element.classList.remove('current');
+      })
+
+      const pictureInfo = getPaintingInfo(this.level, this.round);
+      document.querySelector('.data-container').textContent = pictureInfo;
     }
   }
 
   buildCurrentSentence() {
     if (this.currentDataSentenceObject) {
       this.currentDataSentenceObject.status = 'iDontKnow';
-      this.currentDataSentenceObject.buildSentence();
-    }
+      this.correctWordsOrder.forEach((element) => {
+        document.querySelector('.result__sentence.current').append(element);
+      });
+    } 
   }
 
   pronounceCurrentSentence() {
@@ -152,7 +192,7 @@ export default class Game {
   }
 
   showCurrentBckImage() {
-    this.currentDataSentenceObject.showBckImage();
+    this.currentDataSentenceObject.showBckImage(this.level, this.round);
   }
 
   showHintsAtBegin() {
@@ -173,7 +213,6 @@ export default class Game {
     if (!this.currentDataSentenceObject.isTranslationHintUsed) {
       this.translateCurrentSentence();
     }
-
     if (!this.currentDataSentenceObject.isPronunciationHintUsed) {
       if ((localStorage.getItem('autoPronunciation') === 'true')) {
         this.pronounceCurrentSentence();
@@ -184,26 +223,42 @@ export default class Game {
     }
   }
 
-  showRoundStatistic() {
-    document.querySelector('.page'). append(renderStatisticsModal());
+  renderPaintingInfoForStatisticPage() {
+    const paintingSrc = getPaintingImageSrc(this.level, this.round);
+    document.querySelector('.painting__image').style.backgroundImage = paintingSrc;
 
-    document.querySelector('.statistic-title').textContent = `Level ${this.level} Round ${this.round}`;
+    const paintingInfo = getPaintingInfo(this.level, this.round);
+    document.querySelector('.painting__info').textContent = paintingInfo;
+  }
+
+  renderSentencesStatistics() {
     const iDontKnowFragment = document.createDocumentFragment();
     const iKnowFragment = document.createDocumentFragment();
-    this.dataSentencesObjects.forEach((el) => {
-      if (el.status === 'iDontKnow') {
-        const sentence = createStatisticSentence(el);
+    let iKnowSentencesCount = 0;
+    let iDontKnowSentencesCount = 0;
+
+    this.dataSentencesObjects.forEach((element) => {
+      if (element.status === 'iDontKnow') {
+        iDontKnowSentencesCount += 1;
+        const sentence = createStatisticSentence(element);
         iDontKnowFragment.append(sentence);
       }
-      if (el.status === 'iKnow') {
-        const sentence = createStatisticSentence(el);
+      if (element.status === 'iKnow') {
+        iKnowSentencesCount += 1;
+        const sentence = createStatisticSentence(element);
         iKnowFragment.append(sentence);
       }
     });
+    document.querySelector('.iDontKnowSentences').append(iDontKnowFragment);
+    document.querySelector('.iKnowSentences').append(iKnowFragment);
+    document.querySelector('.iKnowSentences-count').textContent = iKnowSentencesCount;
+    document.querySelector('.iDontKnowSentences-count').textContent = iDontKnowSentencesCount;
+  }
 
-    const IDONTKNOWSENTENCES = document.querySelector('.iDontKnowSentences');
-    const IKNOWSENTENCES = document.querySelector('.iKnowSentences');
-    IDONTKNOWSENTENCES.append(iDontKnowFragment);
-    IKNOWSENTENCES.append(iKnowFragment);
+  showRoundStatistic() {
+    document.querySelector('.page'). append(renderStatisticsModal());
+    document.querySelector('.statistic-title').textContent = `Level ${this.level} Round ${this.round}`;
+    this.renderPaintingInfoForStatisticPage();
+    this.renderSentencesStatistics();
   }
 }

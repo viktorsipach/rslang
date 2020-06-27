@@ -92,6 +92,9 @@
 
 .game__image {
     padding: 10rem 0rem 5rem;
+    @include media-mobile {
+      padding-top: 20rem;
+    }
 }
 
 .image.image_audioCall { 
@@ -100,7 +103,7 @@
     border-radius: 50%;
     margin: 0 auto;
     overflow: hidden;
-    border: .5rem solid #fff;
+    border: .5rem solid $color-light;
     display: flex;
     justify-content: center;
     opacity: 0;
@@ -180,8 +183,8 @@
     display: flex;
     justify-content: space-evenly;
     padding: 10rem 0 15rem;
-    @include media-tablet {
-      flex-wrap: wrap;
+    flex-wrap: wrap;
+    @include media-tablet {  
       padding: 5rem 0;
     }
 }
@@ -258,14 +261,132 @@
 .game__iconSound {
   position: absolute;
   left: 3rem;
-  top: 12rem;
+  top: 15rem;
   width: 3rem;
   height: 3rem;
   background: url('/../../assets/img/speaker.svg');
+  background-color: $color-violet;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 1rem;
+  background-size: 65%;
+  background-position: center;
+  background-repeat: no-repeat;
   &:hover {
     cursor: pointer;
+    background-color: #54358e;
+  }
+  @include media-tablet {
+    top: 16rem;
   }
 }
 .game__iconSound.active {
   background: url('/../../assets/img/mute.svg');
+  background: url(/assets/img/mute.svg);
+  background-size: 65%;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-color: $color-violet;
+  &:hover {
+    cursor: pointer;
+    background-color: #54358e;
+  }
+}
+
+.game__statistics_audioCall {
+	position: absolute;
+  left: 3rem;
+  top: 8rem;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  padding: 2rem 1rem;
+  letter-spacing: 0.5rem;
+  @include media-tablet {
+    top: 11rem;
+    padding: 1.5rem 1rem;
+  }
+}
+
+.statistics-audioCall {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #00000090;
+}
+
+.modal-audioCall {
+  width: 400px;
+  height: auto;
+  max-height: 85vh;
+  border: 3px solid #f2f2f2;
+  vertical-align: middle;
+  background: #8d00a8ab;
+  display: flex;
+  flex-direction: row;
+  color: $color-light;
+  padding: 40px;
+  word-break: break-word;
+  overflow: auto;
+  position: relative;
+  font-size: 3rem;
+  justify-content: space-evenly;
+}
+
+.modal-audioCall-hidden {
+  display: none;
+}
+.modal__close {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  width: 3rem;
+  height: 3rem;
+  opacity: 1;
+  &:hover {
+    opacity: 0.3;
+    cursor: pointer;
+  }
+  &::before, 
+  &::after {
+    position: absolute;
+    left: 1.5rem;
+    content: "";
+    height: 3rem;
+    width: 0.2rem;
+    background-color: #ffffffc7;
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
+}
+
+.statistics-audioCall__false .statistics-audioCall__title {
+  color: $color-wrong;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: $color-light;
+  border-radius: 0.5rem;
+}
+
+.statistics-audioCall__true .statistics-audioCall__title {
+  color: $color-correct;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: $color-light;
+  border-radius: 0.5rem;
+}
+.statistics-audioCall__words p {
+  margin-bottom: 1rem;
 }

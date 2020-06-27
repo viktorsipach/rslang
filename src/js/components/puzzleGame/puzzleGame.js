@@ -62,9 +62,12 @@ export default function initPuzzleGame() {
       checkActiveHints();
 
       if (event.target.closest('.data__sentence') && event.target.classList.contains('data__word')) {
-        document.querySelector('.result__sentence>.word-container:empty').append(event.target);
+        const element = document.querySelector('.result__sentence.current');
+        element.append(event.target.parentNode);
       } else if (event.target.closest('.result__sentence') && event.target.classList.contains('data__word')) {
-        document.querySelector('.data__sentence>.word-container:empty').append(event.target);
+        const element = document.querySelector('.data__sentence');
+        element.append(event.target.parentNode);
+
       } else if (event.target.classList.contains('dontKnow')) {
         game.buildCurrentSentence();
       } else if (event.target.classList.contains('check')) {
@@ -88,7 +91,7 @@ export default function initPuzzleGame() {
             game.isFinished = true;
           }
         }
-      } else if (event.target.classList.contains('results') && event.target.classList.contains('game__button')) {
+      } else if (event.target.classList.contains('results') && event.target.classList.contains('puzzleGame__button')) {
         game.showRoundStatistic();
         
         document.querySelector('.puzzle__statistic').addEventListener('click', (eventStatisticPage) => {
@@ -125,6 +128,11 @@ export default function initPuzzleGame() {
     // drag events
     document.ondragstart = function onDragStart(event) {
       event.dataTransfer.setData('text/plain', event.target.dataset.word);
+      if (event.target.parentNode.parentNode.classList.contains('result__sentence')) {
+        event.dataTransfer.setData('text/container', 'result__sentence');
+      } else if (event.target.parentNode.parentNode.classList.contains('data__sentence')) {
+        event.dataTransfer.setData('text/container', 'data__sentence');
+      }  
     };
 
     document.ondragover = function onDragOver(event) {
@@ -140,18 +148,26 @@ export default function initPuzzleGame() {
 
     document.ondrop = function onDrop(event) {
       event.preventDefault();
-      const data = event.dataTransfer.getData('text/plain');
-      const dropStartElement = document.querySelector(`[data-word=${data}]`);
-      const dropStartContainer = dropStartElement.parentElement;
-      const dropEndElement = event.target;
-      if (event.target.classList.contains('word-container') && event.target.closest('.result__sentence')) {
-        dropEndElement.append(dropStartElement);
-        dropEndElement.classList.remove('dragOver');
-      } else if (event.target.classList.contains('data__word') && event.target.closest('.result__sentence')) {
-        const dropEndContainer = dropEndElement.parentElement;
-        dropEndContainer.append(dropStartElement);
-        dropStartContainer.append(dropEndElement);
-        dropEndContainer.classList.remove('dragOver');
+      const dataElement = event.dataTransfer.getData('text/plain');
+      const dataContainer = event.dataTransfer.getData('text/container');
+      let dropEndElement;
+      let dropStartElement;
+      if (event.target.closest('.result__sentence.current')) {
+        if (event.target.classList.contains('data__word')) {
+          dropEndElement = event.target.parentNode.parentNode;
+          dropStartElement = document.querySelector(`.result__sentence.current>.word-container>[data-word=${dataElement}]`).parentElement;
+          const siblingElement = event.target.parentNode;
+          dropEndElement.insertBefore(dropStartElement,  siblingElement);
+          siblingElement.classList.remove('dragOver');
+        } else {
+          if (dataContainer === 'result__sentence') {
+            dropStartElement = document.querySelector(`.result__sentence.current>.word-container>[data-word=${dataElement}]`).parentElement;
+          } else if (dataContainer === 'data__sentence') {
+            dropStartElement = document.querySelector(`.data__sentence>.word-container>[data-word=${dataElement}]`).parentElement;
+          }
+          dropEndElement = event.target;
+          dropEndElement.append(dropStartElement);
+        }
       }
       game.checkGameStatus();
     };
