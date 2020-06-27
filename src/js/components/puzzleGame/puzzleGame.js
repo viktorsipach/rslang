@@ -4,6 +4,7 @@ import Game from './Game';
 import { checkActiveHints } from './utils';
 
 export default function initPuzzleGame() {
+  
 
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
@@ -18,6 +19,7 @@ export default function initPuzzleGame() {
 
     const game = new Game( { level, round });
     game.startNewLevelRound();
+
 
     // click events
     document.querySelector('.game__puzzle').addEventListener('click', (event) => {

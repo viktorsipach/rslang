@@ -27,19 +27,19 @@
   }
   @include media-laptop {
     min-width: 2.5rem;
-    min-height: 2.5rem;
-    margin-left: 0.5rem;
+    //min-height: 2.5rem;
+    // margin-left: 0.5rem;
   }
   @include media-tablet {
     min-width: 2rem;
-    min-height: 2rem;
-    margin-left: 0.25rem;
-    border: 1px solid $color-violet;
+   // min-height: 2rem;
+    // margin-left: 0.25rem;
+    //border: 1px solid $color-violet;
   }
   @include media-mobile {
     min-width: 1.5rem;
-    min-height: 1.5rem;
-    margin-left: 0.1rem;
+   // min-height: 1.5rem;
+    // margin-left: 0.1rem;
   }
 }
 
@@ -60,6 +60,13 @@
   border-right: 2px solid $color-violet;
   border-top: 2px solid $color-violet;
   border-bottom: 2px solid $color-violet;
+  @include media-laptop {
+    height: 1.25em;
+  }
+  @include media-tablet {
+    height:  0;
+    border: none;
+  }
 }
 
 .data__word .right {
@@ -68,6 +75,14 @@
   right: -0.9em;
   z-index: 10;
   background-color: $color-puzzle;
+  @include media-laptop {
+    width: 0.7em;
+    top: 0.2em;
+    right: -0.8em;
+  }
+  @include media-tablet {
+    width: 0;
+  }
   &.last {
     width: 0;
     height: 0;
@@ -77,9 +92,12 @@
 .data__word .left { 
   z-index: 0;
   width: 0.75em;
-  left: -0.1em;
-  top: 0.3em;
+  left: -0.2em;
+  top: 0.2em;
   background-color: $color-light;
+  @include media-tablet {
+    width: 0;
+  }
   &.first {
     width: 0; 
     height: 0; 

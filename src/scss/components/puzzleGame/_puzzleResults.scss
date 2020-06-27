@@ -3,20 +3,16 @@
   width: fit-content;
   height: fit-content;
   margin: 2rem auto;
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 700;
   @include media-laptop {
-    width: 100%;
-    font-size: 1.75rem;
-    height: 35rem;
+    font-size: 1.5rem;
   }
   @include media-tablet {
     font-size: 1.2rem;
-    height: 30rem;
   }
   @include media-mobile {
     font-size: 0.9rem;
-    height: 25rem;
   }
 }
 
@@ -26,4 +22,16 @@
   border: 3px solid $color-primary;
   width: 83.2rem;
   height: 46.8rem;
+  @include media-laptop {
+    width: 67rem;
+    height: 37.8rem;
+  }
+  @include media-tablet {
+    width: 36rem;
+    height: 21.3rem;
+  }
+  @include media-mobile {
+    width: 28rem;
+    height: 16rem;
+  }
 }

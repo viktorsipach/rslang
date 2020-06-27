@@ -14,8 +14,11 @@
 }
 
 .modal-container {
+  position: absolute;
+  z-index: 20;
   width: 80%;
-  height: -webkit-fill-available;
+  min-height: fit-content;
+
   margin: 5rem auto;
   background-color: lighten($color-violet, $amount: 25);
 }

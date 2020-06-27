@@ -14,13 +14,14 @@
       display: flex;
     }
   }
+
   @include media-laptop {
     height: 3.5rem;
   }
   @include media-tablet {
-    height: 3rem;
+    height: 2.1rem;
   }
   @include media-mobile {
-    height: 2.5rem;
+    height: 1.6rem;
   }
 }

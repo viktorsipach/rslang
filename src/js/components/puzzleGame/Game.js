@@ -84,11 +84,14 @@ export default class Game {
     let posX = 0;
     let posY = 0;
     let bufferX = 0;
-    const sizeX = 832;
-    const sizeY = 468;
+    const el = document.querySelector('.results-container');
+    console.log(el.offsetWidth, el.offsetHeight);
+    const sizeX = el.offsetWidth;
+    const sizeY = el.offsetHeight;
+    const sentenceHeight = sizeY/10;
     words.forEach((element, index) => {
       const wordElement = element;
-      posY = this.currentSentenceNumber*(-46);
+      posY = this.currentSentenceNumber*(-sentenceHeight);
       wordElement.style.backgroundImage =   `none`;
       wordElement.style.backgroundSize = `${sizeX}px ${sizeY}px`;
       wordElement.style.backgroundPosition = `${posX}px ${posY}px`;

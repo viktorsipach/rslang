@@ -125,6 +125,7 @@ function renderGameButtons() {
 }
 
 export default function renderMainPage() {
+
   const mainPage = document.createElement('div');
   mainPage.className = 'main__page game__puzzle';
   mainPage.append(renderMainPageMenu());
@@ -132,6 +133,12 @@ export default function renderMainPage() {
   mainPage.append(renderGameResults());
   mainPage.append(renderGameData());
   mainPage.append(renderGameButtons());
-  return mainPage;
+
+  const mainPageWrapper = document.createElement('div');
+  mainPageWrapper.className = 'game__puzzle-wrapper';
+  mainPageWrapper.append(mainPage);
+
+  return mainPageWrapper;
+  
 }
           
