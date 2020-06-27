@@ -35,15 +35,15 @@ export default class Sentence {
     const expectedSentence = this.textExample.split(' ');
     const actualSentence = getActualSentence();
     let errors = 0;
-    actualSentence.forEach((el) => {
-      el.parentElement.classList.remove('true');
-      el.parentElement.classList.remove('false');
+    actualSentence.forEach((element) => {
+      element.classList.remove('true');
+      element.classList.remove('false');
     });
     for (let i = 0; i < expectedSentence.length; i += 1) {
       if (expectedSentence[i] === actualSentence[i].textContent) {
-        actualSentence[i].parentElement.classList.add('true');
+        actualSentence[i].classList.add('true');
       } else {
-        actualSentence[i].parentElement.classList.add('false');
+        actualSentence[i].classList.add('false');
         errors += 1;
       }
     }
@@ -68,10 +68,12 @@ export default class Sentence {
     const imgSrcPath = getPaintingImageSrc(level, round);
     const wordContainers = document.querySelectorAll('.current.word-container');
     wordContainers.forEach((el) => {
-      const currentWord = el;
-      currentWord.style.boxShadow = 'none';
-      currentWord.style.borderRadius = '0';
-      currentWord.style.backgroundImage =  imgSrcPath;
+      const wordElement = el;
+      wordElement.style.backgroundImage =  imgSrcPath;
+      wordElement.style.backgroundColor = 'transparent';
+      wordElement.classList.add('show');
+      wordElement.querySelector('.right').style.backgroundColor = 'transparent';
+      wordElement.querySelector('.right').style.backgroundImage =  imgSrcPath;
     }); 
   }
 

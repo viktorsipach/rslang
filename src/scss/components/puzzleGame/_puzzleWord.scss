@@ -2,17 +2,28 @@
   display: flex;
   min-width: 5rem;
   height: 100%;
-  border-radius: 5px;
+  border-radius: 1rem;
   box-sizing: border-box;
   border: 2px solid $color-violet;
-  &.dragOver {
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  }
+  background-color: $color-puzzle;
+  text-shadow: -2px 0 2px $color-light, 2px 0 2px $color-light, 0 2px 2px $color-light;
   &.true {
     box-shadow: 0 0 20px rgba(0,255,127, 0.5);
   }
   &.false {
     box-shadow: 0 0 20px rgba(255,69,0,0.5);
+  }
+  &.show {
+    border-left-color: transparent;
+    border-right-color: transparent;
+    &.dragOver {
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+  }
+  
+  &:hover {
+    text-shadow: -2px 0 2px $color-violet, 2px 0 2px $color-violet, 0 2px 2px $color-violet;
+
   }
   @include media-laptop {
     min-width: 2.5rem;
@@ -32,19 +43,45 @@
   }
 }
 
-.word {
-  display: inline-flex;
+.data__word {
   width: 100%;
+  position: relative;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 5px;
-  border: none;
-  border-radius: 5px;
   cursor: grab;
-  @include media-tablet {
-    padding: 3px 1px;
+}
+
+.data__word .right,
+.data__word .left {
+  height: 1.5em;
+  position: absolute;
+  border-radius: 0 100% 100% 0 / 0 50% 50% 0;
+  border-right: 2px solid $color-violet;
+  border-top: 2px solid $color-violet;
+  border-bottom: 2px solid $color-violet;
+}
+
+.data__word .right {
+  width: 0.80em;
+  top: 0.3em;
+  right: -0.9em;
+  z-index: 10;
+  background-color: $color-puzzle;
+  &.last {
+    width: 0;
+    height: 0;
   }
-  @include media-tablet {
-    padding: 2px 0.5px;
+}
+
+.data__word .left { 
+  z-index: 0;
+  width: 0.75em;
+  left: -0.1em;
+  top: 0.3em;
+  background-color: $color-light;
+  &.first {
+    width: 0; 
+    height: 0; 
   }
 }

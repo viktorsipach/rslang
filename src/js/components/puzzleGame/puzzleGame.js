@@ -60,14 +60,18 @@ export default function initPuzzleGame() {
         }
       }
       checkActiveHints();
-
-      if (event.target.closest('.data__sentence') && event.target.classList.contains('data__word')) {
-        const element = document.querySelector('.result__sentence.current');
-        element.append(event.target.parentNode);
-      } else if (event.target.closest('.result__sentence') && event.target.classList.contains('data__word')) {
-        const element = document.querySelector('.data__sentence');
-        element.append(event.target.parentNode);
-
+      if (event.target.closest('.data__sentence') && event.target.closest('.data__word')) {
+        let element = event.target;
+        if (element.classList.contains('left') || element.classList.contains('right') || element.classList.contains('text')) {
+          element = event.target.parentNode;
+        }
+        document.querySelector('.result__sentence.current').append(element);
+      } else if (event.target.closest('.result__sentence') && event.target.closest('.data__word')) {
+        let element = event.target;
+        if (element.classList.contains('left') || element.classList.contains('right') || element.classList.contains('text')) {
+          element = event.target.parentNode;
+        }
+        document.querySelector('.data__sentence').append(element);
       } else if (event.target.classList.contains('dontKnow')) {
         game.buildCurrentSentence();
       } else if (event.target.classList.contains('check')) {
@@ -128,43 +132,51 @@ export default function initPuzzleGame() {
     // drag events
     document.ondragstart = function onDragStart(event) {
       event.dataTransfer.setData('text/plain', event.target.dataset.word);
-      if (event.target.parentNode.parentNode.classList.contains('result__sentence')) {
+      if (event.target.parentNode.classList.contains('result__sentence')) {
         event.dataTransfer.setData('text/container', 'result__sentence');
-      } else if (event.target.parentNode.parentNode.classList.contains('data__sentence')) {
+      } else if (event.target.parentNode.classList.contains('data__sentence')) {
         event.dataTransfer.setData('text/container', 'data__sentence');
       }  
     };
 
     document.ondragover = function onDragOver(event) {
       event.preventDefault();
-      const elements = document.querySelectorAll('.result__sentence.current>.word-container');
-      elements.forEach((el) => el.classList.remove('dragOver'));
-      if (event.target.classList.contains('word-container') && event.target.closest('.result__sentence.current')) {
-        event.target.classList.add('dragOver');
-      } else if (event.target.classList.contains('data__word') && event.target.closest('.result__sentence.current')) {
-        event.target.parentElement.classList.add('dragOver');
-      }
+      const element = event.target;
+      const wordElements = document.querySelectorAll('.result__sentence.current>.word-container');
+      wordElements.forEach((el) => el.classList.remove('dragOver'));
+      if (element.classList.contains('word-container') && element.closest('.result__sentence.current')) {
+        element.classList.add('dragOver');
+      }  else if (element.classList.contains('left') || element.classList.contains('right') || element.classList.contains('text')) {
+        if (element.closest('.result__sentence.current')) {
+          element.parentElement.classList.add('dragOver');
+        }
+      }      
     };
 
     document.ondrop = function onDrop(event) {
       event.preventDefault();
+      const element = event.target;
       const dataElement = event.dataTransfer.getData('text/plain');
       const dataContainer = event.dataTransfer.getData('text/container');
       let dropEndElement;
       let dropStartElement;
-      if (event.target.closest('.result__sentence.current')) {
-        if (event.target.classList.contains('data__word')) {
-          dropEndElement = event.target.parentNode.parentNode;
-          dropStartElement = document.querySelector(`.result__sentence.current>.word-container>[data-word=${dataElement}]`).parentElement;
-          const siblingElement = event.target.parentNode;
+      if (element.closest('.result__sentence.current')) {
+        if (dataContainer === 'result__sentence') {
+          dropStartElement = document.querySelector(`.result__sentence.current>[data-word=${dataElement}]`);  
+        } else if (dataContainer === 'data__sentence') {
+          dropStartElement = document.querySelector(`.data__sentence>[data-word=${dataElement}]`);
+        }
+        if (element.classList.contains('data__word')) {
+          dropEndElement = element.parentNode; 
+          const siblingElement = element;
+          dropEndElement.insertBefore(dropStartElement,  siblingElement);
+          siblingElement.classList.remove('dragOver');
+        } else if (element.classList.contains('left') || element.classList.contains('right') || element.classList.contains('text')) {
+          dropEndElement = element.parentNode.parentNode; 
+          const siblingElement = element.parentElement;
           dropEndElement.insertBefore(dropStartElement,  siblingElement);
           siblingElement.classList.remove('dragOver');
         } else {
-          if (dataContainer === 'result__sentence') {
-            dropStartElement = document.querySelector(`.result__sentence.current>.word-container>[data-word=${dataElement}]`).parentElement;
-          } else if (dataContainer === 'data__sentence') {
-            dropStartElement = document.querySelector(`.data__sentence>.word-container>[data-word=${dataElement}]`).parentElement;
-          }
           dropEndElement = event.target;
           dropEndElement.append(dropStartElement);
         }

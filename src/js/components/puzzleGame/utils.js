@@ -6,20 +6,29 @@ import paintings5 from './paintingsData/level5';
 import paintings6 from './paintingsData/level6';
 
 function createWordElement(word, numb, wordLength) {
+  const wordText = document.createElement('span');
+  wordText.className = 'text';
+  wordText.textContent = word;
+
+  const segmentLeft = document.createElement('span');
+  segmentLeft.className = 'left';
+
+  const segmentRight = document.createElement('span');
+  segmentRight.className = 'right';
+
   const wordContainer = document.createElement('span');
-  wordContainer.className = 'word-container current';
+  wordContainer.className = 'word-container data__word current';
+  wordContainer.dataset.word = `w${numb}`;
+  wordContainer.setAttribute('draggable', 'true');
   wordContainer.style.flexGrow = wordLength;
-  const wordElement = document.createElement('span');
-  wordElement.className = 'word data__word';
-  wordElement.dataset.word = `w${numb}`;
-  wordElement.setAttribute('draggable', 'true');
-  wordElement.textContent = word;
-  wordContainer.append(wordElement);
+  wordContainer.append(segmentLeft);
+  wordContainer.append(segmentRight);
+  wordContainer.append(wordText);
   return wordContainer;
 }
 
 function getActualSentence() {
-  const dataWords = document.querySelectorAll('.result__sentence.current>.word-container>.data__word');
+  const dataWords = document.querySelectorAll('.result__sentence.current>.word-container');
   const actualSentenceArray = [];
   dataWords.forEach((el) => {
     actualSentenceArray.push(el);

@@ -86,7 +86,7 @@ export default class Game {
     let bufferX = 0;
     const sizeX = 832;
     const sizeY = 468;
-    words.forEach((element) => {
+    words.forEach((element, index) => {
       const wordElement = element;
       posY = this.currentSentenceNumber*(-46);
       wordElement.style.backgroundImage =   `none`;
@@ -95,6 +95,18 @@ export default class Game {
       wordElement.style.maxWidth = `${element.offsetWidth}px`;
       bufferX += element.offsetWidth;
       posX = sizeX - bufferX;
+
+      const rightSegment = wordElement.querySelector('.right');
+      rightSegment.style.backgroundImage =   `none`;
+      rightSegment.style.backgroundSize = `${sizeX}px ${sizeY}px`;
+      rightSegment.style.backgroundPosition = `${posX}px ${posY + (-7)}px`;
+
+      if (index === 0) {
+        const leftSegment = element.querySelector('.left');
+        leftSegment.classList.add('first');
+      } else if (index === words.length - 1) {
+        rightSegment.classList.add('last');
+      }
     });
     this.correctWordsOrder = words;
   }
@@ -130,7 +142,7 @@ export default class Game {
       const CHECKBUTTON = document.querySelector('.game__buttons>.check');
       const CONTINUEBUTTON = document.querySelector('.game__buttons>.continue');
 
-      const resultSentenceLength = document.querySelectorAll('.result__sentence.current>.word-container>.data__word').length;
+      const resultSentenceLength = document.querySelectorAll('.result__sentence.current>.word-container').length;
       const dataSentenceLength = this.currentDataSentenceObject.length;
       if (this.isSentenceCompleted === true) {
         this.showHintsAtEnd();
@@ -162,6 +174,10 @@ export default class Game {
       words.forEach((element) => {
         const wordElement = element;
         wordElement.style.border = 'none';
+        wordElement.style.borderRadius = '0';
+        wordElement.querySelector('.left').style.border = 'none';
+        wordElement.querySelector('.left').style.backgroundColor = 'transparent';
+        wordElement.querySelector('.right').style.border = 'none';
       });
 
       const sentences = document.querySelectorAll('.result__sentence');
