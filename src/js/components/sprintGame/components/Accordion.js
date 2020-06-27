@@ -7,19 +7,18 @@ export default class Accordion {
   }
 
   init() {
-    const acc = document.getElementsByClassName("accordion");
-    let i;
-    for (i = 0; i < acc.length; i += 1) {
-      acc[i].addEventListener('click', () => {
-        this.classList.toggle('active');
-        const panel = this.nextElementSibling;
+    const accordions = document.querySelectorAll('.accordion');
+    accordions.forEach(accordion => {
+      accordion.addEventListener('click', () => {
+        accordion.classList.toggle('active');
+        const panel = accordion.nextElementSibling;
         if (panel.style.maxHeight) {
           panel.style.maxHeight = null;
         } else {
           panel.style.maxHeight = `${panel.scrollHeight}px`;
         }
       });
-    }
+    });
     return this;
   }
 }

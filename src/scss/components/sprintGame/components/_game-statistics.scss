@@ -6,6 +6,8 @@
     align-items: center;
     width: 50rem;
     height: 45rem;
+    box-sizing: border-box;
+    padding: 10px;
     border-radius: 2rem;
     background-color: $color-light;
   }

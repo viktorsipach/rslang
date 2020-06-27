@@ -65,21 +65,43 @@ class ContentBuilder {
     `;
 
     this.currentGameStatsMarkup = `
-      <div class="game-statistics__popup">
-        <div class="game-statistics__header">
-          <div class="game-statistics__score">
+      <div class="curtain">
+        <div class="game-statistics__popup">
+          <div class="game-statistics__header">
+            <div class="game-statistics__score">
+              1250
+            </div>
           </div>
-        </div>
-        <div class="game-statistics__main">
-          <div class="game-statistics__errors">
+          <div class="game-statistics__main">
+            <div class="game-statistics__errors">
+              <button class="accordion">Ошибки</button>
+              <div class="accordion__panel">
+                <ul class="game-statistics__list">
+                  <li class="game-statistics__list-item">word - перевод <i class="fa fa-play"></i></li>
+                  <li class="game-statistics__list-item">word - перевод <i class="fa fa-play"></i></li>
+                  <li class="game-statistics__list-item">word - перевод <i class="fa fa-play"></i></li>
+                  <li class="game-statistics__list-item">word - перевод <i class="fa fa-play"></i></li>
+                </ul>
+              </div>
+            </div>
+            <span class="divider"></span>
+            <div class="game-statistics__correct-answers">
+              <button class="accordion">Угаданные слова</button>
+              <div class="accordion__panel">
+                <ul class="game-statistics__list">
+                  <li class="game-statistics__list-item">word - перевод <i class="fa fa-play"></i></li>
+                  <li class="game-statistics__list-item">word - перевод <i class="fa fa-play"></i></li>
+                  <li class="game-statistics__list-item">word - перевод <i class="fa fa-play"></i></li>
+                  <li class="game-statistics__list-item">word - перевод <i class="fa fa-play"></i></li>
+                </ul>
+              </div>
+            </div>
           </div>
-          <div class="game-statistics__correct-answers">
+          <div class="game-statistics__footer">
+            <button class="button game-statistics__button_exit">
+              Закрыть
+            </button>
           </div>
-        </div>
-        <div class="game-statistics__footer">
-          <button class="button game-statistics__button_exit">
-            Закрыть
-          </button>
         </div>
       </div>
     `;
@@ -146,6 +168,11 @@ class ContentBuilder {
     return this;
   }
 
+  showStatistics(errors, correctAnswers) {
+    errors.forEach(error => console.log(error));
+    correctAnswers.forEach(correct => console.log(correct));
+    return this;
+  }
 }
 
 export default new ContentBuilder();
