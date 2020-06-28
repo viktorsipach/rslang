@@ -212,9 +212,7 @@ $color-exit: #ffffffc7;
 }
 .game-field__card-eng,
 .game-field__card-ru {
-    font-size: 4rem;
-    text-align: center;
-    line-height: 13rem;
+    font-size: 2rem;
     border-radius: 10px;
     width: 20rem;
     height: 14rem;
@@ -252,6 +250,14 @@ $color-exit: #ffffffc7;
     height: inherit;
     backface-visibility: hidden;
     background-color: $color-card-front;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card-ru__text {
+    width: 95%;
+    text-align: center;
+    overflow-wrap: break-word;
 }
 .card-eng__back,
 .card-ru__back {

@@ -77,11 +77,13 @@ class RenderFindWordsGame {
         for (let i = 0; i < 10; i += 1) {
             this.createElement('div', `game-field__card-eng card-eng eng-couple${i}`, '', 'game-field');
             this.createElement('div', 'card-eng__front', '', 'game-field__card-eng', i);
+            this.createElement('div', 'card-eng__text', '', 'card-eng__front', i);
             this.createElement('div', 'card-eng__back', '', 'game-field__card-eng', i);
             document.querySelector(`.eng-couple${i}`).setAttribute('data-couple', `couple${i}`);
 
             this.createElement('div', `game-field__card-ru card-ru ru-couple${i}`, '', 'game-field');
             this.createElement('div', 'card-ru__front', '', 'game-field__card-ru', i);
+            this.createElement('div', 'card-ru__text', '', 'card-ru__front', i);
             this.createElement('div', 'card-ru__back', '', 'game-field__card-ru', i);
             document.querySelector(`.ru-couple${i}`).setAttribute('data-couple', `couple${i}`);
         }
@@ -112,8 +114,8 @@ class RenderFindWordsGame {
         })
 
         data.forEach((elem, i) => {
-            document.querySelector(`.eng-couple${i}`).firstElementChild.textContent = `${elem.word}`;
-            document.querySelector(`.ru-couple${i}`).firstElementChild.textContent = `${elem.wordTranslate}`;
+            document.querySelector(`.eng-couple${i}`).firstElementChild.firstElementChild.textContent = `${elem.word}`;
+            document.querySelector(`.ru-couple${i}`).firstElementChild.firstElementChild.textContent = `${elem.wordTranslate}`;
         })
 
         setTimeout(() => {
