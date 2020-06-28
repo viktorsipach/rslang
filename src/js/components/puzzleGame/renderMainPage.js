@@ -109,14 +109,14 @@ function renderGameData() {
 
 function renderGameButton(buttonClass, buttonTitle) {
   const button = document.createElement('button');
-  button.className = `button game__button ${buttonClass}`;
+  button.className = `button puzzleGame__button ${buttonClass}`;
   button.textContent = buttonTitle;
   return button;
 }
 
 function renderGameButtons() {
   const gameButtons = document.createElement('div');
-  gameButtons.className = 'buttons game__buttons';
+  gameButtons.className = 'buttons game__buttons puzzle-game';
   gameButtons.append(renderGameButton('dontKnow', 'I don`t know'));
   gameButtons.append(renderGameButton('check hidden', 'Check'));
   gameButtons.append(renderGameButton('continue hidden', 'Continue'));
