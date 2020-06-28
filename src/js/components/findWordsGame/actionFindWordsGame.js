@@ -150,6 +150,7 @@ class ActionFindWordsGame {
 
             repeatButton.addEventListener(this.click, () => {
                 statistics.remove();
+                this.progressReset();
                 this.clearStatisticsAndStack();
                 this.changeCards();
             })
@@ -168,6 +169,7 @@ class ActionFindWordsGame {
 
             nextButton.addEventListener(this.click, () => {
                 statistics.remove();
+                this.progressReset();
                 this.clearStatisticsAndStack();
                 if (round === 60) {
                     document.querySelector('.level-select').value = level + increment;
