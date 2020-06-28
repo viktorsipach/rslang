@@ -1,4 +1,5 @@
 import RenderFindWordsGame from './renderFindWordsGame';
+import ErrorSound from '../../../assets/audio/error.mp3';
 
 class ActionFindWordsGame {
     constructor() {
@@ -85,6 +86,10 @@ class ActionFindWordsGame {
             this.coupleStat[`${firstCard}`] += increment;
             this.coupleStat.total += increment;
 
+            const correctSound = new Audio();
+            correctSound.src = `https://raw.githubusercontent.com/allihach/rslang-data/master/${event.target.dataset.audio}`;
+            correctSound.play();
+
             return;
         }
         if (firstCard !== secondCard) {
@@ -92,6 +97,10 @@ class ActionFindWordsGame {
             
             this.coupleStat[`${firstCard}`] += increment;
             this.coupleStat.total += increment;
+
+            const errorSound = new Audio();
+            errorSound.src = ErrorSound;
+            errorSound.play();
 
             setTimeout(() => {
                 document.querySelector(`.ru-${firstCard}`).classList.add('rotate');

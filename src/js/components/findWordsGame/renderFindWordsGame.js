@@ -117,6 +117,7 @@ class RenderFindWordsGame {
         data.forEach((elem, i) => {
             document.querySelector(`.eng-couple${i}`).firstElementChild.firstElementChild.textContent = `${elem.word}`;
             document.querySelector(`.ru-couple${i}`).firstElementChild.firstElementChild.textContent = `${elem.wordTranslate}`;
+            document.querySelector(`.eng-couple${i}`).lastElementChild.setAttribute('data-audio', `${elem.audio}`);
         })
 
         setTimeout(() => {
