@@ -28,6 +28,7 @@ const fallWord = () => {
             if (countHealth === 0) {
                 playSound('assets/audio/error.mp3');
                 setTimeout(() => savannaShortStatistics(), 500);
+                setTimeout(() => playSound('assets/audio/failure.mp3'), 500);
             } else {
                 playSound('assets/audio/error.mp3');
                 savannaHealth(countHealth);
