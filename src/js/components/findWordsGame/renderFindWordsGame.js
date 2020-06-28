@@ -109,6 +109,7 @@ class RenderFindWordsGame {
         const wordsPerRound = 10;
         const data = await this.getWords(level, round, wordsPerRound);
 
+        this.words = [];
         data.forEach((elem) => {
             this.words.push(`${elem.word} - ${elem.wordTranslate}`);
         })

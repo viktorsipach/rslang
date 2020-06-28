@@ -13,6 +13,7 @@ class FindWordsGame {
         this.actionFindWordsGame.clickCard();
         this.actionFindWordsGame.repeatRoundButton();
         this.actionFindWordsGame.changeLevelRound();
+        this.actionFindWordsGame.nextRoundButton();
     }
 }
 

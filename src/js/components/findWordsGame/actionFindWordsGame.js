@@ -32,10 +32,7 @@ class ActionFindWordsGame {
             document.querySelector('.find-words').innerHTML = '';
             this.renderFindWordsGame.renderMainPage();
             
-            document.querySelectorAll('.card-eng').forEach(( elem) => {
-            this.coupleStat[`${elem.dataset.couple}`] = this.reset;
-            });
-            this.coupleStat.total = this.reset;
+            this.clearStatisticsAndStack();
         }, delayFirst);
 
         setTimeout(() => {
@@ -56,7 +53,7 @@ class ActionFindWordsGame {
                 this.stackCard.push(event.target.parentElement.dataset.couple);
                 this.checkCard(event);
 
-                if (!document.querySelectorAll('.rotate').length) {
+                if (document.querySelectorAll('.rotate').length) {
                     setTimeout(() => {
                         this.renderFindWordsGame.renderMainPageResult(this.coupleStat);
                     }, delay);
@@ -149,11 +146,47 @@ class ActionFindWordsGame {
     repeatRoundButton() {
         document.querySelector('.find-words').addEventListener('statLoad', () => {
             const repeatButton = document.querySelector('.statistics__repeat-button');
+            const statistics = document.querySelector('.statistics');
 
             repeatButton.addEventListener(this.click, () => {
-                this.startRound();
+                statistics.remove();
+                this.clearStatisticsAndStack();
+                this.changeCards();
             })
         })
+    }
+
+    nextRoundButton() {
+        document.querySelector('.find-words').addEventListener('statLoad', () => {
+            const nextButton = document.querySelector('.statistics__next-button');
+            const statistics = document.querySelector('.statistics');
+            const base = 10;
+            const level = parseInt(document.querySelector('.level-select').value, base);
+            const round = parseInt(document.querySelector('.page-select').value, base);
+            const increment = 1;
+            const startValue = 1;
+
+            nextButton.addEventListener(this.click, () => {
+                statistics.remove();
+                this.clearStatisticsAndStack();
+                if (round === 60) {
+                    document.querySelector('.level-select').value = level + increment;
+                    document.querySelector('.page-select').value = startValue;
+                } else {
+                    document.querySelector('.page-select').value = round + increment;
+                }
+                this.changeCards();
+            });
+        })
+    }
+
+    clearStatisticsAndStack() {
+        document.querySelectorAll('.card-eng').forEach(( elem) => {
+            this.coupleStat[`${elem.dataset.couple}`] = this.reset;
+        });
+        this.coupleStat.total = this.reset;
+
+        this.stackCard = [];
     }
 }
 
