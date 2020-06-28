@@ -44,11 +44,7 @@
     width: 3.5rem;
     height: 3.5rem;
     margin-right: 0.5rem;
-    &:hover {
-      background-color: $color-violet;
-      background-color: darken($color: $color-violet, $amount: 15);
-    }
-    &.active {
+    &:hover, &.active {
       background-color: $color-violet;
       background-color: darken($color: $color-violet, $amount: 15);
     }

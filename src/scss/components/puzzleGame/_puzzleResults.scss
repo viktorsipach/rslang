@@ -6,13 +6,12 @@
 }
 
 .results-container {
+  width: 83.2rem;
+  height: 46.8rem;
   display: flex;
   flex-direction: column;
   border: 2px solid $color-primary;
   border-radius: 1rem;
-  
-  width: 83.2rem;
-  height: 46.8rem;
   @include media-laptop {
     width: 67rem;
     height: 37.8rem;

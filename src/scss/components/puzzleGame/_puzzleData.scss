@@ -3,6 +3,15 @@
   margin: 0 auto;
   border: 1px solid $color-primary;
   border-radius: 5px;
+  @include media-laptop {
+    width: 67.5rem;
+  }
+  @include media-tablet {
+    width: 36.5rem;
+  }
+  @include media-mobile {
+    width: 28rem;
+  }
   &.paintingInfo {
     border: none;
     font-size: 2rem;
@@ -16,15 +25,6 @@
     @include media-mobile {
       font-size: 1.25rem;
     }
-  }
-  @include media-laptop {
-    width: 67.5rem;
-  }
-  @include media-tablet {
-    width: 36.5rem;
-  }
-  @include media-mobile {
-    width: 28rem;
   }
 }
 

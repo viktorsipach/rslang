@@ -10,10 +10,10 @@
   font-weight: 700;
   text-shadow: -2px 0 2px $color-light, 2px 0 2px $color-light, 0 2px 2px $color-light;
   &.true {
-    box-shadow: 0 0 20px rgba(0,255,127, 0.5);
+    box-shadow: 0 0 20px $color-correct-shadow;
   }
   &.false {
-    box-shadow: 0 0 20px rgba(255,69,0,0.5);
+    box-shadow: 0 0 20px $color-wrong-shadow;
   }
   &.show {
     border-left-color: transparent;
@@ -23,31 +23,24 @@
       border-right-color: $color-violet;
     }
     &.dragOver {
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      box-shadow: 0 0 20px $color-transparent-shadow;
     }
   }
-  
   &:hover {
     text-shadow: -2px 0 2px $color-violet, 2px 0 2px $color-violet, 0 2px 2px $color-violet;
-
   }
-
   @include media-laptop {
     min-width: 2.5rem;
     font-size: 1.25rem;
-
   }
   @include media-tablet {
     min-width: 2rem;
     font-size: 1rem;
     border-radius: 0.5rem;
-
-
   }
   @include media-mobile {
     min-width: 1.5rem;
     font-size: 0.75rem;
-
   }
 }
 
@@ -105,7 +98,6 @@
   background-color: $color-light;
   @include media-laptop {
     left: -0.1em;
-
   }
   @include media-tablet {
     width: 0;
