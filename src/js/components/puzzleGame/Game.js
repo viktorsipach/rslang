@@ -303,7 +303,7 @@ export default class Game {
       this.startNewLevelRound();
     } else {
       document.querySelector('.main__hints').classList.remove('hidden');
-      HINTS_SENTENCE.textContent = 'CONGRATULATIONS! You have completed all levels!';
+      HINTS_SENTENCE.textContent = 'ПОЗДРАВЛЯЕМ!! Все уровни пройдены!';
       this.isFinished = true;
     }
   }
