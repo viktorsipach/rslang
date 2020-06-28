@@ -2,7 +2,7 @@ export default function renderStatisticsModal() {
   const puzzleStatistic = document.createElement('div');
   puzzleStatistic.className = 'puzzle__statistic';
   puzzleStatistic.innerHTML = `
-  <div class = "modal-container">
+  <div class = "modal-container__puzzle">
     <div class="statistic-title"></div>
     <div class="statistic-container">
       <div class="painting__container">
