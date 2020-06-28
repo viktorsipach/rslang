@@ -143,6 +143,9 @@ class RenderFindWordsGame {
     renderMainPageResult(stat) {
         const event = new Event('statLoad');
         const cards = document.querySelectorAll('.card-eng__front');
+        const base = 10;
+        const level = parseInt(document.querySelector('.level-select').value, base);
+        const round = parseInt(document.querySelector('.page-select').value, base);
 
         this.createElement('div', 'statistics', '', 'find-words');
         this.createElement('div', 'statistics__modal', '', 'statistics');
@@ -168,6 +171,10 @@ class RenderFindWordsGame {
         this.createElement('div', 'statistics__controls', '', 'statistics__modal');
         this.createElement('div', 'button statistics__repeat-button', 'Повторить раунд', 'statistics__controls');
         this.createElement('div', 'button statistics__next-button', 'Следующий раунд', 'statistics__controls');
+        if (level === 6 && round === 60) {
+            document.querySelector('.statistics__next-button').style.display = 'none';
+            document.querySelector('.statistics__header').innerHTML = 'Поздравляем!<br><p>Игра завершена!<br>Статистика Раунда';
+        }
 
         document.querySelector('.find-words').dispatchEvent(event);
     }

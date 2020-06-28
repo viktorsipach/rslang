@@ -53,7 +53,7 @@ class ActionFindWordsGame {
                 this.stackCard.push(event.target.parentElement.dataset.couple);
                 this.checkCard(event);
 
-                if (document.querySelectorAll('.rotate').length) {
+                if (!document.querySelectorAll('.rotate').length) {
                     setTimeout(() => {
                         this.renderFindWordsGame.renderMainPageResult(this.coupleStat);
                     }, delay);
