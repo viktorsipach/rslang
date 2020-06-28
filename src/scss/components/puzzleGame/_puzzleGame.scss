@@ -10,10 +10,11 @@
 
 .game__puzzle {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-size: cover;
+  color: $color-primary;
   &.start__page {
-    background-image: url('/assets/img/puzzle/puzzleStart.jpg');
+    background-image: url('/assets/img/puzzle/startPageBackground.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -25,6 +26,13 @@
       width: 88%;
     }
   }
+}
+
+.game__puzzle-wrapper {
+  background-image: url('/assets/img/puzzle/mainPageBackground.jpg');
+  background-position: center;
+  background-size: 16rem 10rem;
+  background-repeat: repeat;
 }
 
 .gameContainer-wrapper__puzzle {

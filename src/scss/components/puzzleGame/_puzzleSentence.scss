@@ -5,10 +5,10 @@
   justify-content: center;
   height: 4.6rem;
   flex-grow: 1;
-  background-color: $color-light;
+  background-color: transparent;
   &.result__sentence {
     &.current {
-      border: 1px solid $color-violet;
+      box-shadow: 0 0 20px $color-violet;
     }
     &.active {
       display: flex;

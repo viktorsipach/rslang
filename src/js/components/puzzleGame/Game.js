@@ -115,6 +115,8 @@ export default class Game {
   }
 
   startSentence() {
+    document.querySelector('.main__hints').classList.remove('hidden');
+
     document.querySelector('.hints__sentence').textContent = '';
     this.isSentenceCompleted = false;
 
@@ -177,10 +179,13 @@ export default class Game {
       words.forEach((element) => {
         const wordElement = element;
         wordElement.style.border = 'none';
+        wordElement.style.boxShadow = 'none';
+
         wordElement.style.borderRadius = '0';
         wordElement.querySelector('.left').style.border = 'none';
         wordElement.querySelector('.left').style.backgroundColor = 'transparent';
         wordElement.querySelector('.right').style.border = 'none';
+        
       });
 
       const sentences = document.querySelectorAll('.result__sentence');
@@ -190,6 +195,9 @@ export default class Game {
 
       const pictureInfo = getPaintingInfo(this.level, this.round);
       document.querySelector('.data-container').textContent = pictureInfo;
+
+      document.querySelector('.main__data').classList.add('paintingInfo');
+      document.querySelector('.main__hints').classList.add('hidden');
     }
   }
 

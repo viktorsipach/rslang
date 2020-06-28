@@ -104,23 +104,38 @@ export default function initPuzzleGame() {
           if (eventStatisticPage.target.classList.contains('continue')) {
             const statisticElement = document.querySelector('.puzzle__statistic');
             statisticElement.parentNode.removeChild(statisticElement);
+
+            if (game.round < game.roundsInLevel) {
+              game.round += 1;
+              SELECTROUNDOPTION.value = game.round;
+              game.startCurrentLevelRound();
+            } else if (game.level < 6) {
+              game.level += 1;
+              game.round = 1;
+              SELECTLEVELOPTION.value = game.level;
+              SELECTROUNDOPTION.value = game.round;
+              game.startNewLevelRound();
+            } else {
+              document.querySelector('.hints__sentence').textContent = 'CONGRATULATIONS! You have completed all levels!';
+              game.isFinished = true;
+            }
           }
         });
         
-        if (game.round < game.roundsInLevel) {
-          game.round += 1;
-          SELECTROUNDOPTION.value = game.round;
-          game.startCurrentLevelRound();
-        } else if (game.level < 6) {
-          game.level += 1;
-          game.round = 1;
-          SELECTLEVELOPTION.value = game.level;
-          SELECTROUNDOPTION.value = game.round;
-          game.startNewLevelRound();
-        } else {
-          document.querySelector('.hints__sentence').textContent = 'CONGRATULATIONS! You have completed all levels!';
-          game.isFinished = true;
-        }
+        // if (game.round < game.roundsInLevel) {
+        //   game.round += 1;
+        //   SELECTROUNDOPTION.value = game.round;
+        //   game.startCurrentLevelRound();
+        // } else if (game.level < 6) {
+        //   game.level += 1;
+        //   game.round = 1;
+        //   SELECTLEVELOPTION.value = game.level;
+        //   SELECTROUNDOPTION.value = game.round;
+        //   game.startNewLevelRound();
+        // } else {
+        //   document.querySelector('.hints__sentence').textContent = 'CONGRATULATIONS! You have completed all levels!';
+        //   game.isFinished = true;
+        // }
       }
 
       if (event.target.classList.contains('icon__sound')) {

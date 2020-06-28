@@ -3,23 +3,14 @@
   width: fit-content;
   height: fit-content;
   margin: 2rem auto;
-  font-size: 1.75rem;
-  font-weight: 700;
-  @include media-laptop {
-    font-size: 1.5rem;
-  }
-  @include media-tablet {
-    font-size: 1.2rem;
-  }
-  @include media-mobile {
-    font-size: 0.9rem;
-  }
 }
 
 .results-container {
   display: flex;
   flex-direction: column;
-  border: 3px solid $color-primary;
+  border: 2px solid $color-primary;
+  border-radius: 1rem;
+  
   width: 83.2rem;
   height: 46.8rem;
   @include media-laptop {
