@@ -10,6 +10,7 @@ export default class Game {
     this.wordsPerSentence = 10;
     this.wordsPerRound = 10;
     this.isFinished = false;
+    this.audio = new Audio();
   }
 
   async startNewLevelRound() {
@@ -85,7 +86,6 @@ export default class Game {
     let posY = 0;
     let bufferX = 0;
     const el = document.querySelector('.results-container');
-    console.log(el.offsetWidth, el.offsetHeight);
     const sizeX = el.offsetWidth;
     const sizeY = el.offsetHeight;
     const sentenceHeight = sizeY/10;
@@ -211,7 +211,7 @@ export default class Game {
   }
 
   pronounceCurrentSentence() {
-    this.currentDataSentenceObject.playSentenceSound();
+    this.currentDataSentenceObject.playSentenceSound(this.audio);
   }
 
   translateCurrentSentence() {

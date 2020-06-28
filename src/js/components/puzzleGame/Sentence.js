@@ -51,9 +51,9 @@ export default class Sentence {
     return errors;
   }
 
-  playSentenceSound() {
+  playSentenceSound(audio) {
     const soundIcon = document.querySelector('.icon__sound');
-    const sound = new Audio();
+    const sound = audio;
     sound.src = `https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/${this.audioExample}`;
     sound.play();
     soundIcon.classList.add('active');

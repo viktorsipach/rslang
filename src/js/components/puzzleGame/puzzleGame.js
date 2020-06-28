@@ -4,28 +4,25 @@ import Game from './Game';
 import { checkActiveHints } from './utils';
 
 export default function initPuzzleGame() {
-  
-
   const PAGECONTAINER = document.querySelector('.page');
+ 
+
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderStartPage());
 
   document.querySelector('.start__button').addEventListener('click', () => {
     PAGECONTAINER.innerHTML = '';
     PAGECONTAINER.append(renderMainPage());
-    
     const level = 1;
     const round = 1;
-
     const game = new Game( { level, round });
     game.startNewLevelRound();
 
+    const SELECTLEVELOPTION = document.getElementById('selectLevel');
+    const SELECTROUNDOPTION = document.getElementById('selectRound');
 
-    // click events
-    document.querySelector('.game__puzzle').addEventListener('click', (event) => {
-      const SELECTLEVELOPTION = document.getElementById('selectLevel');
-      const SELECTROUNDOPTION = document.getElementById('selectRound');
- 
+    // change events
+    document.querySelector('.menu__left').addEventListener('change', (event) => {
       if (event.target.closest('.select__round')) {
         game.round = parseInt(SELECTROUNDOPTION.value, 10);
         game.startCurrentLevelRound();
@@ -35,7 +32,10 @@ export default function initPuzzleGame() {
         game.round = 1;
         game.startNewLevelRound();
       }
+    });
 
+    // click events
+    document.querySelector('.game__puzzle').addEventListener('click', (event) => {
       if (event.target.closest('.menu__button.auto-pronunciation')) {
         if (localStorage.getItem('autoPronunciation') === 'true') {
           localStorage.setItem('autoPronunciation', 'false');
@@ -79,6 +79,7 @@ export default function initPuzzleGame() {
       } else if (event.target.classList.contains('check')) {
         game.checkCurrentSentence();
       } else if (event.target.classList.contains('continue')) {
+       // game.audio.stop();
         if (!game.isFinished) {
           if (game.currentSentenceNumber < 10) {
             game.startSentence();
