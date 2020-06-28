@@ -3,7 +3,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-top: 2rem;
+  padding-top: 3rem;
   padding-bottom: 2rem;
   @include media-tablet {
     flex-direction: column;
@@ -32,6 +32,7 @@
 .menu__round {
   display: flex;
   flex-direction: row;
+  align-items: center;
   @include media-tablet {
     flex-direction: column;
   }

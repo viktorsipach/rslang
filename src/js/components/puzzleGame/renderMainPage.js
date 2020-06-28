@@ -68,7 +68,6 @@ function renderMainPageMenu() {
   menuLeft.append(renderDropdownElement('menu__round', 'round__title', 'Раунд', 'select__round', 'selectRound'));
   renderLevelsOptions(menuLeft);
   
-
   const menuButtons = document.createElement('div');
   menuButtons.className = 'buttons menu__buttons';
   menuButtons.append(renderMenuButton('auto-pronunciation', 'icon__auto-pronunciation'));
@@ -125,6 +124,8 @@ function renderGameButtons() {
 }
 
 export default function renderMainPage() {
+  const closeButton = document.createElement('div');
+  closeButton.className = 'game__close_puzzle puzzle-main close';
 
   const mainPage = document.createElement('div');
   mainPage.className = 'main__page game__puzzle';
@@ -133,12 +134,12 @@ export default function renderMainPage() {
   mainPage.append(renderGameResults());
   mainPage.append(renderGameData());
   mainPage.append(renderGameButtons());
+  mainPage.append(closeButton);
 
   const mainPageWrapper = document.createElement('div');
   mainPageWrapper.className = 'game__puzzle-wrapper';
   mainPageWrapper.append(mainPage);
 
   return mainPageWrapper;
-  
 }
           

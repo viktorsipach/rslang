@@ -14,6 +14,7 @@
   background-size: cover;
   color: $color-primary;
   &.start__page {
+    position: relative;
     background-image: url('/assets/img/puzzle/startPageBackground.jpg');
     background-size: cover;
     background-position: center;
@@ -29,6 +30,7 @@
 }
 
 .game__puzzle-wrapper {
+  position: relative;
   background-image: url('/assets/img/puzzle/mainPageBackground.jpg');
   background-position: center;
   background-size: 16rem 10rem;
