@@ -4,6 +4,8 @@ let count = 0;
 let countCorrect = 0;
 let answer = false;
 let countHealth = 5;
+const maxPositionYHiddenWord = 350;
+const maxPositionXHiddenWord = 60;
 
 const playSound = (src) => {
     const audio = new Audio(src);
@@ -16,9 +18,9 @@ const fallWord = () => {
     let posY = 0;
     let word = setInterval(fall, fallSpeed);
     function fall() {
-        if (posY === 350 || answer) {
+        if (posY === maxPositionYHiddenWord || answer) {
             clearInterval(word);
-        } else if (posY < 350) {
+        } else if (posY < maxPositionYHiddenWord) {
             posY += 1;
             elem.style.top = `${posY}px`;
         }
@@ -45,12 +47,12 @@ const goOutWord = (correct) => {
     let posX = 50;
     setInterval(goOut, goOutSpeed);
     function goOut() {
-        if (elem.style.top !== 350) {
+        if (elem.style.top !== maxPositionYHiddenWord) {
             if (correct) {
                 posY -= 10;
                 elem.style.top = `${posY}px`; 
             } else {
-                while (posX < 60) {
+                while (posX < maxPositionXHiddenWord) {
                     posX += 1;
                     elem.style.left = `${posX}%`; 
                     console.log(elem.style.left);
