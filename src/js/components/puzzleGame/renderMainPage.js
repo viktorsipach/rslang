@@ -64,8 +64,8 @@ function renderLevelsOptions(selectContainer) {
 function renderMainPageMenu() {
   const menuLeft = document.createElement('div');
   menuLeft.className = 'menu__left';
-  menuLeft.append(renderDropdownElement('menu__level', 'level__title', 'Level', 'select__level', 'selectLevel'));
-  menuLeft.append(renderDropdownElement('menu__round', 'round__title', 'Round', 'select__round', 'selectRound'));
+  menuLeft.append(renderDropdownElement('menu__level', 'level__title', 'Уровень', 'select__level', 'selectLevel'));
+  menuLeft.append(renderDropdownElement('menu__round', 'round__title', 'Раунд', 'select__round', 'selectRound'));
   renderLevelsOptions(menuLeft);
   
 
@@ -117,10 +117,10 @@ function renderGameButton(buttonClass, buttonTitle) {
 function renderGameButtons() {
   const gameButtons = document.createElement('div');
   gameButtons.className = 'buttons game__buttons puzzle-game';
-  gameButtons.append(renderGameButton('dontKnow', 'I don`t know'));
-  gameButtons.append(renderGameButton('check hidden', 'Check'));
-  gameButtons.append(renderGameButton('continue hidden', 'Continue'));
-  gameButtons.append(renderGameButton('results hidden', 'Results'));
+  gameButtons.append(renderGameButton('dontKnow', 'Я не знаю'));
+  gameButtons.append(renderGameButton('check hidden', 'Проверить'));
+  gameButtons.append(renderGameButton('continue hidden', 'Продолжить'));
+  gameButtons.append(renderGameButton('results hidden', 'Результаты'));
   return gameButtons;
 }
 

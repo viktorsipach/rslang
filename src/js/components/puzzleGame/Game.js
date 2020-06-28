@@ -284,7 +284,7 @@ export default class Game {
 
   showRoundStatistic() {
     document.querySelector('.page'). append(renderStatisticsModal());
-    document.querySelector('.statistic-title').textContent = `Level ${this.level} Round ${this.round}`;
+    document.querySelector('.statistic-title').textContent = `Уровень ${this.level} Раунд ${this.round}`;
     this.renderPaintingInfoForStatisticPage();
     this.renderSentencesStatistics();
   }

@@ -9,17 +9,17 @@ export default function renderStatisticsModal() {
         <div class="painting__image"></div>
         <div class="painting__info"></div>
       </div>
-      <div class="iDontKnowSentences-title">I don\`t know
+      <div class="iDontKnowSentences-title">Я не знаю
       <span class="iDontKnowSentences-count"></span>
       </div>
       <div class="iDontKnowSentences"></div>
-      <div class="iKnowSentences-title">I know
+      <div class="iKnowSentences-title">Я знаю
       <span class="iKnowSentences-count"></span>
       </div>
       <div class="iKnowSentences"></div>
     </div>
     <div class="buttons statistic__buttons">
-      <button class="button puzzleGame__button continue">Continue</button>
+      <button class="button puzzleGame__button continue">Продолжить</button>
     </div>
   </div>`;
   return puzzleStatistic;
