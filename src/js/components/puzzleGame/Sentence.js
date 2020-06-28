@@ -7,7 +7,6 @@ export default class Sentence {
     this.audioExample = audioExample;
     this.textExample = textExample;
     this.textExampleTranslate = textExampleTranslate;
-
     this.bIsTranslationHintUsed = false;
     this.bIsBckImageHintUsed = false;
     this.bIsPronunciationHintUsed = false;

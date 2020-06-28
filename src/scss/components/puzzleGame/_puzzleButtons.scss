@@ -47,6 +47,7 @@
     &:hover, &.active {
       background-color: $color-violet;
       background-color: darken($color: $color-violet, $amount: 15);
+      box-shadow: 0 0 10px 3px $color-violet;
     }
   }
   

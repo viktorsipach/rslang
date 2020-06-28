@@ -46,7 +46,6 @@ function renderHints() {
   return hints;  
 }
 
-
 function renderLevelsOptions(selectContainer) {
   const levels = 6;
   const SELECTLEVELCONTAINER = selectContainer.querySelector('.select__level>select');
