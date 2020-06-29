@@ -5,6 +5,7 @@ import {
 import signIn from './userUtils';
 import  getFormData  from './utils';
 import { createUser } from './userAPI';
+import { addCardsAnimation } from '../mainPage/mainPage.component'
   
 export default function initRegistration() {
     HEADER.addEventListener('click', (event) => {
@@ -25,6 +26,7 @@ export default function initRegistration() {
         event.preventDefault();
         const userData = getFormData();
         signIn(userData);
+        addCardsAnimation()
     }
     });
 }

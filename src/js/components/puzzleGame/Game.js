@@ -1,5 +1,5 @@
 import { getRoundsAmountInLevel, getSCustomRoundData } from '../../API/dataAPI';
-import { checkActiveHints, createStatisticSentence } from './utils';
+import { checkActiveHints, createStatisticSentence, mixSentenceWords, getPaintingInfo, getPaintingImageSrc } from './utils';
 import Sentence from './Sentence';
 import renderStatisticsModal from './renderStatistics';
 
@@ -10,6 +10,8 @@ export default class Game {
     this.wordsPerSentence = 10;
     this.wordsPerRound = 10;
     this.isFinished = false;
+    this.audio = new Audio();
+    this.levelsAmount = 6;
   }
 
   async startNewLevelRound() {
@@ -54,7 +56,8 @@ export default class Game {
     RESULTBUTTON.classList.add('hidden');
     
     await this.renderRoundData();
-    document.querySelectorAll('.results-container>.result__sentence').forEach((el) => this.resultSentences.push(el));
+    const RESULT_SENTENCE_WORDS = document.querySelectorAll('.results-container>.result__sentence');
+    RESULT_SENTENCE_WORDS.forEach((element) => this.resultSentences.push(element));
     checkActiveHints();
     this.startSentence();
   }
@@ -62,8 +65,8 @@ export default class Game {
   async renderRoundData() {
     const fragment = document.createDocumentFragment();
     const roundData = await getSCustomRoundData(this.level, this.round, this.wordsPerSentence, this.wordsPerRound);
-    roundData.forEach((el) => {
-      let sentence = new Sentence(el);
+    roundData.forEach((element) => {
+      let sentence = new Sentence(element);
       this.dataSentencesObjects.push(sentence);
       sentence.textExample = sentence.textExample.replace(/<b>/, '').replace(/<\/b>/, '');
       sentence.status = 'iKnow';
@@ -73,29 +76,68 @@ export default class Game {
       sentenceContainer.className = 'sentence result__sentence';
       fragment.append(sentenceContainer);
     });
-    document.querySelector('.results-container').innerHTML = '';
-    document.querySelector('.results-container').append(fragment);
+    const RESULTS_CONTAINER = document.querySelector('.results-container');
+    RESULTS_CONTAINER.innerHTML = '';
+    RESULTS_CONTAINER.append(fragment);
+  }
+
+  setSentenceWordsBackgroundSetting() {
+    const words = document.querySelectorAll('.data__sentence>.word-container');
+    let posX = 0;
+    let posY = 0;
+    let bufferX = 0;
+    const shiftValue = -7;
+    const el = document.querySelector('.results-container');
+    const sizeX = el.offsetWidth;
+    const sizeY = el.offsetHeight;
+    const sentenceHeight = sizeY/this.wordsPerRound;
+    words.forEach((element, index) => {
+      const wordElement = element;
+      posY = this.currentSentenceNumber*(-sentenceHeight);
+      wordElement.style.backgroundImage =  `none`;
+      wordElement.style.backgroundSize = `${sizeX}px ${sizeY}px`;
+      wordElement.style.backgroundPosition = `${posX}px ${posY}px`;
+      wordElement.style.maxWidth = `${element.offsetWidth}px`;
+      bufferX += element.offsetWidth;
+      posX = sizeX - bufferX;
+
+      const rightSegment = wordElement.querySelector('.right');
+      rightSegment.style.backgroundImage =   `none`;
+      rightSegment.style.backgroundSize = `${sizeX}px ${sizeY}px`;
+      rightSegment.style.backgroundPosition = `${posX}px ${posY + shiftValue}px`;
+
+      if (index === 0) {
+        const leftSegment = element.querySelector('.left');
+        leftSegment.classList.add('first');
+      } else if (index === words.length - 1) {
+        rightSegment.classList.add('last');
+      }
+    });
+    this.correctWordsOrder = words;
   }
 
   startSentence() {
+    document.querySelector('.main__hints').classList.remove('hidden');
     document.querySelector('.hints__sentence').textContent = '';
     this.isSentenceCompleted = false;
+
     const dataWords = document.querySelectorAll('.result__sentence.current>.word-container');
-    dataWords.forEach((el) => el.classList.remove('true'));
-    this.resultSentences.forEach((el) => el.classList.remove('current'));
+    dataWords.forEach((element) => element.classList.remove('true'));
+    dataWords.forEach((element) => element.classList.remove('current'));
+
+    this.resultSentences.forEach((element) => element.classList.remove('current'));
     this.currentDataSentence = this.dataSentences[this.currentSentenceNumber];
     this.currentResultSentence = this.resultSentences[this.currentSentenceNumber];
     this.currentDataSentenceObject = this.dataSentencesObjects[this.currentSentenceNumber];
     this.currentResultSentence.classList.add('active');
     this.currentResultSentence.classList.add('current');
 
-    for (let i = 0; i < this.currentDataSentenceObject.length; i += 1) {
-      const wordContainer = document.createElement('span');
-      wordContainer.className = 'word-container';
-      this.currentResultSentence.append(wordContainer);
-    }
-    document.querySelector('.data-container').innerHTML = '';
-    document.querySelector('.data-container').append(this.currentDataSentence);
+    const DATA_CONTAINER = document.querySelector('.data-container');
+    DATA_CONTAINER.innerHTML = '';
+    DATA_CONTAINER.append(this.currentDataSentence);
+
+    this.setSentenceWordsBackgroundSetting();
+    mixSentenceWords();
     this.checkGameStatus();
     this.showHintsAtBegin();
   }
@@ -106,7 +148,7 @@ export default class Game {
       const CHECKBUTTON = document.querySelector('.game__buttons>.check');
       const CONTINUEBUTTON = document.querySelector('.game__buttons>.continue');
 
-      const resultSentenceLength = document.querySelectorAll('.result__sentence.current>.word-container>.data__word').length;
+      const resultSentenceLength = document.querySelectorAll('.result__sentence.current>.word-container').length;
       const dataSentenceLength = this.currentDataSentenceObject.length;
       if (this.isSentenceCompleted === true) {
         this.showHintsAtEnd();
@@ -131,20 +173,43 @@ export default class Game {
       this.isSentenceCompleted = true;
       this.currentSentenceNumber += 1;
     }
+
     if (this.currentSentenceNumber === 10) {
       RESULTBUTTON.classList.remove('hidden');
+      const words = document.querySelectorAll('.word-container');
+      words.forEach((element) => {
+        const wordElement = element;
+        wordElement.style.border = 'none';
+        wordElement.style.boxShadow = 'none';
+        wordElement.style.borderRadius = '0';
+        wordElement.querySelector('.left').style.border = 'none';
+        wordElement.querySelector('.left').style.backgroundColor = 'transparent';
+        wordElement.querySelector('.right').style.border = 'none';
+      });
+
+      const sentences = document.querySelectorAll('.result__sentence');
+      sentences.forEach((element) => {
+        element.classList.remove('current');
+      })
+
+      const pictureInfo = getPaintingInfo(this.level, this.round);
+      document.querySelector('.data-container').textContent = pictureInfo;
+      document.querySelector('.main__data').classList.add('paintingInfo');
+      document.querySelector('.main__hints').classList.add('hidden');
     }
   }
 
   buildCurrentSentence() {
     if (this.currentDataSentenceObject) {
       this.currentDataSentenceObject.status = 'iDontKnow';
-      this.currentDataSentenceObject.buildSentence();
-    }
+      this.correctWordsOrder.forEach((element) => {
+        document.querySelector('.result__sentence.current').append(element);
+      });
+    } 
   }
 
   pronounceCurrentSentence() {
-    this.currentDataSentenceObject.playSentenceSound();
+    this.currentDataSentenceObject.playSentenceSound(this.audio);
   }
 
   translateCurrentSentence() {
@@ -152,7 +217,7 @@ export default class Game {
   }
 
   showCurrentBckImage() {
-    this.currentDataSentenceObject.showBckImage();
+    this.currentDataSentenceObject.showBckImage(this.level, this.round);
   }
 
   showHintsAtBegin() {
@@ -173,7 +238,6 @@ export default class Game {
     if (!this.currentDataSentenceObject.isTranslationHintUsed) {
       this.translateCurrentSentence();
     }
-
     if (!this.currentDataSentenceObject.isPronunciationHintUsed) {
       if ((localStorage.getItem('autoPronunciation') === 'true')) {
         this.pronounceCurrentSentence();
@@ -184,26 +248,63 @@ export default class Game {
     }
   }
 
-  showRoundStatistic() {
-    document.querySelector('.page'). append(renderStatisticsModal());
+  renderPaintingInfoForStatisticPage() {
+    const paintingSrc = getPaintingImageSrc(this.level, this.round);
+    document.querySelector('.painting__image').style.backgroundImage = paintingSrc;
 
-    document.querySelector('.statistic-title').textContent = `Level ${this.level} Round ${this.round}`;
+    const paintingInfo = getPaintingInfo(this.level, this.round);
+    document.querySelector('.painting__info').textContent = paintingInfo;
+  }
+
+  renderSentencesStatistics() {
     const iDontKnowFragment = document.createDocumentFragment();
     const iKnowFragment = document.createDocumentFragment();
-    this.dataSentencesObjects.forEach((el) => {
-      if (el.status === 'iDontKnow') {
-        const sentence = createStatisticSentence(el);
+    let iKnowSentencesCount = 0;
+    let iDontKnowSentencesCount = 0;
+
+    this.dataSentencesObjects.forEach((element) => {
+      if (element.status === 'iDontKnow') {
+        iDontKnowSentencesCount += 1;
+        const sentence = createStatisticSentence(element);
         iDontKnowFragment.append(sentence);
       }
-      if (el.status === 'iKnow') {
-        const sentence = createStatisticSentence(el);
+      if (element.status === 'iKnow') {
+        iKnowSentencesCount += 1;
+        const sentence = createStatisticSentence(element);
         iKnowFragment.append(sentence);
       }
     });
+    document.querySelector('.iDontKnowSentences').append(iDontKnowFragment);
+    document.querySelector('.iKnowSentences').append(iKnowFragment);
+    document.querySelector('.iKnowSentences-count').textContent = iKnowSentencesCount;
+    document.querySelector('.iDontKnowSentences-count').textContent = iDontKnowSentencesCount;
+  }
 
-    const IDONTKNOWSENTENCES = document.querySelector('.iDontKnowSentences');
-    const IKNOWSENTENCES = document.querySelector('.iKnowSentences');
-    IDONTKNOWSENTENCES.append(iDontKnowFragment);
-    IKNOWSENTENCES.append(iKnowFragment);
+  showRoundStatistic() {
+    document.querySelector('.page'). append(renderStatisticsModal());
+    document.querySelector('.statistic-title').textContent = `Уровень ${this.level} Раунд ${this.round}`;
+    this.renderPaintingInfoForStatisticPage();
+    this.renderSentencesStatistics();
+  }
+
+  checkGameProgress() {
+    const SELECTLEVELOPTION = document.getElementById('selectLevel');
+    const SELECTROUNDOPTION = document.getElementById('selectRound');
+    const HINTS_SENTENCE = document.querySelector('.hints__sentence');
+    if (this.round < this.roundsInLevel) {
+      this.round += 1;
+      SELECTROUNDOPTION.value = this.round;
+      this.startCurrentLevelRound();
+    } else if (this.level < this.levelsAmount) {
+      this.level += 1;
+      this.round = 1;
+      SELECTLEVELOPTION.value = this.level;
+      SELECTROUNDOPTION.value = this.round;
+      this.startNewLevelRound();
+    } else {
+      document.querySelector('.main__hints').classList.remove('hidden');
+      HINTS_SENTENCE.textContent = 'ПОЗДРАВЛЯЕМ!! Все уровни пройдены!';
+      this.isFinished = true;
+    }
   }
 }

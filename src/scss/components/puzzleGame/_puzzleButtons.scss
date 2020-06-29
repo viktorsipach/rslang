@@ -2,15 +2,41 @@
   &.start__button{
     display: block;
     margin: 0 auto;
-    margin-bottom: 15rem;
-    padding: 5px;
-    width: 15rem;
-    height: 4rem;
-    font-size: 2rem;
+    width: 25rem;
+    height: 10rem;
+    background-color: $color-overlay-dark;
+    border-radius: 3rem;
+    font-size: 3rem;
+    text-shadow: -2px 0 2px $color-primary, 2px 0 2px $color-primary, 0 2px 2px $color-primary;
+    &:hover {
+      text-shadow: -5px 0 5px $color-primary, 5px 0 5px $color-primary, 0 5px 5px $color-primary;
+      font-size: 3.2rem;
+    }
+    @include media-laptop {
+      width: 20rem;
+      height: 7.5rem;
+      font-size: 2.5rem;
+      &:hover {
+        font-size: 2.6rem;
+      }
+    }
     @include media-tablet {
-      width: 12rem;
-      height: 3rem;
-      font-size: 1.5rem;
+      width: 17rem;
+      height: 7rem;
+      font-size: 2.25rem;
+      border-radius: 2rem;
+      &:hover {
+        font-size: 2.3rem;
+      }
+    }
+    @include media-mobile {
+      width: 15rem;
+      height: 5rem;
+      font-size: 2rem;
+      border-radius: 1.5rem;
+      &:hover {
+        font-size: 2.1rem;
+      }
     }
   }
 
@@ -18,17 +44,14 @@
     width: 3.5rem;
     height: 3.5rem;
     margin-right: 0.5rem;
-    &:hover {
+    &:hover, &.active {
       background-color: $color-violet;
       background-color: darken($color: $color-violet, $amount: 15);
-    }
-    &.active {
-      background-color: $color-violet;
-      background-color: darken($color: $color-violet, $amount: 15);
+      box-shadow: 0 0 10px 3px $color-violet;
     }
   }
   
-  &.game__button {
+  &.puzzleGame__button {
     width: 10rem;
     height: 3.5rem;
     margin-left: 1rem;
@@ -36,5 +59,51 @@
       background-color: $color-violet;
       background-color: darken($color: $color-violet, $amount: 15);
     }
+  }
+}
+
+.game__close_puzzle {
+  position: absolute;
+  right: 3rem;
+  top: 3rem;
+  width: 3rem;
+  height: 3rem;
+  opacity: 1;
+  &:hover {
+    opacity: 0.3;
+    cursor: pointer;
+  }
+  &::before, 
+  &::after {
+    position: absolute;
+    left: 1.5rem;
+    content: "";
+    height: 3rem;
+    width: 0.5rem;
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
+   @include media-tablet {
+      right: 1rem;
+      top: 1rem;
+  }
+}
+
+.puzzle-start {
+  &::before, 
+  &::after {
+    background-color: $color-light;
+  }
+}
+
+.puzzle-main {
+  &::before, 
+  &::after {
+    width: 0.25rem;
+    background-color: $color-primary;
   }
 }

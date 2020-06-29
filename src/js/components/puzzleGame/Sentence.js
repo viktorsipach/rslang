@@ -1,4 +1,4 @@
-import { createWordElement, getActualSentence, mixArrayElements } from './utils';
+import { createWordElement, getActualSentence, getPaintingImageSrc } from './utils';
 
 export default class Sentence {
   constructor({
@@ -7,7 +7,6 @@ export default class Sentence {
     this.audioExample = audioExample;
     this.textExample = textExample;
     this.textExampleTranslate = textExampleTranslate;
-
     this.bIsTranslationHintUsed = false;
     this.bIsBckImageHintUsed = false;
     this.bIsPronunciationHintUsed = false;
@@ -22,44 +21,28 @@ export default class Sentence {
 
     const sentenceArray = this.textExample.split(' ');
     this.length = sentenceArray.length;
-
-    const sentenceArrayMixed = mixArrayElements(sentenceArray);
-
     const fragment = document.createDocumentFragment();
-    sentenceArrayMixed.forEach((el, index) => {
-      fragment.append(createWordElement(el, index));
+    sentenceArray.forEach((el, index) => {
+      const wordLength = el.length;
+      fragment.append(createWordElement(el, index, wordLength));
     });
-
     sentenceElement.append(fragment);
     return sentenceElement;
-  }
-
-  buildSentence() {
-    const sentenceArray = this.textExample.split(' ');
-    const fragment = document.createDocumentFragment();
-    sentenceArray.forEach((el) => {
-      fragment.append(createWordElement(el));
-    });
-    document.querySelector('.result__sentence.current').innerHTML = '';
-    fragment.querySelectorAll('.word-container').forEach((el) => {
-      document.querySelector('.result__sentence.current').append(el);
-    });
-    document.querySelector('.data-container').innerHTML = '';
   }
 
   checkSentence() {
     const expectedSentence = this.textExample.split(' ');
     const actualSentence = getActualSentence();
     let errors = 0;
-    actualSentence.forEach((el) => {
-      el.parentElement.classList.remove('true');
-      el.parentElement.classList.remove('false');
+    actualSentence.forEach((element) => {
+      element.classList.remove('true');
+      element.classList.remove('false');
     });
     for (let i = 0; i < expectedSentence.length; i += 1) {
       if (expectedSentence[i] === actualSentence[i].textContent) {
-        actualSentence[i].parentElement.classList.add('true');
+        actualSentence[i].classList.add('true');
       } else {
-        actualSentence[i].parentElement.classList.add('false');
+        actualSentence[i].classList.add('false');
         errors += 1;
       }
     }
@@ -67,9 +50,9 @@ export default class Sentence {
     return errors;
   }
 
-  playSentenceSound() {
+  playSentenceSound(audio) {
     const soundIcon = document.querySelector('.icon__sound');
-    const sound = new Audio();
+    const sound = audio;
     sound.src = `https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/${this.audioExample}`;
     sound.play();
     soundIcon.classList.add('active');
@@ -79,9 +62,18 @@ export default class Sentence {
     this.isPronunciationHintUsed = true;
   }
 
-  showBckImage() {
+  showBckImage(level, round) {
     this.isBckImageHintUsed = true;
-    console.log('showBckImage');
+    const imgSrcPath = getPaintingImageSrc(level, round);
+    const wordContainers = document.querySelectorAll('.current.word-container');
+    wordContainers.forEach((el) => {
+      const wordElement = el;
+      wordElement.style.backgroundImage =  imgSrcPath;
+      wordElement.style.backgroundColor = 'transparent';
+      wordElement.classList.add('show');
+      wordElement.querySelector('.right').style.backgroundColor = 'transparent';
+      wordElement.querySelector('.right').style.backgroundImage =  imgSrcPath;
+    }); 
   }
 
   showSentenceTranslation() {

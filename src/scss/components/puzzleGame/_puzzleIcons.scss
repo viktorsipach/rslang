@@ -24,11 +24,23 @@
     height: 3rem;
     background-image: url('../assets/img/puzzle/sound.svg');
     cursor: pointer;
-    &.active {
-      background-image: url('../assets/img/puzzle/sound-active.svg');
+    &.icon__statistic {
+      width: 2rem;
+      height: 2rem;
+      @include media-laptop {
+        width: 2rem;
+        height: 2rem;
+      }
+      @include media-tablet {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
     }
+    &.active,
     &:hover {
       background-image: url('../assets/img/puzzle/sound-active.svg');
+      transform: scale(1.25);
+      transition: 0.5s;
     }
     @include media-laptop {
       width: 2.5rem;
@@ -38,5 +50,9 @@
       width: 2rem;
       height: 2rem;
     }
+  }
+  &:hover {
+    transform: scale(1.25);
+    transition: 0.5s;
   }
 }
