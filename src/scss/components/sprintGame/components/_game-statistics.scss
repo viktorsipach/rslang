@@ -10,6 +10,15 @@
     padding: 10px;
     border-radius: 2rem;
     background-color: $color-light;
+
+    @include media-tablet {
+      width: 38rem;
+    }
+
+    @include media-mobile {
+      width: 30rem;
+      margin-top: 5rem;
+    }
   }
 
   &__header {
