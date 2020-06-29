@@ -146,18 +146,21 @@ $color-exit: #ffffffc7;
     border-radius: 10px;
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
     flex-wrap: wrap;
     color: $color-light;
     box-shadow: 0 0 10px 2px $color-box-shadow-common;
 }
 .controls__level,
-.controls__page {
+.controls__page,
+.controls__sound {
     display: flex;
     align-items: center;
     margin: 10px 10px;
 }
 .level__head,
-.page__head {
+.page__head,
+.sound__head {
     font-size: 3rem;
     margin-right: 10px;
     @include media-tablet {
@@ -165,6 +168,29 @@ $color-exit: #ffffffc7;
     }
     @include media-mobile {
         font-size: 2rem;
+    }
+}
+.sound__toggle-cont {
+    width: 8rem;
+    height: 3rem;
+    background-color: $color-violet;
+}
+.sound__toggle {
+    width: 4rem;
+    height: 3rem;
+    transform: scale(0.8);
+    border-radius: 5px;
+    position: relative;
+    transition: 0.3s;
+    background-image: url('../assets/img/icon-audio.png');
+    background-color: $color-light;
+    background-position: center;
+    background-size: cover;
+    left: 4rem;
+    mix-blend-mode: soft-light;
+    &.on {
+        left: 0rem;
+        mix-blend-mode: normal;
     }
 }
 .progress-bar {
@@ -229,6 +255,9 @@ $color-exit: #ffffffc7;
     }
     &.correct {
         box-shadow: 0 0 10px 2px $color-correct;
+    }
+    &.error {
+        box-shadow: 0 0 10px 2px $color-error;
     }
     &.visible {
         opacity: 1;

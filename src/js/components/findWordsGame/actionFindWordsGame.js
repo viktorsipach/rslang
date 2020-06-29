@@ -8,6 +8,7 @@ class ActionFindWordsGame {
         this.stackCard = [];
         this.coupleStat = {};
         this.reset = 0;
+        this.soundOn = this.renderFindWordsGame.soundOn;
     }
 
     startGame() {
@@ -86,9 +87,11 @@ class ActionFindWordsGame {
             this.coupleStat[`${firstCard}`] += increment;
             this.coupleStat.total += increment;
 
-            const correctSound = new Audio();
-            correctSound.src = `https://raw.githubusercontent.com/allihach/rslang-data/master/${event.target.dataset.audio}`;
-            correctSound.play();
+            if (this.soundOn) {
+                const correctSound = new Audio();
+                correctSound.src = `https://raw.githubusercontent.com/allihach/rslang-data/master/${event.target.dataset.audio}`;
+                correctSound.play();
+            }
 
             return;
         }
@@ -98,9 +101,11 @@ class ActionFindWordsGame {
             this.coupleStat[`${firstCard}`] += increment;
             this.coupleStat.total += increment;
 
-            const errorSound = new Audio();
-            errorSound.src = ErrorSound;
-            errorSound.play();
+            if (this.soundOn) {
+                const errorSound = new Audio();
+                errorSound.src = ErrorSound;
+                errorSound.play();
+            }
 
             setTimeout(() => {
                 document.querySelector(`.ru-${firstCard}`).classList.add('rotate');
@@ -198,6 +203,25 @@ class ActionFindWordsGame {
         this.coupleStat.total = this.reset;
 
         this.stackCard = [];
+    }
+
+    soundButton() {
+        document.querySelector('.find-words').addEventListener('mainPageLoad', () => {
+            const soundButton = document.querySelector('.sound__toggle-cont');
+            const toggle = document.querySelector('.sound__toggle');
+
+            soundButton.addEventListener(this.click, () => {
+                if (this.soundOn) {
+                    toggle.classList.remove('on');
+                    this.soundOn = false;
+                    return;
+                } 
+                if (!this.soundOn) {
+                    toggle.classList.add('on');
+                    this.soundOn = true;
+                }
+            })
+        })
     }
 }
 

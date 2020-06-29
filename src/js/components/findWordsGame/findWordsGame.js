@@ -14,6 +14,7 @@ class FindWordsGame {
         this.actionFindWordsGame.repeatRoundButton();
         this.actionFindWordsGame.changeLevelRound();
         this.actionFindWordsGame.nextRoundButton();
+        this.actionFindWordsGame.soundButton();
     }
 }
 

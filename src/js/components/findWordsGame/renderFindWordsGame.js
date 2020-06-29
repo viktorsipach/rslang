@@ -8,6 +8,7 @@ class RenderFindWordsGame {
         this.delayField = 1000;
         this.delayCards = 20;
         this.middle = 0.5;
+        this.soundOn = true;
     }
 
     createElement(tag, className, textContent, target = this.target, index = 0) {
@@ -64,6 +65,12 @@ class RenderFindWordsGame {
         for (let i = 1; i < 61; i += 1 ) {
             this.createElement('option', 'page-select__item', i, 'page-select')
         }
+
+        this.createElement('div', 'controls__sound sound', '', 'controls');
+        this.createElement('div', 'sound__head', 'Звук', 'controls__sound');
+        this.createElement('div', 'sound__toggle-cont button', '', 'controls__sound');
+        this.createElement('div', 'sound__toggle', '', 'sound__toggle-cont');
+        if (this.soundOn) document.querySelector('.sound__toggle').classList.add('on');
     }
 
     renderMainPageProgressBar() {
@@ -118,6 +125,7 @@ class RenderFindWordsGame {
             document.querySelector(`.eng-couple${i}`).firstElementChild.firstElementChild.textContent = `${elem.word}`;
             document.querySelector(`.ru-couple${i}`).firstElementChild.firstElementChild.textContent = `${elem.wordTranslate}`;
             document.querySelector(`.eng-couple${i}`).lastElementChild.setAttribute('data-audio', `${elem.audio}`);
+            document.querySelector(`.ru-couple${i}`).lastElementChild.setAttribute('data-audio', `${elem.audio}`);
         })
 
         setTimeout(() => {
