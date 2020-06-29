@@ -1,5 +1,5 @@
 import { getRoundData, getRoundsAmountInLevel } from '../../API/dataAPI';
-import renderNotificationModal from './renderNotification';
+import renderStatistics from './renderStatistics';
 import { disableButton, enableButton } from './utils';
 
 export default class TrainingGame {
@@ -31,6 +31,9 @@ export default class TrainingGame {
 
   async getData() {
     this.currentCardNumber = 0;
+    this.correctAnswersAmount = 0;
+    this.seriesOfCorrectAnswers = 0;
+    this.longestSeriesOfCorrectAnswers = 0;
     const data = await getRoundData(this.level, this.round, this.newWordsPerDay);
     this.progress = 0;
     return data;
@@ -55,18 +58,23 @@ export default class TrainingGame {
       this.renderExplanationSentence();
       this.renderExampleSentence();
       this.renderInput();
-      this.showProgress(); //
+      this.showProgress();
     } else {
       let isLastWordsInApp = false;
       if (this.level === this.levelsAmount && this.round === this.roundsAmount) {
         isLastWordsInApp = true;
-        document.querySelector('.page').append(renderNotificationModal(isLastWordsInApp)); 
-      } else {
-        document.querySelector('.page').append(renderNotificationModal(isLastWordsInApp)); 
       }
       
-      document.querySelector('.notification__buttons').addEventListener('click', (event) => {
-        const notificationContainer = document.querySelector('.notification-container');
+      const statisticsData = {
+        amountOfWords: this.maxCardsPerDay,
+        amountOfCorrectAnswers: this.correctAnswersAmount,
+        amountOfNewWords: 1, // not implemented yet
+        longestSeriesOfCorrectAnswers: this.longestSeriesOfCorrectAnswers
+      }
+      document.querySelector('.page').append(renderStatistics(isLastWordsInApp, statisticsData)); 
+
+      document.querySelector('.statistic__buttons').addEventListener('click', (event) => {
+        const notificationContainer = document.querySelector('.training__statistic');
         notificationContainer.parentNode.removeChild(notificationContainer);
         if (event.target.classList.contains('continue')) {          
           if (this.round < this.roundsAmount) {
@@ -77,9 +85,6 @@ export default class TrainingGame {
             this.round = 1;
             this.start();
           }           
-        } else if (event.target.classList.contains('mini-games')) {
-          console.log('goToMainPage');
-          // goToMainPage
         } else if (event.target.classList.contains('settings')) {
           console.log('goToSettingsPage');
           // goToSettingPage
@@ -275,6 +280,7 @@ export default class TrainingGame {
     }
     if (this.isWordWithoutTraining) {
       this.currentCardNumber += 1;
+      this.seriesOfCorrectAnswers = 0;
       this.showProgress();
       if (this.autoPronunciation) {     
         this.showAnswer();
@@ -288,8 +294,14 @@ export default class TrainingGame {
     if (this.errorCount === 0) {
       INPUT.value = '';
       this.currentCardNumber += 1;
+      this.correctAnswersAmount += 1;
+      this.seriesOfCorrectAnswers += 1;
+      if (this.seriesOfCorrectAnswers > this.longestSeriesOfCorrectAnswers) {
+        this.longestSeriesOfCorrectAnswers = this.seriesOfCorrectAnswers;
+      }
       this.correctAnswer();
     } else {
+      this.seriesOfCorrectAnswers = 0;
       this.incorrectAnswer();
     }
   }
