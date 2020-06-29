@@ -29,18 +29,17 @@ export default function renderStatisticsModal(isLastWordsInApp, statisticsData) 
     statisticsContainer.querySelector('.notification-text').innerHTML = `
     Дневной лимит исчерпан. Новых карточек нет.
     <br>
-    Для закрепления изученных слов, поиграйте в мини-игры.
+    Для закрепления изученных слов поиграйте в мини-игры.
     <br>
-    Если вы хотите повторно изучить слова, нажмите кнопку СНАЧАЛА.
-    `;
+    Если вы хотите повторно изучить слова, нажмите кнопку сначала.`;
     statisticsContainer.querySelector('.statistic__buttons').innerHTML = 
     `<button class="button game__button again">Сначала</button>`
   } else {
     statisticsContainer.querySelector('.notification-text').innerHTML = `
-    Есть еще новые карточки, но дневной лимит исчерпан. Для закрепления изученных слов, поиграйте в мини-игры.
+    Есть еще новые карточки, но дневной лимит исчерпан. Для закрепления изученных слов поиграйте в мини-игры.
     <br>
-    Если вы хотите изучать больше слов, то дневной лимит можно увеличить настройках, но, пожалуйста,
-    имейте ввиду, что чем больше новых карточек вы просмотрите, тем больше карточек вам нужно будет повторить.`;
+    Если вы хотите изучать больше слов, то дневной лимит можно увеличить в настройках. 
+    Имейте ввиду, что чем больше новых карточек вы просмотрите, тем больше карточек вам нужно будет повторить.`;
     statisticsContainer.querySelector('.statistic__buttons').innerHTML = 
     `<button class="button game__button continue">Продолжить</button>
     <button class="button game__button settings">Настройки</button>`
