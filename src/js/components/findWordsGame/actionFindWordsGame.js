@@ -6,6 +6,7 @@ class ActionFindWordsGame {
         this.renderFindWordsGame = RenderFindWordsGame;
         this.click = 'click';
         this.stackCard = [];
+        this.stackClassCards = [];
         this.coupleStat = {};
         this.reset = 0;
         this.soundOn = this.renderFindWordsGame.soundOn;
@@ -53,6 +54,7 @@ class ActionFindWordsGame {
 
                 event.target.parentElement.classList.remove('rotate');
                 this.stackCard.push(event.target.parentElement.dataset.couple);
+                this.stackClassCards.push(event.target.parentElement.classList[2]);
                 this.checkCard(event);
 
                 if (!document.querySelectorAll('.rotate').length) {
@@ -75,9 +77,10 @@ class ActionFindWordsGame {
         const delayRotate = 800;
 
         if (this.stackCard.length < twoElements) return;
-
         const secondCard = this.stackCard.pop();
         const firstCard = this.stackCard.pop();
+        const secondErrorCard = document.querySelector(`.${this.stackClassCards.pop()}`);
+        const firstErrorCard = document.querySelector(`.${this.stackClassCards.pop()}`);
 
         if (firstCard === secondCard) {
             document.querySelector(`.ru-${firstCard}`).classList.add('correct');
@@ -107,9 +110,14 @@ class ActionFindWordsGame {
                 errorSound.play();
             }
 
+            firstErrorCard.classList.add('error');
+            secondErrorCard.classList.add('error');
+
             setTimeout(() => {
                 document.querySelector(`.ru-${firstCard}`).classList.add('rotate');
                 document.querySelector(`.eng-${firstCard}`).classList.add('rotate');
+                firstErrorCard.classList.remove('error');
+                secondErrorCard.classList.remove('error');
                 event.target.parentElement.classList.add('rotate');
                 gameField.classList.remove('event-none');
             }, delayRotate);
