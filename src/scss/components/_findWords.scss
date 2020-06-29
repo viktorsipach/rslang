@@ -64,6 +64,10 @@ $color-exit: #ffffffc7;
     margin-top: 3rem;
     width: 90%;
     text-align: center;
+    @include media-mobile {
+        text-align: left;
+        font-size: 2.5rem;
+    }
 }
 .game-info {
     width: fit-content;
@@ -263,12 +267,14 @@ $color-exit: #ffffffc7;
         opacity: 1;
     }
     @include media-tablet {
-        width: 18rem;
-        height: 12rem;
+        width: 16rem;
+        height: 10rem;
+        font-size: 1.8rem;
     }
     @include media-mobile {
-        width: 12rem;
-        height: 8rem;
+        width: 10rem;
+        height: 6rem;
+        font-size: 1.2rem;
     }
 }
 .card-eng__front,
@@ -327,6 +333,14 @@ $color-exit: #ffffffc7;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
+    @include media-tablet {
+        width: 90%;
+        font-size: 1.5rem;
+    }
+    @include media-mobile {
+        width: 95%;
+        font-size: 1.3rem;
+    }
 }
 .statistics__header {
     margin-bottom: 1rem;
