@@ -16,9 +16,6 @@
 
 .hide-header {
     top: -8%;
-    @include media-laptop { 
-        top: -8%;
-    }
 }
 
 .logo {
@@ -170,7 +167,7 @@
   display: none;
   position: relative;
   margin-left: 3%;
-  top: 0rem;
+  top: 0;
   left: 0;
   z-index: 1;
   -webkit-user-select: none;
