@@ -139,6 +139,16 @@ const addActiveClassNav = (e) => {
     page.innerHTML = '';
 }
 
+const hideHeader = () => {
+    const header = document.querySelector('.header')
+    header.classList.add('hide-header')
+}
+
+const showHeader = () => {
+    const header = document.querySelector('.header')
+    header.classList.remove('hide-header')
+}
+
 const addClickCardsHandler = () => {
     const container = document.querySelector('.container__cards')
     const page = document.querySelector('.page')
@@ -169,26 +179,32 @@ const addClickCardsHandler = () => {
             case 'card__speakit':
                 page.innerHTML = '';
                 initSpeakItGame();
+                hideHeader()
                 break;
             case 'card__puzzle':
                 page.innerHTML = '';
                 initPuzzleGame()
+                hideHeader()
                 break;
             case 'card__savanna':
                 page.innerHTML = '';
                 initSavannaGame();
+                hideHeader()
                 break;
             case 'card__audioCall':
                 page.innerHTML = '';
                 initAudioCallGame();
+                hideHeader()
                 break;
             case 'card__sprint':
                 page.innerHTML = '';
                 Sprint.init('.page');
+                hideHeader()
                 break;
             case 'card__findWords':
                 page.innerHTML = '';
                 findWordsGame.initFindWordsGame();
+                hideHeader()
                 break;
             case 'card__setting':
                 page.innerHTML = '';
@@ -221,6 +237,7 @@ const addClickCloseBtnHandler = () => {
         addCardsAnimation()
         addClickCardsHandler()
         removeActiveClassNav()
+        showHeader()
     })
 }
 
@@ -240,7 +257,7 @@ export const addClickNavHandler = () => {
                 // initStatistics();
                 break;
             case 'navbar__studying':
-            addActiveClassNav(e)
+                addActiveClassNav(e)
                 // initStudyingWords();
                 break;
             case 'navbar__difficult':
@@ -254,26 +271,32 @@ export const addClickNavHandler = () => {
             case 'navbar__speakit':
                 addActiveClassNav(e)
                 initSpeakItGame();
+                hideHeader()
                 break;
             case 'navbar__puzzle':
                 addActiveClassNav(e)
                 initPuzzleGame()
+                hideHeader()
                 break;
             case 'navbar__savanna':
                 addActiveClassNav(e)
                 initSavannaGame();
+                hideHeader()
                 break;
             case 'navbar__audioCall':
                 addActiveClassNav(e)
                 initAudioCallGame();
+                hideHeader()
                 break;
             case 'navbar__sprint':
                 addActiveClassNav(e)
                 Sprint.init('.page');
+                hideHeader()
                 break;
             case 'navbar__findWords':
                 addActiveClassNav(e)
                 findWordsGame.initFindWordsGame();
+                hideHeader()
                 break;
             case 'navbar__setting':
                 addActiveClassNav(e)
