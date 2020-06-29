@@ -10,6 +10,8 @@ export default class Game {
     this.wordsPerSentence = 10;
     this.wordsPerRound = 10;
     this.isFinished = false;
+    this.audio = new Audio();
+    this.levelsAmount = 6;
   }
 
   async startNewLevelRound() {
@@ -84,22 +86,38 @@ export default class Game {
     let posX = 0;
     let posY = 0;
     let bufferX = 0;
-    const sizeX = 832;
-    const sizeY = 468;
-    words.forEach((element) => {
+    const shiftValue = -7;
+    const el = document.querySelector('.results-container');
+    const sizeX = el.offsetWidth;
+    const sizeY = el.offsetHeight;
+    const sentenceHeight = sizeY/this.wordsPerRound;
+    words.forEach((element, index) => {
       const wordElement = element;
-      posY = this.currentSentenceNumber*(-46);
-      wordElement.style.backgroundImage =   `none`;
+      posY = this.currentSentenceNumber*(-sentenceHeight);
+      wordElement.style.backgroundImage =  `none`;
       wordElement.style.backgroundSize = `${sizeX}px ${sizeY}px`;
       wordElement.style.backgroundPosition = `${posX}px ${posY}px`;
       wordElement.style.maxWidth = `${element.offsetWidth}px`;
       bufferX += element.offsetWidth;
       posX = sizeX - bufferX;
+
+      const rightSegment = wordElement.querySelector('.right');
+      rightSegment.style.backgroundImage =   `none`;
+      rightSegment.style.backgroundSize = `${sizeX}px ${sizeY}px`;
+      rightSegment.style.backgroundPosition = `${posX}px ${posY + shiftValue}px`;
+
+      if (index === 0) {
+        const leftSegment = element.querySelector('.left');
+        leftSegment.classList.add('first');
+      } else if (index === words.length - 1) {
+        rightSegment.classList.add('last');
+      }
     });
     this.correctWordsOrder = words;
   }
 
   startSentence() {
+    document.querySelector('.main__hints').classList.remove('hidden');
     document.querySelector('.hints__sentence').textContent = '';
     this.isSentenceCompleted = false;
 
@@ -130,7 +148,7 @@ export default class Game {
       const CHECKBUTTON = document.querySelector('.game__buttons>.check');
       const CONTINUEBUTTON = document.querySelector('.game__buttons>.continue');
 
-      const resultSentenceLength = document.querySelectorAll('.result__sentence.current>.word-container>.data__word').length;
+      const resultSentenceLength = document.querySelectorAll('.result__sentence.current>.word-container').length;
       const dataSentenceLength = this.currentDataSentenceObject.length;
       if (this.isSentenceCompleted === true) {
         this.showHintsAtEnd();
@@ -162,6 +180,11 @@ export default class Game {
       words.forEach((element) => {
         const wordElement = element;
         wordElement.style.border = 'none';
+        wordElement.style.boxShadow = 'none';
+        wordElement.style.borderRadius = '0';
+        wordElement.querySelector('.left').style.border = 'none';
+        wordElement.querySelector('.left').style.backgroundColor = 'transparent';
+        wordElement.querySelector('.right').style.border = 'none';
       });
 
       const sentences = document.querySelectorAll('.result__sentence');
@@ -171,6 +194,8 @@ export default class Game {
 
       const pictureInfo = getPaintingInfo(this.level, this.round);
       document.querySelector('.data-container').textContent = pictureInfo;
+      document.querySelector('.main__data').classList.add('paintingInfo');
+      document.querySelector('.main__hints').classList.add('hidden');
     }
   }
 
@@ -184,7 +209,7 @@ export default class Game {
   }
 
   pronounceCurrentSentence() {
-    this.currentDataSentenceObject.playSentenceSound();
+    this.currentDataSentenceObject.playSentenceSound(this.audio);
   }
 
   translateCurrentSentence() {
@@ -257,8 +282,29 @@ export default class Game {
 
   showRoundStatistic() {
     document.querySelector('.page'). append(renderStatisticsModal());
-    document.querySelector('.statistic-title').textContent = `Level ${this.level} Round ${this.round}`;
+    document.querySelector('.statistic-title').textContent = `Уровень ${this.level} Раунд ${this.round}`;
     this.renderPaintingInfoForStatisticPage();
     this.renderSentencesStatistics();
+  }
+
+  checkGameProgress() {
+    const SELECTLEVELOPTION = document.getElementById('selectLevel');
+    const SELECTROUNDOPTION = document.getElementById('selectRound');
+    const HINTS_SENTENCE = document.querySelector('.hints__sentence');
+    if (this.round < this.roundsInLevel) {
+      this.round += 1;
+      SELECTROUNDOPTION.value = this.round;
+      this.startCurrentLevelRound();
+    } else if (this.level < this.levelsAmount) {
+      this.level += 1;
+      this.round = 1;
+      SELECTLEVELOPTION.value = this.level;
+      SELECTROUNDOPTION.value = this.round;
+      this.startNewLevelRound();
+    } else {
+      document.querySelector('.main__hints').classList.remove('hidden');
+      HINTS_SENTENCE.textContent = 'ПОЗДРАВЛЯЕМ!! Все уровни пройдены!';
+      this.isFinished = true;
+    }
   }
 }

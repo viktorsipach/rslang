@@ -1,10 +1,9 @@
+import Game from './Game';
 import renderStartPage from './renderStartPage';
 import renderMainPage from './renderMainPage';
-import Game from './Game';
-import { checkActiveHints } from './utils';
+import { checkActiveHints, checkLocalStorageItem } from './utils';
 
 export default function initPuzzleGame() {
-
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderStartPage());
@@ -12,18 +11,16 @@ export default function initPuzzleGame() {
   document.querySelector('.start__button').addEventListener('click', () => {
     PAGECONTAINER.innerHTML = '';
     PAGECONTAINER.append(renderMainPage());
-    
+    const SELECTLEVELOPTION = document.getElementById('selectLevel');
+    const SELECTROUNDOPTION = document.getElementById('selectRound');
+
     const level = 1;
     const round = 1;
-
     const game = new Game( { level, round });
     game.startNewLevelRound();
 
-    // click events
-    document.querySelector('.game__puzzle').addEventListener('click', (event) => {
-      const SELECTLEVELOPTION = document.getElementById('selectLevel');
-      const SELECTROUNDOPTION = document.getElementById('selectRound');
- 
+    // change events
+    document.querySelector('.menu__left').addEventListener('change', (event) => {
       if (event.target.closest('.select__round')) {
         game.round = parseInt(SELECTROUNDOPTION.value, 10);
         game.startCurrentLevelRound();
@@ -33,62 +30,43 @@ export default function initPuzzleGame() {
         game.round = 1;
         game.startNewLevelRound();
       }
+    });
 
+    // click events
+    document.querySelector('.game__puzzle').addEventListener('click', (event) => {
       if (event.target.closest('.menu__button.auto-pronunciation')) {
-        if (localStorage.getItem('autoPronunciation') === 'true') {
-          localStorage.setItem('autoPronunciation', 'false');
-        } else {
-          localStorage.setItem('autoPronunciation', 'true');
-        }
+        checkLocalStorageItem('autoPronunciation');
       } else if (event.target.closest('.menu__button.translation')) {
-        if (localStorage.getItem('translation') === 'true') {
-          localStorage.setItem('translation', 'false');
-        } else {
-          localStorage.setItem('translation', 'true');
-        }
+        checkLocalStorageItem('translation');
       } else if (event.target.closest('.menu__button.sentence-pronunciation')) {
-        if (localStorage.getItem('sentencePronunciation') === 'true') {
-          localStorage.setItem('sentencePronunciation', 'false');
-        } else {
-          localStorage.setItem('sentencePronunciation', 'true');
-        }
+        checkLocalStorageItem('sentencePronunciation');
       } else if (event.target.closest('.menu__button.bck-image')) {
-        if (localStorage.getItem('bckImage') === 'true') {
-          localStorage.setItem('bckImage', 'false');
-        } else {
-          localStorage.setItem('bckImage', 'true');
-        }
+        checkLocalStorageItem('bckImage');
       }
       checkActiveHints();
 
-      if (event.target.closest('.data__sentence') && event.target.classList.contains('data__word')) {
-        const element = document.querySelector('.result__sentence.current');
-        element.append(event.target.parentNode);
-      } else if (event.target.closest('.result__sentence') && event.target.classList.contains('data__word')) {
-        const element = document.querySelector('.data__sentence');
-        element.append(event.target.parentNode);
-
+      if (event.target.closest('.data__sentence') && event.target.closest('.data__word')) {
+        let element = event.target;
+        if (element.classList.contains('left') || element.classList.contains('right') || element.classList.contains('text')) {
+          element = event.target.parentNode;
+        }
+        document.querySelector('.result__sentence.current').append(element);
+      } else if (event.target.closest('.result__sentence') && event.target.closest('.data__word')) {
+        let element = event.target;
+        if (element.classList.contains('left') || element.classList.contains('right') || element.classList.contains('text')) {
+          element = event.target.parentNode;
+        }
+        document.querySelector('.data__sentence').append(element);
       } else if (event.target.classList.contains('dontKnow')) {
         game.buildCurrentSentence();
       } else if (event.target.classList.contains('check')) {
         game.checkCurrentSentence();
       } else if (event.target.classList.contains('continue')) {
         if (!game.isFinished) {
-          if (game.currentSentenceNumber < 10) {
+          if (game.currentSentenceNumber < game.wordsPerRound) {
             game.startSentence();
-          } else if (game.round < game.roundsInLevel) {
-            game.round += 1;
-            SELECTROUNDOPTION.value = game.round;
-            game.startCurrentLevelRound();
-          } else if (game.level < 6) {
-            game.level += 1;
-            game.round = 1;
-            SELECTLEVELOPTION.value = game.level;
-            SELECTROUNDOPTION.value = game.round;
-            game.startNewLevelRound();
           } else {
-            document.querySelector('.hints__sentence').textContent = 'Congratulations! You have completed all levels!';
-            game.isFinished = true;
+            game.checkGameProgress();
           }
         }
       } else if (event.target.classList.contains('results') && event.target.classList.contains('puzzleGame__button')) {
@@ -98,23 +76,11 @@ export default function initPuzzleGame() {
           if (eventStatisticPage.target.classList.contains('continue')) {
             const statisticElement = document.querySelector('.puzzle__statistic');
             statisticElement.parentNode.removeChild(statisticElement);
+            if (!game.isFinished) {
+              game.checkGameProgress();
+            }
           }
         });
-        
-        if (game.round < game.roundsInLevel) {
-          game.round += 1;
-          SELECTROUNDOPTION.value = game.round;
-          game.startCurrentLevelRound();
-        } else if (game.level < 6) {
-          game.level += 1;
-          game.round = 1;
-          SELECTLEVELOPTION.value = game.level;
-          SELECTROUNDOPTION.value = game.round;
-          game.startNewLevelRound();
-        } else {
-          document.querySelector('.hints__sentence').textContent = 'CONGRATULATIONS! You have completed all levels!';
-          game.isFinished = true;
-        }
       }
 
       if (event.target.classList.contains('icon__sound')) {
@@ -128,43 +94,51 @@ export default function initPuzzleGame() {
     // drag events
     document.ondragstart = function onDragStart(event) {
       event.dataTransfer.setData('text/plain', event.target.dataset.word);
-      if (event.target.parentNode.parentNode.classList.contains('result__sentence')) {
+      if (event.target.parentNode.classList.contains('result__sentence')) {
         event.dataTransfer.setData('text/container', 'result__sentence');
-      } else if (event.target.parentNode.parentNode.classList.contains('data__sentence')) {
+      } else if (event.target.parentNode.classList.contains('data__sentence')) {
         event.dataTransfer.setData('text/container', 'data__sentence');
       }  
     };
 
     document.ondragover = function onDragOver(event) {
       event.preventDefault();
-      const elements = document.querySelectorAll('.result__sentence.current>.word-container');
-      elements.forEach((el) => el.classList.remove('dragOver'));
-      if (event.target.classList.contains('word-container') && event.target.closest('.result__sentence.current')) {
-        event.target.classList.add('dragOver');
-      } else if (event.target.classList.contains('data__word') && event.target.closest('.result__sentence.current')) {
-        event.target.parentElement.classList.add('dragOver');
-      }
+      const element = event.target;
+      const wordElements = document.querySelectorAll('.result__sentence.current>.word-container');
+      wordElements.forEach((el) => el.classList.remove('dragOver'));
+      if (element.classList.contains('word-container') && element.closest('.result__sentence.current')) {
+        element.classList.add('dragOver');
+      }  else if (element.classList.contains('left') || element.classList.contains('right') || element.classList.contains('text')) {
+        if (element.closest('.result__sentence.current')) {
+          element.parentElement.classList.add('dragOver');
+        }
+      }      
     };
 
     document.ondrop = function onDrop(event) {
       event.preventDefault();
+      const element = event.target;
       const dataElement = event.dataTransfer.getData('text/plain');
       const dataContainer = event.dataTransfer.getData('text/container');
       let dropEndElement;
       let dropStartElement;
-      if (event.target.closest('.result__sentence.current')) {
-        if (event.target.classList.contains('data__word')) {
-          dropEndElement = event.target.parentNode.parentNode;
-          dropStartElement = document.querySelector(`.result__sentence.current>.word-container>[data-word=${dataElement}]`).parentElement;
-          const siblingElement = event.target.parentNode;
+      if (element.closest('.result__sentence.current')) {
+        if (dataContainer === 'result__sentence') {
+          dropStartElement = document.querySelector(`.result__sentence.current>[data-word=${dataElement}]`);  
+        } else if (dataContainer === 'data__sentence') {
+          dropStartElement = document.querySelector(`.data__sentence>[data-word=${dataElement}]`);
+        }
+        if (element.classList.contains('data__word')) {
+          dropEndElement = element.parentNode; 
+          const siblingElement = element;
+          dropEndElement.insertBefore(dropStartElement,  siblingElement);
+          siblingElement.classList.remove('dragOver');
+        } else if (element.classList.contains('left') || element.classList.contains('right') || element.classList.contains('text')) {
+          dropEndElement = element.parentNode.parentNode; 
+          const siblingElement = element.parentElement;
           dropEndElement.insertBefore(dropStartElement,  siblingElement);
           siblingElement.classList.remove('dragOver');
         } else {
-          if (dataContainer === 'result__sentence') {
-            dropStartElement = document.querySelector(`.result__sentence.current>.word-container>[data-word=${dataElement}]`).parentElement;
-          } else if (dataContainer === 'data__sentence') {
-            dropStartElement = document.querySelector(`.data__sentence>.word-container>[data-word=${dataElement}]`).parentElement;
-          }
           dropEndElement = event.target;
           dropEndElement.append(dropStartElement);
         }

@@ -6,80 +6,26 @@ import paintings5 from './paintingsData/level5';
 import paintings6 from './paintingsData/level6';
 
 function createWordElement(word, numb, wordLength) {
+  const wordText = document.createElement('span');
+  wordText.className = 'text';
+  wordText.textContent = word;
+
+  const segmentLeft = document.createElement('span');
+  segmentLeft.className = 'left';
+
+  const segmentRight = document.createElement('span');
+  segmentRight.className = 'right';
+
   const wordContainer = document.createElement('span');
-  wordContainer.className = 'word-container current';
+  wordContainer.className = 'word-container data__word current';
+  wordContainer.dataset.word = `w${numb}`;
+  wordContainer.setAttribute('draggable', 'true');
   wordContainer.style.flexGrow = wordLength;
-  const wordElement = document.createElement('span');
-  wordElement.className = 'word data__word';
-  wordElement.dataset.word = `w${numb}`;
-  wordElement.setAttribute('draggable', 'true');
-  wordElement.textContent = word;
-  wordContainer.append(wordElement);
+
+  wordContainer.append(segmentLeft);
+  wordContainer.append(segmentRight);
+  wordContainer.append(wordText);
   return wordContainer;
-}
-
-function getActualSentence() {
-  const dataWords = document.querySelectorAll('.result__sentence.current>.word-container>.data__word');
-  const actualSentenceArray = [];
-  dataWords.forEach((el) => {
-    actualSentenceArray.push(el);
-  });
-  return actualSentenceArray;
-}
-
-function mixArrayElements(array) {
-  const arrayMixed = [];
-  const arrayLength = array.length;
-  for (let i = 0; i < arrayLength; i += 1) {
-    const randomNumber = Math.floor(Math.random() * array.length);
-    const randomWord = array[randomNumber];
-    array.splice(randomNumber, 1);
-    arrayMixed.push(randomWord);
-  }
-  return arrayMixed;
-}
-
-function checkActiveHints() {
-  if (localStorage.getItem('autoPronunciation') === null) {
-    localStorage.setItem('autoPronunciation', 'true');
-  }
-  if (localStorage.getItem('translation') === null) {
-    localStorage.setItem('translation', 'true');
-  }
-  if (localStorage.getItem('sentencePronunciation') === null) {
-    localStorage.setItem('sentencePronunciation', 'true');
-  }
-  if (localStorage.getItem('bckImage') === null) {
-    localStorage.setItem('bckImage', 'false');
-  }
-
-  const autoPronunciationButton = document.querySelector('.menu__button.auto-pronunciation');
-  if (localStorage.getItem('autoPronunciation') === 'true') {
-    autoPronunciationButton.classList.add('active');
-  } else {
-    autoPronunciationButton.classList.remove('active');
-  }
-
-  const translationButton = document.querySelector('.menu__button.translation');
-  if (localStorage.getItem('translation') === 'true') {
-    translationButton.classList.add('active');
-  } else {
-    translationButton.classList.remove('active');
-  }
-
-  const sentencePronunciationButton = document.querySelector('.menu__button.sentence-pronunciation');
-  if (localStorage.getItem('sentencePronunciation') === 'true') {
-    sentencePronunciationButton.classList.add('active');
-  } else {
-    sentencePronunciationButton.classList.remove('active');
-  }
-
-  const bckImageButton = document.querySelector('.menu__button.bck-image');
-  if (localStorage.getItem('bckImage') === 'true') {
-    bckImageButton.classList.add('active');
-  } else {
-    bckImageButton.classList.remove('active');
-  }
 }
 
 function createStatisticSentence(sentenceObj) {
@@ -103,6 +49,27 @@ function createStatisticSentence(sentenceObj) {
   return sentence;
 }
 
+function getActualSentence() {
+  const dataWords = document.querySelectorAll('.result__sentence.current>.word-container');
+  const actualSentenceArray = [];
+  dataWords.forEach((el) => {
+    actualSentenceArray.push(el);
+  });
+  return actualSentenceArray;
+}
+
+function mixArrayElements(array) {
+  const arrayMixed = [];
+  const arrayLength = array.length;
+  for (let i = 0; i < arrayLength; i += 1) {
+    const randomNumber = Math.floor(Math.random() * array.length);
+    const randomWord = array[randomNumber];
+    array.splice(randomNumber, 1);
+    arrayMixed.push(randomWord);
+  }
+  return arrayMixed;
+}
+
 function mixSentenceWords() {
   const sentenceArray = document.querySelectorAll('.data__sentence>.word-container');
     const sentenceArrayMixed = mixArrayElements(Array.from(sentenceArray));
@@ -110,6 +77,37 @@ function mixSentenceWords() {
     sentenceArrayMixed.forEach((el) => {
       document.querySelector('.data__sentence').append(el);
     });
+}
+
+function changeButtonStateByLocalStorageData (itemTitle, button) {
+  if (localStorage.getItem(itemTitle) === null) {
+    localStorage.setItem(itemTitle, 'true');
+  }
+  if (localStorage.getItem(itemTitle) === 'true') {
+    button.classList.add('active');
+  } else {
+    button.classList.remove('active');
+  }
+}
+
+function checkActiveHints() {
+  const autoPronunciationButton = document.querySelector('.menu__button.auto-pronunciation');
+  const translationButton = document.querySelector('.menu__button.translation');
+  const sentencePronunciationButton = document.querySelector('.menu__button.sentence-pronunciation');
+  const bckImageButton = document.querySelector('.menu__button.bck-image');
+
+  changeButtonStateByLocalStorageData('autoPronunciation', autoPronunciationButton);
+  changeButtonStateByLocalStorageData('translation', translationButton);
+  changeButtonStateByLocalStorageData('sentencePronunciation', sentencePronunciationButton);
+  changeButtonStateByLocalStorageData('bckImage', bckImageButton);
+}
+
+function checkLocalStorageItem(itemTitle) {
+  if (localStorage.getItem(itemTitle) === 'true') {
+    localStorage.setItem(itemTitle, 'false');
+  } else {
+    localStorage.setItem(itemTitle, 'true');
+  }
 }
 
 function getPaintingsDataFile(level) {
@@ -156,6 +154,6 @@ function getPaintingInfo(level, round) {
 }
 
 export {
-  createWordElement, getActualSentence, checkActiveHints, createStatisticSentence, 
-  mixSentenceWords, getPaintingImageSrc, getPaintingInfo
+  createWordElement, createStatisticSentence, getActualSentence, mixSentenceWords,
+  checkActiveHints, checkLocalStorageItem, getPaintingImageSrc, getPaintingInfo
 };
