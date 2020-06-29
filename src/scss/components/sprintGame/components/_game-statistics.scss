@@ -5,7 +5,7 @@
     justify-content: space-around;
     align-items: center;
     width: 50rem;
-    height: 45rem;
+    height: 55rem;
     box-sizing: border-box;
     padding: 10px;
     border-radius: 2rem;
@@ -14,17 +14,17 @@
 
   &__header {
     width: 100%;
-    height: 18%;
+    height: 10%;
   }
 
   &__main {
     width: 100%;
-    height: 57%;
+    height: 75%;
   }
 
   &__footer {
     width: 100%;
-    height: 18%;
+    height: 8%;
     text-align: center;
   }
 
@@ -38,9 +38,59 @@
 
   &__button {
     &_exit {
-      margin: 2rem 1rem;
       padding: 1rem 3rem;
       font-size: 2rem;
+    }
+  }
+
+  &__errors,
+  &__correct-answers {
+
+    &_amount {
+      margin-left: 1rem;
+      padding: 0.5rem 1.5rem;
+      color: $color-light;
+      border-radius: 4rem;
+    }
+  }
+
+  &__errors_amount {
+    background-color: $color-wrong;
+  }
+
+  &__correct-answers_amount {
+    background-color: $color-correct;
+  }
+
+  &__icon {
+    &_caret-down {
+      float: right;
+    }
+  }
+
+  &__list {
+    max-height: 13rem;
+    padding: 1rem 0;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      width: 0.5rem;
+
+      &-thumb {
+        background-color: $color-divider;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__list-item {
+    padding: 1rem 0;
+    font-size: 1.5rem;
+
+    &_icon {
+      padding-right: 1rem;
+      cursor: pointer;
     }
   }
 }

@@ -60,6 +60,8 @@ class Sprint {
     const soundControlButtonOn = controlPanel.querySelector('.sound-control__icon_on');
     const soundControlButtonOff = controlPanel.querySelector('.sound-control__icon_off');
     const wordAudio = this.setNewWord(this.wordsArray);
+    this.wrongWords = [];
+    this.correctWords = [];
     const boardButtonsListener = (event) => {
       this.startBoardButtonsHandler(event, wordAudio, buttonTrue, buttonFalse, buttonRepeat);
     };
@@ -75,9 +77,33 @@ class Sprint {
     if (this.soundIsEnabled) wordAudio.play();
     board.addEventListener('click', boardButtonsListener);
     setTimeout(() => {
-      this.gameIsActive = false;
-      board.removeEventListener('click', boardButtonsListener);
+      this.endGame(boardButtonsListener);
     }, 60000);
+  }
+
+  endGame(boardButtonsListener) {
+    const score = document.querySelector('.counter__value');
+    const board = document.querySelector('.sprint__board');
+    this.gameIsActive = false;
+    this.score = score.textContent;
+    board.removeEventListener('click', boardButtonsListener);
+    ContentBuilder.showCurrentGameStatistics('.sprint__panel_main', this.getStatisticsElement());
+    const gameStatistics = document.querySelector('.game-statistics__popup');
+    const gameStatisticsExit = gameStatistics.querySelector('.game-statistics__button_exit');
+    gameStatistics.addEventListener('click', (event) => {
+      switch (event.target) {
+        case gameStatisticsExit:
+          gameStatistics.remove();
+          break;
+        default:
+          if (event.target.classList.contains('game-statistics__list-item_icon') && this.soundIsEnabled) {
+            const wordAudio = `${this.filesUrlPrefix}${event.target.getAttribute('data-sound')}`;
+            const audioElement = new Audio(wordAudio);
+            audioElement.play();
+          }
+          break;
+      }
+    });
   }
 
   startBoardButtonsHandler(event, currentWordAudio, buttonTrue, buttonFalse, buttonRepeat) {
@@ -89,9 +115,11 @@ class Sprint {
       case buttonTrue:
         if (this.isRandom) {
           if (this.soundIsEnabled) audioWrong.play();
+          this.wrongWords.push(this.currentWord);
           this.currentRewardPoints = 10;
         } else {
           if (this.soundIsEnabled) audioCorrect.play();
+          this.correctWords.push(this.currentWord);
           this.increaseScore(counter);
           this.increaseStack();
         }
@@ -101,10 +129,12 @@ class Sprint {
       case buttonFalse:
         if (this.isRandom) {
           if (this.soundIsEnabled) audioCorrect.play();
+          this.correctWords.push(this.currentWord);
           this.increaseScore(counter);
           this.increaseStack();
         } else {
           if (this.soundIsEnabled) audioWrong.play();
+          this.wrongWords.push(this.currentWord);
           this.currentRewardPoints = 10;
         }
         wordAudio = this.setNewWord(this.wordsArray);
@@ -137,6 +167,7 @@ class Sprint {
     wordFieldTranslated.textContent = isRandom ? randomWordTranslate : currentWordTranslate;
 
     const audioElement = new Audio(`${this.filesUrlPrefix}${currentWord.audio}`);
+    this.currentWord = currentWord;
     this.currentWordAudio = audioElement;
     return audioElement;
   }
@@ -174,6 +205,63 @@ class Sprint {
       this.currentRewardPoints *= 2;
     }
   }
+
+  static getWordsList(wordsArray) {
+    const wordsList = document.createElement('ul');
+    wordsArray.forEach((word) => {
+      const element = document.createElement('li');
+      element.classList.add('game-statistics__list-item');
+      element.innerHTML = `
+        <i class="fa fa-play game-statistics__list-item_icon" data-sound="${word.audio}"></i>${word.word} - ${word.wordTranslate}
+      `;
+      wordsList.append(element);
+    });
+    return wordsList;
+  }
+
+  getStatisticsElement() {
+    const errorsAmount = this.wrongWords.length;
+    const correctAnswersAmount = this.correctWords.length;
+    const statisticsPopup = document.createElement('div');
+    statisticsPopup.classList.add('game-statistics__popup');
+    const errorsListItems = Sprint.getWordsList(this.wrongWords).innerHTML;
+    const correctAnswersListItems = Sprint.getWordsList(this.correctWords).innerHTML;
+
+    const statisticsMarkup = `
+      <div class="game-statistics__header">
+        <div class="game-statistics__score">
+          ${this.score}
+        </div>
+      </div>
+      <div class="game-statistics__main">
+        <div class="game-statistics__errors">
+          <button class="accordion">Ошибки<span class="game-statistics__errors_amount">${errorsAmount}</span><i class="fa fa-caret-down game-statistics__icon_caret-down"></i></button>
+          <div class="accordion__panel">
+            <ul class="game-statistics__list">
+              ${errorsListItems}
+            </ul>
+          </div>
+        </div>
+        <span class="divider"></span>
+        <div class="game-statistics__correct-answers">
+          <button class="accordion">Угаданные слова<span class="game-statistics__correct-answers_amount">${correctAnswersAmount}</span><i class="fa fa-caret-down game-statistics__icon_caret-down"></i></button>
+          <div class="accordion__panel">
+            <ul class="game-statistics__list">
+              ${correctAnswersListItems}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="game-statistics__footer">
+        <button class="button game-statistics__button_exit">
+          Закрыть
+        </button>
+      </div>
+    `;
+    statisticsPopup.innerHTML = statisticsMarkup;
+    return statisticsPopup;
+  }
+
 }
 
 export default new Sprint();
