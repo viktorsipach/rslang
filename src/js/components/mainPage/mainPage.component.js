@@ -7,7 +7,7 @@ import Sprint from '../sprintGame/Sprint';
 import initSpeakItGame from '../speakitGame/app.speakit';
 
 const renderMainPage = () => {
-    const page = document.querySelector('.page')
+    const page = document.querySelector('.page');
     const wrapper = document.createElement('div');
     wrapper.classList = 'wrapper__main-page';
     wrapper.innerHTML = `
@@ -83,13 +83,13 @@ const renderMainPage = () => {
             </div>
         </div>
     </div>`
-    page.append(wrapper)
+    page.append(wrapper);
 }
 
 export const addCardsAnimation = () => {
     const END_ANIMATION = 1000;
     const ONE_CYCLE_ANIMATION = 150;
-    const cards = document.querySelectorAll('.card')
+    const cards = document.querySelectorAll('.card');
     setTimeout(() => {
         cards.forEach((el,idx) => {
             const node = el;
@@ -111,13 +111,13 @@ export const addCardsAnimation = () => {
 }
 
 export const menuHandler = () => {
-    const checkbox = document.querySelector('.menu-checkbox')
-    const nav = document.querySelector('.navbar')
+    const checkbox = document.querySelector('.menu-checkbox');
+    const nav = document.querySelector('.navbar');
     checkbox.addEventListener('change', () => {
         if (checkbox.checked) {
-            nav.classList.add('show-nav')
+            nav.classList.add('show-nav');
         } else {
-            nav.classList.remove('show-nav')
+            nav.classList.remove('show-nav');
         }
     })
 }
@@ -126,22 +126,32 @@ const removeActiveClassNav = () => {
     const navNodes = document.querySelectorAll('.nav');
     navNodes.forEach(el => {
         if (el.classList.contains('active-nav')) {
-            el.classList.remove('active-nav')
+            el.classList.remove('active-nav');
         }
     })
 }
 
 const addActiveClassNav = (e) => {
-    const page = document.querySelector('.page')
+    const page = document.querySelector('.page');
     const el = e.target;
-    removeActiveClassNav()
-    el.classList.add('active-nav')
+    removeActiveClassNav();
+    el.classList.add('active-nav');
     page.innerHTML = '';
 }
 
+const hideHeader = () => {
+    const header = document.querySelector('.header');
+    header.classList.add('hide-header');
+}
+
+const showHeader = () => {
+    const header = document.querySelector('.header');
+    header.classList.remove('hide-header');
+}
+
 const addClickCardsHandler = () => {
-    const container = document.querySelector('.container__cards')
-    const page = document.querySelector('.page')
+    const container = document.querySelector('.container__cards');
+    const page = document.querySelector('.page');
     container.addEventListener('click', (e) => {
         const className = e.target.classList[1];
         const findWordsGame = new FindWordsGame();
@@ -169,26 +179,32 @@ const addClickCardsHandler = () => {
             case 'card__speakit':
                 page.innerHTML = '';
                 initSpeakItGame();
+                hideHeader();
                 break;
             case 'card__puzzle':
                 page.innerHTML = '';
-                initPuzzleGame()
+                initPuzzleGame();
+                hideHeader();
                 break;
             case 'card__savanna':
                 page.innerHTML = '';
                 initSavannaGame();
+                hideHeader();
                 break;
             case 'card__audioCall':
                 page.innerHTML = '';
                 initAudioCallGame();
+                hideHeader();
                 break;
             case 'card__sprint':
                 page.innerHTML = '';
                 Sprint.init('.page');
+                hideHeader();
                 break;
             case 'card__findWords':
                 page.innerHTML = '';
                 findWordsGame.initFindWordsGame();
+                hideHeader();
                 break;
             case 'card__setting':
                 page.innerHTML = '';
@@ -206,85 +222,92 @@ const addClickCardsHandler = () => {
                 return null;
         }
         // eslint-disable-next-line no-use-before-define
-        addClickCloseBtnHandler()
-        removeActiveClassNav()
+        addClickCloseBtnHandler();
+        removeActiveClassNav();
         return null;
     })
 }
 
 const addClickCloseBtnHandler = () => {
     const closeBtn = document.querySelector('.close');
-    const page = document.querySelector('.page')
+    const page = document.querySelector('.page');
     closeBtn.addEventListener('click', () => {
         page.innerHTML = '';
-        renderMainPage()
-        addCardsAnimation()
-        addClickCardsHandler()
-        removeActiveClassNav()
+        renderMainPage();
+        addCardsAnimation();
+        addClickCardsHandler();
+        removeActiveClassNav();
+        showHeader();
     })
 }
 
 export const addClickNavHandler = () => {
-    const checkbox = document.querySelector('.menu-checkbox')
-    const nav = document.querySelector('.navbar')
+    const checkbox = document.querySelector('.menu-checkbox');
+    const nav = document.querySelector('.navbar');
     nav.addEventListener('click', (e) => {
         const className = e.target.classList[1];
         const findWordsGame = new FindWordsGame();
         switch(className) {
             case 'navbar__words':
-                addActiveClassNav(e)
+                addActiveClassNav(e);
                 initTrainingGame();
                 break;
             case 'navbar__statistics':
-                addActiveClassNav(e)
+                addActiveClassNav(e);
                 // initStatistics();
                 break;
             case 'navbar__studying':
-            addActiveClassNav(e)
+                addActiveClassNav(e);
                 // initStudyingWords();
                 break;
             case 'navbar__difficult':
-                addActiveClassNav(e)
+                addActiveClassNav(e);
                 // initDifficultWords();
                 break;
             case 'navbar__removed':
-                addActiveClassNav(e)
+                addActiveClassNav(e);
                 // initRemovedWords();
                 break;
             case 'navbar__speakit':
-                addActiveClassNav(e)
+                addActiveClassNav(e);
                 initSpeakItGame();
+                hideHeader();
                 break;
             case 'navbar__puzzle':
-                addActiveClassNav(e)
-                initPuzzleGame()
+                addActiveClassNav(e);
+                initPuzzleGame();
+                hideHeader();
                 break;
             case 'navbar__savanna':
-                addActiveClassNav(e)
+                addActiveClassNav(e);
                 initSavannaGame();
+                hideHeader();
                 break;
             case 'navbar__audioCall':
-                addActiveClassNav(e)
+                addActiveClassNav(e);
                 initAudioCallGame();
+                hideHeader();
                 break;
             case 'navbar__sprint':
-                addActiveClassNav(e)
+                addActiveClassNav(e);
                 Sprint.init('.page');
+                hideHeader();
                 break;
             case 'navbar__findWords':
-                addActiveClassNav(e)
+                addActiveClassNav(e);
                 findWordsGame.initFindWordsGame();
+                hideHeader();
                 break;
             case 'navbar__setting':
-                addActiveClassNav(e)
+                addActiveClassNav(e);
                 // initSetting();
                 break;
             case 'navbar__promo':
-                addActiveClassNav(e)
+                addActiveClassNav(e);
                 // initPromo();
                 break;
             case 'navbar__about':
-                addActiveClassNav(e)
+                addActiveClassNav(e);
                 // initAbout();
                 break;
             default:
@@ -292,15 +315,15 @@ export const addClickNavHandler = () => {
         }
         if (nav.classList.contains('show-nav')) {
             checkbox.checked = false;
-            nav.classList.remove('show-nav')
+            nav.classList.remove('show-nav');
         }
-        addClickCloseBtnHandler()
+        addClickCloseBtnHandler();
         return null;
     })
 }
 
 export const initMainPage = () => {
-    renderMainPage()
-    addCardsAnimation()
-    addClickCardsHandler()
+    renderMainPage();
+    addCardsAnimation();
+    addClickCardsHandler();
 }
