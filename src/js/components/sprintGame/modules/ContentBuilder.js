@@ -64,6 +64,15 @@ class ContentBuilder {
       <div class="curtain__timer timer"></div>
       <div class="curtain__get-ready">${this.gameGetReadyText}</div>
     `;
+
+    this.errorMessageMarkup = `
+      <dic class="sprint__error-popup error-popup">
+        <div class="error-popup_message">
+          Упс! Возникли временные неполадки. Попробуйте, пожалуйста, позже!
+        </div>
+        <button class="button curtain__button curtain__button_close">Закрыть</button>
+      </div>
+    `;
   }
 
   addMainPageContent(parentSelector) {
@@ -133,6 +142,11 @@ class ContentBuilder {
     parent.append(statisticsElement);
     Accordion.init();
     return this;
+  }
+
+  showErrorMessage(parentSelector) {
+    const parent = document.querySelector(parentSelector);
+    parent.innerHTML = this.errorMessageMarkup;
   }
 }
 
