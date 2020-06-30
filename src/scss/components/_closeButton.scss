@@ -5,6 +5,7 @@
     width: 3rem;
     height: 3rem;
     opacity: 1;
+    z-index: 1000;
     &:hover {
       opacity: 0.3;
       cursor: pointer;
@@ -24,7 +25,7 @@
     &::after {
       transform: rotate(-45deg);
     }
-     @include media-tablet {
+    @include media-tablet {
         right: 1rem;
         top: 1rem;
     }

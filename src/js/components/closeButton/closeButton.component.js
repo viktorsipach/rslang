@@ -10,12 +10,7 @@ function removeClassModificatorCloseBtn() {
     })
 }
 
-export function addClassModificatorCloseBtn(className) {
-    const closeBtn = document.querySelector('.close-btn');
-    closeBtn.classList.add(`${className}`)
-}
-
-export function addClickCloseBtnHandler() {
+export default function addClickCloseBtnHandler() {
     const closeBtn = document.querySelector('.close-btn');
     closeBtn.addEventListener('click', () => {
         removeClassModificatorCloseBtn()
