@@ -6,7 +6,6 @@
     color: #ffffffc7;
     position: relative;
 }
-
 .container.container_audioCall {
     max-width: 1100px;
     margin: 0 auto;
@@ -20,7 +19,6 @@
       max-width: 300px;
     }
 }
-
 .game__title {
     text-transform: uppercase;
     font-size: 5rem;
@@ -32,7 +30,6 @@
       font-size: 4rem;
     }
 }
-
 .game__description {
     padding: 5rem;
     font-size: 2.5rem;
@@ -47,7 +44,6 @@
       line-height: 2rem;
     }
 }
-
 .game__btn,
 .game__start {
     font-size: 3rem;
@@ -61,7 +57,11 @@
       font-size: 2rem;
     }
 }
-
+.game__btn {
+  @include media-mobile {
+    margin-bottom: 1rem;
+  }
+}
 .game__close {
     position: absolute;
     right: 3rem;
@@ -89,14 +89,17 @@
       transform: rotate(-45deg);
     }
 }
-
 .game__image {
-    padding: 10rem 0rem 5rem;
+  padding: 8rem 0 0rem;
+  min-height: 21rem;
+    @include media-tablet {
+      padding-top: 12rem;
+    }
     @include media-mobile {
       padding-top: 20rem;
+      min-height: auto;
     }
 }
-
 .image.image_audioCall { 
     width: 20rem;
     height: 0rem;
@@ -113,21 +116,20 @@
   opacity: 1;
   height: 20rem;
 }
-
 .image.image_audioCall img {
   width: 100%;
   object-fit: cover;
 }
-
 .game__voice-word {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 15rem;
     @include media-mobile {
       flex-direction: column;
+      min-height: auto;
     }
 }
-
 .game__word {
     font-size: 5rem;
     text-transform: lowercase;
@@ -150,7 +152,6 @@
   position: initial;
   z-index: 1;
 }
-
 .game__voice {
     background: url(/assets/img/icon-audio.png);
     background-size: 60%;
@@ -163,7 +164,7 @@
     transition: 0.2s;
     cursor: pointer;
     @include media-mobile {
-      margin: 0 0 1rem;
+      margin: 1rem 0;
     }
     &:hover {
       transform: scale(1.2);
@@ -177,15 +178,15 @@
     margin-left: 0;
   }
 }
-
 .game__words {
     font-size: 2.5rem;
     display: flex;
     justify-content: space-evenly;
-    padding: 10rem 0 15rem;
+    padding: 3rem 0 3rem;
     flex-wrap: wrap;
+    min-height: 10rem;
     @include media-tablet {  
-      padding: 5rem 0;
+      padding: 1rem 0;
     }
 }
 .words__item {
@@ -251,7 +252,7 @@
     text-transform: uppercase;
     align-items: center;
 }
-.game__lvl_audioCall {
+.game__round_audioCall {
     margin-left: 2rem;
     @include media-tablet {
       margin-left: 0;
@@ -261,12 +262,12 @@
 .game__iconSound {
   position: absolute;
   left: 3rem;
-  top: 15rem;
+  top: 8rem;
   width: 3rem;
   height: 3rem;
   background: url('/../../assets/img/speaker.svg');
   background-color: $color-violet;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   cursor: pointer;
   padding: 1rem;
   background-size: 65%;
@@ -277,7 +278,7 @@
     background-color: #54358e;
   }
   @include media-tablet {
-    top: 16rem;
+    top: 11rem;
   }
 }
 .game__iconSound.active {
@@ -292,7 +293,6 @@
     background-color: #54358e;
   }
 }
-
 .game__statistics_audioCall {
 	position: absolute;
   left: 3rem;
@@ -306,7 +306,6 @@
     padding: 1.5rem 1rem;
   }
 }
-
 .statistics-audioCall {
   position: fixed;
   top: 0;
@@ -320,9 +319,8 @@
   justify-content: center;
   background: #00000090;
 }
-
 .modal-audioCall {
-  width: 400px;
+  width: 40rem;
   height: auto;
   max-height: 85vh;
   border: 3px solid #f2f2f2;
@@ -331,14 +329,13 @@
   display: flex;
   flex-direction: row;
   color: $color-light;
-  padding: 40px;
+  padding: 2rem;
   word-break: break-word;
   overflow: auto;
   position: relative;
-  font-size: 3rem;
+  font-size: 2rem;
   justify-content: space-evenly;
 }
-
 .modal-audioCall-hidden {
   display: none;
 }
@@ -369,7 +366,6 @@
     transform: rotate(-45deg);
   }
 }
-
 .statistics-audioCall__false .statistics-audioCall__title {
   color: $color-wrong;
   font-weight: 700;
@@ -378,7 +374,6 @@
   background: $color-light;
   border-radius: 0.5rem;
 }
-
 .statistics-audioCall__true .statistics-audioCall__title {
   color: $color-correct;
   font-weight: 700;
@@ -389,4 +384,16 @@
 }
 .statistics-audioCall__words p {
   margin-bottom: 1rem;
+}
+.modal__btn_audiocallGame {
+  position: absolute;
+  bottom: 3rem;
+  right: 2rem;
+  border: 1px solid;
+  padding: 1rem 0.5rem;
+  cursor: pointer;
+  transition: 0.6s;
+  &:hover {
+    transform: scale(1.1);
+  }
 }
