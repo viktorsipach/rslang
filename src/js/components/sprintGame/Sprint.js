@@ -35,7 +35,6 @@ class Sprint {
     startButton.addEventListener('click', async () => {
       const wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
       if (wordsApiArray.error) {
-        console.log(`API error: ${wordsApiArray.error}`);
         ContentBuilder.showErrorMessage('.sprint__curtain');
       } else {
         const wordsArray = [];
