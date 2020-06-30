@@ -5,11 +5,11 @@ function createDOMElement(type, classes, textContent) {
   return element;
 }
 
-function createNumberInput(inputContainer, labelText, inputName, minValue, maxValue) {
+function createNumberInput(inputContainer, labelText, inputClass, inputName, minValue, maxValue) {
   const numberInputContainer = createDOMElement('div', `${inputContainer}`);
   numberInputContainer.innerHTML = 
   ` <label for="${inputName}">${labelText}:</label>
-  <input type="number" name="${inputName}" min="${minValue}" max="${maxValue}">`;
+  <input class="${inputClass}" type="number" name="${inputName}" min="${minValue}" max="${maxValue}">`;
   return numberInputContainer;
 }
 
@@ -46,13 +46,17 @@ function createCheckBoxElement(containerClass, textContent) {
 }
 
 function createMainSettingsFragment() {
-  const newWordsPerDay = createNumberInput('', 'Количество новых слов в день', 'newWordsPerDay', '10', '100');
-  const maxCardsPerDay = createNumberInput('', 'Максмальное количество карточек в день', 'maxCardsPerDay', '10', '100');
+  const newWordsPerDay = createNumberInput('main-settings__field', 'Количество новых слов в день', 'input__number', 'newWordsPerDay', '10', '100');
+  const maxCardsPerDay = createNumberInput('main-settings__field', 'Максмальное количество карточек в день', 'input__number', 'maxCardsPerDay', '10', '100');
 
-  const autoPronunciation = createToggleSwitchElement('autoPronunciation-container', 'Автопроизношение аудио');
-  const showIDontKnowButton = createToggleSwitchElement('iDontKnowButton-container', 'Переход к следующему слову без его ввода');
-  const showDeleteButton = createToggleSwitchElement('deleteButton-container', 'Возможность удалять слова из изучения');
-  const showHardButton = createToggleSwitchElement('hardButton-container', 'Возможность добавлять слова в сложные');
+  const autoPronunciation = createToggleSwitchElement('main-settings__field autoPronunciation', 'Автопроизношение аудио');
+  const showIDontKnowButton = createToggleSwitchElement('main-settings__field iDontKnowButton', 'Переход к следующему слову без его ввода');
+  const showDeleteButton = createToggleSwitchElement('main-settings__field deleteButton', 'Возможность удалять слова из изучения');
+  const showHardButton = createToggleSwitchElement('main-settings__field hardButton', 'Возможность добавлять слова в сложные');
+
+  const submitButton = createDOMElement('button', 'button setting-submit__button');
+  submitButton.type = 'submit';
+  submitButton.textContent = 'Сохранить настройки';
 
   const mainSettings = createDOMElement('div', 'main-settings');
   mainSettings.append(newWordsPerDay);
@@ -61,6 +65,7 @@ function createMainSettingsFragment() {
   mainSettings.append(showIDontKnowButton);
   mainSettings.append(showDeleteButton);
   mainSettings.append(showHardButton);
+  mainSettings.append(submitButton);
   return mainSettings;
 }
 
@@ -79,13 +84,13 @@ function createCardRequiredFields() {
   return requiredFields;
 }
 
-function createCardAdditionalFields() {
-  const additionalFieldsTitle = createDOMElement('div', 'additional-fields__title', 'Дополнительные поля');
+function createCardOptionalFields() {
+  const additionalFieldsTitle = createDOMElement('div', 'optional-fields__title', 'Дополнительные поля');
 
   const showTranscription = createCheckBoxElement('showTranscription', 'Транскрипция');
   const showAssociatedPicture = createCheckBoxElement('showAssociatedPicture', 'Картинка-ассоциация');
 
-  const additionalFields = createDOMElement('div', 'additional-fields');
+  const additionalFields = createDOMElement('div', 'optional-fields');
   additionalFields.append(additionalFieldsTitle);
   additionalFields.append(showTranscription);
   additionalFields.append(showAssociatedPicture);
@@ -93,19 +98,19 @@ function createCardAdditionalFields() {
 }
 
 function createCardElement() {
-  const card = createDOMElement('div', 'training__card card-example');
+  const card = createDOMElement('div', 'training__card training__card_example');
   card.innerHTML = 
   `<div class="card__top">
-    <div class="card__translation"></div>
-    <div class="card__transcription"></div>
+    <div class="card__translation">translation</div>
+    <div class="card__transcription">transcription</div>
     <div class="card-img__container"></div>
   </div>
   <div class="card__bottom">
     <div class="sentences__container">
-      <div class="card__explanation-sentence"></div>
-      <div class="card__explanation-sentence-translation hidden"></div>
-      <div class="card__example-sentence"></div>
-      <div class="card__example-sentence-translation hidden"></div>
+      <div class="card__explanation-sentence">explanation-sentence</div>
+      <div class="card__explanation-sentence-translation">explanation-sentence-translation</div>
+      <div class="card__example-sentence">example-sentence</div>
+      <div class="card__example-sentence-translation">example-sentence-translation</div>
     </div>
     <div class="input__container">
       <input class="card__input" spellcheck="false" type="text">
@@ -118,7 +123,7 @@ function createCardElement() {
 function createCardSettingsFragment() {
   const cardSettings = createDOMElement('div', 'card-settings');
   cardSettings.append(createCardRequiredFields());
-  cardSettings.append(createCardAdditionalFields());
+  cardSettings.append(createCardOptionalFields());
   cardSettings.append(createCardElement());
   return cardSettings;
 }
@@ -128,13 +133,8 @@ function renderSettingsPage() {
   settingsContainer.append(createMainSettingsFragment());
   settingsContainer.append(createCardSettingsFragment());
 
-  const submitButton = createDOMElement('button', 'setting__submit-button');
-  submitButton.type = 'submit';
-  submitButton.textContent = 'Сохранить настройки';
-
   const settingsForm = createDOMElement('form', 'settings__form');
   settingsForm.append(settingsContainer);
-  settingsForm.append(submitButton);
 
   const settingsWrapper = createDOMElement('div', 'settings__wrapper');
   settingsWrapper.append(settingsForm);
