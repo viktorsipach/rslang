@@ -1,10 +1,10 @@
 import RenderFindWordsGame from './renderFindWordsGame';
 import ActionFindWordsGame from './actionFindWordsGame';
 
-export default class FindWordsGame {
+class FindWordsGame {
     constructor() {
-        this.renderFindWordsGame = new RenderFindWordsGame();
-        this.actionFindWordsGame = new ActionFindWordsGame();
+        this.renderFindWordsGame = RenderFindWordsGame;
+        this.actionFindWordsGame = ActionFindWordsGame;
     }
 
     initFindWordsGame() {
@@ -12,5 +12,10 @@ export default class FindWordsGame {
         this.actionFindWordsGame.startGame();
         this.actionFindWordsGame.clickCard();
         this.actionFindWordsGame.repeatRoundButton();
+        this.actionFindWordsGame.changeLevelRound();
+        this.actionFindWordsGame.nextRoundButton();
+        this.actionFindWordsGame.soundButton();
     }
 }
+
+export default new FindWordsGame();
