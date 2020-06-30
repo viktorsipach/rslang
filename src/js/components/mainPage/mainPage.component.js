@@ -5,6 +5,7 @@ import initSavannaGame from '../savannaGame/savannaGame';
 import initTrainingGame from '../trainingGame/initTrainingGame';
 import Sprint from '../sprintGame/Sprint';
 import initSpeakItGame from '../speakitGame/app.speakit';
+import initSetting from '../settingsPage/settingsPage.component';
 
 const renderMainPage = () => {
     const page = document.querySelector('.page');
@@ -217,7 +218,7 @@ const addClickCardsHandler = () => {
                 break;
             case 'card__setting':
                 page.innerHTML = '';
-                // initSetting();
+                initSetting();
                 break;
             case 'card__promo':
                 page.innerHTML = '';
@@ -296,7 +297,7 @@ export const addClickNavHandler = () => {
                 break;
             case 'navbar__setting':
                 addActiveClassNav(e);
-                // initSetting();
+                initSetting();
                 break;
             case 'navbar__promo':
                 addActiveClassNav(e);
