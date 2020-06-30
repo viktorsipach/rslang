@@ -19,6 +19,8 @@ class Sprint {
     this.gameTimerStartPoint = 60;
     this.currentRewardPoints = 10;
     this.currentStack = 0;
+    this.gameDuration = 60000;
+    this.gameDelay = 3000;
   }
 
   init(parentSelector = '.page') {
@@ -47,7 +49,7 @@ class Sprint {
       setTimeout(() => {
         ContentBuilder.addMainPageContent(this.gameContainerSelector);
         this.startGame();
-      }, 3000);
+      }, this.gameDelay);
     });
   }
 
@@ -78,7 +80,7 @@ class Sprint {
     board.addEventListener('click', boardButtonsListener);
     setTimeout(() => {
       this.endGame(boardButtonsListener);
-    }, 60000);
+    }, this.gameDuration);
   }
 
   endGame(boardButtonsListener) {
