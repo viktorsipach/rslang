@@ -34,22 +34,26 @@ class Sprint {
     const startButton = document.querySelector('.curtain__button_start');
     startButton.addEventListener('click', async () => {
       const wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
-      const wordsArray = [];
-      wordsApiArray.forEach((element) => {
-        const {
-          word,
-          audio,
-          wordTranslate,
-        } = element;
-        wordsArray.push({word, audio, wordTranslate});
-      });
-      this.wordsArray = wordsArray;
-      ContentBuilder.addGetReadyContent('.sprint__curtain');
-      this.startTimer('.curtain__timer', this.curtainTimerStartPoint);
-      setTimeout(() => {
-        ContentBuilder.addMainPageContent(this.gameContainerSelector);
-        this.startGame();
-      }, this.gameDelay);
+      if (wordsApiArray.error) {
+        ContentBuilder.showErrorMessage('.sprint__curtain');
+      } else {
+        const wordsArray = [];
+        wordsApiArray.forEach((element) => {
+          const {
+            word,
+            audio,
+            wordTranslate,
+          } = element;
+          wordsArray.push({word, audio, wordTranslate});
+        });
+        this.wordsArray = wordsArray;
+        ContentBuilder.addGetReadyContent('.sprint__curtain');
+        this.startTimer('.curtain__timer', this.curtainTimerStartPoint);
+        setTimeout(() => {
+          ContentBuilder.addMainPageContent(this.gameContainerSelector);
+          this.startGame();
+        }, this.gameDelay);
+      }
     });
   }
 
