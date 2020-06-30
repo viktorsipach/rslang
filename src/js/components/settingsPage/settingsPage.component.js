@@ -1,12 +1,12 @@
 function createDOMElement(type, classes, textContent) {
-  const element = document.createElement(`${type}`);
+  const element = document.createElement(type);
   element.className = classes;
   element.textContent = textContent;
   return element;
 }
 
 function createNumberInput(inputContainer, labelText, inputClass, inputName, minValue, maxValue) {
-  const numberInputContainer = createDOMElement('div', `${inputContainer}`);
+  const numberInputContainer = createDOMElement('div', inputContainer);
   numberInputContainer.innerHTML = 
   ` <label for="${inputName}">${labelText}:</label>
   <input class="${inputClass}" type="number" name="${inputName}" min="${minValue}" max="${maxValue}">`;
