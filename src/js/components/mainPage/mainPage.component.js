@@ -83,6 +83,7 @@ const renderMainPage = () => {
             </div>
         </div>
     </div>`
+    page.innerHTML = '';
     page.append(wrapper);
 }
 
@@ -141,12 +142,19 @@ const addActiveClassNav = (e) => {
 
 const hideHeader = () => {
     const header = document.querySelector('.header');
+    const closeBtn = document.querySelector('.close-btn');
     header.classList.add('hide-header');
+    closeBtn.classList.remove('hidden');
 }
 
 const showHeader = () => {
     const header = document.querySelector('.header');
-    header.classList.remove('hide-header');
+    const closeBtn = document.querySelector('.close-btn');
+    if(header.classList.contains('hide-header')) {
+        header.classList.remove('hide-header');
+        closeBtn.classList.add('hidden');
+    }
+   
 }
 
 const addClickCardsHandler = () => {
@@ -159,6 +167,7 @@ const addClickCardsHandler = () => {
             case 'card__words':
                 page.innerHTML = '';
                 initTrainingGame();
+                hideHeader();
                 break;
             case 'card__statistics':
                 page.innerHTML = '';
@@ -221,25 +230,11 @@ const addClickCardsHandler = () => {
             default:
                 return null;
         }
-        // eslint-disable-next-line no-use-before-define
-        addClickCloseBtnHandler();
         removeActiveClassNav();
         return null;
     })
 }
 
-const addClickCloseBtnHandler = () => {
-    const closeBtn = document.querySelector('.close');
-    const page = document.querySelector('.page');
-    closeBtn.addEventListener('click', () => {
-        page.innerHTML = '';
-        renderMainPage();
-        addCardsAnimation();
-        addClickCardsHandler();
-        removeActiveClassNav();
-        showHeader();
-    })
-}
 
 export const addClickNavHandler = () => {
     const checkbox = document.querySelector('.menu-checkbox');
@@ -251,6 +246,7 @@ export const addClickNavHandler = () => {
             case 'navbar__words':
                 addActiveClassNav(e);
                 initTrainingGame();
+                hideHeader();
                 break;
             case 'navbar__statistics':
                 addActiveClassNav(e);
@@ -317,7 +313,6 @@ export const addClickNavHandler = () => {
             checkbox.checked = false;
             nav.classList.remove('show-nav');
         }
-        addClickCloseBtnHandler();
         return null;
     })
 }
@@ -326,4 +321,5 @@ export const initMainPage = () => {
     renderMainPage();
     addCardsAnimation();
     addClickCardsHandler();
+    showHeader();
 }
