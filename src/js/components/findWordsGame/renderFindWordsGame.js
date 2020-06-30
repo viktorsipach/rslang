@@ -1,10 +1,14 @@
 import {getRoundData} from '../../API/dataAPI';
 
-export default class RenderFindWordsGame {
+class RenderFindWordsGame {
     constructor() {
         this.target = 'page';
         this.getWords = getRoundData;
         this.words = [];
+        this.delayField = 1000;
+        this.delayCards = 20;
+        this.middle = 0.5;
+        this.soundOn = true;
     }
 
     createElement(tag, className, textContent, target = this.target, index = 0) {
@@ -18,7 +22,7 @@ export default class RenderFindWordsGame {
     renderStartPage() {
         this.createElement('div', 'find-words start-find-words','');
         this.createElement('div', 'game-info', '', 'find-words');
-        this.createElement('div', 'find-words__exit', '', 'find-words');
+        this.createElement('div', 'find-words__exit close', '', 'find-words');
         this.createElement('div', 'game-info__title', 'НАЙДИ СЛОВА', 'game-info');
         this.createElement('div', 'game-info__description description', '', 'game-info')
         this.createElement('div', 'description__first','Кликай по карточкам и запоминай', 'game-info__description');
@@ -31,7 +35,7 @@ export default class RenderFindWordsGame {
         const event = new Event('mainPageLoad');
 
         this.createElement('div', 'game-container hide-game-container', '', 'find-words');
-        this.createElement('div', 'find-words__exit', '', 'find-words');
+        this.createElement('div', 'find-words__exit close', '', 'find-words');
         this.createElement('div', 'find-words__title', 'НАЙДИ СЛОВА', 'find-words');
         this.createElement('div', 'game-container__controls controls', '', 'game-container');
         this.createElement('div', 'game-container__progress-bar progress-bar', '', 'game-container');
@@ -42,23 +46,34 @@ export default class RenderFindWordsGame {
         this.renderMainPageGameField();
         this.renderMainPageWords();
 
-        document.querySelector('.page').dispatchEvent(event);
+        document.querySelector('.find-words').dispatchEvent(event);
     }
 
     renderMainPageControls() {
+        const maxLevel = 6;
+        const maxRound = 60;
+
         this.createElement('div', 'controls__level level', '', 'controls');
         this.createElement('div', 'level__head', 'Уровень', 'controls__level');
-        this.createElement('select', 'select level__select level-select', '', 'controls__level');
-        for (let i = 1; i < 7; i += 1 ) {
+        this.createElement('div', 'select level__select', '', 'controls__level');
+        this.createElement('select', 'level-select', '', 'level__select');
+        for (let i = 1; i <= maxLevel; i += 1 ) {
             this.createElement('option', 'level-select__item', i, 'level-select')
         }
 
         this.createElement('div', 'controls__page _page', '', 'controls');
         this.createElement('div', 'page__head', 'Раунд', 'controls__page');
-        this.createElement('select', 'select page__select page-select', '', 'controls__page');
-        for (let i = 1; i < 61; i += 1 ) {
+        this.createElement('div', 'select page__select', '', 'controls__page');
+        this.createElement('select', 'page-select', '', 'page__select');
+        for (let i = 1; i <= maxRound; i += 1 ) {
             this.createElement('option', 'page-select__item', i, 'page-select')
         }
+
+        this.createElement('div', 'controls__sound sound', '', 'controls');
+        this.createElement('div', 'sound__head', 'Звук', 'controls__sound');
+        this.createElement('div', 'sound__toggle-cont button', '', 'controls__sound');
+        this.createElement('div', 'sound__toggle', '', 'sound__toggle-cont');
+        if (this.soundOn) document.querySelector('.sound__toggle').classList.add('on');
     }
 
     renderMainPageProgressBar() {
@@ -72,54 +87,53 @@ export default class RenderFindWordsGame {
         for (let i = 0; i < 10; i += 1) {
             this.createElement('div', `game-field__card-eng card-eng eng-couple${i}`, '', 'game-field');
             this.createElement('div', 'card-eng__front', '', 'game-field__card-eng', i);
+            this.createElement('div', 'card-eng__text', '', 'card-eng__front', i);
             this.createElement('div', 'card-eng__back', '', 'game-field__card-eng', i);
             document.querySelector(`.eng-couple${i}`).setAttribute('data-couple', `couple${i}`);
 
             this.createElement('div', `game-field__card-ru card-ru ru-couple${i}`, '', 'game-field');
             this.createElement('div', 'card-ru__front', '', 'game-field__card-ru', i);
+            this.createElement('div', 'card-ru__text', '', 'card-ru__front', i);
             this.createElement('div', 'card-ru__back', '', 'game-field__card-ru', i);
             document.querySelector(`.ru-couple${i}`).setAttribute('data-couple', `couple${i}`);
         }
 
-        const shuffle = (element, target) => {
-            document.querySelectorAll(`.${element}`).forEach((e) => {
-                if (Math.random() > 0.5) {
-                    document.querySelector(`.${target}`).append(e);
-                }
-                if (Math.random() < 0.5) {
-                    document.querySelector(`.${target}`).prepend(e);
-                }
-            });
-        }
-        shuffle('card-eng', 'game-field');
-        shuffle('card-ru', 'game-field');
+        this.shuffle('card-eng', 'game-field');
+        this.shuffle('card-ru', 'game-field');
+    }
+
+    shuffle(element, target)  {
+        document.querySelectorAll(`.${element}`).forEach((e) => {
+            if (Math.random() > this.middle) {
+                document.querySelector(`.${target}`).append(e);
+            }
+            if (Math.random() < this.middle) {
+                document.querySelector(`.${target}`).prepend(e);
+            }
+        });
     }
 
     async renderMainPageWords() {
-        const level = 1;
-        const round = 1;
+        const level = document.querySelector('.level-select').value;
+        const round = document.querySelector('.page-select').value;
         const wordsPerRound = 10;
-        const delayField = 1000;
-        const delayCards = 20;
         const data = await this.getWords(level, round, wordsPerRound);
 
+        this.words = [];
         data.forEach((elem) => {
             this.words.push(`${elem.word} - ${elem.wordTranslate}`);
         })
 
         data.forEach((elem, i) => {
-            document.querySelector(`.eng-couple${i}`).firstElementChild.textContent = `${elem.word}`;
-            document.querySelector(`.ru-couple${i}`).firstElementChild.textContent = `${elem.wordTranslate}`;
+            document.querySelector(`.eng-couple${i}`).firstElementChild.firstElementChild.textContent = `${elem.word}`;
+            document.querySelector(`.ru-couple${i}`).firstElementChild.firstElementChild.textContent = `${elem.wordTranslate}`;
+            document.querySelector(`.eng-couple${i}`).lastElementChild.setAttribute('data-audio', `${elem.audio}`);
+            document.querySelector(`.ru-couple${i}`).lastElementChild.setAttribute('data-audio', `${elem.audio}`);
         })
 
-        const cardArr = document.querySelector('.game-field').children;
-        for(let i = 0; i < cardArr.length; i += 1) {
-            setTimeout(() => {
-                setTimeout(() => {
-                    cardArr[i].classList.add('rotate');
-                   }, i * delayCards);
-            }, delayField);
-        }
+        setTimeout(() => {
+            this.cardsRotate();
+        }, this.delayField);
 
         document.querySelectorAll('.card-ru').forEach((elem) => {
             elem.classList.add('visible');
@@ -129,9 +143,21 @@ export default class RenderFindWordsGame {
         });
     }
 
+    cardsRotate() {
+        const cardArr = document.querySelector('.game-field').childNodes;
+        cardArr.forEach((elem, idx) => {
+            setTimeout(() => {
+                elem.classList.add('rotate');
+            }, idx * this.delayCards);
+        });
+    }
+
     renderMainPageResult(stat) {
         const event = new Event('statLoad');
         const cards = document.querySelectorAll('.card-eng__front');
+        const base = 10;
+        const level = parseInt(document.querySelector('.level-select').value, base);
+        const round = parseInt(document.querySelector('.page-select').value, base);
 
         this.createElement('div', 'statistics', '', 'find-words');
         this.createElement('div', 'statistics__modal', '', 'statistics');
@@ -157,7 +183,13 @@ export default class RenderFindWordsGame {
         this.createElement('div', 'statistics__controls', '', 'statistics__modal');
         this.createElement('div', 'button statistics__repeat-button', 'Повторить раунд', 'statistics__controls');
         this.createElement('div', 'button statistics__next-button', 'Следующий раунд', 'statistics__controls');
+        if (level === 6 && round === 60) {
+            document.querySelector('.statistics__next-button').style.display = 'none';
+            document.querySelector('.statistics__header').innerHTML = 'Поздравляем!<br><p>Игра завершена!<br>Статистика Раунда';
+        }
 
-        document.querySelector('.page').dispatchEvent(event);
+        document.querySelector('.find-words').dispatchEvent(event);
     }
 }
+
+export default new RenderFindWordsGame();
