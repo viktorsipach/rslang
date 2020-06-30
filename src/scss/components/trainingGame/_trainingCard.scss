@@ -163,6 +163,14 @@
   &.hidden {
     display: none;
   }
+  @include media-tablet {
+    height: 3.1rem;
+    font-size: 1.5rem;
+  }
+  @include media-mobile {
+    height: 2.6rem;
+    font-size: 1.25rem;
+  }
   &>*{
     &[data-is-correct="true"]  {
       color: $color-green;

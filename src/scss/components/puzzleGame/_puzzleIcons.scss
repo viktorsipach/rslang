@@ -36,11 +36,11 @@
         height: 1.5rem;
       }
     }
-    &.active {
-      background-image: url('../assets/img/puzzle/sound-active.svg');
-    }
+    &.active,
     &:hover {
       background-image: url('../assets/img/puzzle/sound-active.svg');
+      transform: scale(1.25);
+      transition: 0.5s;
     }
     @include media-laptop {
       width: 2.5rem;
@@ -50,5 +50,9 @@
       width: 2rem;
       height: 2rem;
     }
+  }
+  &:hover {
+    transform: scale(1.25);
+    transition: 0.5s;
   }
 }

@@ -6,6 +6,9 @@
   align-items: center;
   height: 3rem;
   flex-direction: row;
+  &.hidden {
+    display: none;
+  }
   @include media-laptop {
     height: 5rem;
   }
@@ -15,7 +18,8 @@
   display: flex;
   justify-content: center;
   font-size: 2rem;
-  font-weight: 400;
+  font-weight: 700;
+  text-shadow: -2px 0 2px $color-light, 2px 0 2px $color-light, 0 2px 2px $color-light;
   @include media-laptop {
     font-size: 1.75rem;
   }

@@ -6,10 +6,9 @@ export default async function initTrainingGame() {
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderTrainingGamePage());
 
-  
   const settings = {
     newWordsPerDay: 10,
-    maxCardsPerDay: 10,
+    maxCardsPerDay: 3,
     cardSettings: {
       showTranslation: true,
       showExplanationSentence: true,
@@ -18,8 +17,12 @@ export default async function initTrainingGame() {
       showAssociatedPicture: true
     },
     autoPronunciation: true,
+    showIDontKnowButton: true,
     showDeleteButton: true,
-    showHardButton: true
+    showHardButton: true,
+    newWordsOnly: true,
+    learnedWordsOnly: true,
+    intervalRepetitionTechnique: true
   }
  
   const trainingGame = new TrainingGame(settings);

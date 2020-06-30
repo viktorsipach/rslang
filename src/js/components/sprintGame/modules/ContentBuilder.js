@@ -2,6 +2,7 @@ import SoundOnImg from '../../../../assets/img/sprint/sound_on.svg';
 import SoundOffImg from '../../../../assets/img/sprint/sound_off.svg';
 import RepeatImg from '../../../../assets/img/sprint/repeat.svg';
 import Background from './BackgroundHandler';
+import Accordion from '../components/Accordion';
 
 class ContentBuilder {
   constructor() {
@@ -50,7 +51,7 @@ class ContentBuilder {
     `;
 
     this.curtainMarkup = `
-      <div class="exit curtain__exit"></div>
+      <div class="exit curtain__exit close"></div>
       <div class="curtain__game-name"></div>
       <div class="curtain__game-description">${this.gameDescription}</div>
       <button class="button curtain__button curtain__button_start">Начать</button>
@@ -59,9 +60,18 @@ class ContentBuilder {
     this.gameGetReadyText = 'Приготовьтесь!';
 
     this.getReadyMarkup = `
-      <div class="exit curtain__exit"></div>
+      <div class="exit curtain__exit close"></div>
       <div class="curtain__timer timer"></div>
       <div class="curtain__get-ready">${this.gameGetReadyText}</div>
+    `;
+
+    this.errorMessageMarkup = `
+      <dic class="sprint__error-popup error-popup">
+        <div class="error-popup_message">
+          Упс! Возникли временные неполадки. Попробуйте, пожалуйста, позже!
+        </div>
+        <button class="button curtain__button curtain__button_close">Закрыть</button>
+      </div>
     `;
   }
 
@@ -82,7 +92,7 @@ class ContentBuilder {
     this.addElementToFragment(panelLeft, this.timerMarkup, 'sprint__timer', 'timer');
     this.addElementToFragment(panelMain, this.counterMarkup, 'sprint__counter', 'counter');
     this.addElementToFragment(panelMain, this.boardMarkup, 'sprint__board', 'board');
-    this.addElementToFragment(panelRight, '', 'sprint__exit', 'exit');
+    this.addElementToFragment(panelRight, '', 'sprint__exit', 'exit', 'close');
     this.addElementToFragment(panelRight, this.soundControlMarkup, 'sprint__sound-control', 'sound-control');
 
     parent.append(fragment);
@@ -126,6 +136,18 @@ class ContentBuilder {
     return this;
   }
 
+  showCurrentGameStatistics(parentSelector, statisticsElement) {
+    const parent = document.querySelector(parentSelector);
+    parent.innerHTML = '';
+    parent.append(statisticsElement);
+    Accordion.init();
+    return this;
+  }
+
+  showErrorMessage(parentSelector) {
+    const parent = document.querySelector(parentSelector);
+    parent.innerHTML = this.errorMessageMarkup;
+  }
 }
 
 export default new ContentBuilder();

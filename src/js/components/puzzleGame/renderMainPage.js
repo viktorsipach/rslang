@@ -46,7 +46,6 @@ function renderHints() {
   return hints;  
 }
 
-
 function renderLevelsOptions(selectContainer) {
   const levels = 6;
   const SELECTLEVELCONTAINER = selectContainer.querySelector('.select__level>select');
@@ -64,11 +63,10 @@ function renderLevelsOptions(selectContainer) {
 function renderMainPageMenu() {
   const menuLeft = document.createElement('div');
   menuLeft.className = 'menu__left';
-  menuLeft.append(renderDropdownElement('menu__level', 'level__title', 'Level', 'select__level', 'selectLevel'));
-  menuLeft.append(renderDropdownElement('menu__round', 'round__title', 'Round', 'select__round', 'selectRound'));
+  menuLeft.append(renderDropdownElement('menu__level', 'level__title', 'Уровень', 'select__level', 'selectLevel'));
+  menuLeft.append(renderDropdownElement('menu__round', 'round__title', 'Раунд', 'select__round', 'selectRound'));
   renderLevelsOptions(menuLeft);
   
-
   const menuButtons = document.createElement('div');
   menuButtons.className = 'buttons menu__buttons';
   menuButtons.append(renderMenuButton('auto-pronunciation', 'icon__auto-pronunciation'));
@@ -117,14 +115,17 @@ function renderGameButton(buttonClass, buttonTitle) {
 function renderGameButtons() {
   const gameButtons = document.createElement('div');
   gameButtons.className = 'buttons game__buttons puzzle-game';
-  gameButtons.append(renderGameButton('dontKnow', 'I don`t know'));
-  gameButtons.append(renderGameButton('check hidden', 'Check'));
-  gameButtons.append(renderGameButton('continue hidden', 'Continue'));
-  gameButtons.append(renderGameButton('results hidden', 'Results'));
+  gameButtons.append(renderGameButton('dontKnow', 'Я не знаю'));
+  gameButtons.append(renderGameButton('check hidden', 'Проверить'));
+  gameButtons.append(renderGameButton('continue hidden', 'Продолжить'));
+  gameButtons.append(renderGameButton('results hidden', 'Результаты'));
   return gameButtons;
 }
 
 export default function renderMainPage() {
+  const closeButton = document.createElement('div');
+  closeButton.className = 'game__close_puzzle puzzle-main close';
+
   const mainPage = document.createElement('div');
   mainPage.className = 'main__page game__puzzle';
   mainPage.append(renderMainPageMenu());
@@ -132,6 +133,12 @@ export default function renderMainPage() {
   mainPage.append(renderGameResults());
   mainPage.append(renderGameData());
   mainPage.append(renderGameButtons());
-  return mainPage;
+  mainPage.append(closeButton);
+
+  const mainPageWrapper = document.createElement('div');
+  mainPageWrapper.className = 'game__puzzle-wrapper';
+  mainPageWrapper.append(mainPage);
+
+  return mainPageWrapper;
 }
           
