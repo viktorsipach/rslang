@@ -15,19 +15,19 @@ export function statisticsWords(arrTrueAnswer, arrFalseAnswer) {
         statisticsFalse.append(answerFalse);
     }
 
-    statisticsDom.classList = 'test';
+    statisticsDom.classList = 'statistics-modal-window';
     statisticsDom.innerHTML = `
     <div class="modal-audioCall">
         <div class="modal__close"></div>
         <div class="statistics-audioCall__false">
             <div class="statistics-audioCall__title">Ошибок</div>
-            <div class="statistics-audioCall__words">           
-            </div>
+            <div class="statistics-audioCall__words"></div>
         </div>
         <div class="statistics-audioCall__true">
             <div class="statistics-audioCall__title">Знаю</div>
-            <div class="statistics-audioCall__words">
-            </div>
+            <div class="statistics-audioCall__words"></div>
+        </div>
+        <div class="modal__btn_audiocallGame">далее</div>
     </div>`
 
     statisticsPage.append(statisticsDom);
