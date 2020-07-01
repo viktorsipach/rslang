@@ -6,6 +6,7 @@ import initTrainingGame from '../trainingGame/initTrainingGame';
 import Sprint from '../sprintGame/Sprint';
 import initSpeakItGame from '../speakitGame/app.speakit';
 import initSetting from '../settingsPage/settingsPage.component';
+import { initStudyingWords, initDifficultWords, initRemovedWords } from '../dictionaryPage/dictionaryPage.component'
 
 const renderMainPage = () => {
     const page = document.querySelector('.page');
@@ -124,7 +125,7 @@ export const menuHandler = () => {
     })
 }
 
-const removeActiveClassNav = () => {
+export const removeActiveClassNav = () => {
     const navNodes = document.querySelectorAll('.nav');
     navNodes.forEach(el => {
         if (el.classList.contains('active-nav')) {
@@ -255,15 +256,15 @@ export const addClickNavHandler = () => {
                 break;
             case 'navbar__studying':
                 addActiveClassNav(e);
-                // initStudyingWords();
+                initStudyingWords();
                 break;
             case 'navbar__difficult':
                 addActiveClassNav(e);
-                // initDifficultWords();
+                initDifficultWords();
                 break;
             case 'navbar__removed':
                 addActiveClassNav(e);
-                // initRemovedWords();
+                initRemovedWords();
                 break;
             case 'navbar__speakit':
                 addActiveClassNav(e);
