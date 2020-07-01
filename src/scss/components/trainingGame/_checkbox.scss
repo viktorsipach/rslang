@@ -3,7 +3,6 @@
   position: relative;
   padding-left: 3.5rem;
   margin-bottom: 1.2rem;
-  cursor: pointer;
   font-size: 1.5rem;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -25,6 +24,7 @@
   left: 0;
   height: 2rem;
   width: 2rem;
+  cursor: pointer;
   background-color: $color-violet;
 }
 

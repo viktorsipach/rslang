@@ -5,6 +5,10 @@
   background-image: url('/assets/img/bg-main-page.jpg');
   background-size: cover;
   background-position: center;
+  opacity: 1;
+  &.modal {
+    opacity: 0.5;
+  }
 }
 
 .settings__form {
@@ -155,46 +159,45 @@ input:checked + .slider:before {
 .optional-fields__title {
   font-size: 2rem;
   font-weight: 700;
-  padding-bottom: 1rem;  
   @include media-laptop {
     font-size: 1.4rem;
   }
 }
 
 .optional-fields__title {
+  padding-bottom: 1rem;  
   padding-top: 5rem;
   @include media-laptop {
     padding-top: 2rem;
   }
 }
 
+.required-fields__subtitle {
+  font-size: 1rem;
+  padding: 1rem 0;
+}
+
 .training__card_example {
   width: 46rem;
-  min-height: 25rem;
-  height: 25rem;
+  min-height: 30rem;
   margin-top: 5rem;
   @include media-laptop {
     width: 33rem;
-    min-height: 20rem;
-    height: 20rem;
+    min-height: 23rem;
   }
   @include media-tablet {
     margin: 2.5rem auto 10rem;
     min-height: 35rem;
-    height: 35rem;
   }
   
   &>.card__top {
-    min-height: 6rem;
-    height: 6rem;
+    min-height: 8rem;
     @include media-laptop {
-      min-height: 4rem;
-      height: 4rem;
+      min-height: 6rem;
       margin-left: calc(50% - 13rem);
     }
     @include media-tablet {
       min-height: 15rem;
-      height: 15rem;
       margin-top: 1rem;
       margin-left: calc(50% - 7.5rem);
     }
@@ -242,6 +245,7 @@ input:checked + .slider:before {
   }
   &>.card__bottom {
     &>.sentences__container {
+      min-height: 10rem;
       &>* {
         font-size: 1.25rem;
         padding: 0.25rem 0;
@@ -254,17 +258,42 @@ input:checked + .slider:before {
 
     &>.input__container {
       margin: 0.5rem auto;
+      @include media-laptop {
+        margin: 0 auto;
+      }
       &>.card__input {
+        font-size: 1.5rem;
         width: 15rem;
         height: 2rem;
         @include media-laptop {
+          font-size: 1.5rem;
           width: 10rem;
           height: 1.5rem;
         }
       }
-      @include media-laptop {
-        margin: 0 auto;
-      }
     }
+  }
+}
+
+.settings__modal {
+  width: 50rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 5rem;
+  left: calc(50% - 25rem);
+  padding: 2rem;
+  background: $color-light;
+  border-radius: 1rem;
+  &>.settings__modal-message {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $color-wrong;
+    padding: 0 2rem;
+  }
+  &>.close-btn {
+    top: 1rem;
   }
 }
