@@ -28,21 +28,23 @@ function createToggleSwitchElement(containerClass, switchTitle) {
   return switchContainer;
 }
 
-
-function createCheckBoxElement(containerClass, textContent) {
+function createCheckBoxElement(checkboxClass, checkboxTitle) {
   const input = document.createElement('input');
   input.type = 'checkbox';
   input.checked = 'checked';
 
-  const checkMark = document.createElement('span');
-  checkMark.className = 'checkmark';
+  const checkMark = createDOMElement('span', 'checkmark');
 
-  const container = document.createElement('label');
-  container.className = `checkbox-container ${containerClass}`;
-  container.textContent = textContent;
-  container.append(input);
-  container.append(checkMark);
-  return container;
+  const checkboxElement = createDOMElement('label', checkboxClass);
+  checkboxElement.append(input);
+  checkboxElement.append(checkMark);
+
+  const checkboxTitleElement = createDOMElement('span', 'checkbox-title', checkboxTitle);
+
+  const checkboxContainer  = createDOMElement('div', 'checkbox-container');
+  checkboxContainer.append(checkboxElement);
+  checkboxContainer.append(checkboxTitleElement);
+  return checkboxContainer
 }
 
 function createMainSettingsFragment() {
@@ -50,6 +52,7 @@ function createMainSettingsFragment() {
   const maxCardsPerDay = createNumberInput('main-settings__field', 'Максмальное количество карточек в день', 'input__number', 'maxCardsPerDay', '10', '100');
 
   const autoPronunciation = createToggleSwitchElement('main-settings__field autoPronunciation', 'Автопроизношение аудио');
+  const showSentencesTranslations = createToggleSwitchElement('main-settings__field showSentencesTranslations', 'Показать перевод предложений');
   const showIDontKnowButton = createToggleSwitchElement('main-settings__field iDontKnowButton', 'Переход к следующему слову без его ввода');
   const showDeleteButton = createToggleSwitchElement('main-settings__field deleteButton', 'Возможность удалять слова из изучения');
   const showHardButton = createToggleSwitchElement('main-settings__field hardButton', 'Возможность добавлять слова в сложные');
@@ -62,6 +65,7 @@ function createMainSettingsFragment() {
   mainSettings.append(newWordsPerDay);
   mainSettings.append(maxCardsPerDay);
   mainSettings.append(autoPronunciation);
+  mainSettings.append(showSentencesTranslations);
   mainSettings.append(showIDontKnowButton);
   mainSettings.append(showDeleteButton);
   mainSettings.append(showHardButton);
@@ -70,7 +74,9 @@ function createMainSettingsFragment() {
 }
 
 function createCardRequiredFields() {
-  const requiredFieldsTitle = createDOMElement('div', 'required-fields__title', 'Хотя бы один пункт должен быть отмечен');
+  const requiredFieldsTitle = createDOMElement('div', 'required-fields__title', 'Основные поля');
+
+  const requiredFieldsSubTitle = createDOMElement('div', 'required-fields__subtitle', '!!! Хотя бы один пункт должен быть отмечен');
 
   const showTranslation = createCheckBoxElement('showTranslation', 'Перевод слова');
   const showExplanationSentence = createCheckBoxElement('showExplanationSentence', 'Предложение с объяснением значения слова');
@@ -78,6 +84,7 @@ function createCardRequiredFields() {
 
   const requiredFields = createDOMElement('div', 'required-fields');
   requiredFields.append(requiredFieldsTitle);
+  requiredFields.append(requiredFieldsSubTitle);
   requiredFields.append(showTranslation);
   requiredFields.append(showExplanationSentence);
   requiredFields.append(showExampleSentence);
@@ -128,7 +135,7 @@ function createCardSettingsFragment(cardData) {
   return cardSettings;
 }
 
-export default function renderSettingsPage(cardData) {
+function renderSettingsPage(cardData) {
   const settingsContainer = createDOMElement('div', 'form-container');
   settingsContainer.append(createMainSettingsFragment());
   settingsContainer.append(createCardSettingsFragment(cardData));
@@ -142,5 +149,12 @@ export default function renderSettingsPage(cardData) {
   document.querySelector('.page').innerHTML = '';
   document.querySelector('.page').append(settingsWrapper);
 }
+function renderSettingsModal(message) {
+  const modalWrapper = createDOMElement('div', 'settings__modal');
+  modalWrapper.innerHTML = 
+  `<div class="settings__modal-message">${message}</div>
+  <div class="settings__modal-close-btn close-btn"></div>`;
+  document.querySelector('.page').append(modalWrapper);
+}
 
-
+export { renderSettingsPage, renderSettingsModal }

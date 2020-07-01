@@ -1,8 +1,7 @@
-import  renderSettingsPage from './renderSettingsPage';
-import createSettingsObject from './createSettingsObject';
+import  { renderSettingsPage } from './renderSettingsPage';
+import initSettingsObject from './initSettingsObject';
 import { getRoundData } from '../../API/dataAPI';
 import { randomIntFromInterval } from './utils';
-
 
 async function getRandomCardData() {
   const levelMinValue = 1;
@@ -12,15 +11,12 @@ async function getRandomCardData() {
   const level = randomIntFromInterval(levelMinValue, levelMaValue);
   const round = randomIntFromInterval(roundMinValue, roundMaxValue);
   const wordsAmount = 1;
-  console.log(level, round);
   const data = await getRoundData(level, round, wordsAmount);
   return data;
 }
 
 export default async function initSetting() {
   const cardData = await getRandomCardData();
-console.log(cardData);
   renderSettingsPage(cardData);
-  createSettingsObject();
-  
+  initSettingsObject();
 }
