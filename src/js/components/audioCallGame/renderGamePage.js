@@ -35,14 +35,17 @@ function renderDropdown() {
     const roundSelect = document.createElement('select');
     roundSelect.id = 'lvl-select';
 
-    for (let i = 1; i < 31; i += 1) {
+    const maxNumberRound = 31;
+    const maxNumberLevel = 7;
+
+    for (let i = 1; i < maxNumberRound; i += 1) {
         const levelOption = document.createElement('option');
         levelOption.className = 'round__option';
         levelOption.innerText = i;
         levelSelect.append(levelOption);
     }
 
-    for (let i = 1; i < 7; i += 1) {
+    for (let i = 1; i < maxNumberLevel; i += 1) {
         const roundOption = document.createElement('option');
         roundOption.className = 'lvl__option';
         roundOption.innerText = i;

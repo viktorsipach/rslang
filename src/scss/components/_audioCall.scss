@@ -7,16 +7,16 @@
     position: relative;
 }
 .container.container_audioCall {
-    max-width: 1100px;
+    max-width: 110rem;
     margin: 0 auto;
     @include media-laptop {
-      max-width: 760px;
+      max-width: 76rem;
     }
     @include media-tablet {
-      max-width: 410px;
+      max-width: 41rem;
     }
     @include media-mobile {
-      max-width: 300px;
+      max-width: 30rem;
     }
 }
 .game__title {

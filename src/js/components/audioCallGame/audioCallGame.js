@@ -92,7 +92,6 @@ function startGame() {
       clearAnswers();
       numberWordCount = 0;  
       if (Number(roundGame) === numberRoundEnd) {
-        console.log('я тут и уже 30 раундов, пора повышать уровень');
         levelGame += 1;
         roundGame = 0;
       }
@@ -127,9 +126,7 @@ function startGame() {
     const pageContent = document.querySelector('.page');
     pageContent.append(renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn));
     pageContent.append(renderDropdown());
-  
-    console.log(levelGame, roundGame)
-  
+    
     document.getElementById('lvl-select').value = levelGame;
     document.getElementById('rnd-select').value = roundGame;
   
@@ -145,11 +142,7 @@ function startGame() {
     }
   
     soundImg.addEventListener('click', (event) => {
-      if (option) {
-        option = false;
-      } else {
-        option = true;
-      }
+      option = !option;
       event.target.classList.toggle('active');
     });
   
@@ -204,24 +197,14 @@ async function getDataAPI(levelGame, roundGame) {
   const wordsPerRound = 20;
   let data = [];
 
-  if (levelGame === undefined || roundGame === undefined) {
-    console.log('я тут и ничего не делаю');
-    level = 1;
-    round = 1;
-    data = await getRoundData(level, round, wordsPerRound);
-  } else {
-    console.log('я тут и меняю уровень');
-    level = Number(level);
-    round = Number(round);
-    data = await getRoundData(level, round, wordsPerRound);
-    setTimeout(startGame, 1000);
-  }
+  level = Number(level) || 1;
+  round = Number(round) || 1;
+  data = await getRoundData(level, round, wordsPerRound);
+  if (levelGame || roundGame ) setTimeout(startGame, 1000);
 
   let objectWords = [];
 
   objectWords = data;
-
-  console.log(objectWords);
 
   getPartOfSpeech(objectWords);
 }
@@ -249,9 +232,7 @@ export default function initAudioCallGame() {
   numberWordCount = 0;
   getDataAPI();
   clearAnswers();
-  document.querySelector('.game__start').addEventListener('click', () => {  
-    startGame();
-  });
+  document.querySelector('.game__start').addEventListener('click', startGame);
 }
 
 export { getDataAPI }
