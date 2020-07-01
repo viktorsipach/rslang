@@ -1,4 +1,4 @@
-import { initMainPage }  from '../mainPage/mainPage.component'
+import { initMainPage, removeActiveClassNav }  from '../mainPage/mainPage.component'
 
 function removeClassModificatorCloseBtn() {
     const closeBtn = document.querySelector('.close-btn');
@@ -14,6 +14,7 @@ export default function addClickCloseBtnHandler() {
     const closeBtn = document.querySelector('.close-btn');
     closeBtn.addEventListener('click', () => {
         removeClassModificatorCloseBtn()
+        removeActiveClassNav()
         initMainPage()
     })
 }
