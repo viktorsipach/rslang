@@ -4,19 +4,11 @@ import { count, countHealth, fallWord, savannaHealth, savannaGameplayMouse, sava
 
 const maxlevels = 6;
 const maxRoundsPerLevel = 30;
-
-async function getRoundDataSpare(level, round, wordsPerRound) {
-  const url = `http://pacific-castle-12388.herokuapp.com/words?group=${level - 1}&page=${round - 1}&wordsPerExampleSentenceLTE=25&wordsPerPage=${wordsPerRound}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  return data;
-}
+let changeLevel = false;
 
 async function savannaRoundDataAPI(level, round) {
-  // const level = 1;
-  // const round = 1;
   const wordsPerRound = 20;
-  const data = await getRoundDataSpare(level, round, wordsPerRound);
+  const data = await getRoundData(level, round, wordsPerRound);
   return data;
 }
 
@@ -109,12 +101,13 @@ const RenderSavannaShortStatistic = (words) => {
 }
 
 async function savannaRound(index, lev, rou) {
-    const data = await savannaRoundDataAPI(lev, rou);
-    generateTemplateMain(data, index);
-    fallWord(data);
-    RenderSavannaShortStatistic(data);
-    savannaGameplayMouse(data);
-    savannaGameplayKeyboard(data);
+  const data = await savannaRoundDataAPI(lev, rou);
+  changeLevel = false;
+  generateTemplateMain(data, index);
+  fallWord(data);
+  RenderSavannaShortStatistic(data);
+  savannaGameplayMouse(data);
+  savannaGameplayKeyboard(data);
 }
 
 const changeLevelAndRound = () => {
@@ -126,19 +119,15 @@ const changeLevelAndRound = () => {
     if (event.target.closest('.select__round')) {
       round = parseInt(selectRound.value, 10);
       level = parseInt(selectLevel.value, 10);
-      // console.log(round);
     }
     if (event.target.closest('.select__level')) {
       level = parseInt(selectLevel.value, 10);
       round = 1;
       selectRound.value = '1';
-      // console.log(level);
     }
-    // count = 0;
+    changeLevel = true;
     savannaRound(0, level, round);
-    console.log(level);
-    console.log(round);
   });
 }
 
-export { generateHeader, generateTemplateMain, savannaRound, changeLevelAndRound, RenderSavannaShortStatistic };
+export { changeLevel, generateHeader, generateTemplateMain, savannaRound, changeLevelAndRound, RenderSavannaShortStatistic };
