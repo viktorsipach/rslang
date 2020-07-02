@@ -24,10 +24,14 @@ async function getRoundsAmountInLevel(level, wordsPerSentence, wordsPerRound) {
 }
 
 async function getWordDataById(wordId) {
-  const url = `https://afternoon-falls-25894.herokuapp.com/words/${wordId}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  return data;
+  try {
+    const url = `https://afternoon-falls-25894.herokuapp.com/words/${wordId}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  } 
 }
 
 export { getRoundData, getSCustomRoundData, getRoundsAmountInLevel, getWordDataById };
