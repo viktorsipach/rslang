@@ -78,6 +78,94 @@ function shuffleWords (array) {
   array.sort(() => Math.random() - 0.5);
 }
 
+function optionAnswerKeyPress(wordRus, wordEn, optionSound, wordText) {
+  const gameBtn = document.querySelector('.game .game__btn.button');
+  const allWords = document.querySelectorAll('.words__item');
+  const gameActive = document.querySelector('.game');
+
+  option = optionSound;
+
+  gameActive.classList.add('active');
+
+  if (wordText.outerText === wordRus) {
+    arrTrueAnswer.push(wordEn);
+    
+    const audioElement = new Audio('../../../assets/audio/correct.mp3');
+
+    if (option) {
+      audioElement.play();
+    }
+    
+    allWords.forEach(e => {
+      e.classList.remove('true');
+      e.classList.add('false');
+      e.style.transition = '0.2s';
+    });
+    wordText.parentNode.classList.remove('false');
+    wordText.parentNode.classList.add('true');
+  } else {
+    arrFalseAnswer.push(wordEn);
+
+    const audioElement = new Audio('../../../assets/audio/error.mp3');
+
+    if (option) {
+      audioElement.play();
+    }
+
+    allWords.forEach(e => {
+      e.classList.add('false');
+      e.style.transition = '0.2s';
+      if (wordRus === e.lastElementChild.outerText) {
+        e.classList.add('true');
+      }
+    });
+    wordText.parentNode.classList.add('line-through');
+  }
+  gameBtn.innerText = 'Далее';
+}
+
+function keyPressCheck(event) {
+  console.log(event);
+  const wordEn = document.querySelector('.game__word').outerText;
+  const wordRus = document.querySelector('.game__word_rus').outerText;
+  const gameNumber = document.querySelectorAll('.words__item');
+  const keyPress = event.key;
+  const soundImg = document.querySelector('.game__iconSound');
+  const gameBtn = document.querySelector('.game .game__btn.button');
+
+  if (option) {
+    soundImg.classList.remove('active');
+  } else {
+    soundImg.classList.add('active');
+  }
+
+  if (keyPress === 'Enter' && gameBtn.outerText === 'ДАЛЕЕ') {
+    startGame();
+  } else {
+    gameNumber.forEach(number => {
+      if (number.firstChild.outerText === keyPress) {
+        numberWordCount += 1;
+        optionAnswerKeyPress(wordRus, wordEn, option, number.lastElementChild);
+      } else if (keyPress === 'Enter' && gameBtn.outerText === 'НЕ ЗНАЮ') {
+        optionAnswerKeyPress(wordRus, wordEn, option, gameBtn);
+        numberWordCount += 1;
+      }
+    });
+  }
+}
+
+function pressKeyBoard() {
+  document.addEventListener('keydown', keyPressCheck);
+}
+
+function removeListenerClose() {
+  const close = document.querySelector('.close-btn');
+  close.addEventListener('click', () => {
+    document.removeEventListener('keydown', keyPressCheck);
+  });
+}
+
+
 function startGame() {
   const newArrObjectWords = arrAllWordsOption;
   const objectGameWords = getWords(newArrObjectWords);
@@ -124,7 +212,7 @@ function startGame() {
     document.querySelector('.game').remove();
   
     const pageContent = document.querySelector('.page');
-    pageContent.append(renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn));
+    pageContent.append(renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wordRus));
     pageContent.append(renderDropdown());
     
     document.getElementById('lvl-select').value = levelGame;
@@ -168,6 +256,8 @@ function startGame() {
     });
   
     getLevelAndRound();
+    pressKeyBoard();
+    removeListenerClose();
   }
 }
 
