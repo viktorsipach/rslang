@@ -1,5 +1,7 @@
 .exit {
   &.close-btn {
+    top: 4rem;
+    right: 1rem;
     width: 5rem;
     height: 5rem;
     cursor: pointer;
@@ -23,6 +25,11 @@
 
     &:after {
       transform: rotate(-45deg);
+    }
+
+    @include media-tablet {
+      top: 3rem;
+      right: 0;
     }
   }
 }

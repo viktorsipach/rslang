@@ -1,0 +1,52 @@
+.game-controls {
+  display: flex;
+  height: 6rem;
+  font-size: 2rem;
+  color: $color-light;
+  
+  @include media-tablet {
+    font-size: 1.5rem;
+  }
+
+  &__level,
+  &__round {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__title {
+    padding: 0 1.5rem;
+    
+    @include media-tablet {
+      padding: 0 0.8rem;
+    }
+  }
+
+  &__select {
+    padding: 1rem 1.7rem;
+    font-size: 2.5rem;
+    background: transparent;
+    border: 2px solid $color-light !important;
+    border-radius: 4rem;
+    flex-grow: 0;
+    
+    @include media-tablet {
+      padding: 1rem 1.4rem;
+      font-size: 1.5rem;
+    }
+
+    option {
+      background: $color-violet;
+    }
+  }
+
+  &__reload {
+    width: 10rem;
+    cursor: pointer;
+    
+    @include media-tablet {
+      width: 8rem;
+    }
+  }
+}

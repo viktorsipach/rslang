@@ -8,6 +8,7 @@
 @import './components/repeat-button';
 @import './components/game-statistics';
 @import './components/divider';
+@import './components/game-controls';
 @import './components/error-popup';
 @import './components/accordion';
 
@@ -25,47 +26,56 @@
     height: 100%;
     background-size: cover;
 
+    &_header {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      
+      @include media-tablet {
+        flex-direction: column-reverse;
+      }
+      
+      @include media-mobile {
+        flex-direction: column;
+      }
+    }
+
     &_left {
       display: flex;
       justify-content: center;
       width: 20%;
-
+      
       @include media-tablet {
-        position: absolute;
-        justify-content: left;
-        width: 40%;
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    
+    &_right {
+      position: relative;
+      width: 80%;
+      display: flex;
+      justify-content: flex-end;
+      
+      @include media-tablet {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      @include media-mobile {
+        top: 2rem;
+        justify-content: center;
       }
     }
 
     &_main {
-      width: 60%;
+      width: 100%;
       height: 100vh;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       flex-direction: column;
-
-      @include media-tablet {
-        position: relative;
-        top: 6rem;
-        width: 100%;
-      }
-    }
-
-    &_right {
-      position: relative;
-      width: 20%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      flex-wrap: wrap;
-
-      @include media-tablet {
-        position: absolute;
-        right: 0;
-        width: 60%;
-        flex-direction: row-reverse;
-      }
+      padding-top: 5rem;
     }
   }
 
@@ -73,11 +83,10 @@
     margin-bottom: 2rem;
   }
 
-  &__exit {
+  &__game-controls {
     position: relative;
-    top: 4rem;
-    right: 4rem;
-    opacity: 1;
+    top: 3rem;
+    right: 5rem;
 
     @include media-tablet {
       top: 2rem;
@@ -85,12 +94,24 @@
     }
   }
 
-  &__timer {
-    top: 3rem;
+  &__sound-control {
+    position: relative;
+    top: 2rem;
+    right: 7rem;
 
     @include media-tablet {
-      top: 2rem;
-      left: 2rem;
+      top: 1rem;
+      right: 5rem;
     }
+    
+    @include media-mobile {
+      position: absolute;
+      left: -2rem;
+      top: -7.2rem;
+    }
+  }
+
+  &__timer {
+    top: 2rem;
   }
 }

@@ -1,6 +1,7 @@
 import SoundOnImg from '../../../../assets/img/sprint/sound_on.svg';
 import SoundOffImg from '../../../../assets/img/sprint/sound_off.svg';
 import RepeatImg from '../../../../assets/img/sprint/repeat.svg';
+import ReloadImg from '../../../../assets/img/sprint/reload.svg';
 import Background from './BackgroundHandler';
 import Accordion from '../components/Accordion';
 
@@ -35,6 +36,36 @@ class ContentBuilder {
     this.soundControlMarkup = `
       <img class="sound-control__icon sound-control__icon_on sound-control__icon_active" src="${SoundOnImg}">
       <img class="sound-control__icon sound-control__icon_off" src="${SoundOffImg}">
+    `;
+
+    this.panelRightMarkup = `
+      <div class="game-controls__level">
+        <span class="game-controls__title">
+          Уровень:
+        </span>
+        <select id="sprintLevel" class="game-controls__select game-controls__select_level">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+      <div class="game-controls__round">
+        <span class="game-controls__title">
+          Раунд:
+        </span>
+        <select id="sprintRound" class="game-controls__select game-controls__select_round">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+      <img class="game-controls__reload" src="${ReloadImg}">
     `;
 
     this.timerMarkup = `
@@ -79,18 +110,26 @@ class ContentBuilder {
     parent.innerHTML = '';
 
     const fragment = document.createDocumentFragment();
-    this.addElementToFragment(fragment, '', 'sprint__panel_left');
+    this.addElementToFragment(fragment, '', 'sprint__panel_header');
     this.addElementToFragment(fragment, '', 'sprint__panel_main');
-    this.addElementToFragment(fragment, '', 'sprint__panel_right');
+
+    const panelHeader = fragment.querySelector('.sprint__panel_header');
+    this.addElementToFragment(panelHeader, '', 'sprint__panel_left');
+    this.addElementToFragment(panelHeader, '', 'sprint__panel_right');
 
     const panelLeft = fragment.querySelector('.sprint__panel_left');
-    const panelMain = fragment.querySelector('.sprint__panel_main');
     const panelRight = fragment.querySelector('.sprint__panel_right');
+    const panelMain = fragment.querySelector('.sprint__panel_main');
 
     this.addElementToFragment(panelLeft, this.timerMarkup, 'sprint__timer', 'timer');
     this.addElementToFragment(panelMain, this.counterMarkup, 'sprint__counter', 'counter');
     this.addElementToFragment(panelMain, this.boardMarkup, 'sprint__board', 'board');
-    this.addElementToFragment(panelRight, this.soundControlMarkup, 'sprint__sound-control', 'sound-control');
+    this.addElementToFragment(panelRight, this.panelRightMarkup, 'game-controls', 'sprint__game-controls');
+
+    const soundControlElement = document.createElement('div');
+    soundControlElement.classList.add('sprint__sound-control', 'sound-control');
+    soundControlElement.innerHTML = this.soundControlMarkup;
+    panelRight.append(soundControlElement);
 
     parent.append(fragment);
   }
