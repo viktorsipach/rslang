@@ -1,7 +1,6 @@
 import renderTrainingGamePage from './renderTrainingGamePage';
 import TrainingGame from './TrainingGame';
-import { createUserWord, updateUserWord, deleteUserWord, getUserWord, getAllUserWords } from '../../API/userWorsAPI';
-import { getRoundData, getWordDataById } from '../../API/dataAPI';
+import testUserWords from '../../API/testUserWords';
 
 export default async function initTrainingGame() {
   const PAGECONTAINER = document.querySelector('.page');
@@ -27,34 +26,8 @@ export default async function initTrainingGame() {
     learnedWordsOnly: true,
   }
 
-  /* console.log(`userID ${localStorage.getItem('userId')}`);
-  console.log(`userToken ${localStorage.getItem('userToken')}`);
+  // testUserWords();
 
-  const data = await getRoundData(userSettings.level, userSettings.round, 25);
-  console.log(data);
-
-  const allUserWords = await getAllUserWords();
-  console.log(allUserWords);
-
-  createUserWord({
-    wordId: "5e9f5ee35eb9e72bc21af6a0",
-    word: { "difficulty": "weak", "optional": {testFieldString: 'test', testFieldBoolean: true} }
-  });
-
-   deleteUserWord({ wordId: '5e9f5ee35eb9e72bc21af6a0' });
-
-  getUserWord({ wordId: '5e9f5ee35eb9e72bc21af6a0' });
-
-  updateUserWord({
-    wordId: "5e9f5ee35eb9e72bc21af6a0",
-    word: { "difficulty": "easy", "optional": {testFieldString: 'test', testFieldBoolean: true} }
-  })
-
-  const id = '5e9f5ee35eb9e72bc21af716';
-  const data = await getWordDataById(id);
-  console.log(data); */
-
- 
   const trainingGame = new TrainingGame(settings);
   trainingGame.start();
   
