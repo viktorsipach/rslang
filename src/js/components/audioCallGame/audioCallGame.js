@@ -125,7 +125,6 @@ function optionAnswerKeyPress(wordRus, wordEn, optionSound, wordText) {
 }
 
 function keyPressCheck(event) {
-  console.log(event);
   const wordEn = document.querySelector('.game__word').outerText;
   const wordRus = document.querySelector('.game__word_rus').outerText;
   const gameNumber = document.querySelectorAll('.words__item');
