@@ -25,6 +25,13 @@ class Sprint {
 
   init(parentSelector = '.page') {
     const parent = document.querySelector(parentSelector);
+    const closeButton = document.querySelector('.close-btn');
+    const clearCloseButton = () => {
+      closeButton.classList.remove('exit');
+      closeButton.removeEventListener('click', clearCloseButton);
+    };
+    closeButton.classList.add('exit');
+    closeButton.addEventListener('click', clearCloseButton);
     parent.innerHTML = this.gameContainer;
     ContentBuilder.addStartPageContent(this.gameContainerSelector, this.gameName);
     this.launchStartScreen();

@@ -51,7 +51,6 @@ class ContentBuilder {
     `;
 
     this.curtainMarkup = `
-      <div class="exit curtain__exit close"></div>
       <div class="curtain__game-name"></div>
       <div class="curtain__game-description">${this.gameDescription}</div>
       <button class="button curtain__button curtain__button_start">Начать</button>
@@ -60,7 +59,6 @@ class ContentBuilder {
     this.gameGetReadyText = 'Приготовьтесь!';
 
     this.getReadyMarkup = `
-      <div class="exit curtain__exit close"></div>
       <div class="curtain__timer timer"></div>
       <div class="curtain__get-ready">${this.gameGetReadyText}</div>
     `;
@@ -92,7 +90,6 @@ class ContentBuilder {
     this.addElementToFragment(panelLeft, this.timerMarkup, 'sprint__timer', 'timer');
     this.addElementToFragment(panelMain, this.counterMarkup, 'sprint__counter', 'counter');
     this.addElementToFragment(panelMain, this.boardMarkup, 'sprint__board', 'board');
-    this.addElementToFragment(panelRight, '', 'sprint__exit', 'exit', 'close');
     this.addElementToFragment(panelRight, this.soundControlMarkup, 'sprint__sound-control', 'sound-control');
 
     parent.append(fragment);
