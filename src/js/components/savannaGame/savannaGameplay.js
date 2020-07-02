@@ -2,9 +2,8 @@ import { changeLevel, generateTemplateMain } from './savannaGetRoundData';
 
 let count = 0;
 let countCorrect = 0;
-let answer = false;
 let countHealth = 5;
-let pressKey = false;
+let answer = false;
 const maxPositionYHiddenWord = 350;
 const maxPositionXHiddenWord = 60;
 
@@ -82,6 +81,12 @@ const savannaHealth = (hp) => {
     savannaHealths.innerHTML = health.slice(0, hp).join('');
 }
 
+const newStart = () => {
+    count = 0;
+    countCorrect = 0;
+    countHealth = 5;
+}
+
 const actionForRound = () => {
     const weapon = document.querySelector('.savanna__footer');
     weapon.classList.add('savanna__footer_active');
@@ -113,6 +118,7 @@ const savannaGameplayMouse = (words) => {
         elem.addEventListener('click', () => {
             count += 1;
             console.log(count);
+            console.log(elem.innerText);
             if (count < 20) {
                 if (elem.innerText === words[count - 1].wordTranslate.toUpperCase()) {
                     span[count - 1].innerHTML = '+';
@@ -133,6 +139,7 @@ const savannaGameplayMouse = (words) => {
                         playSound('assets/audio/error.mp3');
                         goOutWord(false);
                         setTimeout(() => savannaShortStatistics(), 500);
+                        setTimeout(() => savanna.innerHTML = '', 500);
                     } else {
                         savannaHealth(countHealth);
                         elem.classList.add('wrong');
@@ -169,7 +176,7 @@ const savannaGameplayMouse = (words) => {
 }
 
 const savannaGameplayKeyboard = (words) => {
-    document.addEventListener('keyup', (event) => {
+    /*document.addEventListener('keyup', (event) => {*/
         event.preventDefault();
         const span = document.querySelectorAll('*[data-word]');
         const hiddenWord = document.querySelector('.savanna__hidden-word');
@@ -195,6 +202,7 @@ const savannaGameplayKeyboard = (words) => {
                         playSound('assets/audio/error.mp3');
                         goOutWord(false);
                         setTimeout(() => savannaShortStatistics(), 500);
+                        setTimeout(() => savanna.innerHTML = '', 500);
                     } else {
                         savannaHealth(countHealth);
                         document.getElementById(event.code).classList.add('wrong');
@@ -215,16 +223,18 @@ const savannaGameplayKeyboard = (words) => {
                     span[count - 1].innerHTML = '+';
                     countCorrect += 1;
                     setTimeout(() => savannaShortStatistics(), 500);
+                    setTimeout(() => savanna.innerHTML = '', 500);
                 } else {
                     document.getElementById(event.code).classList.add('wrong');
                     actionForRound();
                     playSound('assets/audio/error.mp3');
                     goOutWord(false);
                     setTimeout(() => savannaShortStatistics(), 500);
+                    setTimeout(() => savanna.innerHTML = '', 500);
                 }
             }   
         }
-    })
+    /*})*/
 }
 
-export { count, countHealth, fallWord, savannaHealth, savannaGameplayMouse, savannaGameplayKeyboard } ;
+export { fallWord, savannaHealth, newStart, savannaGameplayMouse, savannaGameplayKeyboard } ;

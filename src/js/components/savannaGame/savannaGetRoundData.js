@@ -1,7 +1,8 @@
 import { getRoundData } from '../../API/dataAPI';
 import RenderSavannaMainPage from './renderSavannaMainPage';
-import { count, countHealth, fallWord, savannaHealth, savannaGameplayMouse, savannaGameplayKeyboard } from './savannaGameplay';
+import { countHealth, fallWord, savannaHealth, newStart, savannaGameplayMouse, savannaGameplayKeyboard } from './savannaGameplay';
 
+let keyBoard;
 const maxlevels = 6;
 const maxRoundsPerLevel = 30;
 let changeLevel = false;
@@ -59,7 +60,7 @@ const generateHeader = () => {
   selectRounds.innerHTML = '';
   selectRounds.append(frRound);
 
-  savannaHealth(countHealth);
+  // savannaHealth(countHealth);
 }
 
 const generateTemplateMain = (words, idx) => {
@@ -104,10 +105,14 @@ async function savannaRound(index, lev, rou) {
   const data = await savannaRoundDataAPI(lev, rou);
   changeLevel = false;
   generateTemplateMain(data, index);
+  savannaHealth(countHealth);
   fallWord(data);
   RenderSavannaShortStatistic(data);
   savannaGameplayMouse(data);
-  savannaGameplayKeyboard(data);
+  function foo() {
+    savannaGameplayKeyboard(data);
+  }
+  document.addEventListener('keyup', foo);
 }
 
 const changeLevelAndRound = () => {
@@ -126,6 +131,7 @@ const changeLevelAndRound = () => {
       selectRound.value = '1';
     }
     changeLevel = true;
+    newStart();
     savannaRound(0, level, round);
   });
 }
