@@ -16,12 +16,13 @@ class PressKey {
 
     pressKeyboard(e) {
         e.preventDefault();
+        const numberStartWords = 20;
         const span = document.querySelectorAll('*[data-word]');
         const hiddenWord = document.querySelector('.savanna__hidden-word');
         if (e.code === 'Digit1' || e.code === 'Digit2' || e.code === 'Digit3' || e.code === 'Digit4') {
             count += 1;
             console.log(count);
-            if (count < 20) {
+            if (count < numberStartWords) {
                 if (document.getElementById(e.code).innerText === hiddenWord.id.toUpperCase()) {
                     document.getElementById(e.code).classList.add('correct');
                     actionForRound();

@@ -6,6 +6,7 @@ let countHealth = 5;
 let answer = false;
 const maxPositionYHiddenWord = 350;
 const maxPositionXHiddenWord = 60;
+const numberStartWords = 20;
 
 const playSound = (src) => {
     const audio = new Audio(src);
@@ -35,6 +36,7 @@ const fallWord = (words) => {
                 playSound('assets/audio/error.mp3');
                 savannaHealth(countHealth);
                 setTimeout(() => generateTemplateMain(words, count), 500);
+                setTimeout(() => savannaGameplayMouse(words), 500);
                 setTimeout(() => fallWord(words), 500);
             }
         }
@@ -101,7 +103,6 @@ const savannaShortStatistics = () => {
     const hiddenMainPage = document.querySelector('.savanna__main');
     const error = document.querySelector('.savanna__error');
     const correct = document.querySelector('.savanna__correct');
-    const numberStartWords = 20;
 
     visibleStat.classList.add('savanna-active');
     hiddenMainPage.classList.add('savanna-hidden');
@@ -119,7 +120,7 @@ const savannaGameplayMouse = (words) => {
             count += 1;
             console.log(count);
             console.log(elem.innerText);
-            if (count < 20) {
+            if (count < numberStartWords) {
                 if (elem.innerText === words[count - 1].wordTranslate.toUpperCase()) {
                     span[count - 1].innerHTML = '+';
                     countCorrect += 1;
@@ -183,7 +184,7 @@ const savannaGameplayKeyboard = (words) => {
         if (event.code === 'Digit1' || event.code === 'Digit2' || event.code === 'Digit3' || event.code === 'Digit4') {
             count += 1;
             console.log(count);
-            if (count < 20) {
+            if (count < numberStartWords) {
                 if (document.getElementById(event.code).innerText === hiddenWord.id.toUpperCase()) {
                     document.getElementById(event.code).classList.add('correct');
                     actionForRound();
