@@ -1,21 +1,24 @@
 .wrapper__main-page {
+	position: relative;
 	width: 100%;
-	height: 100%;
-	background-image: url('../assets/img/bg-main-page.jpg');
+	min-height: 100vh;
+	background-image: url('/assets/img/bg-main-page.jpg');
 	background-size: cover;
-	background-repeat: no-repeat;
-	@include media-laptop {
-		background: none;
-    }
+	background-position: center;
 }
 
 .container__cards {
-	width: 100%;
+	width: 80%;
 	display: flex;
+	margin: 0 auto;
 	justify-content: center;
 	flex-wrap: wrap;
-	padding-top: 5rem;
+	padding-top: 10rem;
+	@include media-laptop {
+		width: 100%;
+    }
 }
+
 .card {
 	width: 30rem;
 	height: 20rem;

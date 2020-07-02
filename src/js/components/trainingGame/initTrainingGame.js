@@ -1,15 +1,15 @@
 import renderTrainingGamePage from './renderTrainingGamePage';
 import TrainingGame from './TrainingGame';
+import testUserWords from '../../API/testUserWords';
 
 export default async function initTrainingGame() {
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderTrainingGamePage());
 
-  
   const settings = {
-    newWordsPerDay: 10,
-    maxCardsPerDay: 10,
+    newWordsPerDay: 20,
+    maxCardsPerDay: 20,
     cardSettings: {
       showTranslation: true,
       showExplanationSentence: true,
@@ -18,10 +18,16 @@ export default async function initTrainingGame() {
       showAssociatedPicture: true
     },
     autoPronunciation: true,
+    showSentencesTranslation: true,
+    showIDontKnowButton: true,
     showDeleteButton: true,
-    showHardButton: true
+    showHardButton: true,
+    newWordsOnly: true,
+    learnedWordsOnly: true,
   }
- 
+
+  // testUserWords();
+
   const trainingGame = new TrainingGame(settings);
   trainingGame.start();
   

@@ -2,7 +2,7 @@ export default function renderStartPage() {
     const fragment = document.createDocumentFragment();
 
     const closeGame = document.createElement('div');
-    closeGame.className = 'game__close';
+    closeGame.className = 'game__close close';
 
     const startGameTitle = document.createElement('div');
     startGameTitle.className = 'game__title';

@@ -6,3 +6,4 @@ import initRegistration from './components/registration/registration'
 initRegistration()
 initApp()
 
+

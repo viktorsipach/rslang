@@ -1,16 +1,15 @@
-@import './constants';
 @import './checkbox';
 @import './trainingIcons';
 @import './trainingCard';
 @import './trainingButtons';
-@import './trainingNotification';
+@import './trainingStatistics';
 @import './progressBar';
 
 .game__training {
   width: 80%;
   margin:  0 auto;
   position: relative;
-  background-color: $color-transparent;
+  background-color: $color-transparent-shadow;
   color: $color-light;
   @include media-laptop {
     width: 90%;

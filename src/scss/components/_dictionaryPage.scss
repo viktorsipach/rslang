@@ -1,0 +1,114 @@
+.wrapper__dictionary {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-image: url('/assets/img/bg-main-page.jpg');
+    background-size: cover;
+    background-position: center;
+    padding-bottom: 2rem;
+}
+
+.header__dictionary {
+    width: 50%;
+    padding-top: 6rem;
+    padding-left: 1%;
+    font-size: 3rem;
+}
+
+.word-dictionary {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    align-items: center;
+    margin: 2rem auto;
+    border-bottom: 1px solid  rgba(80, 80, 80, 0.4);
+    padding-bottom: 1rem;
+
+    @include media-tablet {
+        width: 96%;
+    }
+
+    &__audio {
+        display: none;
+    }
+
+    &__word {
+        display: flex;
+        align-items: center;
+        padding-bottom: 1rem;
+        font-size: 2rem;
+
+    }
+
+    &__translate {
+        padding-bottom: 1rem;
+        font-size: 2rem;
+    }
+
+    &__example {
+        padding-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+
+    &__icon {
+        padding-left: 1rem;
+        cursor: pointer;
+    }
+
+    &__img {
+        width: 12rem;
+        border-radius: 0.5rem;
+        @include media-tablet {
+            width: 10rem;
+        }
+    }
+
+    &__remove {
+        width: 3rem;
+        height: 3rem;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(80, 80, 80, 0.2);
+        border-radius: 1rem;
+        font-size: 1.5rem;
+        margin-right: 3rem;
+        cursor: pointer;
+        &:hover {
+            background-color: rgba(80, 80, 80, 0.4);
+        }
+
+        @include media-tablet {
+            margin-right: 1rem;
+        }
+    
+       
+    }
+}
+
+.word-dictionary .fa {
+    color: $color-violet;
+}
+
+.dictionary-img {
+    display: flex;
+    align-items: center;
+}
+
+.tooltip:hover:after {
+    content: attr(data-name);
+    position: absolute;
+    padding: 0.7rem 1.2rem;
+    width: 10rem;
+    top: 3.5rem;
+    left: -6rem;
+    background: #343944;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    text-align: center;  
+    font-size: 1.6rem;
+}
+
+.show__btn-remove {
+    display: flex;
+}

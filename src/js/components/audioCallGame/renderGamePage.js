@@ -3,49 +3,84 @@ function playSound(voiceEn) {
     audioElement.play();
 }
 
-export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) { 
+function renderDropdown() {
     const fragment = document.createDocumentFragment();
-
+    
     const dropdownMenu = document.createElement('div');
     dropdownMenu.className = 'game__dropdown game__dropdown_audioCall';
 
     const dropdownLevel = document.createElement('div');
-    dropdownLevel.className = 'game__lvl_audioCall lvl_audioCall';
-
-    const levelTitle = document.createElement('div');
-    levelTitle.className = 'lvl__title_audioCall';
-    levelTitle.innerText = 'раунд';
-
-    const levelDiv = document.createElement('div');
-    levelDiv.className = 'select lvl__select_audioCall'
-
-    const levelSelect = document.createElement('select');
-
-    const levelOption = document.createElement('option');
-    levelOption.className = 'lvl__option';
-    levelOption.innerText = '1';
-
-    const dropdownRound = document.createElement('div');
-    dropdownRound.className = 'game__round_audioCall round_audioCall';
+    dropdownLevel.className = 'game__round_audioCall round_audioCall';
 
     const roundTitle = document.createElement('div');
-    roundTitle.className = 'round__title_audioCall';
+    roundTitle.className = 'lvl__title_audioCall';
     roundTitle.innerText = 'уровень';
 
+    const levelDiv = document.createElement('div');
+    levelDiv.className = 'select round__select_audioCall';
+
+    const levelSelect = document.createElement('select');
+    levelSelect.id = 'rnd-select';
+
+    const dropdownRound = document.createElement('div');
+    dropdownRound.className = 'game__lvl_audioCall lvl_audioCall';
+
+    const levelTitle = document.createElement('div');
+    levelTitle.className = 'round__title_audioCall';
+    levelTitle.innerText = 'раунд';
+
     const roundDiv = document.createElement('div');
-    roundDiv.className = 'select round__select_audioCall'
+    roundDiv.className = 'select lvl__select_audioCall'
 
     const roundSelect = document.createElement('select');
+    roundSelect.id = 'lvl-select';
 
-    const roundOption = document.createElement('option');
-    roundOption.className = 'round__option';
-    roundOption.innerText = '1';
+    const maxNumberRound = 31;
+    const maxNumberLevel = 7;
+
+    for (let i = 1; i < maxNumberRound; i += 1) {
+        const levelOption = document.createElement('option');
+        levelOption.className = 'round__option';
+        levelOption.innerText = i;
+        levelSelect.append(levelOption);
+    }
+
+    for (let i = 1; i < maxNumberLevel; i += 1) {
+        const roundOption = document.createElement('option');
+        roundOption.className = 'lvl__option';
+        roundOption.innerText = i;
+        roundSelect.append(roundOption);
+    }
+
+    dropdownRound.append(roundTitle);
+    roundDiv.append(roundSelect);
+    
+    dropdownRound.append(roundDiv);
+
+    dropdownLevel.append(levelTitle);
+    levelDiv.append(levelSelect);
+    
+    dropdownLevel.append(levelDiv);
+
+    dropdownMenu.append(dropdownRound);
+    dropdownMenu.append(dropdownLevel);
+
+    const gamePage = document.querySelector('.game_audioCall');
+    gamePage.append(dropdownMenu);
+
+    fragment.append(gamePage);
+
+    return fragment;
+}
+
+function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
+    const fragment = document.createDocumentFragment();
 
     const gameProgress = document.createElement('div');
     gameProgress.className = 'game__progress';
 
     const closeGame = document.createElement('div');
-    closeGame.className = 'game__close';
+    closeGame.className = 'game__close close';
 
     const gameBlockImage = document.createElement('div');
     gameBlockImage.className = 'game__image';
@@ -80,19 +115,6 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
 
     const statisticsDom = document.createElement('div');
     statisticsDom.classList = 'statistics-audioCall modal-audioCall-hidden';
-
-    dropdownRound.append(roundTitle);
-    roundDiv.append(roundSelect);
-    roundSelect.append(roundOption);
-    dropdownRound.append(roundDiv);
-
-    dropdownLevel.append(levelTitle);
-    levelDiv.append(levelSelect);
-    levelSelect.append(levelOption);
-    dropdownLevel.append(levelDiv);
-
-    dropdownMenu.append(dropdownRound);
-    dropdownMenu.append(dropdownLevel);
 
     gameBlockImage.append(gameImage);
     gameImage.append(gameSrcImage);
@@ -131,12 +153,13 @@ export default function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
     gamePage.className = 'game game_audioCall';
     gamePage.append(gameProgress);
     gamePage.append(closeGame);
-    gamePage.append(dropdownMenu);
     gamePage.append(iconSound);
     gamePage.append(gameContainer);
     gamePage.append(statisticsDom);
-    
+
     fragment.append(gamePage);
 
     return fragment;
 }
+
+export { renderGamePage, renderDropdown }

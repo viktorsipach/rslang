@@ -1,0 +1,32 @@
+.close-btn{
+    position: absolute;
+    right: 3rem;
+    top: 3rem;
+    width: 3rem;
+    height: 3rem;
+    opacity: 1;
+    z-index: 1000;
+    &:hover {
+      opacity: 0.3;
+      cursor: pointer;
+    }
+    &::before, 
+    &::after {
+      position: absolute;
+      left: 1.5rem;
+      content: "";
+      height: 3rem;
+      width: 0.2rem;
+      background-color: #131313;
+    }
+    &::before {
+      transform: rotate(45deg);
+    }
+    &::after {
+      transform: rotate(-45deg);
+    }
+    @include media-tablet {
+        right: 1rem;
+        top: 1rem;
+    }
+}
