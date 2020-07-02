@@ -43,7 +43,7 @@ class ContentBuilder {
         <span class="game-controls__title">
           Уровень:
         </span>
-        <select id="sprintLevel" class="game-controls__select game-controls__select_level">
+        <select class="game-controls__select game-controls__select_level">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -56,7 +56,7 @@ class ContentBuilder {
         <span class="game-controls__title">
           Раунд:
         </span>
-        <select id="sprintRound" class="game-controls__select game-controls__select_round">
+        <select class="game-controls__select game-controls__select_round">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>

@@ -39,32 +39,37 @@ class Sprint {
 
   launchStartScreen() {
     const startButton = document.querySelector('.curtain__button_start');
-    startButton.addEventListener('click', async () => {
-      const wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
-      if (wordsApiArray.error) {
-        ContentBuilder.showErrorMessage('.sprint__curtain');
-      } else {
-        const wordsArray = [];
-        wordsApiArray.forEach((element) => {
-          const {
-            word,
-            audio,
-            wordTranslate,
-          } = element;
-          wordsArray.push({word, audio, wordTranslate});
-        });
-        this.wordsArray = wordsArray;
-        ContentBuilder.addGetReadyContent('.sprint__curtain');
-        this.startTimer('.curtain__timer', this.curtainTimerStartPoint);
-        setTimeout(() => {
-          ContentBuilder.addMainPageContent(this.gameContainerSelector);
-          this.startGame();
-        }, this.gameDelay);
-      }
+    startButton.addEventListener('click', () => {
+      this.launchGame();
     });
   }
 
+  async launchGame() {
+    const wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
+    if (wordsApiArray.error) {
+      ContentBuilder.showErrorMessage('.sprint__curtain');
+    } else {
+      const wordsArray = [];
+      wordsApiArray.forEach((element) => {
+        const {
+          word,
+          audio,
+          wordTranslate,
+        } = element;
+        wordsArray.push({word, audio, wordTranslate});
+      });
+      this.wordsArray = wordsArray;
+      ContentBuilder.addGetReadyContent('.sprint__curtain');
+      this.startTimer('.curtain__timer', this.curtainTimerStartPoint);
+      setTimeout(() => {
+        ContentBuilder.addMainPageContent(this.gameContainerSelector);
+        this.startGame();
+      }, this.gameDelay);
+    }
+  }
+
   startGame() {
+    const sprintPanel = document.querySelector('.sprint__panel');
     const board = document.querySelector('.sprint__board');
     const buttonTrue = board.querySelector('.board__button_true');
     const buttonFalse = board.querySelector('.board__button_false');
@@ -72,6 +77,9 @@ class Sprint {
     const controlPanel = document.querySelector('.sprint__panel_right');
     const soundControlButtonOn = controlPanel.querySelector('.sound-control__icon_on');
     const soundControlButtonOff = controlPanel.querySelector('.sound-control__icon_off');
+    const reloadButton = controlPanel.querySelector('.game-controls__reload');
+    const levelSelector = controlPanel.querySelector('.game-controls__select_level');
+    const roundSelector = controlPanel.querySelector('.game-controls__select_round');
     const wordAudio = this.setNewWord(this.wordsArray);
     this.wrongWords = [];
     this.correctWords = [];
@@ -83,6 +91,12 @@ class Sprint {
         this.soundIsEnabled = !this.soundIsEnabled;
         soundControlButtonOn.classList.toggle('sound-control__icon_active');
         soundControlButtonOff.classList.toggle('sound-control__icon_active');
+      }
+      if (event.target === reloadButton) {
+        this.gameLevel = levelSelector.value;
+        this.gameRound = roundSelector.value;
+        sprintPanel.innerHTML = `<div class="sprint__curtain curtain"></div>`;
+        this.launchGame();
       }
     });
     this.gameIsActive = true;
