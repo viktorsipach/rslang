@@ -88,8 +88,10 @@ async function getUserWord({ wordId }) {
       'Accept': 'application/json',
       }
     });
+    if (!rawResponse.ok) {
+      return false;
+    }
     const content = await rawResponse.json();
-    console.log(content);
     return content;
   } catch (error) {
     return error;

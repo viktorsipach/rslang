@@ -3,30 +3,38 @@ import renderStatistics from './renderStatistics';
 import { disableButton, enableButton } from './utils';
 
 export default class TrainingGame {
-  constructor(settings) {
-    this.settings = settings;
-    this.newWordsPerDay = this.settings.newWordsPerDay;
-    this.maxCardsPerDay = this.settings.maxCardsPerDay;
-    this.cardSettings = this.settings.cardSettings;
-    this.autoPronunciation = settings.autoPronunciation;
-    this.showDeleteButton = settings.showDeleteButton;
-    this.showHardButton = settings.showHardButton;
-    this.level = 1;
-    this.round = 1;
+  constructor({ settings, data }) {
+      this.settings = settings;
+    // this.newWordsPerDay = this.settings.newWordsPerDay;
+    // this.maxCardsPerDay = this.settings.maxCardsPerDay;
+      this.cardSettings = this.settings.cardSettings;
+      this.autoPronunciation = settings.autoPronunciation;
+      this.showDeleteButton = settings.showDeleteButton;
+      this.showHardButton = settings.showHardButton;
+    // this.level = 1;
+    // this.round = 1;
     this.timeOut = 2500;
-    this.maxWordsPerSentence = 50;
-    this.levelsAmount = 6;
+    // this.maxWordsPerSentence = 50;
+    // this.levelsAmount = 6;
+    this.data = data;
   }
 
   async start() {
-    console.log(`this.level ${this.level}, this.round ${this.round}`);
-    this.roundsAmount = await getRoundsAmountInLevel(this.level, this.maxWordsPerSentence, this.newWordsPerDay) ;
-    console.log(`roundsAmount ${this.roundsAmount}`);
-    this.data = await this.getData();
+    // console.log(`this.level ${this.level}, this.round ${this.round}`);
+    // this.roundsAmount = await getRoundsAmountInLevel(this.level, this.maxWordsPerSentence, this.newWordsPerDay) ;
+    // console.log(`roundsAmount ${this.roundsAmount}`);
+    // this.data = await this.getData();
     console.log(this.data);
     this.cardData = this.data[this.currentCardNumber];
     this.lettersCount = this.data[this.currentCardNumber].word.length;
     this.renderCardData();
+    //
+    this.currentCardNumber = 0;
+    this.correctAnswersAmount = 0;
+    this.seriesOfCorrectAnswers = 0;
+    this.longestSeriesOfCorrectAnswers = 0;
+    this.progress = 0;
+
   }
 
   async getData() {
@@ -34,9 +42,9 @@ export default class TrainingGame {
     this.correctAnswersAmount = 0;
     this.seriesOfCorrectAnswers = 0;
     this.longestSeriesOfCorrectAnswers = 0;
-    const data = await getRoundData(this.level, this.round, this.newWordsPerDay);
+    // const data = await getRoundData(this.level, this.round, this.newWordsPerDay);
     this.progress = 0;
-    return data;
+    // return data;
   }
 
   renderCardData() {
