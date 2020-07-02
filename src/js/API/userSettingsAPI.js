@@ -1,8 +1,7 @@
 const token = localStorage.getItem('userToken');
 const userId = localStorage.getItem('userId');
 
-
-async function createUserSettings({ settings }) {
+async function putUserSettings({ settings }) {
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`, {
       method: 'PUT',
@@ -15,7 +14,6 @@ async function createUserSettings({ settings }) {
       body: JSON.stringify(settings)
     });
     const content = await rawResponse.json();
-    console.log(content);
     return content;
   } catch (error) {
     return error;
@@ -33,12 +31,10 @@ async function getUserSettings() {
       }
     });
     const content = await rawResponse.json();
-    console.log(content);
     return content;
   } catch (error) {
     return error;
   }  
 };
 
-
-export { createUserSettings, getUserSettings }
+export { putUserSettings, getUserSettings }

@@ -1,32 +1,62 @@
-import { createUserSettings, getUserSettings } from './userSettingsAPI';
+import { putUserSettings, getUserSettings } from './userSettingsAPI';
 
 export default async function testUserSettings() {
-  console.log(`userID ${localStorage.getItem('userId')}`);
-  console.log(`userToken ${localStorage.getItem('userToken')}`);
+    console.log(`userID ${localStorage.getItem('userId')}`);
+    console.log(`userToken ${localStorage.getItem('userToken')}`);
 
-  const settings = {
-    newWordsPerDay: 20,
-    maxCardsPerDay: 20,
-    cardSettings: {
-        showTranslation: true,
-      	showExplanationSentence: true,
-        showAssociatedPicture: true
-	},
-    autoPronunciation: true,
-    showSentencesTranslation: true,   
-    showDeleteButton: true,	   
-    showHardButton: true,	   
-    newWordsOnly: true,	   
-    learnedWordsOnly: true,	  
-    intervalRepetitionTechnique: true	
-}
+    const mainSettings = {
+        newWordsPerDay: 20,
+        maxCardsPerDay: 20,
+        cardSettings: {
+            showTranslation: true,
+            showExplanationSentence: true,
+            showAssociatedPicture: true
+        },
+        autoPronunciation: true,
+        showSentencesTranslation: true,   
+        showDeleteButton: true,	   
+        showHardButton: true,	   
+        newWordsOnly: true,	   
+        learnedWordsOnly: true,	  
+        intervalRepetitionTechnique: true	
+    }
 
-  createUserSettings({
-    "wordsPerDay": 0,
-    "optional": settings
-  });
+    const userSettings = {
+        trainingGameSettings: mainSettings,
+        speakitSettings: {
+            level: 1,
+            round: 1
+        },
+        puzzleSettings: {
+            level: 1,
+            round: 1
+        },
+        audioCallSettings: {
+            level: 1,
+            round: 1
+        },
+        savannaSettings: {
+            level: 1,
+            round: 1
+        },
+        sprintSettings: {
+            level: 1,
+            round: 1
+        },
+        findWordsSettings: {
+            level: 1,
+            round: 1
+        },
 
-  const data = await getUserSettings();
-  console.log(data);
+    }
+
+    putUserSettings({
+        settings: {
+            'optional': userSettings
+        }
+    })
+
+    const data = await getUserSettings();
+    console.log(data);
 
 } 

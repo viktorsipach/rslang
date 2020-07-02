@@ -20,5 +20,5 @@ export default async function initSetting() {
   const cardData = await getRandomCardData();
   renderSettingsPage(cardData);
   initSettingsObject();
-  testUserSettings()
+  // testUserSettings()
 }
