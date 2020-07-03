@@ -1,4 +1,5 @@
 import {getRoundData} from '../../API/dataAPI';
+import StatisticsAPI from '../../API/statisticsAPI';
 
 class RenderFindWordsGame {
     constructor() {
@@ -187,6 +188,8 @@ class RenderFindWordsGame {
             document.querySelector('.statistics__next-button').style.display = 'none';
             document.querySelector('.statistics__header').innerHTML = 'Поздравляем!<br><p>Игра завершена!<br>Статистика Раунда';
         }
+
+        StatisticsAPI.miniGameStat("findWords", `${stat.total} steps`);
 
         document.querySelector('.find-words').dispatchEvent(event);
     }

@@ -1,7 +1,7 @@
 class StatisticsApi {
     constructor() {
-        this.userId = localStorage.userId;
-        this.token = localStorage.userToken;
+        this.userId = '';
+        this.token = '';
         this.statistics = {};
         this.initStat = {
             "learnedWords": 0,
@@ -9,6 +9,11 @@ class StatisticsApi {
                 "#": "#"
             }
         }
+    }
+
+    initIdToken() {
+        this.userId = localStorage.userId;
+        this.token = localStorage.userToken;
     }
 
     async getStatistics() {
@@ -72,11 +77,12 @@ class StatisticsApi {
     }
 
     async miniGameStat(nameGame, result) {
+        this.initIdToken();
         await this.getStatistics();
         this.statisticsDataMiniGame(nameGame, result);
         await this.putStatistics(this.statistics);
         
-        console.log(await this.getStatistics());
+        console.log(await this.getStatistics());  /* можно убрать если мешает */
     }
 }
 
