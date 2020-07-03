@@ -79,8 +79,23 @@
       width: 11rem;
     }
 
+    &_true {
+      background-color: $color-correct;
+
+      &:active,
+      &:hover {
+        background-color: $color-correct-shadow;
+      }
+    }
+
     &_false {
       margin-left: 5rem;
+      background-color: $color-wrong;
+
+      &:active,
+      &:hover {
+        background-color: $color-wrong-shadow;
+      }
 
       @include media-tablet {
         margin-left: 1rem;
