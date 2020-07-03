@@ -31,6 +31,7 @@ class Sprint {
       closeButton.classList.remove('exit');
       closeButton.removeEventListener('click', clearGameFeatures);
       document.removeEventListener('keydown', this.keyboardListener);
+      clearTimeout(this.currentTimer);
     };
     closeButton.classList.add('exit');
     closeButton.addEventListener('click', clearGameFeatures);
@@ -101,6 +102,7 @@ class Sprint {
       if (event.target === reloadButton) {
         this.gameLevel = levelSelector.value;
         this.gameRound = roundSelector.value;
+        clearTimeout(this.currentTimer);
         sprintPanel.innerHTML = `<div class="sprint__curtain curtain"></div>`;
         document.removeEventListener('keydown', this.keyboardListener);
         this.launchGame();
@@ -113,7 +115,7 @@ class Sprint {
     if (this.soundIsEnabled) wordAudio.play();
     board.addEventListener('click', this.boardButtonsListener);
 
-    setTimeout(() => {
+    this.currentTimer = setTimeout(() => {
       this.endGame(this.boardButtonsListener, this.keyboardListener);
     }, this.gameDuration);
   }
@@ -131,6 +133,7 @@ class Sprint {
         if (this.soundIsEnabled) wordAudio.play();
       } else {
         this.endGame(this.boardButtonsListener, this.keyboardListener);
+        clearTimeout(this.currentTimer);
       }
     };
     switch (event.code) {
