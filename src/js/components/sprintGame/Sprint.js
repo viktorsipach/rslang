@@ -27,12 +27,13 @@ class Sprint {
   init(parentSelector = '.page') {
     const parent = document.querySelector(parentSelector);
     const closeButton = document.querySelector('.close-btn');
-    const clearCloseButton = () => {
+    const clearGameFeatures = () => {
       closeButton.classList.remove('exit');
-      closeButton.removeEventListener('click', clearCloseButton);
+      closeButton.removeEventListener('click', clearGameFeatures);
+      document.removeEventListener('keydown', this.keyboardListener);
     };
     closeButton.classList.add('exit');
-    closeButton.addEventListener('click', clearCloseButton);
+    closeButton.addEventListener('click', clearGameFeatures);
     parent.innerHTML = this.gameContainer;
     ContentBuilder.addStartPageContent(this.gameContainerSelector, this.gameName);
     this.launchStartScreen();
@@ -88,6 +89,9 @@ class Sprint {
     this.boardButtonsListener = (event) => {
       this.startBoardButtonsHandler(event, wordAudio, buttonTrue, buttonFalse, buttonRepeat);
     };
+    this.keyboardListener = (event) => {
+      this.startKeyboardHandler(event);
+    };
     controlPanel.addEventListener('click', (event) => {
       if (event.target === soundControlButtonOn || event.target === soundControlButtonOff) {
         this.soundIsEnabled = !this.soundIsEnabled;
@@ -98,23 +102,75 @@ class Sprint {
         this.gameLevel = levelSelector.value;
         this.gameRound = roundSelector.value;
         sprintPanel.innerHTML = `<div class="sprint__curtain curtain"></div>`;
+        document.removeEventListener('keydown', this.keyboardListener);
         this.launchGame();
       }
     });
+
+    document.addEventListener('keydown', this.keyboardListener);
+
     this.startTimer('.sprint__timer', this.gameTimerStartPoint);
     if (this.soundIsEnabled) wordAudio.play();
     board.addEventListener('click', this.boardButtonsListener);
+
     setTimeout(() => {
-      this.endGame(this.boardButtonsListener);
+      this.endGame(this.boardButtonsListener, this.keyboardListener);
     }, this.gameDuration);
   }
 
-  endGame(boardButtonsListener) {
+  startKeyboardHandler(event) {
+    this.counter = document.querySelector('.counter__value');
+    this.stack = document.querySelector('.stack');
+    this.reward = document.querySelector('.board__body_reward');
+    let wordAudio;
+    const audioCorrect = new Audio(CorrectSound);
+    const audioWrong = new Audio(ErrorSound);
+    const playNewWord = () => {
+      if (this.wordsArray.length) {
+        wordAudio = this.setNewWord(this.wordsArray);
+        if (this.soundIsEnabled) wordAudio.play();
+      } else {
+        this.endGame(this.boardButtonsListener, this.keyboardListener);
+      }
+    };
+    switch (event.code) {
+      case 'ArrowRight':
+        if (this.isRandom) {
+          if (this.soundIsEnabled) audioCorrect.play();
+          this.correctWords.push(this.currentWord);
+          this.gameProgressHandler(true);
+        } else {
+          if (this.soundIsEnabled) audioWrong.play();
+          this.wrongWords.push(this.currentWord);
+          this.gameProgressHandler(false);
+        }
+        playNewWord();
+        break;
+      case 'ArrowLeft':
+        if (this.isRandom) {
+          if (this.soundIsEnabled) audioWrong.play();
+          this.wrongWords.push(this.currentWord);
+          this.gameProgressHandler(false);
+        } else {
+          if (this.soundIsEnabled) audioCorrect.play();
+          this.correctWords.push(this.currentWord);
+          this.gameProgressHandler(true);
+        }
+        playNewWord();
+        break;
+      default:
+        break;
+    }
+    return this;
+  }
+
+  endGame(boardButtonsListener, keyboardListener) {
     const score = document.querySelector('.counter__value');
     const board = document.querySelector('.sprint__board');
     this.gameIsActive = false;
     this.score = score.textContent;
     board.removeEventListener('click', boardButtonsListener);
+    document.removeEventListener('keydown', keyboardListener);
     ContentBuilder.showCurrentGameStatistics('.sprint__panel_main', this.getStatisticsElement());
     const gameStatistics = document.querySelector('.game-statistics__popup');
     const gameStatisticsExit = gameStatistics.querySelector('.game-statistics__button_exit');
@@ -147,7 +203,7 @@ class Sprint {
         wordAudio = this.setNewWord(this.wordsArray);
         if (this.soundIsEnabled) wordAudio.play();
       } else {
-        this.endGame(this.boardButtonsListener);
+        this.endGame(this.boardButtonsListener, this.keyboardListener);
       }
     };
     switch (event.target) {
@@ -160,7 +216,6 @@ class Sprint {
           if (this.soundIsEnabled) audioCorrect.play();
           this.correctWords.push(this.currentWord);
           this.gameProgressHandler(true);
-
         }
         playNewWord();
         break;
@@ -251,6 +306,7 @@ class Sprint {
 
   resetStack() {
     this.currentRewardPoints = 10;
+    this.currentStack = 0;
       this.reward.textContent = `+${this.currentRewardPoints}`;
       this.stack.querySelectorAll('.stack__element').forEach((element) => {
         element.classList.remove('stack__element_active');
