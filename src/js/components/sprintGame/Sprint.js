@@ -60,6 +60,7 @@ class Sprint {
       });
       this.wordsArray = wordsArray;
       ContentBuilder.addGetReadyContent('.sprint__curtain');
+      this.gameIsActive = true;
       this.startTimer('.curtain__timer', this.curtainTimerStartPoint);
       setTimeout(() => {
         ContentBuilder.addMainPageContent(this.gameContainerSelector, this.gameLevel, this.gameRound);
@@ -83,7 +84,7 @@ class Sprint {
     const wordAudio = this.setNewWord(this.wordsArray);
     this.wrongWords = [];
     this.correctWords = [];
-    const boardButtonsListener = (event) => {
+    this.boardButtonsListener = (event) => {
       this.startBoardButtonsHandler(event, wordAudio, buttonTrue, buttonFalse, buttonRepeat);
     };
     controlPanel.addEventListener('click', (event) => {
@@ -99,12 +100,11 @@ class Sprint {
         this.launchGame();
       }
     });
-    this.gameIsActive = true;
     this.startTimer('.sprint__timer', this.gameTimerStartPoint);
     if (this.soundIsEnabled) wordAudio.play();
-    board.addEventListener('click', boardButtonsListener);
+    board.addEventListener('click', this.boardButtonsListener);
     setTimeout(() => {
-      this.endGame(boardButtonsListener);
+      this.endGame(this.boardButtonsListener);
     }, this.gameDuration);
   }
 
@@ -138,6 +138,15 @@ class Sprint {
     let wordAudio = currentWordAudio;
     const audioCorrect = new Audio(CorrectSound);
     const audioWrong = new Audio(ErrorSound);
+
+    const playNewWord = () => {
+      if (this.wordsArray.length) {
+        wordAudio = this.setNewWord(this.wordsArray);
+        if (this.soundIsEnabled) wordAudio.play();
+      } else {
+        this.endGame(this.boardButtonsListener);
+      }
+    };
     switch (event.target) {
       case buttonTrue:
         if (this.isRandom) {
@@ -150,8 +159,7 @@ class Sprint {
           this.increaseScore(counter);
           this.increaseStack();
         }
-        wordAudio = this.setNewWord(this.wordsArray);
-        if (this.soundIsEnabled) wordAudio.play();
+        playNewWord();
         break;
       case buttonFalse:
         if (this.isRandom) {
@@ -164,8 +172,7 @@ class Sprint {
           this.wrongWords.push(this.currentWord);
           this.currentRewardPoints = 10;
         }
-        wordAudio = this.setNewWord(this.wordsArray);
-        if (this.soundIsEnabled) wordAudio.play();
+        playNewWord();
         break;
       case buttonRepeat:
         if (this.soundIsEnabled) this.currentWordAudio.play();
@@ -179,12 +186,13 @@ class Sprint {
     const randomIndex = Sprint.getRandomInteger(wordsArray.length - 1);
     const currentWord = wordsArray[randomIndex];
     const currentWordTranslate = currentWord.wordTranslate;
-    wordsArray.splice(randomIndex, 1);
-    this.wordsArray = wordsArray;
 
     const randomWordTranslate = wordsArray[Sprint.getRandomInteger(wordsArray.length - 1)].wordTranslate;
     const isRandom = Math.round(Math.random());
     this.isRandom = isRandom;
+
+    wordsArray.splice(randomIndex, 1);
+    this.wordsArray = wordsArray;
 
     const board = document.querySelector('.sprint__board');
     const wordFieldForeign = board.querySelector('.board__body_foreign-word');
@@ -209,7 +217,7 @@ class Sprint {
     timer.textContent = timerValue;
     const interval = setInterval(() => {
       timerValue -= 1;
-      if (timerValue === -1) {
+      if (timerValue === -1 || !this.gameIsActive) {
         clearInterval(interval);
       } else {
         timer.textContent = timerValue;
