@@ -189,7 +189,7 @@ class RenderFindWordsGame {
             document.querySelector('.statistics__header').innerHTML = 'Поздравляем!<br><p>Игра завершена!<br>Статистика Раунда';
         }
 
-        StatisticsAPI.miniGameStat('findWords', 'result');
+        StatisticsAPI.miniGameStat('findWords', `${stat.total} steps`);
 
         document.querySelector('.find-words').dispatchEvent(event);
     }
