@@ -1,24 +1,25 @@
-import { savannaRound } from './savannaGetRoundData';
+import { changeLevel, generateTemplateMain } from './savannaGetRoundData';
 
 let count = 0;
 let countCorrect = 0;
-let answer = false;
 let countHealth = 5;
+let answer = false;
 const maxPositionYHiddenWord = 350;
 const maxPositionXHiddenWord = 60;
+const numberStartWords = 20;
 
 const playSound = (src) => {
     const audio = new Audio(src);
     audio.play();
 }
 
-const fallWord = () => {
+const fallWord = (words) => {
     const elem = document.querySelector('.savanna__hidden-word');
     const fallSpeed = 15;
     let posY = 0;
     let word = setInterval(fall, fallSpeed);
     function fall() {
-        if (posY === maxPositionYHiddenWord || answer) {
+        if (posY === maxPositionYHiddenWord || answer || changeLevel) {
             clearInterval(word);
         } else if (posY < maxPositionYHiddenWord) {
             posY += 1;
@@ -34,7 +35,9 @@ const fallWord = () => {
             } else {
                 playSound('assets/audio/error.mp3');
                 savannaHealth(countHealth);
-                setTimeout(() => savannaRound(count), 500);
+                setTimeout(() => generateTemplateMain(words, count), 500);
+                setTimeout(() => savannaGameplayMouse(words), 500);
+                setTimeout(() => fallWord(words), 500);
             }
         }
     }
@@ -55,7 +58,7 @@ const goOutWord = (correct) => {
                 while (posX < maxPositionXHiddenWord) {
                     posX += 1;
                     elem.style.left = `${posX}%`; 
-                    console.log(elem.style.left);
+                    // console.log(elem.style.left);
                 }
             }
         }
@@ -80,6 +83,12 @@ const savannaHealth = (hp) => {
     savannaHealths.innerHTML = health.slice(0, hp).join('');
 }
 
+const newStart = () => {
+    count = 0;
+    countCorrect = 0;
+    countHealth = 5;
+}
+
 const actionForRound = () => {
     const weapon = document.querySelector('.savanna__footer');
     weapon.classList.add('savanna__footer_active');
@@ -94,7 +103,6 @@ const savannaShortStatistics = () => {
     const hiddenMainPage = document.querySelector('.savanna__main');
     const error = document.querySelector('.savanna__error');
     const correct = document.querySelector('.savanna__correct');
-    const numberStartWords = 10;
 
     visibleStat.classList.add('savanna-active');
     hiddenMainPage.classList.add('savanna-hidden');
@@ -102,23 +110,28 @@ const savannaShortStatistics = () => {
     correct.innerHTML = `${countCorrect}`;
 }
 
-const savannaGameplayMouse = (data, index) => {
+const savannaGameplayMouse = (words) => {
     const clickBtn = document.querySelectorAll('.savanna__choise span');
     const span = document.querySelectorAll('*[data-word]');
+    const savanna = document.querySelector('.savanna');
     
     clickBtn.forEach(elem => {
         elem.addEventListener('click', () => {
             count += 1;
-            if (count < 10) {
-                if (elem.innerText === data[index].wordTranslate.toUpperCase()) {
-                    span[index].innerHTML = '+';
+            console.log(count);
+            console.log(elem.innerText);
+            if (count < numberStartWords) {
+                if (elem.innerText === words[count - 1].wordTranslate.toUpperCase()) {
+                    span[count - 1].innerHTML = '+';
                     countCorrect += 1;
                     elem.classList.add('correct');
                     actionForRound();
                     playSound('assets/audio/correct.mp3');
                     savannaHealth(countHealth);
                     setTimeout(() => goOutWord(true), 250);
-                    setTimeout(() => savannaRound(count), 500);
+                    setTimeout(() => generateTemplateMain(words, count), 500);
+                    setTimeout(() => fallWord(words), 500);
+                    setTimeout(() => savannaGameplayMouse(words), 500);
                 } else {
                     countHealth -= 1;
                     if (countHealth === 0) {
@@ -127,87 +140,102 @@ const savannaGameplayMouse = (data, index) => {
                         playSound('assets/audio/error.mp3');
                         goOutWord(false);
                         setTimeout(() => savannaShortStatistics(), 500);
+                        setTimeout(() => savanna.innerHTML = '', 500);
                     } else {
                         savannaHealth(countHealth);
                         elem.classList.add('wrong');
                         actionForRound();
                         playSound('assets/audio/error.mp3');
                         goOutWord(false);
-                        setTimeout(() => savannaRound(count), 500);
+                        setTimeout(() => generateTemplateMain(words, count), 500);
+                        setTimeout(() => fallWord(words), 500);
+                        setTimeout(() => savannaGameplayMouse(words), 500);
                     }
                     
                 }                
             } else {
-                if (elem.innerText === data[index].wordTranslate.toUpperCase()) {
+                if (elem.innerText === words[count - 1].wordTranslate.toUpperCase()) {
                     elem.classList.add('correct');
                     actionForRound();
                     playSound('assets/audio/correct.mp3');
                     setTimeout(() => goOutWord(true), 250);
-                    span[index].innerHTML = '+';
+                    span[count - 1].innerHTML = '+';
                     countCorrect += 1;
                     setTimeout(() => savannaShortStatistics(), 500);
+                    setTimeout(() => savanna.innerHTML = '', 500);
                 } else {
                     elem.classList.add('wrong');
                     actionForRound();
                     playSound('assets/audio/error.mp3');
                     goOutWord(false);
                     setTimeout(() => savannaShortStatistics(), 500);
+                    setTimeout(() => savanna.innerHTML = '', 500);
                 }
             }
         })
     })
 }
 
-const savannaGameplayKeyboard = () => {
-    document.addEventListener('keyup', (event) => {
+const savannaGameplayKeyboard = (words) => {
+    /*document.addEventListener('keyup', (event) => {*/
         event.preventDefault();
         const span = document.querySelectorAll('*[data-word]');
         const hiddenWord = document.querySelector('.savanna__hidden-word');
-        count += 1;
-        if (count < 10) {
-            if (document.getElementById(event.code).innerText === hiddenWord.id.toUpperCase()) {
-                document.getElementById(event.code).classList.add('correct');
-                actionForRound();
-                playSound('assets/audio/correct.mp3');
-                setTimeout(() => goOutWord(true), 250);
-                span[count - 1].innerHTML = '+';
-                countCorrect += 1;
-                setTimeout(() => savannaRound(count), 500);
+        if (event.code === 'Digit1' || event.code === 'Digit2' || event.code === 'Digit3' || event.code === 'Digit4') {
+            count += 1;
+            console.log(count);
+            if (count < numberStartWords) {
+                if (document.getElementById(event.code).innerText === hiddenWord.id.toUpperCase()) {
+                    document.getElementById(event.code).classList.add('correct');
+                    actionForRound();
+                    playSound('assets/audio/correct.mp3');
+                    setTimeout(() => goOutWord(true), 250);
+                    span[count - 1].innerHTML = '+';
+                    countCorrect += 1;
+                    setTimeout(() => generateTemplateMain(words, count), 500);
+                    setTimeout(() => fallWord(words), 500);
+                    setTimeout(() => savannaGameplayMouse(words), 500);
+                } else {
+                    countHealth -= 1;
+                    if (countHealth === 0) {
+                        document.getElementById(event.code).classList.add('wrong');
+                        actionForRound();
+                        playSound('assets/audio/error.mp3');
+                        goOutWord(false);
+                        setTimeout(() => savannaShortStatistics(), 500);
+                        setTimeout(() => savanna.innerHTML = '', 500);
+                    } else {
+                        savannaHealth(countHealth);
+                        document.getElementById(event.code).classList.add('wrong');
+                        actionForRound();
+                        playSound('assets/audio/error.mp3');
+                        goOutWord(false);
+                        setTimeout(() => generateTemplateMain(words, count), 500);
+                        setTimeout(() => fallWord(words), 500);
+                        setTimeout(() => savannaGameplayMouse(words), 500);
+                    }
+                }                
             } else {
-                countHealth -= 1;
-                if (countHealth === 0) {
+                if (document.getElementById(event.code).innerText === hiddenWord.id.toUpperCase()) {
+                    document.getElementById(event.code).classList.add('correct');
+                    actionForRound();
+                    playSound('assets/audio/correct.mp3');
+                    setTimeout(() => goOutWord(true), 250);
+                    span[count - 1].innerHTML = '+';
+                    countCorrect += 1;
+                    setTimeout(() => savannaShortStatistics(), 500);
+                    setTimeout(() => savanna.innerHTML = '', 500);
+                } else {
                     document.getElementById(event.code).classList.add('wrong');
                     actionForRound();
                     playSound('assets/audio/error.mp3');
                     goOutWord(false);
                     setTimeout(() => savannaShortStatistics(), 500);
-                } else {
-                    savannaHealth(countHealth);
-                    document.getElementById(event.code).classList.add('wrong');
-                    actionForRound();
-                    playSound('assets/audio/error.mp3');
-                    goOutWord(false);
-                    setTimeout(() => savannaRound(count), 500);
+                    setTimeout(() => savanna.innerHTML = '', 500);
                 }
-            }                
-        } else {
-            if (document.getElementById(event.code).innerText === hiddenWord.id.toUpperCase()) {
-                document.getElementById(event.code).classList.add('correct');
-                actionForRound();
-                playSound('assets/audio/correct.mp3');
-                setTimeout(() => goOutWord(true), 250);
-                span[count - 1].innerHTML = '+';
-                countCorrect += 1;
-                setTimeout(() => savannaShortStatistics(), 500);
-            } else {
-                document.getElementById(event.code).classList.add('wrong');
-                actionForRound();
-                playSound('assets/audio/error.mp3');
-                goOutWord(false);
-                setTimeout(() => savannaShortStatistics(), 500);
-            }
+            }   
         }
-    })
+    /*})*/
 }
 
-export { countHealth, fallWord, savannaHealth, savannaGameplayMouse, savannaGameplayKeyboard } ;
+export { fallWord, savannaHealth, newStart, savannaGameplayMouse, savannaGameplayKeyboard } ;
