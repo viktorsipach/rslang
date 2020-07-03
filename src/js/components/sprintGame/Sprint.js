@@ -18,6 +18,7 @@ class Sprint {
     this.curtainTimerStartPoint = 3;
     this.gameTimerStartPoint = 60;
     this.currentRewardPoints = 10;
+    this.maxRewardPoints = 160;
     this.currentStack = 0;
     this.maxStack = 4;
     this.gameDuration = 60000;
@@ -297,7 +298,7 @@ class Sprint {
       this.currentStack += 1;
       this.increaseScore(this.counter);
       this.stack.querySelector(`.stack__element_${this.currentStack}`).classList.add('stack__element_active');
-    } else if(this.currentStack === this.maxStack && this.currentRewardPoints < 100) {
+    } else if(this.currentStack === this.maxStack && this.currentRewardPoints < this.maxRewardPoints) {
       this.currentStack = 0;
       this.currentRewardPoints *= 2;
       this.reward.textContent = `+${this.currentRewardPoints}`;
