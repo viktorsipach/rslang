@@ -57,8 +57,7 @@ export const renderDom = () => {
             <button class="button btn-return__speakit">Назад</button></button>
             <button class="button btn-new-game__speakit">Новая игра</button>
         </div>
-    </div>
-    <div class="game__close_speakit close"></div>`
+    </div>`
     page.append(wrapper)
 }
 
