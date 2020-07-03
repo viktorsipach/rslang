@@ -1,6 +1,7 @@
 const token = localStorage.getItem('userToken');
 const userId = localStorage.getItem('userId');
-
+console.log(token);
+console.log(userId);
 
 async function createUserWord({ wordId, word }) {
   try {
@@ -15,7 +16,6 @@ async function createUserWord({ wordId, word }) {
       body: JSON.stringify(word)
     });
     const content = await rawResponse.json();
-    console.log(content);
     return content;
   } catch (error) {
     return error;
@@ -35,7 +35,6 @@ async function updateUserWord({ wordId, word }) {
       body: JSON.stringify(word)
     });
     const content = await rawResponse.json();
-    console.log(content);
     return content;
   } catch (error) {
     return error;
@@ -52,7 +51,6 @@ async function deleteUserWord({ wordId }) {
         'Accept': 'application/json',
       },
     });
-    console.log(rawResponse);
     return rawResponse;
   } catch (error) {
     return error;
@@ -97,6 +95,5 @@ async function getUserWord({ wordId }) {
     return error;
   }  
 };
-
 
 export { createUserWord, updateUserWord, deleteUserWord, getUserWord, getAllUserWords };

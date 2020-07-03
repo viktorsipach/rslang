@@ -1,79 +1,73 @@
 import { createUserWord, updateUserWord, deleteUserWord, getUserWord, getAllUserWords } from '../../API/userWordsAPI';
 import { getRoundData } from '../../API/dataAPI';
-import getUserCurrentWords from '../../API/userAgregatedWordsAPI';
+import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
+import getUserSettings from '../../API/settingsTestFile';
 
-const settings = {
-  newWordsPerDay: 20,
-  maxCardsPerDay: 20,
-  cardSettings: {
-    showTranslation: true,
-    showExplanationSentence: true,
-    showExampleSentence: true,
-    showTranscription: true,
-    showAssociatedPicture: true
-  },
-  autoPronunciation: true,
-  showSentencesTranslation: true,
-  showIDontKnowButton: true,
-  showDeleteButton: true,
-  showHardButton: true,
-  newWordsOnly: true,
-  learnedWordsOnly: true,
-}
+const FILTER_FOR_REPEAT_WORDS = encodeURIComponent('{"$and":[{"userWord.optional.status":"repeat","userWord.optional.daysLeftToRepeat":0}]}')
+const FILTER_FOR_NEW_WORDS = encodeURIComponent('{"userWord.optional.status":"new"}');
 
-async function createTrainingDataForDay() {
-  const words = await getRoundData(1, 2, settings.maxCardsPerDay);
+
+async function createTrainingDataForDay(amountOfCards) {
+  const words = await getRoundData(1, 4, amountOfCards);
   console.log(words);
 
-  words.forEach( async function foo(word) {
+  const TRAINING_WORDS = [];
+  const promises = [];
+  
+  words.forEach(async function createWord(word) {
     const currentDate = new Date();
-    const isUserWordExist = await getUserWord({ wordId: word.id });
-    console.log(isUserWordExist);
-    if (!isUserWordExist) {
-      console.log('no exist');
-      createUserWord({
-        wordId: word.id,
-        word: {
-          'difficulty': 'easy',
-          'optional': {
-            status: 'new',
-            lastRepeatDate: currentDate,
-            errorsCount: 0,
-          }
+    promises.push(createUserWord({
+      wordId: word.id,
+      word: {
+        'difficulty': 'normal',
+        'optional': {
+          status: 'new',
+          lastRepeatDate: currentDate,
+          daysLeftToRepeat: 3,
+          errorsCount: 0,
         }
-      });
-    }
-  })
-
-
-
+      }
+    }));
+  });
+  const PROMISES_RESULT = await Promise.all(promises);
+  PROMISES_RESULT.forEach((el) => {
+    TRAINING_WORDS.push(el);
+  });
+  return TRAINING_WORDS;
 }
 
 
 export default async function getTrainingGameData() {
-  // await createTrainingDataForDay();
+  const settings = getUserSettings();
+  const allUserWords = await getAllUserWords();
+  console.log(allUserWords.length);
+  console.log(allUserWords);
 
-  // const allUserWords = await getAllUserWords();
-  // console.log(allUserWords);
+  // allUserWords.forEach((word) => {
+  //   deleteUserWord({wordId: word.wordId});
+  // });
 
-  // const filter = {
-  //   "$or": [
-  //   {"userWord.difficulty":"strong"},
-  //   {"userWord":null}
-  //   ]
-  // }
+  let gameData = [];
+  if (allUserWords.length === 0) {
+    console.log('FIRST GAME');
+    await createTrainingDataForDay(settings.maxCardsPerDay);
+    gameData =  await getFilteredUserWords(FILTER_FOR_NEW_WORDS, settings.maxCardsPerDay);
+    return gameData[0].paginatedResults;
+  } 
 
-   // const a = {"$and":[{"userWord.difficulty":"easy", "userWord.optional.key":"value"}]};
-
-  // const filter = encodeURIComponent({"userWord.difficulty":"easy"});
-  // const filter = {"$and":[{"userWord.difficulty":"easy", "userWord.optional.key":"value"}]};
-  const myFilter = {"$and":[{"userWord.difficulty":"easy", "userWord.optional.key":"value"}]};;
-  const myFilterNew = encodeURIComponent(myFilter);
-  console.log(myFilterNew);
-
-  const filter = '%7B%22%24or%22%3A%5B%7B%22userWord.difficulty%22%3A%22easy%22%7D%2C%7B%22userWord%22%3Anull%7D%5D%7D';
-  console.log(filter);
-
-  // getUserCurrentWords(filter);
-
+  console.log('NOT FIRST GAME');
+  console.log(`words need for game = ${settings.maxCardsPerDay}`);
+  console.log(`new words for game = ${settings.newWordsPerDay}`);
+  const AMOUNT_OF_WORDS_TO_REPEAT = settings.maxCardsPerDay - settings.newWordsPerDay;
+  console.log(`wordsTo repeat ${AMOUNT_OF_WORDS_TO_REPEAT}`);
+  // await createTrainingDataForDay(settings.newWordsPerDay);
+  const gameDataNew = await getFilteredUserWords(FILTER_FOR_NEW_WORDS, settings.newWordsPerDay);
+  const gameDataRepeat = await getFilteredUserWords(FILTER_FOR_REPEAT_WORDS, AMOUNT_OF_WORDS_TO_REPEAT);
+  gameDataNew[0].paginatedResults.forEach((el) => {
+    gameData.push(el);
+  });
+  gameDataRepeat[0].paginatedResults.forEach((word) => {
+    gameData.push(word);
+  })
+  return gameData;
 }
