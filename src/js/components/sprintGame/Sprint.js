@@ -12,19 +12,30 @@ class Sprint {
     this.gameName = 'Спринт';
     this.gameLevel = 1;
     this.gameRound = 1;
-    this.wordsPerRound = 120;
+    this.wordsPerRound = 100;
     this.filesUrlPrefix = 'https://raw.githubusercontent.com/DenisKhatsuk/rslang-data/master/';
     this.soundIsEnabled = true;
     this.curtainTimerStartPoint = 3;
     this.gameTimerStartPoint = 60;
     this.currentRewardPoints = 10;
+    this.maxRewardPoints = 160;
     this.currentStack = 0;
+    this.maxStack = 4;
     this.gameDuration = 60000;
     this.gameDelay = 3000;
   }
 
   init(parentSelector = '.page') {
     const parent = document.querySelector(parentSelector);
+    const closeButton = document.querySelector('.close-btn');
+    const clearGameFeatures = () => {
+      closeButton.classList.remove('exit');
+      closeButton.removeEventListener('click', clearGameFeatures);
+      document.removeEventListener('keydown', this.keyboardListener);
+      clearTimeout(this.currentTimer);
+    };
+    closeButton.classList.add('exit');
+    closeButton.addEventListener('click', clearGameFeatures);
     parent.innerHTML = this.gameContainer;
     ContentBuilder.addStartPageContent(this.gameContainerSelector, this.gameName);
     this.launchStartScreen();
@@ -32,32 +43,38 @@ class Sprint {
 
   launchStartScreen() {
     const startButton = document.querySelector('.curtain__button_start');
-    startButton.addEventListener('click', async () => {
-      const wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
-      if (wordsApiArray.error) {
-        ContentBuilder.showErrorMessage('.sprint__curtain');
-      } else {
-        const wordsArray = [];
-        wordsApiArray.forEach((element) => {
-          const {
-            word,
-            audio,
-            wordTranslate,
-          } = element;
-          wordsArray.push({word, audio, wordTranslate});
-        });
-        this.wordsArray = wordsArray;
-        ContentBuilder.addGetReadyContent('.sprint__curtain');
-        this.startTimer('.curtain__timer', this.curtainTimerStartPoint);
-        setTimeout(() => {
-          ContentBuilder.addMainPageContent(this.gameContainerSelector);
-          this.startGame();
-        }, this.gameDelay);
-      }
+    startButton.addEventListener('click', () => {
+      this.launchGame();
     });
   }
 
+  async launchGame() {
+    const wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
+    if (wordsApiArray.error) {
+      ContentBuilder.showErrorMessage('.sprint__curtain');
+    } else {
+      const wordsArray = [];
+      wordsApiArray.forEach((element) => {
+        const {
+          word,
+          audio,
+          wordTranslate,
+        } = element;
+        wordsArray.push({word, audio, wordTranslate});
+      });
+      this.wordsArray = wordsArray;
+      ContentBuilder.addGetReadyContent('.sprint__curtain');
+      this.gameIsActive = true;
+      this.startTimer('.curtain__timer', this.curtainTimerStartPoint);
+      setTimeout(() => {
+        ContentBuilder.addMainPageContent(this.gameContainerSelector, this.gameLevel, this.gameRound);
+        this.startGame();
+      }, this.gameDelay);
+    }
+  }
+
   startGame() {
+    const sprintPanel = document.querySelector('.sprint__panel');
     const board = document.querySelector('.sprint__board');
     const buttonTrue = board.querySelector('.board__button_true');
     const buttonFalse = board.querySelector('.board__button_false');
@@ -65,11 +82,17 @@ class Sprint {
     const controlPanel = document.querySelector('.sprint__panel_right');
     const soundControlButtonOn = controlPanel.querySelector('.sound-control__icon_on');
     const soundControlButtonOff = controlPanel.querySelector('.sound-control__icon_off');
+    const reloadButton = controlPanel.querySelector('.game-controls__reload');
+    const levelSelector = controlPanel.querySelector('.game-controls__select_level');
+    const roundSelector = controlPanel.querySelector('.game-controls__select_round');
     const wordAudio = this.setNewWord(this.wordsArray);
     this.wrongWords = [];
     this.correctWords = [];
-    const boardButtonsListener = (event) => {
+    this.boardButtonsListener = (event) => {
       this.startBoardButtonsHandler(event, wordAudio, buttonTrue, buttonFalse, buttonRepeat);
+    };
+    this.keyboardListener = (event) => {
+      this.startKeyboardHandler(event);
     };
     controlPanel.addEventListener('click', (event) => {
       if (event.target === soundControlButtonOn || event.target === soundControlButtonOff) {
@@ -77,22 +100,81 @@ class Sprint {
         soundControlButtonOn.classList.toggle('sound-control__icon_active');
         soundControlButtonOff.classList.toggle('sound-control__icon_active');
       }
+      if (event.target === reloadButton) {
+        this.gameLevel = levelSelector.value;
+        this.gameRound = roundSelector.value;
+        clearTimeout(this.currentTimer);
+        sprintPanel.innerHTML = `<div class="sprint__curtain curtain"></div>`;
+        document.removeEventListener('keydown', this.keyboardListener);
+        this.launchGame();
+      }
     });
-    this.gameIsActive = true;
+
+    document.addEventListener('keydown', this.keyboardListener);
+
     this.startTimer('.sprint__timer', this.gameTimerStartPoint);
     if (this.soundIsEnabled) wordAudio.play();
-    board.addEventListener('click', boardButtonsListener);
-    setTimeout(() => {
-      this.endGame(boardButtonsListener);
+    board.addEventListener('click', this.boardButtonsListener);
+
+    this.currentTimer = setTimeout(() => {
+      this.endGame(this.boardButtonsListener, this.keyboardListener);
     }, this.gameDuration);
   }
 
-  endGame(boardButtonsListener) {
+  startKeyboardHandler(event) {
+    this.counter = document.querySelector('.counter__value');
+    this.stack = document.querySelector('.stack');
+    this.reward = document.querySelector('.board__body_reward');
+    let wordAudio;
+    const audioCorrect = new Audio(CorrectSound);
+    const audioWrong = new Audio(ErrorSound);
+    const playNewWord = () => {
+      if (this.wordsArray.length) {
+        wordAudio = this.setNewWord(this.wordsArray);
+        if (this.soundIsEnabled) wordAudio.play();
+      } else {
+        this.endGame(this.boardButtonsListener, this.keyboardListener);
+        clearTimeout(this.currentTimer);
+      }
+    };
+    switch (event.code) {
+      case 'ArrowRight':
+        if (this.isRandom) {
+          if (this.soundIsEnabled) audioCorrect.play();
+          this.correctWords.push(this.currentWord);
+          this.gameProgressHandler(true);
+        } else {
+          if (this.soundIsEnabled) audioWrong.play();
+          this.wrongWords.push(this.currentWord);
+          this.gameProgressHandler(false);
+        }
+        playNewWord();
+        break;
+      case 'ArrowLeft':
+        if (this.isRandom) {
+          if (this.soundIsEnabled) audioWrong.play();
+          this.wrongWords.push(this.currentWord);
+          this.gameProgressHandler(false);
+        } else {
+          if (this.soundIsEnabled) audioCorrect.play();
+          this.correctWords.push(this.currentWord);
+          this.gameProgressHandler(true);
+        }
+        playNewWord();
+        break;
+      default:
+        break;
+    }
+    return this;
+  }
+
+  endGame(boardButtonsListener, keyboardListener) {
     const score = document.querySelector('.counter__value');
     const board = document.querySelector('.sprint__board');
     this.gameIsActive = false;
     this.score = score.textContent;
     board.removeEventListener('click', boardButtonsListener);
+    document.removeEventListener('keydown', keyboardListener);
     ContentBuilder.showCurrentGameStatistics('.sprint__panel_main', this.getStatisticsElement());
     const gameStatistics = document.querySelector('.game-statistics__popup');
     const gameStatisticsExit = gameStatistics.querySelector('.game-statistics__button_exit');
@@ -113,38 +195,45 @@ class Sprint {
   }
 
   startBoardButtonsHandler(event, currentWordAudio, buttonTrue, buttonFalse, buttonRepeat) {
-    const counter = document.querySelector('.counter__value');
+    this.counter = document.querySelector('.counter__value');
+    this.stack = document.querySelector('.stack');
+    this.reward = document.querySelector('.board__body_reward');
     let wordAudio = currentWordAudio;
     const audioCorrect = new Audio(CorrectSound);
     const audioWrong = new Audio(ErrorSound);
+
+    const playNewWord = () => {
+      if (this.wordsArray.length) {
+        wordAudio = this.setNewWord(this.wordsArray);
+        if (this.soundIsEnabled) wordAudio.play();
+      } else {
+        this.endGame(this.boardButtonsListener, this.keyboardListener);
+      }
+    };
     switch (event.target) {
       case buttonTrue:
         if (this.isRandom) {
           if (this.soundIsEnabled) audioWrong.play();
           this.wrongWords.push(this.currentWord);
-          this.currentRewardPoints = 10;
+          this.gameProgressHandler(false);
         } else {
           if (this.soundIsEnabled) audioCorrect.play();
           this.correctWords.push(this.currentWord);
-          this.increaseScore(counter);
-          this.increaseStack();
+          this.gameProgressHandler(true);
         }
-        wordAudio = this.setNewWord(this.wordsArray);
-        if (this.soundIsEnabled) wordAudio.play();
+        playNewWord();
         break;
       case buttonFalse:
         if (this.isRandom) {
           if (this.soundIsEnabled) audioCorrect.play();
           this.correctWords.push(this.currentWord);
-          this.increaseScore(counter);
-          this.increaseStack();
+          this.gameProgressHandler(true);
         } else {
           if (this.soundIsEnabled) audioWrong.play();
           this.wrongWords.push(this.currentWord);
-          this.currentRewardPoints = 10;
+          this.gameProgressHandler(false);
         }
-        wordAudio = this.setNewWord(this.wordsArray);
-        if (this.soundIsEnabled) wordAudio.play();
+        playNewWord();
         break;
       case buttonRepeat:
         if (this.soundIsEnabled) this.currentWordAudio.play();
@@ -158,12 +247,13 @@ class Sprint {
     const randomIndex = Sprint.getRandomInteger(wordsArray.length - 1);
     const currentWord = wordsArray[randomIndex];
     const currentWordTranslate = currentWord.wordTranslate;
-    wordsArray.splice(randomIndex, 1);
-    this.wordsArray = wordsArray;
 
     const randomWordTranslate = wordsArray[Sprint.getRandomInteger(wordsArray.length - 1)].wordTranslate;
     const isRandom = Math.round(Math.random());
     this.isRandom = isRandom;
+
+    wordsArray.splice(randomIndex, 1);
+    this.wordsArray = wordsArray;
 
     const board = document.querySelector('.sprint__board');
     const wordFieldForeign = board.querySelector('.board__body_foreign-word');
@@ -188,7 +278,7 @@ class Sprint {
     timer.textContent = timerValue;
     const interval = setInterval(() => {
       timerValue -= 1;
-      if (timerValue === -1) {
+      if (timerValue === -1 || !this.gameIsActive) {
         clearInterval(interval);
       } else {
         timer.textContent = timerValue;
@@ -204,11 +294,34 @@ class Sprint {
   }
 
   increaseStack() {
-    if (this.currentStack < 4) {
+    if (this.currentStack < this.maxStack) {
       this.currentStack += 1;
-    } else if(this.currentStack === 4) {
+      this.increaseScore(this.counter);
+      this.stack.querySelector(`.stack__element_${this.currentStack}`).classList.add('stack__element_active');
+    } else if(this.currentStack === this.maxStack && this.currentRewardPoints < this.maxRewardPoints) {
       this.currentStack = 0;
       this.currentRewardPoints *= 2;
+      this.reward.textContent = `+${this.currentRewardPoints}`;
+      this.stack.querySelectorAll('.stack__element').forEach((element) => {
+        element.classList.remove('stack__element_active');
+      });
+    }
+  }
+
+  resetStack() {
+    this.currentRewardPoints = 10;
+    this.currentStack = 0;
+      this.reward.textContent = `+${this.currentRewardPoints}`;
+      this.stack.querySelectorAll('.stack__element').forEach((element) => {
+        element.classList.remove('stack__element_active');
+      });
+  }
+
+  gameProgressHandler(answerIsCorrect) {
+    if (answerIsCorrect) {
+      this.increaseStack();
+    } else {
+      this.resetStack();
     }
   }
 
