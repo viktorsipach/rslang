@@ -19,6 +19,7 @@ class Sprint {
     this.gameTimerStartPoint = 60;
     this.currentRewardPoints = 10;
     this.currentStack = 0;
+    this.maxStack = 4;
     this.gameDuration = 60000;
     this.gameDelay = 3000;
   }
@@ -134,7 +135,9 @@ class Sprint {
   }
 
   startBoardButtonsHandler(event, currentWordAudio, buttonTrue, buttonFalse, buttonRepeat) {
-    const counter = document.querySelector('.counter__value');
+    this.counter = document.querySelector('.counter__value');
+    this.stack = document.querySelector('.stack');
+    this.reward = document.querySelector('.board__body_reward');
     let wordAudio = currentWordAudio;
     const audioCorrect = new Audio(CorrectSound);
     const audioWrong = new Audio(ErrorSound);
@@ -152,12 +155,12 @@ class Sprint {
         if (this.isRandom) {
           if (this.soundIsEnabled) audioWrong.play();
           this.wrongWords.push(this.currentWord);
-          this.currentRewardPoints = 10;
+          this.gameProgressHandler(false);
         } else {
           if (this.soundIsEnabled) audioCorrect.play();
           this.correctWords.push(this.currentWord);
-          this.increaseScore(counter);
-          this.increaseStack();
+          this.gameProgressHandler(true);
+
         }
         playNewWord();
         break;
@@ -165,12 +168,11 @@ class Sprint {
         if (this.isRandom) {
           if (this.soundIsEnabled) audioCorrect.play();
           this.correctWords.push(this.currentWord);
-          this.increaseScore(counter);
-          this.increaseStack();
+          this.gameProgressHandler(true);
         } else {
           if (this.soundIsEnabled) audioWrong.play();
           this.wrongWords.push(this.currentWord);
-          this.currentRewardPoints = 10;
+          this.gameProgressHandler(false);
         }
         playNewWord();
         break;
@@ -233,11 +235,33 @@ class Sprint {
   }
 
   increaseStack() {
-    if (this.currentStack < 4) {
+    if (this.currentStack < this.maxStack) {
       this.currentStack += 1;
-    } else if(this.currentStack === 4) {
+      this.increaseScore(this.counter);
+      this.stack.querySelector(`.stack__element_${this.currentStack}`).classList.add('stack__element_active');
+    } else if(this.currentStack === this.maxStack && this.currentRewardPoints < 100) {
       this.currentStack = 0;
       this.currentRewardPoints *= 2;
+      this.reward.textContent = `+${this.currentRewardPoints}`;
+      this.stack.querySelectorAll('.stack__element').forEach((element) => {
+        element.classList.remove('stack__element_active');
+      });
+    }
+  }
+
+  resetStack() {
+    this.currentRewardPoints = 10;
+      this.reward.textContent = `+${this.currentRewardPoints}`;
+      this.stack.querySelectorAll('.stack__element').forEach((element) => {
+        element.classList.remove('stack__element_active');
+      });
+  }
+
+  gameProgressHandler(answerIsCorrect) {
+    if (answerIsCorrect) {
+      this.increaseStack();
+    } else {
+      this.resetStack();
     }
   }
 

@@ -10,8 +10,8 @@ class ContentBuilder {
     this.boardMarkup = `
       <div class="board__header">
         <div class="board__header_answers-stack stack">
-          <span class="stack__element stack__element_1 stack__element_active"></span>
-          <span class="stack__element stack__element_2 stack__element_active"></span>
+          <span class="stack__element stack__element_1"></span>
+          <span class="stack__element stack__element_2"></span>
           <span class="stack__element stack__element_3"></span>
           <span class="stack__element stack__element_4"></span>
         </div>
@@ -22,7 +22,8 @@ class ContentBuilder {
         </div>
       </div>
       <div class="board__body">
-        <div class="board__body_image">
+        <div class="board__body_reward">
+          +10
         </div>
         <div class="board__body_foreign-word"></div>
         <div class="board__body_translated-word"></div>

@@ -50,10 +50,15 @@
     flex-direction: column;
     height: 57%;
 
-    &_image {
+    &_reward {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: 10rem;
       height: 10rem;
-      background: $color-light;
+      font-size: 4rem;
+      border-radius: 13rem;
+      border: 3px solid $color-light;
     }
 
     &_foreign-word {
