@@ -59,6 +59,12 @@
       font-size: 4rem;
       border-radius: 13rem;
       border: 3px solid $color-light;
+
+      @include media-tablet {
+        width: 8rem;
+        height: 8rem;
+        font-size: 3rem;
+      }
     }
 
     &_foreign-word {
