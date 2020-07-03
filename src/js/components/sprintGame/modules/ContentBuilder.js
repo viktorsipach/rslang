@@ -104,7 +104,7 @@ class ContentBuilder {
     `;
   }
 
-  addMainPageContent(parentSelector) {
+  addMainPageContent(parentSelector, level, round) {
     this.parentSelector = parentSelector;
     const parent = document.querySelector(this.parentSelector);
     parent.innerHTML = '';
@@ -130,6 +130,11 @@ class ContentBuilder {
     soundControlElement.classList.add('sprint__sound-control', 'sound-control');
     soundControlElement.innerHTML = this.soundControlMarkup;
     panelRight.append(soundControlElement);
+
+    const levelSelector = panelRight.querySelector('.game-controls__select_level');
+    const roundSelector = panelRight.querySelector('.game-controls__select_round');
+    levelSelector.value = level;
+    roundSelector.value = round;
 
     parent.append(fragment);
   }

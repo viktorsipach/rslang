@@ -12,7 +12,7 @@ class Sprint {
     this.gameName = 'Спринт';
     this.gameLevel = 1;
     this.gameRound = 1;
-    this.wordsPerRound = 120;
+    this.wordsPerRound = 100;
     this.filesUrlPrefix = 'https://raw.githubusercontent.com/DenisKhatsuk/rslang-data/master/';
     this.soundIsEnabled = true;
     this.curtainTimerStartPoint = 3;
@@ -62,7 +62,7 @@ class Sprint {
       ContentBuilder.addGetReadyContent('.sprint__curtain');
       this.startTimer('.curtain__timer', this.curtainTimerStartPoint);
       setTimeout(() => {
-        ContentBuilder.addMainPageContent(this.gameContainerSelector);
+        ContentBuilder.addMainPageContent(this.gameContainerSelector, this.gameLevel, this.gameRound);
         this.startGame();
       }, this.gameDelay);
     }
