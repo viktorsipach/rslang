@@ -19,8 +19,6 @@ export default class TrainingGame {
   }
 
   async start() {
-    console.log(this.data);
-    
     this.currentCardNumber = 0;
     this.correctAnswersAmount = 0;
     this.seriesOfCorrectAnswers = 0;
@@ -61,7 +59,7 @@ export default class TrainingGame {
       const statisticsData = {
         amountOfWords: this.amountsOfCards,
         amountOfCorrectAnswers: this.correctAnswersAmount,
-        amountOfNewWords: 1, // not implemented yet
+        amountOfNewWords: this.settings.newWordsPerDay, // change
         longestSeriesOfCorrectAnswers: this.longestSeriesOfCorrectAnswers
       }
       document.querySelector('.page').append(renderStatistics(isLastWordsInApp, statisticsData)); 

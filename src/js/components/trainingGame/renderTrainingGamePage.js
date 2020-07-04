@@ -137,6 +137,16 @@ function renderGameButtons() {
   return gameButtons;
 }
 
+function renderDifficultyButtons() {
+  const difficultyButtons = document.createElement('div');
+  difficultyButtons.className = 'buttons difficulty__buttons hidden';
+  difficultyButtons.append(renderButton('trainingGame__button again', 'Повторить'));
+  difficultyButtons.append(renderButton('trainingGame__button easy', 'Легко'));
+  difficultyButtons.append(renderButton('trainingGame__button normal', 'Нормально'));
+  difficultyButtons.append(renderButton('trainingGame__button hard', 'Сложно'));
+  return difficultyButtons;
+}
+
 function renderProgressBar() {
   const progressLine = document.createElement('span');
   progressLine.className = 'progress__line';
@@ -166,6 +176,7 @@ export default function  renderTrainingGamePage() {
   mainPage.append(renderTrainingCard());
   mainPage.append(renderDictionaryButtons());
   mainPage.append(renderGameButtons());
+  mainPage.append(renderDifficultyButtons());
   mainPage.append(renderProgressBar());
 
   const mainPageWrapper = document.createElement('div');

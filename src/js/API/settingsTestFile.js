@@ -1,4 +1,6 @@
 const settings = {
+  level: 1,
+  round: 1,
   newWordsPerDay: 5,
   maxCardsPerDay: 7,
   cardSettings: {
