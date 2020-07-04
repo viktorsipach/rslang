@@ -10,7 +10,6 @@ const renderSavannaStartPage = () => {
                     <i class="fa fa-bell-slash-o"></i>
                 </button>
             </div>
-            <button class="button button__close">выйти</button>
         </div>
         <div class="savanna__content">
             <h2 class="savanna__name">саванна</h2>
