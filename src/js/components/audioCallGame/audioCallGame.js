@@ -6,6 +6,7 @@ import { statisticsWords } from './statistics';
 
 const arrTrueAnswer = [];
 const arrFalseAnswer = [];
+const progressStep = 5;
 let option = true;
 let arrAllWordsOption = [];
 let numberWordCount = 0;
@@ -13,6 +14,7 @@ let levelGame = 1;
 let roundGame = 1;
 let progressHeight = 0;
 let progressWidth = 0;
+
 
 function progressBar(height, width) {
   const bodyGame = document.querySelector('.game-progress');
@@ -76,8 +78,8 @@ function optionAnswer(event, wordRus, wordEn, optionSound) {
     getWordRus.classList.add('line-through');
   }
   gameBtn.innerText = 'Далее';
-  progressHeight += 5;
-  progressWidth += 5;
+  progressHeight += progressStep;
+  progressWidth += progressStep;
   progressBar(progressHeight, progressWidth);
 }
 
@@ -138,8 +140,8 @@ function optionAnswerKeyPress(wordRus, wordEn, optionSound, wordText) {
     wordText.parentNode.classList.add('line-through');
   }
   gameBtn.innerText = 'Далее';
-  progressHeight += 5;
-  progressWidth += 5;
+  progressHeight += progressStep;
+  progressWidth += progressStep;
   progressBar(progressHeight, progressWidth);
 }
 
