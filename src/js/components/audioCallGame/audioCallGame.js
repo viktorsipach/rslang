@@ -1,4 +1,5 @@
 import renderStartPage from './renderStartPage';
+import StatisticsAPI from '../../API/statisticsAPI';
 import { renderDropdown, renderGamePage } from './renderGamePage';
 import { getRoundData } from '../../API/dataAPI';
 import { getPartSpeech } from './partOfSpeech';
@@ -194,6 +195,9 @@ function startGame() {
     const numberRoundEnd = 30;
     const gameBtn = document.querySelector('.game .game__btn.button');
     gameBtn.innerText = 'Статистика';
+    const result = `${arrTrueAnswer.length/objectGameWords.length * 100}%`;
+    const nameGame = 'audiocall';
+    StatisticsAPI.miniGameStat(nameGame, result);
     statisticsWords(arrTrueAnswer, arrFalseAnswer);
     document.querySelector('.statistics-audioCall').classList.remove('modal-audioCall-hidden');
     document.querySelector('.modal__btn_audiocallGame').addEventListener('click', () => {
