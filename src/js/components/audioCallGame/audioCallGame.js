@@ -6,11 +6,26 @@ import { statisticsWords } from './statistics';
 
 const arrTrueAnswer = [];
 const arrFalseAnswer = [];
+const progressStep = 5;
 let option = true;
 let arrAllWordsOption = [];
 let numberWordCount = 0;
 let levelGame = 1;
 let roundGame = 1;
+let progressHeight = 0;
+let progressWidth = 0;
+
+
+function progressBar(height, width) {
+  const bodyGame = document.querySelector('.game-progress');
+  const progressBarTop = document.querySelector('.game__progress');
+
+  bodyGame.style.transition = '0.6s';
+  bodyGame.style.height = `${height}%`;
+
+  progressBarTop.style.transition = '0.6s';
+  progressBarTop.style.width = `${width}%`;
+}
 
 function clearAnswers() {
   arrTrueAnswer.length = 0;
@@ -63,6 +78,9 @@ function optionAnswer(event, wordRus, wordEn, optionSound) {
     getWordRus.classList.add('line-through');
   }
   gameBtn.innerText = 'Далее';
+  progressHeight += progressStep;
+  progressWidth += progressStep;
+  progressBar(progressHeight, progressWidth);
 }
 
 function getWords(newArrObjectWords) {
@@ -122,6 +140,9 @@ function optionAnswerKeyPress(wordRus, wordEn, optionSound, wordText) {
     wordText.parentNode.classList.add('line-through');
   }
   gameBtn.innerText = 'Далее';
+  progressHeight += progressStep;
+  progressWidth += progressStep;
+  progressBar(progressHeight, progressWidth);
 }
 
 function keyPressCheck(event) {
@@ -177,7 +198,9 @@ function startGame() {
     document.querySelector('.statistics-audioCall').classList.remove('modal-audioCall-hidden');
     document.querySelector('.modal__btn_audiocallGame').addEventListener('click', () => {
       clearAnswers();
-      numberWordCount = 0;  
+      numberWordCount = 0;
+      progressHeight = 0;
+      progressWidth = 0;
       if (Number(roundGame) === numberRoundEnd) {
         levelGame += 1;
         roundGame = 0;
@@ -213,6 +236,8 @@ function startGame() {
     const pageContent = document.querySelector('.page');
     pageContent.append(renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wordRus));
     pageContent.append(renderDropdown());
+
+    progressBar(progressHeight, progressWidth);
     
     document.getElementById('lvl-select').value = levelGame;
     document.getElementById('rnd-select').value = roundGame;
@@ -319,6 +344,8 @@ export default function initAudioCallGame() {
   const pageContent = document.querySelector('.page');
   pageContent.append(renderStartPage());
   numberWordCount = 0;
+  progressHeight = 0;
+  progressWidth = 0;
   getDataAPI();
   clearAnswers();
   document.querySelector('.game__start').addEventListener('click', startGame);

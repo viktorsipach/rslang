@@ -24,7 +24,7 @@ export default function renderStartPage() {
     startGameContainer.append(startGameButton);
 
     const startGamePage = document.createElement('div');
-    startGamePage.className = 'game game_audioCall';
+    startGamePage.className = 'game game_audioCall_start';
     startGamePage.append(closeGame);
     startGamePage.append(startGameContainer);
 
