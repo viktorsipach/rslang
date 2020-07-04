@@ -66,10 +66,12 @@ export default function initPuzzleGame() {
           if (game.currentSentenceNumber < game.wordsPerRound) {
             game.startSentence();
           } else {
+            game.sendLongTermStatistics();
             game.checkGameProgress();
           }
         }
       } else if (event.target.classList.contains('results') && event.target.classList.contains('puzzleGame__button')) {
+        game.sendLongTermStatistics();
         game.showRoundStatistic();
         
         document.querySelector('.puzzle__statistic').addEventListener('click', (eventStatisticPage) => {
