@@ -31,6 +31,11 @@ export default class TrainingGame {
   }
 
   renderCardData() {
+    const DIFFICULTY_BUTTONS = document.querySelector('.difficulty__buttons');
+    const GAME_BUTTONS = document.querySelector('.game__buttons.training-game');
+    DIFFICULTY_BUTTONS.classList.add('hidden');
+    GAME_BUTTONS.classList.remove('hidden');
+
     const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
     const IDONTKNOWBUTTON_SELECTOR = '.trainingGame__button.dontKnow';
     disableButton(NEXTBUTTON_SELECTOR);
@@ -190,7 +195,9 @@ export default class TrainingGame {
         exampleSound.src = `${SOUNDS_SRC}${this.cardData.audioExample}`;
         exampleSound.play();
         exampleSound.onended = () => {
-          this.renderCardData();
+          if (this.isWordWithoutTraining) {
+            this.renderCardData();
+          }
         }
       }
     };
@@ -289,15 +296,19 @@ export default class TrainingGame {
   }
 
   correctAnswer() {
+    const DIFFICULTY_BUTTONS = document.querySelector('.difficulty__buttons');
+    const GAME_BUTTONS = document.querySelector('.game__buttons.training-game');
     this.isAnswerCorrect = true;
     this.progress += 100/this.amountsOfCards;
     this.showProgress();
+    DIFFICULTY_BUTTONS.classList.remove('hidden');
+    GAME_BUTTONS.classList.add('hidden');
     if (this.autoPronunciation) {     
       this.showAnswer();
       this.playCardSounds();  
     } else {
       this.showAnswer();
-      setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
+      // setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
     }
   }
 
