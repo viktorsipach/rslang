@@ -23,6 +23,7 @@ export default async function initTrainingGame() {
   document.querySelector('.difficulty__buttons').addEventListener('click', (event) => {
     if (event.target.classList.contains('again')) {
       console.log('again');
+      trainingGame.addCardToRepeatList();
       trainingGame.renderCardData();
     } else if (event.target.classList.contains('easy')) {
       console.log('easy')
@@ -37,12 +38,14 @@ export default async function initTrainingGame() {
   });
 
   document.addEventListener('keypress', (event) => {
-    if (event.code === 'Enter' && document.querySelector('.game__training')) {
-      trainingGame.checkInput(trainingGame.data);
-    }
-    else {
-      trainingGame.checkInputLength();
-      trainingGame.hideAnswer();
+    if(!document.querySelector('.game__buttons.training-game').classList.contains('hidden')) {
+      if (event.code === 'Enter' && document.querySelector('.game__training')) {
+        trainingGame.checkInput(trainingGame.data);
+      }
+      else {
+        trainingGame.checkInputLength();
+        trainingGame.hideAnswer();
+      }
     }
   });
 
