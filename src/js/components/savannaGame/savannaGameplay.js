@@ -1,5 +1,6 @@
 import { changeLevel, generateTemplateMain } from './savannaGetRoundData';
 import Image from '../../../assets/img/savanna/savanna-main1.jpg';
+import StatisticsAPI from '../../API/statisticsAPI';
 
 let count = 0;
 let countCorrect = 0;
@@ -149,6 +150,10 @@ const savannaShortStatistics = () => {
     hiddenMainPage.classList.add('savanna-hidden');
     error.innerHTML = numberStartWords - `${countCorrect}`
     correct.innerHTML = `${countCorrect}`;
+
+    const result = `${countCorrect / numberStartWords * 100}%`;
+    const nameGame = 'savanna';
+    StatisticsAPI.miniGameStat(nameGame, result);
 }
 
 const savannaGameplayMouse = (words) => {
