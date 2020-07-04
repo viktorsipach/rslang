@@ -2,6 +2,7 @@ import { getRoundsAmountInLevel, getSCustomRoundData } from '../../API/dataAPI';
 import { checkActiveHints, createStatisticSentence, mixSentenceWords, getPaintingInfo, getPaintingImageSrc } from './utils';
 import Sentence from './Sentence';
 import renderStatisticsModal from './renderStatistics';
+import StatisticsAPI from '../../API/statisticsAPI';
 
 export default class Game {
   constructor({ level, round }) {
@@ -12,6 +13,7 @@ export default class Game {
     this.isFinished = false;
     this.audio = new Audio();
     this.levelsAmount = 6;
+    this.gameName = 'puzzle';
   }
 
   async startNewLevelRound() {
@@ -196,6 +198,7 @@ export default class Game {
       document.querySelector('.data-container').textContent = pictureInfo;
       document.querySelector('.main__data').classList.add('paintingInfo');
       document.querySelector('.main__hints').classList.add('hidden');
+      this.getRoundResult();
     }
   }
 
@@ -259,25 +262,21 @@ export default class Game {
   renderSentencesStatistics() {
     const iDontKnowFragment = document.createDocumentFragment();
     const iKnowFragment = document.createDocumentFragment();
-    let iKnowSentencesCount = 0;
-    let iDontKnowSentencesCount = 0;
 
     this.dataSentencesObjects.forEach((element) => {
       if (element.status === 'iDontKnow') {
-        iDontKnowSentencesCount += 1;
         const sentence = createStatisticSentence(element);
         iDontKnowFragment.append(sentence);
       }
       if (element.status === 'iKnow') {
-        iKnowSentencesCount += 1;
         const sentence = createStatisticSentence(element);
         iKnowFragment.append(sentence);
       }
     });
     document.querySelector('.iDontKnowSentences').append(iDontKnowFragment);
     document.querySelector('.iKnowSentences').append(iKnowFragment);
-    document.querySelector('.iKnowSentences-count').textContent = iKnowSentencesCount;
-    document.querySelector('.iDontKnowSentences-count').textContent = iDontKnowSentencesCount;
+    document.querySelector('.iKnowSentences-count').textContent = this.iKnowSentencesCount;
+    document.querySelector('.iDontKnowSentences-count').textContent = this.iDontKnowSentencesCount;
   }
 
   showRoundStatistic() {
@@ -306,5 +305,23 @@ export default class Game {
       HINTS_SENTENCE.textContent = 'ПОЗДРАВЛЯЕМ!! Все уровни пройдены!';
       this.isFinished = true;
     }
+  }
+
+  getRoundResult() {
+    this.iKnowSentencesCount = 0;
+    this.iDontKnowSentencesCount = 0;
+    this.dataSentencesObjects.forEach((element) => {
+      if (element.status === 'iDontKnow') {
+        this.iDontKnowSentencesCount += 1;
+      }
+      if (element.status === 'iKnow') {
+        this.iKnowSentencesCount += 1;
+      }
+    });
+  }
+
+  sendLongTermStatistics() {
+    const result = `${this.iKnowSentencesCount/this.wordsPerRound*100} %`;
+    StatisticsAPI.miniGameStat(this.gameName, result);
   }
 }
