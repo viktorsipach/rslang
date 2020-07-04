@@ -1,7 +1,9 @@
 import renderSavannaStartPage from './renderSavannaStartPage';
 import Image from '../../../assets/img/savanna/savanna-main1.jpg';
-import { savannaRound, generateHeader, changeLevelAndRound } from './savannaGetRoundData';
-// import { savannaGameplayKeyboard } from './savannaGameplay';
+import { level, round, savannaRound, generateHeader, changeLevelAndRound } from './savannaGetRoundData';
+import { preloader } from './savannaGameplay';
+
+
 
 const initSavannaGame = () => {
     const page = document.querySelector('.page');
@@ -21,12 +23,11 @@ const initSavannaGame = () => {
     const start = document.querySelector('.button__savanna');
     start.addEventListener('click', () => {
         savanna.style.cssText = `background: linear-gradient(180deg, rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url(${Image}) center no-repeat; background-size: cover;`;
-        savanna.innerHTML = '';
-        const level = 1;
-        const round = 1;
+        savanna.innerHTML = '';        
         generateHeader();
         savannaRound(0, level, round);
         changeLevelAndRound();
+        preloader();
     })
     
 }

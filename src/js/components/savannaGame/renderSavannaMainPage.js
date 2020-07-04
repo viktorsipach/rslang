@@ -13,20 +13,22 @@ class RenderSavannaMainPage  {
         savannaMain.innerHTML = `
         <div class="savanna__header">
             <div class="savanna__hints">
-                <div class="select select__level">
-                    <select id="selectLevel">
-                    
-                    </select>
+                <div class="menu__level">
+                    <span class="level__title">уровень</span>
+                    <div class="select select__level">
+                        <select id="selectLevel">
+                        
+                        </select>
+                    </div>
                 </div>
-                <div class="select select__round">
-                    <select id="selectRound">
-                    
-                    </select>
-                </div>
-            </div>
-            <div class="savanna__level">
-                <p>уровень 1</p>
-                <p>раунд 1</p>
+                <div class="menu__level">
+                    <span class="round__title">раунд</span>
+                    <div class="select select__round">
+                        <select id="selectRound">
+                        
+                        </select>
+                    </div>
+                 </div>
             </div>
             <div class="savanna__health"></div>
             <div class="savanna__health_disabled">
