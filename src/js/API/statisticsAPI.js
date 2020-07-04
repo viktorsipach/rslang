@@ -64,7 +64,10 @@ class StatisticsApi {
     statisticsDataMiniGame(nameGame, result) {
         const date = new Date();
         const key = `${date.toLocaleDateString()}-${date.toLocaleTimeString()}`;
-        const maxValue = 5;
+        let maxValue = 5;
+
+        if (nameGame === 'training') maxValue = 10;
+
         if (!this.statistics.optional[nameGame]) {
             this.statistics.optional[nameGame] = {'#' : '#'};
         }
@@ -74,6 +77,22 @@ class StatisticsApi {
         }
         arr.push([key, result]);
         this.statistics.optional[nameGame] = Object.fromEntries(arr);
+    }
+
+    statisticsDataTrainingGame(result) {
+        const nameGame = 'training';
+        this.statisticsDataMiniGame(nameGame, result);
+
+        this.statistics.learnedWords += result;
+    }
+
+    async trainingStat(result) {
+        this.initIdToken();
+        await this.getStatistics();
+        this.statisticsDataTrainingGame(result);
+        await this.putStatistics(this.statistics);
+        
+        console.log(await this.getStatistics());  /* можно убрать если мешает */
     }
 
     async miniGameStat(nameGame, result) {
