@@ -1,6 +1,7 @@
 import renderStatistics from './renderStatistics';
 import { disableButton, enableButton } from './utils';
 import getTrainingGameData from './trainingGameData';
+import { updateUserWord, getUserWord } from '../../API/userWordsAPI';
 
 export default class TrainingGame {
   constructor({ settings }) {
@@ -13,6 +14,9 @@ export default class TrainingGame {
     this.repeatData = [];
     this.isRepeatData = false;
     this.amountsOfRepeatCards = 0;
+    this.wordStatus = 'repeat';
+    this.wordDifficulty = 'easy';
+    this.date = new Date();
   }
 
   async getData() {
@@ -27,7 +31,6 @@ export default class TrainingGame {
     this.seriesOfCorrectAnswers = 0;
     this.longestSeriesOfCorrectAnswers = 0;
     this.progress = 0;
-
     this.cardData = this.data[this.currentCardNumber];
     this.lettersCount = this.data[this.currentCardNumber].word.length;
     this.renderCardData();
@@ -36,7 +39,6 @@ export default class TrainingGame {
   async continue() {
     await this.getData();
     this.start();
-
   }
 
   renderCardData() {
@@ -44,7 +46,6 @@ export default class TrainingGame {
     const GAME_BUTTONS = document.querySelector('.game__buttons.training-game');
     DIFFICULTY_BUTTONS.classList.add('hidden');
     GAME_BUTTONS.classList.remove('hidden');
-
     const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
     const IDONTKNOWBUTTON_SELECTOR = '.trainingGame__button.dontKnow';
     disableButton(NEXTBUTTON_SELECTOR);
@@ -154,7 +155,7 @@ export default class TrainingGame {
             }
           }
         }
-      };
+      }
     } else if (!this.autoPronunciation) {
       if (this.isWordWithoutTraining && !this.isRepeatData) {
         setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
@@ -162,7 +163,6 @@ export default class TrainingGame {
         setTimeout(function fn(){ this.playRepeatWords(); }.bind(this), this.timeOut);
       }
     }
-    
   }
 
   showAnswer () {
@@ -198,7 +198,6 @@ export default class TrainingGame {
         this.showProgress();
       } 
       this.playCardSounds();
-      
     } else if (this.isAnswerCorrect) {
       console.log('correct answer');
       this.currentCardNumber += 1
@@ -214,7 +213,6 @@ export default class TrainingGame {
         this.showProgress();
       } 
       this.playCardSounds();
-
     } else if (!this.isAnswerCorrect) {
       console.log('INcorrect answer');
       disableButton(NEXTBUTTON_SELECTOR);
@@ -222,7 +220,6 @@ export default class TrainingGame {
       INPUT.focus();
     }  
   }
-
 
   showWordWithoutTraining() {
     this.isAnswerCorrect = false;
@@ -233,7 +230,6 @@ export default class TrainingGame {
 
   playRepeatWords() {
     if (this.currentCardNumber < this.amountsOfRepeatCards) {
-    console.log(this.currentCardNumber, this.amountsOfRepeatCards);
     this.cardData = this.repeatData[this.currentCardNumber];
     console.log(this.cardData);
 
@@ -278,12 +274,64 @@ export default class TrainingGame {
     });
   }
 
+  async updateWord() {
+    let difficultyCoef;
+    switch (this.wordDifficulty) {
+      case 'easy':
+        difficultyCoef = 3;
+        break;
+      case 'normal':
+        difficultyCoef = 2;
+        break;
+      case 'hard':
+        difficultyCoef = 1;
+        break;
+      default:
+        break;
+    }
+
+    const currentWord = this.data[this.currentCardNumber - 1];
+    const idProperty = '_id';
+    const userWord = await getUserWord({ wordId: currentWord[`${idProperty}`] });
+
+    let {repeatCount} = userWord.optional;
+    let {daysLeftToRepeat} = userWord.optional;
+    let {errorsCount} = userWord.optional;
+    
+    repeatCount += 1;
+    daysLeftToRepeat = difficultyCoef * repeatCount;
+
+    if (this.difficulty === 'hard') {
+      errorsCount +=1;
+    }
+
+    if (this.wordStatus !== 'delete' && this.wordStatus !== 'tricky') {
+      this.wordStatus = 'repeat';
+    }
+  
+    updateUserWord({
+      wordId: currentWord[`${idProperty}`],
+      word: {
+        'difficulty': this.wordDifficulty,
+        'optional': {
+          status: this.wordStatus,
+          lastRepeatDate: this.date,
+          difficultyCoef,
+          repeatCount,
+          daysLeftToRepeat,
+          errorsCount,
+        }
+      }
+    })
+    
+  }
+
+
   showProgress() {
     document.querySelector('.progress__value').textContent = `${this.currentCardNumber} / ${this.amountsOfCards}`;
     document.querySelector('.progress__line').style.width = `${this.progress}%`;
   }
 
-  
   addCardToRepeatList() {
     this.repeatData.push(this.data[this.currentCardNumber - 1]);
   }
@@ -400,8 +448,4 @@ export default class TrainingGame {
     INPUT.setAttribute('placeholder', this.data[this.currentCardNumber].word);
     INPUT.focus();
   }
-
-
-
-
 }   

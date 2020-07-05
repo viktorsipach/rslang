@@ -35,6 +35,7 @@ async function updateUserWord({ wordId, word }) {
       body: JSON.stringify(word)
     });
     const content = await rawResponse.json();
+    console.log(content);
     return content;
   } catch (error) {
     return error;

@@ -17,25 +17,33 @@ export default async function initTrainingGame() {
       trainingGame.checkInput(trainingGame.data);
     } else if (event.target.classList.contains('dontKnow')) {
       trainingGame.showWordWithoutTraining();
+      trainingGame.wordDifficulty = 'hard';
+      trainingGame.updateWord();
     }
   });
 
   document.querySelector('.difficulty__buttons').addEventListener('click', (event) => {
     if (event.target.classList.contains('again')) {
-      console.log('again');
       trainingGame.addCardToRepeatList();
-      trainingGame.renderCardData();
+      trainingGame.wordDifficulty = 'hard';
     } else if (event.target.classList.contains('easy')) {
-      console.log('easy')
-      trainingGame.renderCardData();
+      trainingGame.wordDifficulty = 'easy';
     } else if (event.target.classList.contains('normal')) {
-      console.log('normal')
-      trainingGame.renderCardData();
+      trainingGame.wordDifficulty = 'normal';
     } else if (event.target.classList.contains('hard')) {
-      console.log('hard')
-      trainingGame.renderCardData();
+      trainingGame.wordDifficulty = 'hard';
     }
+    trainingGame.updateWord();
+    trainingGame.renderCardData();
   });
+
+  document.querySelector('.dictionary__buttons').addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete')) {
+      trainingGame.wordStatus = 'delete';
+    } else if (event.target.classList.contains('tricky')) {
+      trainingGame.wordStatus = 'tricky';
+    }
+  })
 
   document.addEventListener('keypress', (event) => {
     if(!document.querySelector('.game__buttons.training-game').classList.contains('hidden')) {

@@ -7,7 +7,7 @@ const FILTER_FOR_REPEAT_WORDS = encodeURIComponent('{"$and":[{"userWord.optional
 const FILTER_FOR_NEW_WORDS = encodeURIComponent('{"userWord.optional.status":"new"}');
 
 async function createTrainingDataForDay(settings, amountOfCards) {
-  const words = await getRoundData(settings.level, settings.round, amountOfCards);
+  const words = await getRoundData(settings.level, 8, amountOfCards);
   console.log(words);
   
   // const maxWordsInSentence = 50;
@@ -26,7 +26,9 @@ async function createTrainingDataForDay(settings, amountOfCards) {
         'optional': {
           status: 'new',
           lastRepeatDate: currentDate,
-          daysLeftToRepeat: 2,
+          difficultyCoef: 0,
+          repeatCount: 0,
+          daysLeftToRepeat: 0,
           errorsCount: 0,
         }
       }

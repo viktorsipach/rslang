@@ -125,7 +125,7 @@ function renderDictionaryButtons() {
   const dictionaryButtons = document.createElement('div');
   dictionaryButtons.className = 'buttons dictionary__buttons';
   dictionaryButtons.append(renderButton('dictionary__button delete', 'Удалить слово'));
-  dictionaryButtons.append(renderButton('dictionary__button hard', 'Сложное слово'));
+  dictionaryButtons.append(renderButton('dictionary__button tricky', 'Сложное слово'));
   return dictionaryButtons;
 }
 
