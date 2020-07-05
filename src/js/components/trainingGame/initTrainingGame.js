@@ -1,40 +1,13 @@
 import renderTrainingGamePage from './renderTrainingGamePage';
 import TrainingGame from './TrainingGame';
 import { putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
+import initialSettings from './initialSetting';
 
 export default async function initTrainingGame() {
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderTrainingGamePage());
-  const currentDate = new Date();
-
-  const initialSettings = {
-    training: {
-      level: 1,
-      round: 1,
-      newWordsPerDay: 3,
-      maxCardsPerDay: 3,
-      date: currentDate,
-      cardSettings: {
-        showTranslation: true,
-        showExplanationSentence: true,
-        showExampleSentence: true,
-        showTranscription: true,
-        showAssociatedPicture: true
-      },
-      autoPronunciation: true,
-      showSentencesTranslation: true,
-      showIDontKnowButton: true,
-      showDeleteButton: true,
-      showHardButton: true,
-      newWordsOnly: true,
-      learnedWordsOnly: true,
-    },
-    puzzle: {
-      level: 1,
-      round: 1,
-    }
-  }
+ 
  
   let settings = await getUserSettings();
   console.log(settings);
