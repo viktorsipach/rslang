@@ -326,7 +326,6 @@ export default class TrainingGame {
     
   }
 
-
   showProgress() {
     document.querySelector('.progress__value').textContent = `${this.currentCardNumber} / ${this.amountsOfCards}`;
     document.querySelector('.progress__line').style.width = `${this.progress}%`;

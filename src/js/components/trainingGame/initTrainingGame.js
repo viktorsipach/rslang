@@ -8,6 +8,7 @@ export default async function initTrainingGame() {
   PAGECONTAINER.append(renderTrainingGamePage());
 
   const settings = getUserSettings();
+
   const trainingGame = new TrainingGame({ settings });
   await trainingGame.getData();
   trainingGame.start();
@@ -28,12 +29,13 @@ export default async function initTrainingGame() {
       trainingGame.wordDifficulty = 'hard';
     } else if (event.target.classList.contains('easy')) {
       trainingGame.wordDifficulty = 'easy';
+      trainingGame.restore();
     } else if (event.target.classList.contains('normal')) {
       trainingGame.wordDifficulty = 'normal';
     } else if (event.target.classList.contains('hard')) {
       trainingGame.wordDifficulty = 'hard';
     }
-    trainingGame.updateWord();
+    //trainingGame.updateWord();
     trainingGame.renderCardData();
   });
 
