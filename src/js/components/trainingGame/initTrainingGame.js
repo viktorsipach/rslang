@@ -1,32 +1,26 @@
 import renderTrainingGamePage from './renderTrainingGamePage';
 import TrainingGame from './TrainingGame';
-import testUserWords from '../../API/testUserWords';
+import { putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
+import initialSettings from './initialSetting';
 
 export default async function initTrainingGame() {
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderTrainingGamePage());
-
-  const settings = {
-    newWordsPerDay: 20,
-    maxCardsPerDay: 20,
-    cardSettings: {
-      showTranslation: true,
-      showExplanationSentence: true,
-      showExampleSentence: true,
-      showTranscription: true,
-      showAssociatedPicture: true
-    },
-    autoPronunciation: true,
-    showSentencesTranslation: true,
-    showIDontKnowButton: true,
-    showDeleteButton: true,
-    showHardButton: true,
-    newWordsOnly: true,
-    learnedWordsOnly: true,
-  }
-
-  // testUserWords();
+ 
+ 
+  let settings = await getUserSettings();
+  console.log(settings);
+  if (settings === undefined) {
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': 10,
+        'optional': initialSettings
+      }
+    });
+    settings = await getUserSettings();
+    console.log(settings);
+  } 
 
   const trainingGame = new TrainingGame(settings);
   trainingGame.start();
