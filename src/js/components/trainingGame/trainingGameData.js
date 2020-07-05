@@ -41,12 +41,44 @@ async function createTrainingDataForDay(settings, amountOfCards) {
   return TRAINING_WORDS;
 }
 
+async function decreaseAllUserWordLeftDaysAmount(allUserWords) {
+  allUserWords.forEach(async function decreaseWordDaysToRepeat(word) {
+    const userWord = await getUserWord({ wordId: word.wordId });
+    const {difficulty} = userWord;
+    const {lastRepeatDate} = userWord.optional;
+    const {difficultyCoef} = userWord.optional;
+    const {repeatCount} = userWord.optional;
+    let {daysLeftToRepeat} = userWord.optional;
+    if (daysLeftToRepeat > 0) {
+      daysLeftToRepeat -= 1;
+    }
+    const {errorsCount} = userWord.optional;
+
+    updateUserWord({
+      wordId: word.wordId,
+      word: {
+       'difficulty': difficulty,
+        'optional': {
+          status: 'repeat',
+          lastRepeatDate,
+          difficultyCoef,
+          repeatCount,
+          daysLeftToRepeat,
+          errorsCount,
+        }
+      }
+    })
+  });
+}
 
 export default async function getTrainingGameData() {
   const settings = getUserSettings();
   const allUserWords = await getAllUserWords();
   console.log(allUserWords.length);
   console.log(allUserWords);
+  
+  await decreaseAllUserWordLeftDaysAmount(allUserWords);
+ 
 
   // const gameData = await createTrainingDataForDay(settings, settings.maxCardsPerDay);
   // return gameData;

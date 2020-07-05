@@ -301,12 +301,15 @@ export default class TrainingGame {
     repeatCount += 1;
     daysLeftToRepeat = difficultyCoef * repeatCount;
 
-    if (this.difficulty === 'hard') {
-      errorsCount +=1;
-    }
-
     if (this.wordStatus !== 'delete' && this.wordStatus !== 'tricky') {
       this.wordStatus = 'repeat';
+    }
+
+    if (this.difficulty === 'hard') {
+      errorsCount +=1;
+      if (errorsCount >= 5) {
+        this.wordStatus = 'tricky';
+      }
     }
   
     updateUserWord({
