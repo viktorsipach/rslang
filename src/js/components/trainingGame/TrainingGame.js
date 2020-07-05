@@ -1,16 +1,17 @@
 import { getRoundData, getRoundsAmountInLevel } from '../../API/dataAPI';
 import renderStatistics from './renderStatistics';
 import { disableButton, enableButton } from './utils';
+import { updateLevelRoundDateSettings } from '../../API/userSettingsAPI';
 
 export default class TrainingGame {
   constructor(settings) {
     this.settings = settings;
-    this.newWordsPerDay = this.settings.newWordsPerDay;
-    this.maxCardsPerDay = this.settings.maxCardsPerDay;
-    this.cardSettings = this.settings.cardSettings;
-    this.autoPronunciation = settings.autoPronunciation;
-    this.showDeleteButton = settings.showDeleteButton;
-    this.showHardButton = settings.showHardButton;
+    this.newWordsPerDay = this.settings.optional.training.newWordsPerDay;
+    this.maxCardsPerDay = this.settings.optional.training.maxCardsPerDay;
+    this.cardSettings = this.settings.optional.training.cardSettings;
+    this.autoPronunciation = settings.optional.training.autoPronunciation;
+    this.showDeleteButton = settings.optional.training.showDeleteButton;
+    this.showHardButton = settings.optional.training.showHardButton;
     this.level = 1;
     this.round = 1;
     this.timeOut = 2500;
@@ -19,7 +20,6 @@ export default class TrainingGame {
   }
 
   async start() {
-    console.log(`this.level ${this.level}, this.round ${this.round}`);
     this.roundsAmount = await getRoundsAmountInLevel(this.level, this.maxWordsPerSentence, this.newWordsPerDay) ;
     console.log(`roundsAmount ${this.roundsAmount}`);
     this.data = await this.getData();
@@ -60,6 +60,8 @@ export default class TrainingGame {
       this.renderInput();
       this.showProgress();
     } else {
+      console.log('update level, round');
+      updateLevelRoundDateSettings();
       let isLastWordsInApp = false;
       if (this.level === this.levelsAmount && this.round === this.roundsAmount) {
         isLastWordsInApp = true;
