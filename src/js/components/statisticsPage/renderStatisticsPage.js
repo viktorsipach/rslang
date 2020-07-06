@@ -12,7 +12,8 @@ class Statistics {
             <p>Оценка дневной и долгосрочной статистики обучения</p>
         </div>
         <div class="stat-schedule">
-            <canvas width="500" height="500" id="canvas"></canvas>
+            <canvas id="canvas"></canvas>
+            <div id="pie"></div>
         </div>
         `;
 
@@ -28,7 +29,7 @@ class Statistics {
             <p>Здесь вы можете увидеть результаты последних 5 игр </p>
         </div>
         <div class="stat-schedule">
-            <canvas width="500" height="500" id="canvas"></canvas>
+            <canvas id="canvas"></canvas>
         </div>
         `;
 
