@@ -6,10 +6,10 @@ import testUserSettings from '../../API/testUserSettings';
 
 async function getRandomCardData() {
   const levelMinValue = 1;
-  const levelMaValue = 6;
+  const levelMaxValue = 6;
   const roundMinValue = 1;
   const roundMaxValue = 600;
-  const level = randomIntFromInterval(levelMinValue, levelMaValue);
+  const level = randomIntFromInterval(levelMinValue, levelMaxValue);
   const round = randomIntFromInterval(roundMinValue, roundMaxValue);
   const wordsAmount = 1;
   const data = await getRoundData(level, round, wordsAmount);

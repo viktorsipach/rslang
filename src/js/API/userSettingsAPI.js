@@ -1,10 +1,8 @@
 import { getRoundsAmountInLevel } from './dataAPI';
 
-const token = localStorage.getItem('userToken');
-const userId = localStorage.getItem('userId');
-
 async function putUserSettings({ settings }) {
-  console.log(settings);
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`, {
       method: 'PUT',
@@ -17,6 +15,7 @@ async function putUserSettings({ settings }) {
       body: JSON.stringify(settings)
     });
     const content = await rawResponse.json();
+    console.log(content);
     return content;
   } catch (error) {
     return error;
@@ -24,6 +23,8 @@ async function putUserSettings({ settings }) {
 };
 
 async function getUserSettings() {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`, {
     method: 'GET',
@@ -35,6 +36,7 @@ async function getUserSettings() {
     });
     if (rawResponse.ok) {
       const content = await rawResponse.json();
+      console.log(content);
       return content;
     }
     return undefined;
