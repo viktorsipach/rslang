@@ -13,6 +13,7 @@ import {
     removeStars,
     renderRoundOptions
 } from './dom.speakit';
+import StatisticsAPI from '../../API/statisticsAPI';
 
 
 const getDataCards = (json) => {
@@ -212,6 +213,13 @@ const addClickRestartBtnHandler = () => {
     })
 }
 
+const sendLongTermStatistics = () => {
+    const ALL_WORDS = 10;
+    const resultsCorrect = document.querySelector('.results__item_correct');
+    const result = `${resultsCorrect.childElementCount * ALL_WORDS}%`;
+    StatisticsAPI.miniGameStat('speakit', result);
+}
+
 const addClickNewGameBtnHandler = () => {
     const btnNewGame = document.querySelector('.btn-new-game__speakit');
     const main = document.querySelector('.main__speakit');
@@ -239,6 +247,7 @@ const addClickNewGameBtnHandler = () => {
         }
         main.classList.remove('hidden')
         results.classList.add('hidden')
+        sendLongTermStatistics()
         removeCards()
         removeCardsResults()
         restart()
