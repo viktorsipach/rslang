@@ -3,9 +3,9 @@ import { getRoundData } from '../../API/dataAPI';
 import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
 import { getUserSettings } from '../../API/userSettingsAPI';
 
-
-const FILTER_FOR_REPEAT_WORDS = encodeURIComponent('{"$and":[{"userWord.optional.status":"repeat","userWord.optional.daysLeftToRepeat":0}]}')
 const FILTER_FOR_NEW_WORDS = encodeURIComponent('{"userWord.optional.status":"new"}');
+const FILTER_FOR_REPEAT_WORDS = encodeURIComponent('{"$and":[{"$or":[{"userWord.optional.status":"repeat"},{"userWord.optional.status":"tricky"}],"userWord.optional.daysLeftToRepeat":0}]}');
+
 
 async function createTrainingDataForDay(settings, amountOfCards) {
   const words = await getRoundData(settings.level, settings.round, amountOfCards);
@@ -21,7 +21,7 @@ async function createTrainingDataForDay(settings, amountOfCards) {
       word: {
         'difficulty': 'normal',
         'optional': {
-          status: 'new',
+          status: 'tricky',
           lastRepeatDate: currentDate,
           difficultyCoef: 0,
           repeatCount: 0,
@@ -69,11 +69,9 @@ async function decreaseAllUserWordLeftDaysAmount(allUserWords) {
 }
 
 export default async function getTrainingGameData() {
-
   const allUserWords = await getAllUserWords();
   console.log(allUserWords.length);
   console.log(allUserWords);
-
 
   // allUserWords.forEach((word) => {
   //   deleteUserWord({wordId: word.wordId});
@@ -94,12 +92,9 @@ export default async function getTrainingGameData() {
   if (daysBetweenLastTriningAndToday >= 1 || allUserWords.length === 0) {
     console.log('new day');
     await decreaseAllUserWordLeftDaysAmount(allUserWords);
-
     const gameData = [];
-    console.log(`words need for game = ${trainingSettings.maxCardsPerDay}`);
-    console.log(`new words for game = ${trainingSettings.newWordsPerDay}`);
     const AMOUNT_OF_WORDS_TO_REPEAT = trainingSettings.maxCardsPerDay - trainingSettings.newWordsPerDay;
-    console.log(`wordsTo repeat ${AMOUNT_OF_WORDS_TO_REPEAT}`);
+    console.log(`total Ws = ${trainingSettings.maxCardsPerDay}, new Ws = ${trainingSettings.newWordsPerDay}, repeat Ws${AMOUNT_OF_WORDS_TO_REPEAT}`);
     await createTrainingDataForDay(trainingSettings, trainingSettings.newWordsPerDay);
     const gameDataNew = await getFilteredUserWords(FILTER_FOR_NEW_WORDS, trainingSettings.newWordsPerDay);
     console.log(gameDataNew);

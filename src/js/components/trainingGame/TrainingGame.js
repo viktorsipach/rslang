@@ -1,6 +1,6 @@
 import renderStatistics from './renderStatistics';
 import { disableButton, enableButton } from './utils';
-import getTrainingGameData from './IntervalRepetitiontechnique';
+import getTrainingGameData from './IntervalRepetitionTechnique';
 import { updateUserWord, getUserWord } from '../../API/userWordsAPI';
 import { updateLevelRoundDateSettings } from '../../API/userSettingsAPI';
 
@@ -13,8 +13,6 @@ export default class TrainingGame {
     this.autoPronunciation = settings.optional.training.autoPronunciation;
     this.showDeleteButton = settings.optional.training.showDeleteButton;
     this.showHardButton = settings.optional.training.showHardButton;
-    // this.level = 1;
-    // this.round = 1;
     this.timeOut = 2500;
     this.repeatData = [];
     this.isRepeatData = false;
