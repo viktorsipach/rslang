@@ -1,6 +1,6 @@
 import renderStatistics from './renderStatistics';
 import { disableButton, enableButton } from './utils';
-import getTrainingGameData from './trainingGameData';
+import getTrainingGameData from './IntervalRepetitiontechnique';
 import { updateUserWord, getUserWord } from '../../API/userWordsAPI';
 import { updateLevelRoundDateSettings } from '../../API/userSettingsAPI';
 
@@ -21,13 +21,13 @@ export default class TrainingGame {
     this.amountsOfRepeatCards = 0;
     this.wordStatus = 'repeat';
     this.wordDifficulty = 'easy';
-    this.date = new Date();
+    this.date = (new Date()).toLocaleString();
   }
 
   async getData() {
     this.data = await getTrainingGameData();
     console.log(this.data);
-    this.amountsOfCards = this.data.length;
+    // this.amountsOfCards = this.data.length;
   }
 
   async start() {
@@ -262,7 +262,7 @@ export default class TrainingGame {
     const statisticsData = {
       amountOfWords: this.amountsOfCards,
       amountOfCorrectAnswers: this.correctAnswersAmount,
-      amountOfNewWords: this.settings.newWordsPerDay, // change
+      amountOfNewWords: this.settings.optional.training.newWordsPerDay, // change
       longestSeriesOfCorrectAnswers: this.longestSeriesOfCorrectAnswers
     }
     document.querySelector('.page').append(renderStatistics(isLastWordsInApp, statisticsData)); 
@@ -282,6 +282,7 @@ export default class TrainingGame {
   }
 
   async updateWord() {
+    console.log('update user word');
     let difficultyCoef;
     switch (this.wordDifficulty) {
       case 'easy':

@@ -1,11 +1,11 @@
-const currentDate = new Date();
+const currentDate = (new Date()).toLocaleString();
 
 const initialSettings = {
   training: {
     level: 1,
     round: 1,
     newWordsPerDay: 3,
-    maxCardsPerDay: 3,
+    maxCardsPerDay: 5,
     date: currentDate,
     cardSettings: {
       showTranslation: true,

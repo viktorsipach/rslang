@@ -22,8 +22,14 @@ export default async function initTrainingGame() {
   } 
 
   const trainingGame = new TrainingGame({ settings });
-  await trainingGame.getData();
-  trainingGame.start();
+  const data = await trainingGame.getData();
+  if (data === undefined) {
+    console.log('no words to learn today!')
+  } else {
+    this.amountsOfCards = this.data.length;
+    trainingGame.start();
+  }
+  
 
   document.querySelector('.game__buttons.training-game').addEventListener('click', (event) => {
     if (event.target.classList.contains('next')) {

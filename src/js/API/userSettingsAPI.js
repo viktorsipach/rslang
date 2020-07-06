@@ -17,6 +17,7 @@ async function putUserSettings({ settings }) {
       body: JSON.stringify(settings)
     });
     const content = await rawResponse.json();
+    console.log(content);
     return content;
   } catch (error) {
     return error;
