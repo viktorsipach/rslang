@@ -1,4 +1,5 @@
 import renderStartPage from './renderStartPage';
+import StatisticsAPI from '../../API/statisticsAPI';
 import { renderDropdown, renderGamePage } from './renderGamePage';
 import { getRoundData } from '../../API/dataAPI';
 import { getPartSpeech } from './partOfSpeech';
@@ -6,11 +7,26 @@ import { statisticsWords } from './statistics';
 
 const arrTrueAnswer = [];
 const arrFalseAnswer = [];
+const progressStep = 5;
 let option = true;
 let arrAllWordsOption = [];
 let numberWordCount = 0;
 let levelGame = 1;
 let roundGame = 1;
+let progressHeight = 0;
+let progressWidth = 0;
+
+
+function progressBar(height, width) {
+  const bodyGame = document.querySelector('.game-progress');
+  const progressBarTop = document.querySelector('.game__progress');
+
+  bodyGame.style.transition = '0.6s';
+  bodyGame.style.height = `${height}%`;
+
+  progressBarTop.style.transition = '0.6s';
+  progressBarTop.style.width = `${width}%`;
+}
 
 function clearAnswers() {
   arrTrueAnswer.length = 0;
@@ -63,6 +79,9 @@ function optionAnswer(event, wordRus, wordEn, optionSound) {
     getWordRus.classList.add('line-through');
   }
   gameBtn.innerText = 'Далее';
+  progressHeight += progressStep;
+  progressWidth += progressStep;
+  progressBar(progressHeight, progressWidth);
 }
 
 function getWords(newArrObjectWords) {
@@ -78,6 +97,96 @@ function shuffleWords (array) {
   array.sort(() => Math.random() - 0.5);
 }
 
+function optionAnswerKeyPress(wordRus, wordEn, optionSound, wordText) {
+  const gameBtn = document.querySelector('.game .game__btn.button');
+  const allWords = document.querySelectorAll('.words__item');
+  const gameActive = document.querySelector('.game');
+
+  option = optionSound;
+
+  gameActive.classList.add('active');
+
+  if (wordText.outerText === wordRus) {
+    arrTrueAnswer.push(wordEn);
+    
+    const audioElement = new Audio('../../../assets/audio/correct.mp3');
+
+    if (option) {
+      audioElement.play();
+    }
+    
+    allWords.forEach(e => {
+      e.classList.remove('true');
+      e.classList.add('false');
+      e.style.transition = '0.2s';
+    });
+    wordText.parentNode.classList.remove('false');
+    wordText.parentNode.classList.add('true');
+  } else {
+    arrFalseAnswer.push(wordEn);
+
+    const audioElement = new Audio('../../../assets/audio/error.mp3');
+
+    if (option) {
+      audioElement.play();
+    }
+
+    allWords.forEach(e => {
+      e.classList.add('false');
+      e.style.transition = '0.2s';
+      if (wordRus === e.lastElementChild.outerText) {
+        e.classList.add('true');
+      }
+    });
+    wordText.parentNode.classList.add('line-through');
+  }
+  gameBtn.innerText = 'Далее';
+  progressHeight += progressStep;
+  progressWidth += progressStep;
+  progressBar(progressHeight, progressWidth);
+}
+
+function keyPressCheck(event) {
+  const wordEn = document.querySelector('.game__word').outerText;
+  const wordRus = document.querySelector('.game__word_rus').outerText;
+  const gameNumber = document.querySelectorAll('.words__item');
+  const keyPress = event.key;
+  const soundImg = document.querySelector('.game__iconSound');
+  const gameBtn = document.querySelector('.game .game__btn.button');
+
+  if (option) {
+    soundImg.classList.remove('active');
+  } else {
+    soundImg.classList.add('active');
+  }
+
+  if (keyPress === 'Enter' && gameBtn.outerText === 'ДАЛЕЕ') {
+    startGame();
+  } else {
+    gameNumber.forEach(number => {
+      if (number.firstChild.outerText === keyPress) {
+        numberWordCount += 1;
+        optionAnswerKeyPress(wordRus, wordEn, option, number.lastElementChild);
+      } else if (keyPress === 'Enter' && gameBtn.outerText === 'НЕ ЗНАЮ') {
+        optionAnswerKeyPress(wordRus, wordEn, option, gameBtn);
+        numberWordCount += 1;
+      }
+    });
+  }
+}
+
+function pressKeyBoard() {
+  document.addEventListener('keydown', keyPressCheck);
+}
+
+function removeListenerClose() {
+  const close = document.querySelector('.close-btn');
+  close.addEventListener('click', () => {
+    document.removeEventListener('keydown', keyPressCheck);
+  });
+}
+
+
 function startGame() {
   const newArrObjectWords = arrAllWordsOption;
   const objectGameWords = getWords(newArrObjectWords);
@@ -86,11 +195,16 @@ function startGame() {
     const numberRoundEnd = 30;
     const gameBtn = document.querySelector('.game .game__btn.button');
     gameBtn.innerText = 'Статистика';
+    const result = `${arrTrueAnswer.length/objectGameWords.length * 100}%`;
+    const nameGame = 'audiocall';
+    StatisticsAPI.miniGameStat(nameGame, result);
     statisticsWords(arrTrueAnswer, arrFalseAnswer);
     document.querySelector('.statistics-audioCall').classList.remove('modal-audioCall-hidden');
     document.querySelector('.modal__btn_audiocallGame').addEventListener('click', () => {
       clearAnswers();
-      numberWordCount = 0;  
+      numberWordCount = 0;
+      progressHeight = 0;
+      progressWidth = 0;
       if (Number(roundGame) === numberRoundEnd) {
         levelGame += 1;
         roundGame = 0;
@@ -124,8 +238,10 @@ function startGame() {
     document.querySelector('.game').remove();
   
     const pageContent = document.querySelector('.page');
-    pageContent.append(renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn));
+    pageContent.append(renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wordRus));
     pageContent.append(renderDropdown());
+
+    progressBar(progressHeight, progressWidth);
     
     document.getElementById('lvl-select').value = levelGame;
     document.getElementById('rnd-select').value = roundGame;
@@ -168,6 +284,8 @@ function startGame() {
     });
   
     getLevelAndRound();
+    pressKeyBoard();
+    removeListenerClose();
   }
 }
 
@@ -230,6 +348,8 @@ export default function initAudioCallGame() {
   const pageContent = document.querySelector('.page');
   pageContent.append(renderStartPage());
   numberWordCount = 0;
+  progressHeight = 0;
+  progressWidth = 0;
   getDataAPI();
   clearAnswers();
   document.querySelector('.game__start').addEventListener('click', startGame);

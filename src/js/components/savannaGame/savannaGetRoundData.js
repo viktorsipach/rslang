@@ -1,11 +1,16 @@
 import { getRoundData } from '../../API/dataAPI';
+import Image from '../../../assets/img/savanna/savanna-main1.jpg';
 import RenderSavannaMainPage from './renderSavannaMainPage';
-import { countHealth, fallWord, savannaHealth, savannaGameplayMouse } from './savannaGameplay';
+import { startColorGreen, startColorBlue, startColorRed, countHealth, fallWord, savannaHealth, newStart, savannaGameplayMouse, savannaGameplayKeyboard, preloader } from './savannaGameplay';
 
-async function savannaRoundDataAPI() {
-  const level = 1;
-  const round = 1;
-  const wordsPerRound = 10;
+const maxlevels = 6;
+const maxRoundsPerLevel = 30;
+let changeLevel = false;
+let level = 1;
+let round = 1;
+
+async function savannaRoundDataAPI(level, round) {
+  const wordsPerRound = 20;
   const data = await getRoundData(level, round, wordsPerRound);
   return data;
 }
@@ -29,20 +34,41 @@ const getRandomTranslateAnswer = (data, ind) => {
   return randomAnswer;
 }
 
-async function savannaRound(index) {
-    const data = await savannaRoundDataAPI();
-    const savanna = document.querySelector('.savanna');
+const generateHeader = () => {
+  const templateHeader = new RenderSavannaMainPage();
+  const savanna = document.querySelector('.savanna');
+  savanna.innerHTML = '';
+  savanna.append(templateHeader.renderHeader());
 
-    let resultTranslateAnswer = getRandomTranslateAnswer(data, index);
+  const selectLevels = document.querySelector('#selectLevel');
+  const selectRounds = document.querySelector('#selectRound');
+  const frLevel = document.createDocumentFragment();
+  for (let i = 1; i <= maxlevels; i += 1) {
+    const optLev = document.createElement('option');
+    optLev.value = i;
+    optLev.textContent = i;
+    frLevel.append(optLev);
+  }
+  selectLevels.innerHTML = '';
+  selectLevels.append(frLevel);
 
-    const templateMain = new RenderSavannaMainPage(data[index].word, data[index].wordTranslate, resultTranslateAnswer);
+  const frRound = document.createDocumentFragment();
+  for (let i = 1; i <= maxRoundsPerLevel; i += 1) {
+    const optRou = document.createElement('option');
+    optRou.value = i;
+    optRou.textContent = i;
+    frRound.append(optRou);
+  }
+  selectRounds.innerHTML = '';
+  selectRounds.append(frRound);
+}
 
-    savanna.innerHTML = '';
-    savanna.append(templateMain.render());
-    savannaHealth(countHealth);
-    fallWord();
-
-    savannaGameplayMouse(data, index);
+const generateTemplateMain = (words, idx) => {
+  let resultTranslateAnswer = getRandomTranslateAnswer(words, idx);
+  const templateMain = new RenderSavannaMainPage(words[idx].word, words[idx].wordTranslate, resultTranslateAnswer);
+  const savannaPlay = document.querySelector('.savanna__play');
+  savannaPlay.innerHTML = '';
+  savannaPlay.append(templateMain.renderMain());
 }
 
 const generateWordsRound = (data) => {
@@ -53,27 +79,84 @@ const generateWordsRound = (data) => {
   return roundWords;
 }
 
-async function RenderSavannaShortStatistic() {
-  const data = await savannaRoundDataAPI();
+const RenderSavannaShortStatistic = (words) => {
+  const savanna = document.querySelector('.savanna');
   const savannaShortStatistics = document.querySelector('.savanna__short-statistics');
+  const numberRoundEnd = 30;
+  const selectLevel = document.querySelector('#selectLevel');
+  const selectRound = document.querySelector('#selectRound');
 
   savannaShortStatistics.innerHTML = `
   <div class="savanna__total">
-    <p>Error: <span class="savanna__error">10</span></p>
+    <p>Error: <span class="savanna__error">20</span></p>
     <p>Correct: <span class="savanna__correct">0</span></p>
   </div>
   <div class="savanna__words"></div>
   <div class="savanna__action">
-    <button class="button savanna__btn">продолжить тренировку</button>
+    <button class="button savanna__btn" id="savanna__further">продолжить тренировку</button>
     <button class="button savanna__btn">выход</button>
   </div>
   `;
   
   const savannaWords = document.querySelector('.savanna__words');
 
-  generateWordsRound(data).forEach(el => {
+  generateWordsRound(words).forEach(el => {
     savannaWords.append(el.renderResults());
-  }) 
+  });
+  document.querySelector('#savanna__further').addEventListener('click', () => { 
+    if (Number(round) === numberRoundEnd) {
+      level += 1;
+      round = 0;
+    }
+    round += 1;
+    selectLevel.value = `${level}`;
+    selectRound.value = `${round}`;
+    changeLevel = true;
+    newStart();
+    preloader();
+    savannaRound(0, level, round);
+    savanna.style.cssText = `background: linear-gradient(180deg, rgba(${startColorRed}, ${startColorGreen}, ${startColorBlue}, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url(${Image}) center no-repeat; background-size: cover;`;
+  }); 
 }
 
-export { savannaRound, RenderSavannaShortStatistic };
+async function savannaRound(index, lev, rou) {
+  const data = await savannaRoundDataAPI(lev, rou);
+  changeLevel = false;
+  generateTemplateMain(data, index);
+  savannaHealth(countHealth);
+  setTimeout(() => {
+    fallWord(data);
+  }, 2950);
+  
+  RenderSavannaShortStatistic(data);
+  savannaGameplayMouse(data);
+  // savannaGameplayKeyboard(data);
+  // function foo() {
+  //   savannaGameplayKeyboard(data);
+  // }
+  // document.addEventListener('keyup', foo);
+}
+
+const changeLevelAndRound = () => {
+  const selectLevel = document.querySelector('#selectLevel');
+  const selectRound = document.querySelector('#selectRound');
+  // let round;
+  // let level;
+  document.querySelector('.savanna__hints').addEventListener('change', (event) => {
+    if (event.target.closest('.select__round')) {
+      round = parseInt(selectRound.value, 10);
+      level = parseInt(selectLevel.value, 10);
+    }
+    if (event.target.closest('.select__level')) {
+      level = parseInt(selectLevel.value, 10);
+      round = 1;
+      selectRound.value = '1';
+    }
+    changeLevel = true;
+    newStart();
+    preloader();
+    savannaRound(0, level, round);
+  });
+}
+
+export { level, round, changeLevel, generateHeader, generateTemplateMain, savannaRound, changeLevelAndRound, RenderSavannaShortStatistic };

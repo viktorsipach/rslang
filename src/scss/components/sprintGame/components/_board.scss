@@ -50,10 +50,21 @@
     flex-direction: column;
     height: 57%;
 
-    &_image {
+    &_reward {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: 10rem;
       height: 10rem;
-      background: $color-light;
+      font-size: 4rem;
+      border-radius: 13rem;
+      border: 3px solid $color-light;
+
+      @include media-tablet {
+        width: 8rem;
+        height: 8rem;
+        font-size: 3rem;
+      }
     }
 
     &_foreign-word {
@@ -74,8 +85,23 @@
       width: 11rem;
     }
 
+    &_true {
+      background-color: $color-correct;
+
+      &:active,
+      &:hover {
+        background-color: $color-correct-shadow;
+      }
+    }
+
     &_false {
       margin-left: 5rem;
+      background-color: $color-wrong;
+
+      &:active,
+      &:hover {
+        background-color: $color-wrong-shadow;
+      }
 
       @include media-tablet {
         margin-left: 1rem;

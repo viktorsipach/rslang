@@ -73,7 +73,7 @@ function renderDropdown() {
     return fragment;
 }
 
-function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
+function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wordRus) {
     const fragment = document.createDocumentFragment();
 
     const gameProgress = document.createElement('div');
@@ -102,6 +102,10 @@ function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
     gameWord.className = 'game__word';
     gameWord.innerText = wordEn.toLowerCase();
 
+    const gameWordRus = document.createElement('div');
+    gameWordRus.className = 'game__word_rus';
+    gameWordRus.innerText = wordRus.toLowerCase();
+
     const gameWordsBlock = document.createElement('div');
     gameWordsBlock.className = 'game__words words';
 
@@ -121,6 +125,7 @@ function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
 
     gameBlockVoice.append(gameVoice);
     gameBlockVoice.append(gameWord);
+    gameBlockVoice.append(gameWordRus);
 
     const iconSound = document.createElement('div');
     iconSound.className = 'game__iconSound';
@@ -149,15 +154,24 @@ function renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn) {
     gameContainer.append(gameWordsBlock);
     gameContainer.append(gameButton);
 
+    const gameProgressBar = document.createElement('div');
+    gameProgressBar.className = 'game-progress';
+
     const gamePage = document.createElement('div');
-    gamePage.className = 'game game_audioCall';
+    gamePage.className = 'game__audioCallBlock';
     gamePage.append(gameProgress);
     gamePage.append(closeGame);
     gamePage.append(iconSound);
     gamePage.append(gameContainer);
     gamePage.append(statisticsDom);
 
-    fragment.append(gamePage);
+    const allDiv = document.createElement('div');
+    allDiv.className = 'game game_audioCall';
+    allDiv.append(gamePage);
+    allDiv.append(gameProgressBar);
+    
+
+    fragment.append(allDiv);
 
     return fragment;
 }

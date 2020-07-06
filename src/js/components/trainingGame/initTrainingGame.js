@@ -1,13 +1,25 @@
 import renderTrainingGamePage from './renderTrainingGamePage';
 import TrainingGame from './TrainingGame';
-import getUserSettings from '../../API/settingsTestFile';
+import { putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
+import initialSettings from './initialSetting';
 
 export default async function initTrainingGame() {
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderTrainingGamePage());
-
-  const settings = getUserSettings();
+ 
+  let settings = await getUserSettings();
+  console.log(settings);
+  if (settings === undefined) {
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': 10,
+        'optional': initialSettings
+      }
+    });
+    settings = await getUserSettings();
+    console.log(settings);
+  } 
 
   const trainingGame = new TrainingGame({ settings });
   await trainingGame.getData();

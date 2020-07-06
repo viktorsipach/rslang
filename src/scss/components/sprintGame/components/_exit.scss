@@ -1,26 +1,35 @@
 .exit {
-  width: 5rem;
-  height: 5rem;
-  cursor: pointer;
+  &.close-btn {
+    top: 4rem;
+    right: 1rem;
+    width: 5rem;
+    height: 5rem;
+    cursor: pointer;
 
-  &:hover {
-    opacity: 0.8;
-  }
+    &:hover {
+      opacity: 0.8;
+    }
 
-  &:before,
-  &:after {
-    position: absolute;
-    content: ' ';
-    height: 4rem;
-    width: 0.3rem;
-    background-color: $color-light;
-  }
+    &:before,
+    &:after {
+      position: absolute;
+      content: ' ';
+      height: 4rem;
+      width: 0.3rem;
+      background-color: $color-light;
+    }
 
-  &:before {
-    transform: rotate(45deg);
-  }
+    &:before {
+      transform: rotate(45deg);
+    }
 
-  &:after {
-    transform: rotate(-45deg);
+    &:after {
+      transform: rotate(-45deg);
+    }
+
+    @include media-tablet {
+      top: 3rem;
+      right: 0;
+    }
   }
 }
