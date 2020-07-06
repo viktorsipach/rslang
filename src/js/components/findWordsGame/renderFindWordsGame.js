@@ -55,6 +55,20 @@ class RenderFindWordsGame {
         const settings = await UserSettingsMiniGame.getUserSettingsMiniGame('findWords');
         const maxLevel = 6;
         const maxRound = 60;
+        const increment = 1;
+        const startValue = 1;
+
+        if (settings.level === maxLevel && settings.round === maxRound) {
+            settings.level = startValue;
+            settings.round = startValue;
+        } else if (settings.round === maxRound) {
+            settings.level += increment;
+            settings.round = startValue;
+        } else {
+            settings.round += increment;
+        }
+
+        
 
         this.createElement('div', 'controls__level level', '', 'controls');
         this.createElement('div', 'level__head', 'Уровень', 'controls__level');
