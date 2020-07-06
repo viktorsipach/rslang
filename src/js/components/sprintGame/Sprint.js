@@ -2,6 +2,7 @@ import ContentBuilder from './modules/ContentBuilder';
 import { getRoundData } from '../../API/dataAPI';
 import ErrorSound from '../../../assets/audio/error.mp3';
 import CorrectSound from '../../../assets/audio/correct.mp3';
+import StatisticsAPI from '../../API/statisticsAPI';
 
 class Sprint {
   constructor() {
@@ -176,6 +177,7 @@ class Sprint {
     board.removeEventListener('click', boardButtonsListener);
     document.removeEventListener('keydown', keyboardListener);
     ContentBuilder.showCurrentGameStatistics('.sprint__panel_main', this.getStatisticsElement());
+    StatisticsAPI.miniGameStat('sprint', this.score);
     const gameStatistics = document.querySelector('.game-statistics__popup');
     const gameStatisticsExit = gameStatistics.querySelector('.game-statistics__button_exit');
     gameStatistics.addEventListener('click', (event) => {
