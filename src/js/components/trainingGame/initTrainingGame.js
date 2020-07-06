@@ -9,7 +9,6 @@ export default async function initTrainingGame() {
   PAGECONTAINER.append(renderTrainingGamePage());
  
   let settings = await getUserSettings();
-  console.log(settings);
   if (settings === undefined) {
     await putUserSettings({ 
       settings: {
@@ -18,18 +17,12 @@ export default async function initTrainingGame() {
       }
     });
     settings = await getUserSettings();
-    console.log(settings);
   } 
 
   const trainingGame = new TrainingGame({ settings });
-  const data = await trainingGame.getData();
-  if (data === undefined) {
-    console.log('no words to learn today!')
-  } else {
-    this.amountsOfCards = this.data.length;
-    trainingGame.start();
-  }
-  
+  await trainingGame.getData();
+  trainingGame.start();
+ 
 
   document.querySelector('.game__buttons.training-game').addEventListener('click', (event) => {
     if (event.target.classList.contains('next')) {

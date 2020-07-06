@@ -13,8 +13,8 @@ export default class TrainingGame {
     this.autoPronunciation = settings.optional.training.autoPronunciation;
     this.showDeleteButton = settings.optional.training.showDeleteButton;
     this.showHardButton = settings.optional.training.showHardButton;
-    this.level = 1;
-    this.round = 1;
+    // this.level = 1;
+    // this.round = 1;
     this.timeOut = 2500;
     this.repeatData = [];
     this.isRepeatData = false;
@@ -26,19 +26,26 @@ export default class TrainingGame {
 
   async getData() {
     this.data = await getTrainingGameData();
+    if (this.data) {
+      this.amountsOfCards = this.data.length;
+    }
     console.log(this.data);
-    // this.amountsOfCards = this.data.length;
+    // return this.data;
   }
 
   async start() {
-    this.currentCardNumber = 0;
-    this.correctAnswersAmount = 0;
-    this.seriesOfCorrectAnswers = 0;
-    this.longestSeriesOfCorrectAnswers = 0;
-    this.progress = 0;
-    this.cardData = this.data[this.currentCardNumber];
-    this.lettersCount = this.data[this.currentCardNumber].word.length;
-    this.renderCardData();
+    if (this.data === undefined) {
+      console.log('no words to learn today!')
+    } else {
+      this.currentCardNumber = 0;
+      this.correctAnswersAmount = 0;
+      this.seriesOfCorrectAnswers = 0;
+      this.longestSeriesOfCorrectAnswers = 0;
+      this.progress = 0;
+      this.cardData = this.data[this.currentCardNumber];
+      this.lettersCount = this.data[this.currentCardNumber].word.length;
+      this.renderCardData();
+    }
   }
 
   async continue() {

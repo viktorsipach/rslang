@@ -14,7 +14,7 @@ async function getDeleteWords(amountOfWords) {
   return deleteWords;
 }
 
-async function getAllWords() {
+async function getAllWords() { //ToDO learned
   const allWords = await getAllUserWords();
   return allWords;
 }

@@ -3,23 +3,50 @@ const userId = localStorage.getItem('userId');
 console.log(token);
 console.log(userId);
 
-async function createUserWord({ wordId, word }) {
+async function getUserWord({ wordId }) {
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`, {
-      method: 'POST',
-      withCredentials: true,
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(word)
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      }
     });
-    const content = await rawResponse.json();
-    return content;
+    if (rawResponse.ok) {
+      const content = await rawResponse.json();
+      return content;
+    }   
   } catch (error) {
     return error;
-  } 
+  }  
+  return undefined;
+};
+
+async function createUserWord({ wordId, word }) {
+  const userWord = await getUserWord({wordId});
+  if (userWord === undefined) {
+    try {
+      const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`, {
+        method: 'POST',
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(word)
+      });
+      if (rawResponse.ok) {
+        const content = await rawResponse.json();
+        return content;
+      }
+      return undefined;
+    } catch (error) {
+      return error;
+    } 
+  }
+  return undefined;
 };
 
 async function updateUserWord({ wordId, word }) {
@@ -35,7 +62,6 @@ async function updateUserWord({ wordId, word }) {
       body: JSON.stringify(word)
     });
     const content = await rawResponse.json();
-    console.log(content);
     return content;
   } catch (error) {
     return error;
@@ -74,26 +100,6 @@ async function getAllUserWords() {
     return content;
   } catch (error) {
     return error;    
-  }  
-};
-
-async function getUserWord({ wordId }) {
-  try {
-    const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`, {
-    method: 'GET',
-    withCredentials: true,
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
-      }
-    });
-    if (!rawResponse.ok) {
-      return false;
-    }
-    const content = await rawResponse.json();
-    return content;
-  } catch (error) {
-    return error;
   }  
 };
 

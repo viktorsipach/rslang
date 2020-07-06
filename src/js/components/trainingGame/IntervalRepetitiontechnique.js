@@ -1,5 +1,5 @@
 import { createUserWord, updateUserWord, deleteUserWord, getUserWord, getAllUserWords } from '../../API/userWordsAPI';
-import { getRoundData, getRoundsAmountInLevel } from '../../API/dataAPI';
+import { getRoundData } from '../../API/dataAPI';
 import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
 import { getUserSettings } from '../../API/userSettingsAPI';
 
@@ -84,10 +84,9 @@ export default async function getTrainingGameData() {
 
   const settingsDate = settings.optional.training.date;
   const lastGameDate = new Date(settingsDate);
-  console.log(lastGameDate);
 
-  const today = new Date('07/06/2020');
-  console.log(today);
+  const today = new Date('07/07/2020');
+  // const today = new Date();
 
   const daysBetweenLastTriningAndToday = today.getDate() - lastGameDate.getDate();
   console.log(daysBetweenLastTriningAndToday);
