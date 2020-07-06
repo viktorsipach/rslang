@@ -1,8 +1,9 @@
 import getFilteredUserWords from './userAggregatedWordsAPI';
-import { updateUserWord, getUserWord, getAllUserWords } from './userWordsAPI';
+import { updateUserWord, getUserWord } from './userWordsAPI';
 
 const FILTER_FOR_TRICKY_WORDS = encodeURIComponent('{"userWord.optional.status":"tricky"}');
 const FILTER_FOR_DELETE_WORDS = encodeURIComponent('{"userWord.optional.status":"delete"}');
+const FILTER_FOR_REPEAT_WORDS = encodeURIComponent('{"userWord.optional.status":"repeat"}');
 
 async function getTrickyWords(amountOfWords) {
   const trickyWords = await getFilteredUserWords(FILTER_FOR_TRICKY_WORDS, amountOfWords);
@@ -14,9 +15,9 @@ async function getDeleteWords(amountOfWords) {
   return deleteWords;
 }
 
-async function getAllWords() { //ToDO learned
-  const allWords = await getAllUserWords();
-  return allWords;
+async function getRepeatWords(amountOfWords) {
+  const repeatWords = await getFilteredUserWords(FILTER_FOR_REPEAT_WORDS, amountOfWords);
+  return repeatWords;
 }
 
 async function restoreWord(id) {
@@ -44,7 +45,7 @@ async function restoreWord(id) {
   })
 }
 
-export { getTrickyWords, getDeleteWords, getAllWords, restoreWord };
+export { getTrickyWords, getDeleteWords, getRepeatWords, restoreWord };
 
 /* Example how to use this functions. They are needed for dictionary */
 // console.log('getTrickyWords');
@@ -53,8 +54,8 @@ export { getTrickyWords, getDeleteWords, getAllWords, restoreWord };
 // console.log('getDeleteWords');
 // console.log( await getDeleteWords(5));
 
-// console.log('getAllWords');
-// console.log(await getAllWords());
+// console.log('getRepeatWords');
+// console.log( await getRepeatWords(5));
 
 // console.log('restore word');
 // const id = '5e9f5ee35eb9e72bc21af4c6';
