@@ -1,9 +1,6 @@
-const token = localStorage.getItem('userToken');
-const userId = localStorage.getItem('userId');
-console.log(token);
-console.log(userId);
-
 async function getUserWord({ wordId }) {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`, {
     method: 'GET',
@@ -24,6 +21,8 @@ async function getUserWord({ wordId }) {
 };
 
 async function createUserWord({ wordId, word }) {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   const userWord = await getUserWord({wordId});
   if (userWord === undefined) {
     try {
@@ -50,6 +49,8 @@ async function createUserWord({ wordId, word }) {
 };
 
 async function updateUserWord({ wordId, word }) {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`, {
       method: 'PUT',
@@ -69,6 +70,8 @@ async function updateUserWord({ wordId, word }) {
 };
 
 async function deleteUserWord({ wordId }) {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`, {
       method: 'DELETE',
@@ -85,6 +88,8 @@ async function deleteUserWord({ wordId }) {
 };
 
 async function getAllUserWords() {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words`, {
       method: 'GET',

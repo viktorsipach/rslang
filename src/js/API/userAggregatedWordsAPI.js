@@ -12,7 +12,7 @@ export default async function getFilteredUserWords(filter, wordsPerPage) {
       }
     });
     if (!rawResponse.ok) {
-      return false;
+      return undefined;
     }
     const content = await rawResponse.json();
     return content;

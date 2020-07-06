@@ -3,7 +3,7 @@ import { disableButton, enableButton } from './utils';
 import getTrainingGameData from './IntervalRepetitionTechnique';
 import { updateUserWord, getUserWord } from '../../API/userWordsAPI';
 import { updateLevelRoundDateSettings } from '../../API/userSettingsAPI';
-import initSetting from '../settingsPage/settingsPage.component';
+import renderTrainingModal from './renderTrainingModal';
 
 export default class TrainingGame {
   constructor({ settings }) {
@@ -27,13 +27,13 @@ export default class TrainingGame {
     this.data = await getTrainingGameData();
     if (this.data) {
       this.amountsOfCards = this.data.length;
-      console.log(` amountsOfCards ${this.amountsOfCards}`);
     }
   }
 
   async start() {
-    if (this.data === undefined) {
+    if (this.data === undefined || this.amountsOfCards === 0) {
       console.log('no words to learn today!')
+      document.querySelector('.page').append(renderTrainingModal());
     } else {
       this.currentCardNumber = 0;
       this.correctAnswersAmount = 0;
@@ -46,11 +46,6 @@ export default class TrainingGame {
     }
   }
 
-  async continue() {
-    await this.getData();
-    this.start();
-  }
-
   renderCardData() {
     const DIFFICULTY_BUTTONS = document.querySelector('.difficulty__buttons');
     const GAME_BUTTONS = document.querySelector('.game__buttons.training-game');
@@ -61,12 +56,10 @@ export default class TrainingGame {
     disableButton(NEXTBUTTON_SELECTOR);
     enableButton(IDONTKNOWBUTTON_SELECTOR);
     this.isWordWithoutTraining = false;
-
     if (this.currentCardNumber < this.amountsOfCards) {
       document.querySelector('.letters-container').classList.add('hidden');
       this.cardData = this.data[this.currentCardNumber];
       console.log(this.cardData);
-      
       this.renderTranslation();
       this.renderAutoPronunciationButtonState();
       this.renderTranslationInfoAndButtonState();
@@ -76,7 +69,6 @@ export default class TrainingGame {
       this.renderInput();
       this.showProgress();
     } else {
-      console.log('update level, round');
       updateLevelRoundDateSettings();
       if (this.repeatData.length === 0) {
         this.openStatistics();
@@ -190,7 +182,6 @@ export default class TrainingGame {
       });
     } 
     document.querySelector('.letters-container').classList.remove('hidden'); 
-  
     if (this.isWordWithoutTraining) {
       console.log('isWordWithoutTraining');
       this.currentCardNumber += 1;
@@ -254,7 +245,6 @@ export default class TrainingGame {
     this.renderExampleSentence();
     this.renderInput();
     } else {
-      console.log('all words repeated!!!!');
       this.openStatistics();
     }
   }
@@ -267,21 +257,9 @@ export default class TrainingGame {
       longestSeriesOfCorrectAnswers: this.longestSeriesOfCorrectAnswers
     }
     document.querySelector('.page').append(renderStatistics(statisticsData)); 
-
-    document.querySelector('.statistic__buttons').addEventListener('click', (event) => {
-      const notificationContainer = document.querySelector('.training__statistic');
-      notificationContainer.parentNode.removeChild(notificationContainer);
-      if (event.target.classList.contains('continue')) {         
-        this.continue();
-      } else if (event.target.classList.contains('settings')) {
-        console.log('goToSettingsPage');
-        initSetting();
-      } 
-    });
   }
 
   async updateWord() {
-    console.log('update user word');
     let difficultyCoef;
     switch (this.wordDifficulty) {
       case 'easy':

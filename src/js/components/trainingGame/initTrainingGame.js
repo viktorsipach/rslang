@@ -9,7 +9,7 @@ export default async function initTrainingGame() {
   PAGECONTAINER.append(renderTrainingGamePage());
  
   let settings = await getUserSettings();
-  // if (settings === undefined) {
+  if (settings === undefined) {
     await putUserSettings({ 
       settings: {
         'wordsPerDay': 10,
@@ -17,12 +17,11 @@ export default async function initTrainingGame() {
       }
     });
     settings = await getUserSettings();
-  // } 
+  } 
 
   const trainingGame = new TrainingGame({ settings });
   await trainingGame.getData();
   trainingGame.start();
- 
 
   document.querySelector('.game__buttons.training-game').addEventListener('click', (event) => {
     if (event.target.classList.contains('next')) {
@@ -73,7 +72,7 @@ export default async function initTrainingGame() {
 
   const CLOSE_BUTTON = document.querySelector('.close-btn');
   CLOSE_BUTTON.addEventListener('click', () => {
-    document.removeEventListener('keypress', keyBoardHelper);
+    document.removeEventListener('keypress', trainingGame.keyBoardHelper);
   });
 
   document.querySelector('.card__input').addEventListener('click', () => {
@@ -99,6 +98,5 @@ export default async function initTrainingGame() {
         }
       }
     }
-  })
-
+  });
 }

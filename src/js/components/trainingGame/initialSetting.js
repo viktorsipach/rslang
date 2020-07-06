@@ -4,8 +4,8 @@ const initialSettings = {
   training: {
     level: 1,
     round: 1,
-    newWordsPerDay: 5,
-    maxCardsPerDay: 7,
+    newWordsPerDay: 50,
+    maxCardsPerDay: 50,
     date: currentDate,
     cardSettings: {
       showTranslation: true,

@@ -1,9 +1,8 @@
 import { getRoundsAmountInLevel } from './dataAPI';
 
-const token = localStorage.getItem('userToken');
-const userId = localStorage.getItem('userId');
-
 async function putUserSettings({ settings }) {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`, {
       method: 'PUT',
@@ -24,6 +23,8 @@ async function putUserSettings({ settings }) {
 };
 
 async function getUserSettings() {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`, {
     method: 'GET',
