@@ -57,7 +57,7 @@ export default async function initTrainingGame() {
     }
   })
 
-  document.addEventListener('keypress', (event) => {
+  function keyBoardHelper(event) {
     if(!document.querySelector('.game__buttons.training-game').classList.contains('hidden')) {
       if (event.code === 'Enter' && document.querySelector('.game__training')) {
         trainingGame.checkInput(trainingGame.data);
@@ -67,6 +67,13 @@ export default async function initTrainingGame() {
         trainingGame.hideAnswer();
       }
     }
+  }
+
+  document.addEventListener('keypress', keyBoardHelper);
+
+  const CLOSE_BUTTON = document.querySelector('.close-btn');
+  CLOSE_BUTTON.addEventListener('click', () => {
+    document.removeEventListener('keypress', keyBoardHelper);
   });
 
   document.querySelector('.card__input').addEventListener('click', () => {
