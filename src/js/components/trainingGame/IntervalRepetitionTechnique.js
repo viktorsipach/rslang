@@ -21,7 +21,7 @@ async function createTrainingDataForDay(settings, amountOfCards) {
       word: {
         'difficulty': 'normal',
         'optional': {
-          status: 'tricky',
+          status: 'new',
           lastRepeatDate: currentDate,
           difficultyCoef: 0,
           repeatCount: 0,
@@ -69,7 +69,7 @@ async function decreaseAllUserWordLeftDaysAmount(allUserWords) {
 }
 
 export default async function getTrainingGameData() {
-  const allUserWords = await getAllUserWords();
+  let allUserWords = await getAllUserWords();
   console.log(allUserWords.length);
   console.log(allUserWords);
 
@@ -96,6 +96,12 @@ export default async function getTrainingGameData() {
     const AMOUNT_OF_WORDS_TO_REPEAT = trainingSettings.maxCardsPerDay - trainingSettings.newWordsPerDay;
     console.log(`total Ws = ${trainingSettings.maxCardsPerDay}, new Ws = ${trainingSettings.newWordsPerDay}, repeat Ws${AMOUNT_OF_WORDS_TO_REPEAT}`);
     await createTrainingDataForDay(trainingSettings, trainingSettings.newWordsPerDay);
+
+    allUserWords = await getAllUserWords();
+    console.log(allUserWords.length);
+    console.log(allUserWords);
+    
+
     const gameDataNew = await getFilteredUserWords(FILTER_FOR_NEW_WORDS, trainingSettings.newWordsPerDay);
     console.log(gameDataNew);
     const gameDataRepeat = await getFilteredUserWords(FILTER_FOR_REPEAT_WORDS, AMOUNT_OF_WORDS_TO_REPEAT);

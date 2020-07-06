@@ -17,10 +17,10 @@ async function getUserWord({ wordId }) {
       const content = await rawResponse.json();
       return content;
     }   
+    return undefined;
   } catch (error) {
     return error;
   }  
-  return undefined;
 };
 
 async function createUserWord({ wordId, word }) {

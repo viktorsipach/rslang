@@ -3,6 +3,7 @@ import { disableButton, enableButton } from './utils';
 import getTrainingGameData from './IntervalRepetitionTechnique';
 import { updateUserWord, getUserWord } from '../../API/userWordsAPI';
 import { updateLevelRoundDateSettings } from '../../API/userSettingsAPI';
+import initSetting from '../settingsPage/settingsPage.component';
 
 export default class TrainingGame {
   constructor({ settings }) {
@@ -26,9 +27,8 @@ export default class TrainingGame {
     this.data = await getTrainingGameData();
     if (this.data) {
       this.amountsOfCards = this.data.length;
+      console.log(` amountsOfCards ${this.amountsOfCards}`);
     }
-    console.log(this.data);
-    // return this.data;
   }
 
   async start() {
@@ -78,12 +78,8 @@ export default class TrainingGame {
     } else {
       console.log('update level, round');
       updateLevelRoundDateSettings();
-      let isLastWordsInApp = false;
-      // if (this.level === this.levelsAmount && this.round === this.roundsAmount) {
-      //   isLastWordsInApp = true;
-      // }
       if (this.repeatData.length === 0) {
-        this.openStatistics(isLastWordsInApp);
+        this.openStatistics();
       } else {
         console.log('repeat again words');
         this.isRepeatData = true;
@@ -263,14 +259,14 @@ export default class TrainingGame {
     }
   }
 
-  openStatistics(isLastWordsInApp) {
+  openStatistics() {
     const statisticsData = {
       amountOfWords: this.amountsOfCards,
       amountOfCorrectAnswers: this.correctAnswersAmount,
-      amountOfNewWords: this.settings.optional.training.newWordsPerDay, // change
+      amountOfNewWords: this.settings.optional.training.newWordsPerDay,
       longestSeriesOfCorrectAnswers: this.longestSeriesOfCorrectAnswers
     }
-    document.querySelector('.page').append(renderStatistics(isLastWordsInApp, statisticsData)); 
+    document.querySelector('.page').append(renderStatistics(statisticsData)); 
 
     document.querySelector('.statistic__buttons').addEventListener('click', (event) => {
       const notificationContainer = document.querySelector('.training__statistic');
@@ -279,10 +275,8 @@ export default class TrainingGame {
         this.continue();
       } else if (event.target.classList.contains('settings')) {
         console.log('goToSettingsPage');
-        // goToSettingPage
-      } else if (event.target.classList.contains('again')) {
-        this.start();
-      }
+        initSetting();
+      } 
     });
   }
 
@@ -441,7 +435,13 @@ export default class TrainingGame {
   
   createWordLetters(){
     const fragment = document.createDocumentFragment();
-    this.data[this.currentCardNumber].word.split('').forEach(element => {
+    let data;
+    if (this.isRepeatData) {
+      data = this.repeatData;
+    } else {
+      data = this.data;
+    }
+    data[this.currentCardNumber].word.split('').forEach(element => {
       const letter = document.createElement('span');
       letter.textContent = element;
       fragment.append(letter);

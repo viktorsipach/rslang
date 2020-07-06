@@ -1,4 +1,4 @@
-export default function renderStatisticsModal(isLastWordsInApp, statisticsData) {
+export default function renderStatisticsModal(statisticsData) {
   const statisticsContainer = document.createElement('div');
   statisticsContainer.className = 'training__statistic';
   statisticsContainer.innerHTML = `
@@ -25,24 +25,13 @@ export default function renderStatisticsModal(isLastWordsInApp, statisticsData) 
     <div class="notification-text"></div>
     <div class="buttons statistic__buttons"></div>
   </div>`;
-  if (isLastWordsInApp) {
-    statisticsContainer.querySelector('.notification-text').innerHTML = `
-    Дневной лимит исчерпан. Новых карточек нет.
-    <br>
-    Для закрепления изученных слов поиграйте в мини-игры.
-    <br>
-    Если вы хотите повторно изучить слова, нажмите кнопку сначала.`;
-    statisticsContainer.querySelector('.statistic__buttons').innerHTML = 
-    `<button class="button game__button again">Сначала</button>`
-  } else {
-    statisticsContainer.querySelector('.notification-text').innerHTML = `
-    Есть еще новые карточки, но дневной лимит исчерпан. Для закрепления изученных слов поиграйте в мини-игры.
-    <br>
-    Если вы хотите изучать больше слов, то дневной лимит можно увеличить в настройках. 
-    Имейте ввиду, что чем больше новых карточек вы просмотрите, тем больше карточек вам нужно будет повторить.`;
-    statisticsContainer.querySelector('.statistic__buttons').innerHTML = 
-    `<button class="button game__button continue">Продолжить</button>
-    <button class="button game__button settings">Настройки</button>`
-  }
+  statisticsContainer.querySelector('.notification-text').innerHTML = `
+  Есть еще новые карточки, но дневной лимит исчерпан. Для закрепления изученных слов поиграйте в мини-игры.
+  <br>
+  Если вы хотите изучать больше слов, то дневной лимит можно увеличить в настройках. 
+  Имейте ввиду, что чем больше новых карточек вы просмотрите, тем больше карточек вам нужно будет повторить.`;
+  statisticsContainer.querySelector('.statistic__buttons').innerHTML = 
+  `<button class="button game__button continue">Продолжить</button>
+  <button class="button game__button settings">Настройки</button>`
   return statisticsContainer;
 }

@@ -9,7 +9,7 @@ export default async function initTrainingGame() {
   PAGECONTAINER.append(renderTrainingGamePage());
  
   let settings = await getUserSettings();
-  if (settings === undefined) {
+  // if (settings === undefined) {
     await putUserSettings({ 
       settings: {
         'wordsPerDay': 10,
@@ -17,7 +17,7 @@ export default async function initTrainingGame() {
       }
     });
     settings = await getUserSettings();
-  } 
+  // } 
 
   const trainingGame = new TrainingGame({ settings });
   await trainingGame.getData();
