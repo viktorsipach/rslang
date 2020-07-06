@@ -6,6 +6,7 @@ import initTrainingGame from '../trainingGame/initTrainingGame';
 import Sprint from '../sprintGame/Sprint';
 import initSpeakItGame from '../speakitGame/app.speakit';
 import initSetting from '../settingsPage/settingsPage.component';
+import initPromo from '../promoPage/promoPage';
 import { initStudyingWords, initDifficultWords, initRemovedWords } from '../dictionaryPage/dictionaryPage.component'
 
 const renderMainPage = () => {
@@ -223,7 +224,7 @@ const addClickCardsHandler = () => {
                 break;
             case 'card__promo':
                 page.innerHTML = '';
-                // initPromo();
+                initPromo();
                 break;
             case 'card__about':
                 page.innerHTML = '';
@@ -302,7 +303,7 @@ export const addClickNavHandler = () => {
                 break;
             case 'navbar__promo':
                 addActiveClassNav(e);
-                // initPromo();
+                initPromo();
                 break;
             case 'navbar__about':
                 addActiveClassNav(e);
