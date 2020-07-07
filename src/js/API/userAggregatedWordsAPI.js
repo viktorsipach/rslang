@@ -1,7 +1,6 @@
-const token = localStorage.getItem('userToken');
-const userId = localStorage.getItem('userId');
-
 export default async function getFilteredUserWords(filter, wordsPerPage) {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?wordsPerPage=${wordsPerPage}&filter=${filter}`, {
     method: 'GET',
