@@ -1,6 +1,6 @@
-import victorPhoto from '../../../assets/img/team/victor.jpg';
-import ekaterinaPhoto from '../../../assets/img/team/ekaterina.jpg';
-import denisPhoto from '../../../assets/img/team/denis.jpg';
+import victorPhoto from '../../../assets/img/team/members/victor.jpg';
+import ekaterinaPhoto from '../../../assets/img/team/members/ekaterina.jpg';
+import denisPhoto from '../../../assets/img/team/members/denis.jpg';
 
 export default [
   {

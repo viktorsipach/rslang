@@ -1,0 +1,19 @@
+.team-members {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 10rem 1.5rem;
+  width:1170px;
+
+  @include media-laptop {
+    width:750px;
+  }
+
+  @include media-tablet {
+    width: 80%;
+  }
+
+  @include media-mobile {
+    width:100%;
+  }
+}

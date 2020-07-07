@@ -8,9 +8,9 @@ class TeamPageBuilder {
       </div>
       <div class="team-member__name">
       </div>
+      <div class="team-member__position">
+      </div>
       <div class="team-member__description">
-        <div class="team-member__description_position">
-        </div>
       </div>
       <div class="team-member__social-links">
         <a href="" class="social-link" target="_blank">
@@ -60,7 +60,7 @@ class TeamPageBuilder {
     } = options;
 
     const nameField = teamMember.querySelector('.team-member__name');
-    const positionField = teamMember.querySelector('.team-member__description_position');
+    const positionField = teamMember.querySelector('.team-member__position');
     const descriptionField = teamMember.querySelector('.team-member__description');
     const photo = teamMember.querySelector('.team-member__photo_image');
     const socialLinksField = teamMember.querySelector('.team-member__social-links');
