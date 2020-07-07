@@ -6,6 +6,7 @@ import initTrainingGame from '../trainingGame/initTrainingGame';
 import Sprint from '../sprintGame/Sprint';
 import initSpeakItGame from '../speakitGame/app.speakit';
 import initSetting from '../settingsPage/settingsPage.component';
+import TeamPageBuilder from '../teamPageBuilder/TeamPageBuilder';
 import { initStudyingWords, initDifficultWords, initRemovedWords } from '../dictionaryPage/dictionaryPage.component'
 
 const renderMainPage = () => {
@@ -100,7 +101,7 @@ export const addCardsAnimation = () => {
                 node.classList.add(`ani${  idx}`);
                 node.children[1].classList.add('hide-content');
             }, idx * ONE_CYCLE_ANIMATION);
-        })   
+        })
         setTimeout(() => {
             cards.forEach((el,idx) => {
                 const node = el;
@@ -109,8 +110,8 @@ export const addCardsAnimation = () => {
                     node.children[1].classList.remove('hide-content');
                     }, idx * ONE_CYCLE_ANIMATION);
                 })
-        }, END_ANIMATION) 
-    },0)  
+        }, END_ANIMATION)
+    },0)
 }
 
 export const menuHandler = () => {
@@ -156,7 +157,7 @@ const showHeader = () => {
         header.classList.remove('hide-header');
         closeBtn.classList.add('hidden');
     }
-   
+
 }
 
 const addClickCardsHandler = () => {
@@ -227,7 +228,7 @@ const addClickCardsHandler = () => {
                 break;
             case 'card__about':
                 page.innerHTML = '';
-                // initAbout();
+                TeamPageBuilder.init('.page');
                 break;
             default:
                 return null;
@@ -306,7 +307,7 @@ export const addClickNavHandler = () => {
                 break;
             case 'navbar__about':
                 addActiveClassNav(e);
-                // initAbout();
+                TeamPageBuilder.init('.page');
                 break;
             default:
                 return null;
