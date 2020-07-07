@@ -3,6 +3,7 @@ import { checkActiveHints, createStatisticSentence, mixSentenceWords, getPaintin
 import Sentence from './Sentence';
 import renderStatisticsModal from './renderStatistics';
 import StatisticsAPI from '../../API/statisticsAPI';
+import userSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 
 export default class Game {
   constructor({ level, round }) {
@@ -13,13 +14,18 @@ export default class Game {
     this.isFinished = false;
     this.audio = new Audio();
     this.levelsAmount = 6;
+    this.roundStartIndex = 1;
     this.gameName = 'puzzle';
   }
 
   async startNewLevelRound() {
+    const SELECTROUNDOPTION = document.getElementById('selectRound');
+    const SELECTLEVELOPTION = document.getElementById('selectLevel');
     this.isFinished = false;
     const roundsInLevel = await getRoundsAmountInLevel(this.level, this.wordsPerSentence, this.wordsPerRound);
     await this.renderRoundOptions(roundsInLevel);
+    SELECTLEVELOPTION.value = this.level;
+    SELECTROUNDOPTION.value = this.round;
     this.startRound();
   }
 
@@ -287,23 +293,17 @@ export default class Game {
   }
 
   checkGameProgress() {
-    const SELECTLEVELOPTION = document.getElementById('selectLevel');
-    const SELECTROUNDOPTION = document.getElementById('selectRound');
     const HINTS_SENTENCE = document.querySelector('.hints__sentence');
-    if (this.round < this.roundsInLevel) {
-      this.round += 1;
-      SELECTROUNDOPTION.value = this.round;
-      this.startCurrentLevelRound();
-    } else if (this.level < this.levelsAmount) {
-      this.level += 1;
-      this.round = 1;
-      SELECTLEVELOPTION.value = this.level;
-      SELECTROUNDOPTION.value = this.round;
-      this.startNewLevelRound();
-    } else {
+    const RESULTBUTTON = document.querySelector('.game__buttons>.results');
+    const CONTINUEBUTTON = document.querySelector('.game__buttons>.continue');
+    if (this.round === (this.roundsInLevel + 1) && this.level === this.levelsAmount) {
       document.querySelector('.main__hints').classList.remove('hidden');
       HINTS_SENTENCE.textContent = 'ПОЗДРАВЛЯЕМ!! Все уровни пройдены!';
       this.isFinished = true;
+      RESULTBUTTON.classList.add('hidden');
+      CONTINUEBUTTON.classList.add('hidden');
+    } else {
+      this.startNewLevelRound();
     }
   }
 
@@ -323,5 +323,20 @@ export default class Game {
   sendLongTermStatistics() {
     const result = `${this.iKnowSentencesCount/this.wordsPerRound*100} %`;
     StatisticsAPI.miniGameStat(this.gameName, result);
+  }
+
+  updateLevelRound() {
+    if (this.round < this.roundsInLevel) {
+      this.round += 1;
+    } else if (this.level < this.levelsAmount) {
+      this.level += 1;
+      this.round = this.roundStartIndex;
+    } else if (this.round === this.roundsInLevel && this.level === this.levelsAmount) {
+      this.round += 1;
+    }
+  }
+
+  async sendLevelRoundInfo() {
+    await userSettingsMiniGame.updateUserSettingsMiniGame(this.gameName, this.level, this.round);
   }
 }
