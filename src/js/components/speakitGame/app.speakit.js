@@ -13,6 +13,8 @@ import {
     removeStars,
     renderRoundOptions
 } from './dom.speakit';
+import StatisticsAPI from '../../API/statisticsAPI';
+import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 
 
 const getDataCards = (json) => {
@@ -198,8 +200,9 @@ const restart = () => {
 }
 
 const saveLevelAndRound = () => {
-    localStorage.setItem('levelSpeakit', document.getElementById('selectLevel').value); 
-    localStorage.setItem('roundSpeakit', document.getElementById('selectRound').value); 
+    const level =  document.getElementById('selectLevel').value; 
+    const round =  document.getElementById('selectRound').value;
+    UserSettingsMiniGame.updateUserSettingsMiniGame('speakit',level,round) 
 }
 
 const addClickRestartBtnHandler = () => {
@@ -210,6 +213,13 @@ const addClickRestartBtnHandler = () => {
         restart()
         getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))
     })
+}
+
+const sendLongTermStatistics = () => {
+    const ALL_WORDS = 10;
+    const resultsCorrect = document.querySelector('.results__item_correct');
+    const result = `${resultsCorrect.childElementCount * ALL_WORDS}%`;
+    StatisticsAPI.miniGameStat('speakit', result);
 }
 
 const addClickNewGameBtnHandler = () => {
@@ -239,6 +249,7 @@ const addClickNewGameBtnHandler = () => {
         }
         main.classList.remove('hidden')
         results.classList.add('hidden')
+        sendLongTermStatistics()
         removeCards()
         removeCardsResults()
         restart()
@@ -319,18 +330,15 @@ const changeLevelHandler = () => {
     }
 }
 
-const startSetting = () => {
+async function startSetting() {
     const level = document.getElementById('selectLevel')
     const round = document.getElementById('selectRound')
-
-    if (localStorage.getItem('levelSpeakit')) {
-        level.value = localStorage.getItem('levelSpeakit');
-        properties.level = Number(level.value);
-    }
-    if (localStorage.getItem('roundSpeakit')) {
-        round.value = localStorage.getItem('roundSpeakit');
-        properties.round = Number(round.value);
-    }
+    const startData = await UserSettingsMiniGame.getUserSettingsMiniGame('speakit') 
+    level.value = startData.level;
+    properties.level = Number(level.value);
+    round.value = startData.round;
+    properties.round = Number(round.value);
+    getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))
 }
 
 export default function initSpeakItGame() {
@@ -345,6 +353,5 @@ export default function initSpeakItGame() {
     addClickNewGameBtnHandler()
     addClickResultsHandler()
     renderRoundOptions()
-    startSetting()
-    getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))
+    startSetting() 
 }
