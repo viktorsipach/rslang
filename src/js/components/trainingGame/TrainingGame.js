@@ -7,13 +7,15 @@ import renderTrainingModal from './renderTrainingModal';
 
 export default class TrainingGame {
   constructor({ settings }) {
-    this.settings = settings;
-    this.newWordsPerDay = this.settings.optional.training.newWordsPerDay;
-    this.maxCardsPerDay = this.settings.optional.training.maxCardsPerDay;
-    this.cardSettings = this.settings.optional.training.cardSettings;
-    this.autoPronunciation = settings.optional.training.autoPronunciation;
-    this.showDeleteButton = settings.optional.training.showDeleteButton;
-    this.showHardButton = settings.optional.training.showHardButton;
+    // this.settings = settings;
+    // this.newWordsPerDay = this.settings.optional.training.newWordsPerDay;
+    this.trainingSettings = settings.optional.training;
+    this.newWordsPerDay = settings.wordsPerDay;
+    this.maxCardsPerDay = this.trainingSettings.maxCardsPerDay;
+    this.cardSettings = this.trainingSettings.cardSettings;
+    this.autoPronunciation = this.trainingSettings.autoPronunciation;
+    this.showDeleteButton = this.trainingSettings.showDeleteButton;
+    this.showHardButton = this.trainingSettings.showHardButton;
     this.timeOut = 2500;
     this.repeatData = [];
     this.isRepeatData = false;

@@ -10,9 +10,10 @@ export default async function initTrainingGame() {
  
   let settings = await getUserSettings();
   if (settings === undefined) {
+    const initialWordsPerDay = 10;
     await putUserSettings({ 
       settings: {
-        'wordsPerDay': 10,
+        'wordsPerDay': initialWordsPerDay,
         'optional': initialSettings
       }
     });
@@ -21,7 +22,7 @@ export default async function initTrainingGame() {
 
   const trainingGame = new TrainingGame({ settings });
   await trainingGame.getData();
-  trainingGame.start();
+  // trainingGame.start();
 
   document.querySelector('.game__buttons.training-game').addEventListener('click', (event) => {
     if (event.target.classList.contains('next')) {

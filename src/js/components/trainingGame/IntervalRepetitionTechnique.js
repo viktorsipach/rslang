@@ -4,13 +4,15 @@ import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
 import { getUserSettings } from '../../API/userSettingsAPI';
 
 const FILTER_FOR_NEW_WORDS = encodeURIComponent('{"userWord.optional.status":"new"}');
-const FILTER_FOR_REPEAT_WORDS = encodeURIComponent('{"$and":[{"$or":[{"userWord.optional.status":"repeat"},{"userWord.optional.status":"tricky"}],"userWord.optional.daysLeftToRepeat":0}]}');
+const FILTER_FOR_TODAY_REPEAT_WORDS = encodeURIComponent('{"$and":[{"$or":[{"userWord.optional.status":"repeat"},{"userWord.optional.status":"tricky"}],"userWord.optional.daysLeftToRepeat":0}]}');
+const FILTER_FOR_ALL_REPEAT_WORDS = encodeURIComponent('{"$or":[{"userWord.optional.status":"repeat"},{"userWord.optional.status":"tricky"}]}');
 
 async function createTrainingDataForDay(settings, amountOfCards) {
+  console.log(`create user words, amount = ${amountOfCards}`);
   const TRAINING_WORDS = [];
   const promises = [];
   const words = await getRoundData(settings.level, settings.round, amountOfCards);
-  console.log(words);  
+  // console.log(words);  
   words.forEach(async function createWord(word) {
     const currentDate = (new Date()).toLocaleString();
     promises.push(createUserWord({
@@ -35,8 +37,8 @@ async function createTrainingDataForDay(settings, amountOfCards) {
   return TRAINING_WORDS;
 }
 
-async function decreaseAllUserWordLeftDaysAmount(allUserWords) {
-  allUserWords.forEach(async function decreaseWordDaysToRepeat(word) {
+async function decreaseRepeatUserWordLeftDaysAmount(allRepeatWords) {
+  allRepeatWords.forEach(async function decreaseWordDaysToRepeat(word) {
     const userWord = await getUserWord({ wordId: word.wordId });
     const {difficulty} = userWord;
     const {lastRepeatDate} = userWord.optional;
@@ -66,7 +68,7 @@ async function decreaseAllUserWordLeftDaysAmount(allUserWords) {
 
 export default async function getTrainingGameData() {
   const allUserWords = await getAllUserWords();
-  console.log(allUserWords.length);
+  console.log(`allUserWords , length ${allUserWords.length}`);
   console.log(allUserWords);
 
   // allUserWords.forEach((word) => {
@@ -83,18 +85,40 @@ export default async function getTrainingGameData() {
   const today = new Date();
 
   const daysBetweenLastTriningAndToday = today.getDate() - lastGameDate.getDate();
-  console.log(daysBetweenLastTriningAndToday);
+  console.log(`daysBetweenLastTriningAndToday ${daysBetweenLastTriningAndToday}`);
+  const gameData = [];
 
-  if (daysBetweenLastTriningAndToday >= 1 || allUserWords.length === 0) {
-    console.log('new day or first day');
-    await decreaseAllUserWordLeftDaysAmount(allUserWords);
-    const gameData = [];
-    const AMOUNT_OF_WORDS_TO_REPEAT = trainingSettings.maxCardsPerDay - trainingSettings.newWordsPerDay;
-    console.log(`total Ws = ${trainingSettings.maxCardsPerDay}, new Ws = ${trainingSettings.newWordsPerDay}, repeat Ws${AMOUNT_OF_WORDS_TO_REPEAT}`);
-    await createTrainingDataForDay(trainingSettings, trainingSettings.newWordsPerDay);
-    const gameDataNew = await getFilteredUserWords(FILTER_FOR_NEW_WORDS, trainingSettings.newWordsPerDay);
+
+  if (allUserWords.length === 0) {
+    console.log('FIRST DAY');
+    await createTrainingDataForDay(trainingSettings, settings.wordsPerDay);
+    const gameDataNew = await getFilteredUserWords(FILTER_FOR_NEW_WORDS, settings.wordsPerDay);
     console.log(gameDataNew);
-    const gameDataRepeat = await getFilteredUserWords(FILTER_FOR_REPEAT_WORDS, AMOUNT_OF_WORDS_TO_REPEAT);
+    if (gameDataNew) {
+      gameDataNew[0].paginatedResults.forEach((el) => {
+        gameData.push(el);
+      });
+    }
+    return gameData;
+  }
+  if (daysBetweenLastTriningAndToday >= 1) {
+    console.log('NEW DAY');
+    console.log('decreaseRepeatUserWordLeftDaysAmount');
+    const amountOfWordsForMinRequest = 1;
+    let allRepeatWords = await getFilteredUserWords(FILTER_FOR_ALL_REPEAT_WORDS, amountOfWordsForMinRequest);
+    const allRepeatWordsCount = allRepeatWords[0].totalCount[0].count;
+    console.log(allRepeatWordsCount);
+    allRepeatWords = await getFilteredUserWords(FILTER_FOR_ALL_REPEAT_WORDS, settings.wordsPerDay);
+    console.log(allRepeatWords);
+    await decreaseRepeatUserWordLeftDaysAmount(allRepeatWords); // await //
+
+    const AMOUNT_OF_WORDS_TO_REPEAT = trainingSettings.maxCardsPerDay - settings.wordsPerDay;
+    console.log(`total Ws = ${trainingSettings.maxCardsPerDay}, new Ws = ${settings.wordsPerDay}, repeat Ws${AMOUNT_OF_WORDS_TO_REPEAT}`);
+
+    await createTrainingDataForDay(trainingSettings, settings.wordsPerDay);
+    const gameDataNew = await getFilteredUserWords(FILTER_FOR_NEW_WORDS, settings.wordsPerDay);
+    console.log(gameDataNew);
+    const gameDataRepeat = await getFilteredUserWords(FILTER_FOR_TODAY_REPEAT_WORDS, AMOUNT_OF_WORDS_TO_REPEAT);
     console.log(gameDataRepeat);
     if (gameDataNew) {
       gameDataNew[0].paginatedResults.forEach((el) => {
@@ -108,7 +132,47 @@ export default async function getTrainingGameData() {
     }
     return gameData;
   } 
-  console.log('same day');  
+  if (trainingSettings.amountOfLearnedWordsPerDay !== settings.wordsPerDay){
+    console.log('SAME DAY BUT!!! USER DON`T FINISHED TODAY WORDS');
+
+    const AMOUNT_OF_LEFT_NEW_WORDS = settings.wordsPerDay - trainingSettings.amountOfLearnedWordsPerDay;
+    const AMOUNT_OF_WORDS_TO_REPEAT = trainingSettings.maxCardsPerDay - AMOUNT_OF_LEFT_NEW_WORDS;
+    console.log(`total Ws = ${trainingSettings.maxCardsPerDay}, remain new Ws = ${trainingSettings.amountOfLearnedWordsPerDay}, repeat Ws${AMOUNT_OF_WORDS_TO_REPEAT}`);
+
+    const gameDataNew = await getFilteredUserWords(FILTER_FOR_NEW_WORDS, settings.wordsPerDay);
+    console.log(gameDataNew);
+    const gameDataRepeat = await getFilteredUserWords(FILTER_FOR_TODAY_REPEAT_WORDS, AMOUNT_OF_WORDS_TO_REPEAT);
+    console.log(gameDataRepeat);
+    if (gameDataNew) {
+      gameDataNew[0].paginatedResults.forEach((el) => {
+        gameData.push(el);
+      });
+    }
+    if (gameDataRepeat) {
+      gameDataRepeat[0].paginatedResults.forEach((word) => {
+        gameData.push(word);
+      });
+    }
+    return gameData;
+  }
+
+  let gameDataRepeat = await getFilteredUserWords(FILTER_FOR_TODAY_REPEAT_WORDS, 1);
+  console.log(gameDataRepeat);
+  const todayRepeatWordsCount = gameDataRepeat[0].totalCount[0].count;
+  console.log(todayRepeatWordsCount);
+  if (todayRepeatWordsCount > 0) {
+    console.log('SAME DAY ONLY!!! REPEAT WORDS');
+    gameDataRepeat = await getFilteredUserWords(FILTER_FOR_TODAY_REPEAT_WORDS, 1);
+    console.log(gameDataRepeat);
+
+    if (gameDataRepeat) {
+      gameDataRepeat[0].paginatedResults.forEach((word) => {
+        gameData.push(word);
+      });
+    }
+    return gameData;
+  }
+  console.log('SAME DAY AND NOTHING!!! MORE TO LEARN AND REPEAT');  
   return undefined;
 }
  
