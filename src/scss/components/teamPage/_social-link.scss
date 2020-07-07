@@ -1,0 +1,8 @@
+.social-link {
+  font-size: 3rem;
+  color: $color-violet;
+
+  &:focus {
+    outline: none;
+  }
+}

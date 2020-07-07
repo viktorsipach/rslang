@@ -13,9 +13,6 @@ class TeamPageBuilder {
       <div class="team-member__description">
       </div>
       <div class="team-member__social-links">
-        <a href="" class="social-link" target="_blank">
-          <i class="fa"></i>
-        </a>
       </div>
     `;
   }

@@ -1,8 +1,9 @@
 .team-members {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   margin: 0 auto;
-  padding: 10rem 1.5rem;
+  padding: 6rem 1.5rem;
   width:1170px;
 
   @include media-laptop {
@@ -14,6 +15,6 @@
   }
 
   @include media-mobile {
-    width:100%;
+    width: 100%;
   }
 }
