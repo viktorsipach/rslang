@@ -4,15 +4,28 @@ import {
   
 import signIn from './userUtils';
 import  getFormData  from './utils';
-import { createUser } from './userAPI';
+import { createUser, getUser } from './userAPI';
 import { addCardsAnimation } from '../mainPage/mainPage.component'
-  
-export default function initRegistration() {
+
+
+export default async function initRegistration() {
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('userToken');
+    const user = await getUser(userId,token);
+    if (user) {
+        MAIN_SECTION.classList.remove('hidden');
+        HEADER.classList.remove('hidden');
+    } else {
+        LOGIN_SECTION.classList.remove('hidden');
+    }
+
     HEADER.addEventListener('click', (event) => {
     if (event.target.classList.contains('btn-logout')) {
         LOGIN_SECTION.classList.remove('hidden');
         MAIN_SECTION.classList.add('hidden');
         HEADER.classList.add('hidden');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userToken');
     }
     });
 
