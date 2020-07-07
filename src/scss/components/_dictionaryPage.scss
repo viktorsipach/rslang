@@ -10,9 +10,12 @@
 
 .header__dictionary {
     width: 50%;
-    padding-top: 6rem;
-    padding-left: 1%;
+    padding-top: 7rem;
+    padding-left: 3%;
     font-size: 3rem;
+    @include media-tablet {
+        width: 90%;
+    }
 }
 
 .word-dictionary {
@@ -20,12 +23,12 @@
     justify-content: space-between;
     width: 70%;
     align-items: center;
-    margin: 2rem auto;
+    margin: 1rem auto;
     border-bottom: 1px solid  rgba(80, 80, 80, 0.4);
     padding-bottom: 1rem;
 
     @include media-tablet {
-        width: 96%;
+        width: 94%;
     }
 
     &__audio {
@@ -38,6 +41,11 @@
         padding-bottom: 1rem;
         font-size: 2rem;
 
+    }
+
+    &__transcription {
+        padding-bottom: 1rem;
+        font-size: 1.6rem;
     }
 
     &__translate {
@@ -56,11 +64,27 @@
     }
 
     &__img {
-        width: 12rem;
+        width: 14rem;
         border-radius: 0.5rem;
         @include media-tablet {
             width: 10rem;
         }
+    }
+
+    &__lastRepeatDate {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    &__repeatCount {
+        padding-bottom: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    &__daysLeftToRepeat {
+        padding-bottom: 0.5rem;
+        font-size: 1.2rem;
     }
 
     &__remove {
@@ -111,4 +135,9 @@
 
 .show__btn-remove {
     display: flex;
+}
+
+.word-dictionary__all {
+    padding-left: 1%;
+    font-size: 3rem;
 }
