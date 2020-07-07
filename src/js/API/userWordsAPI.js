@@ -1,28 +1,56 @@
-const token = localStorage.getItem('userToken');
-const userId = localStorage.getItem('userId');
-
-
-async function createUserWord({ wordId, word }) {
+async function getUserWord({ wordId }) {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`, {
-      method: 'POST',
-      withCredentials: true,
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(word)
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      }
     });
-    const content = await rawResponse.json();
-    console.log(content);
-    return content;
+    if (rawResponse.ok) {
+      const content = await rawResponse.json();
+      return content;
+    }   
+    return undefined;
   } catch (error) {
     return error;
-  } 
+  }  
+};
+
+async function createUserWord({ wordId, word }) {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
+  const userWord = await getUserWord({wordId});
+  if (userWord === undefined) {
+    try {
+      const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`, {
+        method: 'POST',
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(word)
+      });
+      if (rawResponse.ok) {
+        const content = await rawResponse.json();
+        return content;
+      }
+      return undefined;
+    } catch (error) {
+      return error;
+    } 
+  }
+  return undefined;
 };
 
 async function updateUserWord({ wordId, word }) {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`, {
       method: 'PUT',
@@ -35,7 +63,6 @@ async function updateUserWord({ wordId, word }) {
       body: JSON.stringify(word)
     });
     const content = await rawResponse.json();
-    console.log(content);
     return content;
   } catch (error) {
     return error;
@@ -43,6 +70,8 @@ async function updateUserWord({ wordId, word }) {
 };
 
 async function deleteUserWord({ wordId }) {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`, {
       method: 'DELETE',
@@ -52,7 +81,6 @@ async function deleteUserWord({ wordId }) {
         'Accept': 'application/json',
       },
     });
-    console.log(rawResponse);
     return rawResponse;
   } catch (error) {
     return error;
@@ -60,6 +88,8 @@ async function deleteUserWord({ wordId }) {
 };
 
 async function getAllUserWords() {
+  const token = localStorage.getItem('userToken');
+  const userId = localStorage.getItem('userId');
   try {
     const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words`, {
       method: 'GET',
@@ -77,24 +107,5 @@ async function getAllUserWords() {
     return error;    
   }  
 };
-
-async function getUserWord({ wordId }) {
-  try {
-    const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`, {
-    method: 'GET',
-    withCredentials: true,
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
-      }
-    });
-    const content = await rawResponse.json();
-    console.log(content);
-    return content;
-  } catch (error) {
-    return error;
-  }  
-};
-
 
 export { createUserWord, updateUserWord, deleteUserWord, getUserWord, getAllUserWords };

@@ -1,56 +1,65 @@
-import { getRoundData, getRoundsAmountInLevel } from '../../API/dataAPI';
 import renderStatistics from './renderStatistics';
 import { disableButton, enableButton } from './utils';
+import getTrainingGameData from './IntervalRepetitionTechnique';
+import { updateUserWord, getUserWord } from '../../API/userWordsAPI';
+import { updateLevelRoundDateSettings } from '../../API/userSettingsAPI';
+import renderTrainingModal from './renderTrainingModal';
 
 export default class TrainingGame {
-  constructor(settings) {
+  constructor({ settings }) {
     this.settings = settings;
-    this.newWordsPerDay = this.settings.newWordsPerDay;
-    this.maxCardsPerDay = this.settings.maxCardsPerDay;
-    this.cardSettings = this.settings.cardSettings;
-    this.autoPronunciation = settings.autoPronunciation;
-    this.showDeleteButton = settings.showDeleteButton;
-    this.showHardButton = settings.showHardButton;
-    this.level = 1;
-    this.round = 1;
+    this.newWordsPerDay = this.settings.optional.training.newWordsPerDay;
+    this.maxCardsPerDay = this.settings.optional.training.maxCardsPerDay;
+    this.cardSettings = this.settings.optional.training.cardSettings;
+    this.autoPronunciation = settings.optional.training.autoPronunciation;
+    this.showDeleteButton = settings.optional.training.showDeleteButton;
+    this.showHardButton = settings.optional.training.showHardButton;
     this.timeOut = 2500;
-    this.maxWordsPerSentence = 50;
-    this.levelsAmount = 6;
-  }
-
-  async start() {
-    console.log(`this.level ${this.level}, this.round ${this.round}`);
-    this.roundsAmount = await getRoundsAmountInLevel(this.level, this.maxWordsPerSentence, this.newWordsPerDay) ;
-    console.log(`roundsAmount ${this.roundsAmount}`);
-    this.data = await this.getData();
-    console.log(this.data);
-    this.cardData = this.data[this.currentCardNumber];
-    this.lettersCount = this.data[this.currentCardNumber].word.length;
-    this.renderCardData();
+    this.repeatData = [];
+    this.isRepeatData = false;
+    this.amountsOfRepeatCards = 0;
+    this.wordStatus = 'repeat';
+    this.wordDifficulty = 'easy';
+    this.date = (new Date()).toLocaleString();
   }
 
   async getData() {
-    this.currentCardNumber = 0;
-    this.correctAnswersAmount = 0;
-    this.seriesOfCorrectAnswers = 0;
-    this.longestSeriesOfCorrectAnswers = 0;
-    const data = await getRoundData(this.level, this.round, this.newWordsPerDay);
-    this.progress = 0;
-    return data;
+    this.data = await getTrainingGameData();
+    if (this.data) {
+      this.amountsOfCards = this.data.length;
+    }
+  }
+
+  async start() {
+    if (this.data === undefined || this.amountsOfCards === 0) {
+      console.log('no words to learn today!')
+      document.querySelector('.page').append(renderTrainingModal());
+    } else {
+      this.currentCardNumber = 0;
+      this.correctAnswersAmount = 0;
+      this.seriesOfCorrectAnswers = 0;
+      this.longestSeriesOfCorrectAnswers = 0;
+      this.progress = 0;
+      this.cardData = this.data[this.currentCardNumber];
+      this.lettersCount = this.data[this.currentCardNumber].word.length;
+      this.renderCardData();
+    }
   }
 
   renderCardData() {
+    const DIFFICULTY_BUTTONS = document.querySelector('.difficulty__buttons');
+    const GAME_BUTTONS = document.querySelector('.game__buttons.training-game');
+    DIFFICULTY_BUTTONS.classList.add('hidden');
+    GAME_BUTTONS.classList.remove('hidden');
     const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
     const IDONTKNOWBUTTON_SELECTOR = '.trainingGame__button.dontKnow';
     disableButton(NEXTBUTTON_SELECTOR);
     enableButton(IDONTKNOWBUTTON_SELECTOR);
     this.isWordWithoutTraining = false;
-
-    if (this.currentCardNumber < this.maxCardsPerDay) {
+    if (this.currentCardNumber < this.amountsOfCards) {
       document.querySelector('.letters-container').classList.add('hidden');
       this.cardData = this.data[this.currentCardNumber];
       console.log(this.cardData);
-
       this.renderTranslation();
       this.renderAutoPronunciationButtonState();
       this.renderTranslationInfoAndButtonState();
@@ -60,41 +69,258 @@ export default class TrainingGame {
       this.renderInput();
       this.showProgress();
     } else {
-      let isLastWordsInApp = false;
-      if (this.level === this.levelsAmount && this.round === this.roundsAmount) {
-        isLastWordsInApp = true;
+      updateLevelRoundDateSettings();
+      if (this.repeatData.length === 0) {
+        this.openStatistics();
+      } else {
+        console.log('repeat again words');
+        this.isRepeatData = true;
+        this.currentCardNumber = 0;
+        this.amountsOfRepeatCards = this.repeatData.length;
+        this.playRepeatWords();
       }
-      
-      const statisticsData = {
-        amountOfWords: this.maxCardsPerDay,
-        amountOfCorrectAnswers: this.correctAnswersAmount,
-        amountOfNewWords: 1, // not implemented yet
-        longestSeriesOfCorrectAnswers: this.longestSeriesOfCorrectAnswers
-      }
-      document.querySelector('.page').append(renderStatistics(isLastWordsInApp, statisticsData)); 
-
-      document.querySelector('.statistic__buttons').addEventListener('click', (event) => {
-        const notificationContainer = document.querySelector('.training__statistic');
-        notificationContainer.parentNode.removeChild(notificationContainer);
-        if (event.target.classList.contains('continue')) {          
-          if (this.round < this.roundsAmount) {
-            this.round += 1;
-            this.start();
-          } else if (this.level < this.levelsAmount) { 
-            this.level += 1;
-            this.round = 1;
-            this.start();
-          }           
-        } else if (event.target.classList.contains('settings')) {
-          console.log('goToSettingsPage');
-          // goToSettingPage
-        } else if (event.target.classList.contains('again')) {
-          this.level = 1;
-          this.round = 1;
-          this.start();
-        }
-      });
     }
+  }
+
+  checkInput() {
+    const INPUT = document.querySelector('.card__input');
+    const LETTERS_CONTAINER = document.querySelector('.letters-container');
+    LETTERS_CONTAINER.innerHTML = '';
+    LETTERS_CONTAINER.append(this.createWordLetters());
+
+    const inputLetters = INPUT.value.toLowerCase().split('');
+    const wordLetters = document.querySelectorAll('.letters-container>*');
+    this.errorCount = 0;
+    for(let i=0; i< wordLetters.length; i += 1) {
+      if (wordLetters[i].textContent.toLowerCase() === inputLetters[i]) {
+        wordLetters[i].dataset.isCorrect = 'true';
+      } else {
+        wordLetters[i].dataset.isCorrect = 'false';
+        this.errorCount += 1;
+      }
+    }
+    if (this.isWordWithoutTraining) {
+      if(!this.isRepeatData) {
+        this.showProgress();
+        this.seriesOfCorrectAnswers = 0;
+      }
+      this.showAnswer();
+    } 
+    else if (this.errorCount === 0) {
+      INPUT.value = '';
+      if (!this.isRepeatData) {
+        this.correctAnswersAmount += 1;
+        this.seriesOfCorrectAnswers += 1;
+      }
+      if (this.seriesOfCorrectAnswers > this.longestSeriesOfCorrectAnswers) {
+        this.longestSeriesOfCorrectAnswers = this.seriesOfCorrectAnswers;
+      }
+      this.correctAnswer();
+    } else {
+      this.seriesOfCorrectAnswers = 0;
+      this.incorrectAnswer();
+    }
+  }
+
+  correctAnswer() {
+    this.isAnswerCorrect = true;
+    this.progress += 100/this.amountsOfCards;
+    this.showAnswer();
+  }
+
+  incorrectAnswer() {
+    this.isAnswerCorrect = false;
+    this.showAnswer();
+  }
+
+  playCardSounds() {
+    if (this.autoPronunciation) {
+      const SOUNDS_SRC = 'https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/';
+      const wordSound = new Audio();
+      wordSound.src = `${SOUNDS_SRC}${this.cardData.audio}`;
+      wordSound.play();
+      wordSound.onended = () => {
+        const meaningSound = new Audio();
+        meaningSound.src = `${SOUNDS_SRC}${this.cardData.audioMeaning}`;
+        meaningSound.play();
+        meaningSound.onended = () => {
+          const exampleSound = new Audio();
+          exampleSound.src = `${SOUNDS_SRC}${this.cardData.audioExample}`;
+          exampleSound.play();
+          exampleSound.onended = () => {
+            if (this.isWordWithoutTraining && !this.isRepeatData) {
+              this.renderCardData();
+            } else if(this.isRepeatData) {
+              this.playRepeatWords();
+            }
+          }
+        }
+      }
+    } else if (!this.autoPronunciation) {
+      if (this.isWordWithoutTraining && !this.isRepeatData) {
+        setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
+      } else if(this.isRepeatData) {
+        setTimeout(function fn(){ this.playRepeatWords(); }.bind(this), this.timeOut);
+      }
+    }
+  }
+
+  showAnswer () {
+    const DIFFICULTY_BUTTONS = document.querySelector('.difficulty__buttons');
+    const GAME_BUTTONS = document.querySelector('.game__buttons.training-game');
+    const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
+    const IDONTKNOWBUTTON_SELECTOR = '.trainingGame__button.dontKnow';
+    const INPUT = document.querySelector('.card__input');
+
+    INPUT.setAttribute('placeholder', '');
+    INPUT.value = '';
+    if (this.errorCount >= this.lettersCount/2) {
+      const wordLetters = document.querySelectorAll('.letters-container>*');
+      Array.from(wordLetters).forEach((element) => {
+      const letter = element;
+        letter.style.color = 'red';
+      });
+    } 
+    document.querySelector('.letters-container').classList.remove('hidden'); 
+    if (this.isWordWithoutTraining) {
+      console.log('isWordWithoutTraining');
+      this.currentCardNumber += 1;
+      disableButton(NEXTBUTTON_SELECTOR);
+      disableButton(IDONTKNOWBUTTON_SELECTOR);
+      INPUT.disabled = true;
+      document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
+      document.querySelector('.card__example-sentence>span').classList.remove('hidden');
+      if (this.cardSettings.showTranslation)   {
+        this.showSentencesTranslations();
+      }
+      if (!this.isRepeatData) {
+        this.showProgress();
+      } 
+      this.playCardSounds();
+    } else if (this.isAnswerCorrect) {
+      console.log('correct answer');
+      this.currentCardNumber += 1
+      INPUT.disabled = true;
+      document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
+      document.querySelector('.card__example-sentence>span').classList.remove('hidden');
+      if (this.cardSettings.showTranslation) {
+        this.showSentencesTranslations();
+      }
+      if (!this.isRepeatData) {
+        DIFFICULTY_BUTTONS.classList.remove('hidden');
+        GAME_BUTTONS.classList.add('hidden');
+        this.showProgress();
+      } 
+      this.playCardSounds();
+    } else if (!this.isAnswerCorrect) {
+      console.log('INcorrect answer');
+      disableButton(NEXTBUTTON_SELECTOR);
+      INPUT.disabled = false;
+      INPUT.focus();
+    }  
+  }
+
+  showWordWithoutTraining() {
+    this.isAnswerCorrect = false;
+    this.isWordWithoutTraining = true;
+    this.progress += 100/this.amountsOfCards;
+    this.checkInput();
+  }
+
+  playRepeatWords() {
+    if (this.currentCardNumber < this.amountsOfRepeatCards) {
+    this.cardData = this.repeatData[this.currentCardNumber];
+    console.log(this.cardData);
+
+    const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
+    disableButton(NEXTBUTTON_SELECTOR);
+    this.isWordWithoutTraining = false;
+    document.querySelector('.letters-container').classList.add('hidden');
+      
+    this.renderTranslation();
+    this.renderAutoPronunciationButtonState();
+    this.renderTranslationInfoAndButtonState();
+    this.renderAssociatedPicture();
+    this.renderExplanationSentence();
+    this.renderExampleSentence();
+    this.renderInput();
+    } else {
+      this.openStatistics();
+    }
+  }
+
+  openStatistics() {
+    const statisticsData = {
+      amountOfWords: this.amountsOfCards,
+      amountOfCorrectAnswers: this.correctAnswersAmount,
+      amountOfNewWords: this.settings.optional.training.newWordsPerDay,
+      longestSeriesOfCorrectAnswers: this.longestSeriesOfCorrectAnswers
+    }
+    document.querySelector('.page').append(renderStatistics(statisticsData)); 
+  }
+
+  async updateWord() {
+    let difficultyCoef;
+    switch (this.wordDifficulty) {
+      case 'easy':
+        difficultyCoef = 3;
+        break;
+      case 'normal':
+        difficultyCoef = 2;
+        break;
+      case 'hard':
+        difficultyCoef = 1;
+        break;
+      default:
+        break;
+    }
+
+    const currentWord = this.data[this.currentCardNumber - 1];
+    const idProperty = '_id';
+    const userWord = await getUserWord({ wordId: currentWord[`${idProperty}`] });
+
+    let {repeatCount} = userWord.optional;
+    let {daysLeftToRepeat} = userWord.optional;
+    let {errorsCount} = userWord.optional;
+    
+    repeatCount += 1;
+    daysLeftToRepeat = difficultyCoef * repeatCount;
+
+    if (this.wordStatus !== 'delete' && this.wordStatus !== 'tricky') {
+      this.wordStatus = 'repeat';
+    }
+
+    if (this.difficulty === 'hard') {
+      errorsCount +=1;
+      if (errorsCount >= 5) {
+        this.wordStatus = 'tricky';
+      }
+    }
+  
+    updateUserWord({
+      wordId: currentWord[`${idProperty}`],
+      word: {
+        'difficulty': this.wordDifficulty,
+        'optional': {
+          status: this.wordStatus,
+          lastRepeatDate: this.date,
+          difficultyCoef,
+          repeatCount,
+          daysLeftToRepeat,
+          errorsCount,
+        }
+      }
+    })
+    
+  }
+
+  showProgress() {
+    document.querySelector('.progress__value').textContent = `${this.currentCardNumber} / ${this.amountsOfCards}`;
+    document.querySelector('.progress__line').style.width = `${this.progress}%`;
+  }
+
+  addCardToRepeatList() {
+    this.repeatData.push(this.data[this.currentCardNumber - 1]);
   }
 
   renderTranslation() {
@@ -164,6 +390,7 @@ export default class TrainingGame {
     } 
   }
 
+
   renderInput() {
     const INPUT = document.querySelector('.card__input');
       INPUT.disabled = false;
@@ -186,64 +413,18 @@ export default class TrainingGame {
   
   createWordLetters(){
     const fragment = document.createDocumentFragment();
-    this.data[this.currentCardNumber].word.split('').forEach(element => {
+    let data;
+    if (this.isRepeatData) {
+      data = this.repeatData;
+    } else {
+      data = this.data;
+    }
+    data[this.currentCardNumber].word.split('').forEach(element => {
       const letter = document.createElement('span');
       letter.textContent = element;
       fragment.append(letter);
     });
     return fragment;
-  }
-
-  playCardSounds() {
-    const SOUNDS_SRC = 'https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/';
-    const wordSound = new Audio();
-    wordSound.src = `${SOUNDS_SRC}${this.cardData.audio}`;
-    wordSound.play();
-    wordSound.onended = () => {
-      const meaningSound = new Audio();
-      meaningSound.src = `${SOUNDS_SRC}${this.cardData.audioMeaning}`;
-      meaningSound.play();
-      meaningSound.onended = () => {
-        const exampleSound = new Audio();
-        exampleSound.src = `${SOUNDS_SRC}${this.cardData.audioExample}`;
-        exampleSound.play();
-        exampleSound.onended = () => {
-          this.renderCardData();
-        }
-      }
-    };
-  }
-
-  showAnswer () {
-    const INPUT = document.querySelector('.card__input');
-    INPUT.setAttribute('placeholder', '');
-    INPUT.value = '';
-    if (this.errorCount >= this.lettersCount/2) {
-      const wordLetters = document.querySelectorAll('.letters-container>*');
-      Array.from(wordLetters).forEach((element) => {
-      const letter = element;
-        letter.style.color = 'red';
-      });
-    } 
-    document.querySelector('.letters-container').classList.remove('hidden'); 
-
-    if (this.isAnswerCorrect || this.isWordWithoutTraining) {
-      const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
-      const IDONTKNOWBUTTON_SELECTOR = '.trainingGame__button.dontKnow';
-      disableButton(NEXTBUTTON_SELECTOR);
-      disableButton(IDONTKNOWBUTTON_SELECTOR);
-      INPUT.disabled = true;
-      document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
-      document.querySelector('.card__example-sentence>span').classList.remove('hidden');
-      if (this.cardSettings.showTranslation)   {
-        this.showSentencesTranslations();
-      }
-    } else {
-      const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
-      disableButton(NEXTBUTTON_SELECTOR);
-      INPUT.disabled = false;
-      INPUT.focus();
-    }
   }
 
   showSentencesTranslations() {
@@ -259,80 +440,5 @@ export default class TrainingGame {
     document.querySelector('.letters-container').classList.add('hidden');
     INPUT.setAttribute('placeholder', this.data[this.currentCardNumber].word);
     INPUT.focus();
-  }
-
-  checkInput() {
-    const INPUT = document.querySelector('.card__input');
-    const LETTERS_CONTAINER = document.querySelector('.letters-container');
-    LETTERS_CONTAINER.innerHTML = '';
-    LETTERS_CONTAINER.append(this.createWordLetters());
-
-    const inputLetters = INPUT.value.toLowerCase().split('');
-    const wordLetters = document.querySelectorAll('.letters-container>*');
-    this.errorCount = 0;
-    for(let i=0; i< wordLetters.length; i += 1) {
-      if (wordLetters[i].textContent === inputLetters[i]) {
-        wordLetters[i].dataset.isCorrect = 'true';
-      } else {
-        wordLetters[i].dataset.isCorrect = 'false';
-        this.errorCount += 1;
-      }
-    }
-    if (this.isWordWithoutTraining) {
-      this.currentCardNumber += 1;
-      this.seriesOfCorrectAnswers = 0;
-      this.showProgress();
-      if (this.autoPronunciation) {     
-        this.showAnswer();
-        this.playCardSounds();  
-      } else {
-        this.showAnswer();
-        setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
-      }
-
-    } else
-    if (this.errorCount === 0) {
-      INPUT.value = '';
-      this.currentCardNumber += 1;
-      this.correctAnswersAmount += 1;
-      this.seriesOfCorrectAnswers += 1;
-      if (this.seriesOfCorrectAnswers > this.longestSeriesOfCorrectAnswers) {
-        this.longestSeriesOfCorrectAnswers = this.seriesOfCorrectAnswers;
-      }
-      this.correctAnswer();
-    } else {
-      this.seriesOfCorrectAnswers = 0;
-      this.incorrectAnswer();
-    }
-  }
-
-  correctAnswer() {
-    this.isAnswerCorrect = true;
-    this.progress += 100/this.maxCardsPerDay;
-    this.showProgress();
-    if (this.autoPronunciation) {     
-      this.showAnswer();
-      this.playCardSounds();  
-    } else {
-      this.showAnswer();
-      setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
-    }
-  }
-
-  incorrectAnswer() {
-    this.isAnswerCorrect = false;
-    this.showAnswer();
-  }
-
-  showWordWithoutTraining() {
-    this.isAnswerCorrect = false;
-    this.isWordWithoutTraining = true;
-    this.progress += 100/this.maxCardsPerDay;
-    this.checkInput();
-  }
-
-  showProgress() {
-    document.querySelector('.progress__value').textContent = `${this.currentCardNumber} / ${this.maxCardsPerDay}`;
-    document.querySelector('.progress__line').style.width = `${this.progress}%`;
   }
 }   

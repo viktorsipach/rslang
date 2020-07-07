@@ -13,7 +13,6 @@ class Statistics {
         </div>
         <div class="stat-schedule">
             <canvas id="canvas"></canvas>
-            <div id="pie"></div>
         </div>
         `;
 

@@ -1,48 +1,78 @@
 import renderTrainingGamePage from './renderTrainingGamePage';
 import TrainingGame from './TrainingGame';
-import testUserWords from '../../API/testUserWords';
+import { putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
+import initialSettings from './initialSetting';
 
 export default async function initTrainingGame() {
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderTrainingGamePage());
+ 
+  let settings = await getUserSettings();
+  if (settings === undefined) {
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': 10,
+        'optional': initialSettings
+      }
+    });
+    settings = await getUserSettings();
+  } 
 
-  const settings = {
-    newWordsPerDay: 20,
-    maxCardsPerDay: 20,
-    cardSettings: {
-      showTranslation: true,
-      showExplanationSentence: true,
-      showExampleSentence: true,
-      showTranscription: true,
-      showAssociatedPicture: true
-    },
-    autoPronunciation: true,
-    showSentencesTranslation: true,
-    showIDontKnowButton: true,
-    showDeleteButton: true,
-    showHardButton: true,
-    newWordsOnly: true,
-    learnedWordsOnly: true,
-  }
-
-  // testUserWords();
-
-  const trainingGame = new TrainingGame(settings);
+  const trainingGame = new TrainingGame({ settings });
+  await trainingGame.getData();
   trainingGame.start();
-  
-  document.querySelector('.trainingGame__button.next').addEventListener('click', () => {
-    trainingGame.checkInput(trainingGame.data);
+
+  document.querySelector('.game__buttons.training-game').addEventListener('click', (event) => {
+    if (event.target.classList.contains('next')) {
+      trainingGame.checkInput(trainingGame.data);
+    } else if (event.target.classList.contains('dontKnow')) {
+      trainingGame.showWordWithoutTraining();
+      trainingGame.wordDifficulty = 'hard';
+      trainingGame.updateWord();
+    }
   });
 
-  document.addEventListener('keypress', (event) => {
-    if (event.code === 'Enter' && document.querySelector('.game__training')) {
-      trainingGame.checkInput(trainingGame.data);
+  document.querySelector('.difficulty__buttons').addEventListener('click', (event) => {
+    if (event.target.classList.contains('again')) {
+      trainingGame.addCardToRepeatList();
+      trainingGame.wordDifficulty = 'hard';
+    } else if (event.target.classList.contains('easy')) {
+      trainingGame.wordDifficulty = 'easy';
+    } else if (event.target.classList.contains('normal')) {
+      trainingGame.wordDifficulty = 'normal';
+    } else if (event.target.classList.contains('hard')) {
+      trainingGame.wordDifficulty = 'hard';
     }
-    else {
-      trainingGame.checkInputLength();
-      trainingGame.hideAnswer();
+    trainingGame.updateWord();
+    trainingGame.renderCardData();
+  });
+
+  document.querySelector('.dictionary__buttons').addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete')) {
+      trainingGame.wordStatus = 'delete';
+    } else if (event.target.classList.contains('tricky')) {
+      trainingGame.wordStatus = 'tricky';
     }
+  })
+
+  function keyBoardHelper(event) {
+    if(!document.querySelector('.game__buttons.training-game').classList.contains('hidden')) {
+      if (event.code === 'Enter' && document.querySelector('.game__training')) {
+        trainingGame.checkInput(trainingGame.data);
+      }
+      else {
+        trainingGame.checkInputLength();
+        trainingGame.hideAnswer();
+      }
+    }
+  }
+
+  document.addEventListener('keypress', keyBoardHelper);
+
+  const CLOSE_BUTTON = document.querySelector('.close-btn');
+  CLOSE_BUTTON.addEventListener('click', () => {
+    document.removeEventListener('keypress', trainingGame.keyBoardHelper);
   });
 
   document.querySelector('.card__input').addEventListener('click', () => {
@@ -68,9 +98,5 @@ export default async function initTrainingGame() {
         }
       }
     }
-  })
-
-  document.querySelector('.trainingGame__button.dontKnow').addEventListener('click', () => {
-    trainingGame.showWordWithoutTraining();
   });
 }

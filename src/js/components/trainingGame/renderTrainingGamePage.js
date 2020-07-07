@@ -125,7 +125,7 @@ function renderDictionaryButtons() {
   const dictionaryButtons = document.createElement('div');
   dictionaryButtons.className = 'buttons dictionary__buttons';
   dictionaryButtons.append(renderButton('dictionary__button delete', 'Удалить слово'));
-  dictionaryButtons.append(renderButton('dictionary__button hard', 'Сложное слово'));
+  dictionaryButtons.append(renderButton('dictionary__button tricky', 'Сложное слово'));
   return dictionaryButtons;
 }
 
@@ -135,6 +135,16 @@ function renderGameButtons() {
   gameButtons.append(renderButton('trainingGame__button dontKnow', 'Не знаю'));
   gameButtons.append(renderButton('trainingGame__button next', 'Далее'));
   return gameButtons;
+}
+
+function renderDifficultyButtons() {
+  const difficultyButtons = document.createElement('div');
+  difficultyButtons.className = 'buttons difficulty__buttons hidden';
+  difficultyButtons.append(renderButton('trainingGame__button again', 'Повторить'));
+  difficultyButtons.append(renderButton('trainingGame__button easy', 'Легко'));
+  difficultyButtons.append(renderButton('trainingGame__button normal', 'Нормально'));
+  difficultyButtons.append(renderButton('trainingGame__button hard', 'Сложно'));
+  return difficultyButtons;
 }
 
 function renderProgressBar() {
@@ -166,6 +176,7 @@ export default function  renderTrainingGamePage() {
   mainPage.append(renderTrainingCard());
   mainPage.append(renderDictionaryButtons());
   mainPage.append(renderGameButtons());
+  mainPage.append(renderDifficultyButtons());
   mainPage.append(renderProgressBar());
 
   const mainPageWrapper = document.createElement('div');
