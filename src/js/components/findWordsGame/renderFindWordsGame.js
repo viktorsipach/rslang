@@ -1,5 +1,6 @@
 import {getRoundData} from '../../API/dataAPI';
 import StatisticsAPI from '../../API/statisticsAPI';
+import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 
 class RenderFindWordsGame {
     constructor() {
@@ -32,7 +33,7 @@ class RenderFindWordsGame {
         this.createElement('div', 'button game-info__start-button', 'НАЧАТЬ', 'game-info');
     }
 
-    renderMainPage() {
+    async renderMainPage() {
         const event = new Event('mainPageLoad');
 
         this.createElement('div', 'game-container hide-game-container', '', 'find-words');
@@ -42,7 +43,7 @@ class RenderFindWordsGame {
         this.createElement('div', 'game-container__progress-bar progress-bar', '', 'game-container');
         this.createElement('div', 'game-container__game-field game-field', '', 'game-container');
 
-        this.renderMainPageControls();
+        await this.renderMainPageControls();
         this.renderMainPageProgressBar();
         this.renderMainPageGameField();
         this.renderMainPageWords();
@@ -50,9 +51,24 @@ class RenderFindWordsGame {
         document.querySelector('.find-words').dispatchEvent(event);
     }
 
-    renderMainPageControls() {
+    async renderMainPageControls() {
+        const settings = await UserSettingsMiniGame.getUserSettingsMiniGame('findWords');
         const maxLevel = 6;
         const maxRound = 60;
+        const increment = 1;
+        const startValue = 1;
+
+        if (settings.level === maxLevel && settings.round === maxRound) {
+            settings.level = startValue;
+            settings.round = startValue;
+        } else if (settings.round === maxRound) {
+            settings.level += increment;
+            settings.round = startValue;
+        } else {
+            settings.round += increment;
+        }
+
+        
 
         this.createElement('div', 'controls__level level', '', 'controls');
         this.createElement('div', 'level__head', 'Уровень', 'controls__level');
@@ -69,6 +85,8 @@ class RenderFindWordsGame {
         for (let i = 1; i <= maxRound; i += 1 ) {
             this.createElement('option', 'page-select__item', i, 'page-select')
         }
+        document.querySelector('.level-select').value = settings.level;
+        document.querySelector('.page-select').value = settings.round;
 
         this.createElement('div', 'controls__sound sound', '', 'controls');
         this.createElement('div', 'sound__head', 'Звук', 'controls__sound');
@@ -190,6 +208,7 @@ class RenderFindWordsGame {
         }
 
         StatisticsAPI.miniGameStat('findWords', `${stat.total} steps`);
+        UserSettingsMiniGame.updateUserSettingsMiniGame('findWords', level, round);
 
         document.querySelector('.find-words').dispatchEvent(event);
     }
