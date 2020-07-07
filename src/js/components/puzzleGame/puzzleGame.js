@@ -2,22 +2,31 @@ import Game from './Game';
 import renderStartPage from './renderStartPage';
 import renderMainPage from './renderMainPage';
 import { checkActiveHints, checkLocalStorageItem } from './utils';
+import userSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
+
+let game;
+
+async function startGame() {
+  const gameName = 'puzzle';
+  const gameProgress = await userSettingsMiniGame.getUserSettingsMiniGame(gameName);
+  const {level} = gameProgress;
+  const {round} = gameProgress;
+  game = new Game( { level, round });
+  game.startNewLevelRound();
+}
 
 export default function initPuzzleGame() {
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderStartPage());
 
+
   document.querySelector('.start__button').addEventListener('click', () => {
     PAGECONTAINER.innerHTML = '';
     PAGECONTAINER.append(renderMainPage());
     const SELECTLEVELOPTION = document.getElementById('selectLevel');
     const SELECTROUNDOPTION = document.getElementById('selectRound');
-
-    const level = 1;
-    const round = 1;
-    const game = new Game( { level, round });
-    game.startNewLevelRound();
+    startGame();
 
     // change events
     document.querySelector('.menu__left').addEventListener('change', (event) => {
@@ -67,6 +76,8 @@ export default function initPuzzleGame() {
             game.startSentence();
           } else {
             game.sendLongTermStatistics();
+            game.updateLevelRound();
+            game.sendLevelRoundInfo();
             game.checkGameProgress();
           }
         }
@@ -79,6 +90,8 @@ export default function initPuzzleGame() {
             const statisticElement = document.querySelector('.puzzle__statistic');
             statisticElement.parentNode.removeChild(statisticElement);
             if (!game.isFinished) {
+              game.updateLevelRound();
+              game.sendLevelRoundInfo();
               game.checkGameProgress();
             }
           }
