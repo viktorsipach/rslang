@@ -4,6 +4,7 @@ import { renderDropdown, renderGamePage } from './renderGamePage';
 import { getRoundData } from '../../API/dataAPI';
 import { getPartSpeech } from './partOfSpeech';
 import { statisticsWords } from './statistics';
+import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 
 const arrTrueAnswer = [];
 const arrFalseAnswer = [];
@@ -186,17 +187,37 @@ function removeListenerClose() {
   });
 }
 
+function setLevelAndRound(level, round) {
+  document.getElementById('lvl-select').value = level;
+  document.getElementById('rnd-select').value = round;
+}
+
+async function getUserSettings(nameGame) {
+  const getSett = await UserSettingsMiniGame.getUserSettingsMiniGame(nameGame);
+  levelGame = Number(getSett.level);
+  roundGame = Number(getSett.round);
+
+  await getDataAPI(levelGame, roundGame);
+}
+
+async function setUserSettings(nameGame, level, round) {
+  await UserSettingsMiniGame.updateUserSettingsMiniGame(nameGame, level, round);
+}
+
 
 function startGame() {
   const newArrObjectWords = arrAllWordsOption;
   const objectGameWords = getWords(newArrObjectWords);
+  const nameGame = 'audiocall';
+
+  getUserSettings(nameGame);
 
   if (numberWordCount === objectGameWords.length) {
     const numberRoundEnd = 30;
     const gameBtn = document.querySelector('.game .game__btn.button');
     gameBtn.innerText = 'Статистика';
     const result = `${arrTrueAnswer.length/objectGameWords.length * 100}%`;
-    const nameGame = 'audiocall';
+    
     StatisticsAPI.miniGameStat(nameGame, result);
     statisticsWords(arrTrueAnswer, arrFalseAnswer);
     document.querySelector('.statistics-audioCall').classList.remove('modal-audioCall-hidden');
@@ -205,12 +226,16 @@ function startGame() {
       numberWordCount = 0;
       progressHeight = 0;
       progressWidth = 0;
+      console.log(roundGame);
+      console.log(levelGame);
       if (Number(roundGame) === numberRoundEnd) {
         levelGame += 1;
         roundGame = 0;
+        setUserSettings(nameGame, levelGame, roundGame);
       }
       roundGame += 1;
-      getDataAPI(levelGame, roundGame);
+      getDataSelectAPI(levelGame, roundGame);
+      setUserSettings(nameGame, levelGame, roundGame);
     });
 
   } else {
@@ -242,9 +267,8 @@ function startGame() {
     pageContent.append(renderDropdown());
 
     progressBar(progressHeight, progressWidth);
-    
-    document.getElementById('lvl-select').value = levelGame;
-    document.getElementById('rnd-select').value = roundGame;
+
+    setLevelAndRound(levelGame, roundGame);
   
     const audioBtn = document.querySelector('.game__voice');
     const gameWords = document.querySelector('.game__words');
@@ -308,10 +332,25 @@ async function getPartOfSpeech(objectWords) {
   }
 }
 
-async function getDataAPI(levelGame, roundGame) {
+async function getDataAPI() {
+  const level = levelGame;
+  const round = roundGame;
+  const wordsPerRound = 20;
+  let data = [];
 
+  data = await getRoundData(level, round, wordsPerRound);
+
+  let objectWords = [];
+
+  objectWords = data;
+
+  getPartOfSpeech(objectWords);
+}
+
+async function getDataSelectAPI() {
   let level = levelGame;
   let round = roundGame;
+
   const wordsPerRound = 20;
   let data = [];
 
@@ -330,27 +369,35 @@ async function getDataAPI(levelGame, roundGame) {
 function getLevelAndRound() {
   const numberLever = document.getElementById('lvl-select');
   const numberRound = document.getElementById('rnd-select');
+  const nameGame = 'audiocall';
   numberLever.onchange = () => {
+    progressHeight = 0;
+    progressWidth = 0;
     clearAnswers();
     numberWordCount = 0;
     levelGame = numberLever.value;
-    getDataAPI(levelGame, roundGame);
+    getDataSelectAPI(levelGame, roundGame);
+    setUserSettings(nameGame, levelGame, roundGame);
   }
   numberRound.onchange = () => {
+    progressHeight = 0;
+    progressWidth = 0;
     clearAnswers();
     numberWordCount = 0;
     roundGame = numberRound.value;
-    getDataAPI(levelGame, roundGame);
+    getDataSelectAPI(levelGame, roundGame);
+    setUserSettings(nameGame, levelGame, roundGame);
   }
 }
 
-export default function initAudioCallGame() {
+export default async function initAudioCallGame() {
   const pageContent = document.querySelector('.page');
+  const nameGame = 'audiocall';
   pageContent.append(renderStartPage());
   numberWordCount = 0;
   progressHeight = 0;
   progressWidth = 0;
-  getDataAPI();
+  await getUserSettings(nameGame);
   clearAnswers();
   document.querySelector('.game__start').addEventListener('click', startGame);
 }
