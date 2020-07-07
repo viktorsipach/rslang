@@ -3,6 +3,7 @@ import { getRoundData } from '../../API/dataAPI';
 import ErrorSound from '../../../assets/audio/error.mp3';
 import CorrectSound from '../../../assets/audio/correct.mp3';
 import StatisticsAPI from '../../API/statisticsAPI';
+import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 
 class Sprint {
   constructor() {
@@ -50,6 +51,9 @@ class Sprint {
   }
 
   async launchGame() {
+    const { level, round } = await UserSettingsMiniGame.getUserSettingsMiniGame('sprint');
+    this.gameLevel = level;
+    this.gameRound = round;
     const wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
     if (wordsApiArray.error) {
       ContentBuilder.showErrorMessage('.sprint__curtain');
@@ -95,7 +99,7 @@ class Sprint {
     this.keyboardListener = (event) => {
       this.startKeyboardHandler(event);
     };
-    controlPanel.addEventListener('click', (event) => {
+    controlPanel.addEventListener('click', async (event) => {
       if (event.target === soundControlButtonOn || event.target === soundControlButtonOff) {
         this.soundIsEnabled = !this.soundIsEnabled;
         soundControlButtonOn.classList.toggle('sound-control__icon_active');
@@ -104,6 +108,7 @@ class Sprint {
       if (event.target === reloadButton) {
         this.gameLevel = levelSelector.value;
         this.gameRound = roundSelector.value;
+        await UserSettingsMiniGame.updateUserSettingsMiniGame('sprint', this.gameLevel, this.gameRound);
         clearTimeout(this.currentTimer);
         sprintPanel.innerHTML = `<div class="sprint__curtain curtain"></div>`;
         document.removeEventListener('keydown', this.keyboardListener);
@@ -169,7 +174,7 @@ class Sprint {
     return this;
   }
 
-  endGame(boardButtonsListener, keyboardListener) {
+  async endGame(boardButtonsListener, keyboardListener) {
     const score = document.querySelector('.counter__value');
     const board = document.querySelector('.sprint__board');
     this.gameIsActive = false;
@@ -178,6 +183,7 @@ class Sprint {
     document.removeEventListener('keydown', keyboardListener);
     ContentBuilder.showCurrentGameStatistics('.sprint__panel_main', this.getStatisticsElement());
     StatisticsAPI.miniGameStat('sprint', this.score);
+    await UserSettingsMiniGame.updateUserSettingsMiniGame('sprint', this.gameLevel, this.gameRound);
     const gameStatistics = document.querySelector('.game-statistics__popup');
     const gameStatisticsExit = gameStatistics.querySelector('.game-statistics__button_exit');
     gameStatistics.addEventListener('click', (event) => {
