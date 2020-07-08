@@ -32,19 +32,69 @@ class TrainingGame {
         }
       });
       settings = await getUserSettings();
-      
     }
+
     this.settings = settings;
-    this.newWordsPerDay = this.settings.wordsPerDay;
-    this.trainingSettings = this.settings.optional.training;
+    this.newWordsPerDay = this.settings.wordsPerDay || 10;
+
+    this.trainingSettings = this.settings.optional.training ;
+    if (this.trainingSettings === undefined) {    
+      await this.initTrainingSettings();
+    }
+
     this.trainingMainSettings = this.trainingSettings.mainSettings;
-    this.amountOfLearnedWordsPerDay = this.trainingMainSettings.amountOfLearnedWordsPerDay;
+    if (this.trainingMainSettings === undefined) {
+      await this.initTrainingMainSettings();
+    }
+
     this.settingsPage = this.trainingSettings.settingsPage;
+    if (this.settingsPage === undefined) {
+      await this.initTrainingSettingsPage();
+    }
+    this.amountOfLearnedWordsPerDay = this.trainingMainSettings.amountOfLearnedWordsPerDay;
     this.maxCardsPerDay = this.settingsPage.maxCardsPerDay;
     this.cardSettings = this.settingsPage.cardSettings;
     this.autoPronunciation = this.settingsPage.autoPronunciation;
     this.showDeleteButton = this.settingsPage.showDeleteButton;
     this.showHardButton = this.settingsPage.showHardButton;
+  }
+
+  async initTrainingSettings() {
+    const initialWordsPerDay = 10;
+      await putUserSettings({ 
+        settings: {
+          'wordsPerDay': initialWordsPerDay,
+          'optional': initialSettings
+        }
+      });
+      this.settings = await getUserSettings();
+      this.trainingSettings = this.settings.optional.training ;
+  }
+
+  async initTrainingMainSettings() {
+    const initialWordsPerDay = 10;
+      await putUserSettings({ 
+        settings: {
+          'wordsPerDay': initialWordsPerDay,
+          'optional': initialSettings
+        }
+      });
+      this.settings = await getUserSettings();
+      this.trainingSettings = this.settings.optional.training ;
+      this.trainingMainSettings = this.trainingSettings.mainSettings;
+  }
+
+  async initTrainingSettingsPage() {
+    const initialWordsPerDay = 10;
+      await putUserSettings({ 
+        settings: {
+          'wordsPerDay': initialWordsPerDay,
+          'optional': initialSettings
+        }
+      });
+      this.settings = await getUserSettings();
+      this.trainingSettings = this.settings.optional.training ;
+      this.settingsPage = this.trainingSettings.settingsPage;
   }
    
   async getData() {
