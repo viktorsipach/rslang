@@ -5,6 +5,7 @@
   margin: 0 auto;
   padding: 6rem 1.5rem;
   width:1170px;
+  box-sizing: border-box;
 
   @include media-laptop {
     width:750px;
