@@ -45,22 +45,25 @@ export default async function initTrainingGame() {
   })
 
   function keyBoardHelper(event) {
-    if(!document.querySelector('.game__buttons.training-game').classList.contains('hidden')) {
-      if (event.code === 'Enter' && document.querySelector('.game__training')) {
-        trainingGame.checkInput(trainingGame.data);
-      }
-      else {
-        trainingGame.checkInputLength();
-        trainingGame.hideAnswer();
+    if (trainingGame.data.length > 0) {
+      if(!document.querySelector('.game__buttons.training-game').classList.contains('hidden')) {
+        if (event.code === 'Enter' && document.querySelector('.game__training')) {
+          trainingGame.checkInput(trainingGame.data);
+        }
+        else {
+          trainingGame.checkInputLength();
+          trainingGame.hideAnswer();
+        }
       }
     }
+   
   }
 
-  document.addEventListener('keypress', keyBoardHelper);
+  document.addEventListener('keypress', keyBoardHelper); 
 
   const CLOSE_BUTTON = document.querySelector('.close-btn');
   CLOSE_BUTTON.addEventListener('click', () => {
-    document.removeEventListener('keypress', trainingGame.keyBoardHelper);
+    document.removeEventListener('keypress', keyBoardHelper);
   });
 
   document.querySelector('.card__input').addEventListener('click', () => {

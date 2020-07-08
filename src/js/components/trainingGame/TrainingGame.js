@@ -279,7 +279,9 @@ playCardSounds() {
   }
 
   async updateWord() {
-    this.sound.pause();
+    if(!this.isWordWithoutTraining && this.sound.played) {
+      this.sound.pause();
+    }
     updateAmountOfTodayLearnedWordsSettings();
     let difficultyCoef;
     switch (this.wordDifficulty) {
