@@ -1,5 +1,6 @@
 import renderStartPage from './renderStartPage';
 import StatisticsAPI from '../../API/statisticsAPI';
+import renderSwitch from './renderSwitch';
 import { renderDropdown, renderGamePage } from './renderGamePage';
 import { getRoundData } from '../../API/dataAPI';
 import { getPartSpeech } from './partOfSpeech';
@@ -206,6 +207,7 @@ async function setUserSettings(nameGame, level, round) {
 
 
 function startGame() {
+
   const newArrObjectWords = arrAllWordsOption;
   const objectGameWords = getWords(newArrObjectWords);
   const nameGame = 'audiocall';
@@ -265,6 +267,7 @@ function startGame() {
     const pageContent = document.querySelector('.page');
     pageContent.append(renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wordRus));
     pageContent.append(renderDropdown());
+    pageContent.append(renderSwitch());
 
     progressBar(progressHeight, progressWidth);
 
