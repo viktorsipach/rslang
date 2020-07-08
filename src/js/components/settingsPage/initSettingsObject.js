@@ -1,6 +1,7 @@
 
 import { renderSettingsModal } from './renderSettingsPage';
 import { elementClassToggle, checkMainFieldSentenceVisibility, checkSentencesTranslationsCheckbox } from './utils';
+import SettingsPageAPI from '../../API/settingsPageAPI';
 
 function settingsModalAddEventListener() {
   const SETTINGS_WRAPPER = document.querySelector('.settings__wrapper');
@@ -34,6 +35,8 @@ export default function initSettingsObject() {
   const CARD_IMG_CONTAINER =  document.querySelector('.card-img__container');
   const CARD_EXPLANATION_SENTENCE_TRANSLATION = document.querySelector('.card__explanation-sentence-translation');
   const CARD_EXAMPLE_SENTENCE_TRANSLATION = document.querySelector('.card__example-sentence-translation');
+  const NEW_WORDS_ONLY_BUTTON_CHECKBOX = document.querySelector('.newWordsOnlyButton input');
+  const LEARNED_WORDS_ONLY_BUTTON_CHECKBOX = document.querySelector('.learnedWordsOnlyButton input');
   const SUBMIT_BUTTON = document.querySelector('.setting-submit__button');
  
   SHOW_TRANSLATION_CHECKBOX.addEventListener('change', () => {
@@ -70,24 +73,28 @@ export default function initSettingsObject() {
       settingsModalAddEventListener();
     } else if (SHOW_TRANSLATION_CHECKBOX.checked || SHOW_EXPLANATION_SENTENCE_CHECKBOX.checked || SHOW_EXAMPLE_SENTENCE_CHECKBOX.checked) {
       const userSettings = {
-        newWordsPerDay: NEW_WORDS_PER_DAY.value,
-        maxCardsPerDay: MAX_CARDS_PER_DAY.value,
-        cardSettings: {
-          showTranslation: SHOW_TRANSLATION_CHECKBOX.checked,
-          showExplanationSentence: SHOW_EXPLANATION_SENTENCE_CHECKBOX.checked,
-          showExampleSentence: SHOW_EXAMPLE_SENTENCE_CHECKBOX.checked,
-          showTranscription: SHOW_TRANSCRIPTION_CHECKBOX.checked,
-          showAssociatedPicture: SHOW_ASSOCIATED_PICTURE_CHECKBOX.checked
+        globalSettings: {
+          newWordsPerDay: NEW_WORDS_PER_DAY.value,
         },
-        autoPronunciation: AUTO_PRONUNCIATION_CHECKBOX.checked,
-        showSentencesTranslation: SHOW_SENTENCES_TRANSLATIONS__CHECKBOX.checked,
-        showIDontKnowButton: I_DONT_KNOW_BUTTON_CHECKBOX.checked,
-        showDeleteButton: DELETE_BUTTON_CHECKBOX.checked,
-        showHardButton: HARD_BUTTON_CHECKBOX.checked,
-        newWordsOnly: true,
-        learnedWordsOnly: true,
+        settingsPage: {
+          maxCardsPerDay: MAX_CARDS_PER_DAY.value,
+          cardSettings: {
+            showTranslation: SHOW_TRANSLATION_CHECKBOX.checked,
+            showExplanationSentence: SHOW_EXPLANATION_SENTENCE_CHECKBOX.checked,
+            showExampleSentence: SHOW_EXAMPLE_SENTENCE_CHECKBOX.checked,
+            showTranscription: SHOW_TRANSCRIPTION_CHECKBOX.checked,
+            showAssociatedPicture: SHOW_ASSOCIATED_PICTURE_CHECKBOX.checked
+          },
+          autoPronunciation: AUTO_PRONUNCIATION_CHECKBOX.checked,
+          showSentencesTranslation: SHOW_SENTENCES_TRANSLATIONS__CHECKBOX.checked,
+          showIDontKnowButton: I_DONT_KNOW_BUTTON_CHECKBOX.checked,
+          showDeleteButton: DELETE_BUTTON_CHECKBOX.checked,
+          showHardButton: HARD_BUTTON_CHECKBOX.checked,
+          newWordsOnly: NEW_WORDS_ONLY_BUTTON_CHECKBOX.checked,
+          learnedWordsOnly: LEARNED_WORDS_ONLY_BUTTON_CHECKBOX.checked,
+        }
       }
-      console.log(userSettings);
+      SettingsPageAPI.putSettingsPage(userSettings);
     } else {
       renderSettingsModal('Хотя бы одно основное поле должно быть отмечено!');
       settingsModalAddEventListener();
