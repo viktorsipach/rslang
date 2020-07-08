@@ -18,6 +18,7 @@ class TrainingGame {
     this.correctAnswersAmount = 0;
     this.seriesOfCorrectAnswers = 0;
     this.longestSeriesOfCorrectAnswers = 0;
+    this.sound = new Audio();
   }
 
   async initGame() {
@@ -154,37 +155,34 @@ class TrainingGame {
     this.showAnswer();
   }
 
-  playCardSounds() {
-    if (this.autoPronunciation) {
-      const SOUNDS_SRC = 'https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/';
-      const wordSound = new Audio();
-      wordSound.src = `${SOUNDS_SRC}${this.cardData.audio}`;
-      wordSound.play();
-      wordSound.onended = () => {
-        const meaningSound = new Audio();
-        meaningSound.src = `${SOUNDS_SRC}${this.cardData.audioMeaning}`;
-        meaningSound.play();
-        meaningSound.onended = () => {
-          const exampleSound = new Audio();
-          exampleSound.src = `${SOUNDS_SRC}${this.cardData.audioExample}`;
-          exampleSound.play();
-          exampleSound.onended = () => {
-            if (this.isWordWithoutTraining && !this.isRepeatData) {
-              this.renderCardData();
-            } else if(this.isRepeatData) {
-              this.playRepeatWords();
-            }
+playCardSounds() {
+  if (this.autoPronunciation) {
+    const SOUNDS_SRC = 'https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/';
+    this.sound.src = `${SOUNDS_SRC}${this.cardData.audio}`;
+    this.sound.play();
+    this.sound.onended = () => {
+      this.sound.src = `${SOUNDS_SRC}${this.cardData.audioMeaning}`;
+      this.sound.play();
+      this.sound.onended = () => {
+        this.sound.src = `${SOUNDS_SRC}${this.cardData.audioExample}`;
+        this.sound.play();
+        this.sound.onended = () => {
+          if (this.isWordWithoutTraining && !this.isRepeatData) {
+            this.renderCardData();
+          } else if(this.isRepeatData) {
+            this.playRepeatWords();
           }
         }
       }
-    } else if (!this.autoPronunciation) {
-      if (this.isWordWithoutTraining && !this.isRepeatData) {
-        setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
-      } else if(this.isRepeatData) {
-        setTimeout(function fn(){ this.playRepeatWords(); }.bind(this), this.timeOut);
-      }
+    }
+  } else if (!this.autoPronunciation) {
+    if (this.isWordWithoutTraining && !this.isRepeatData) {
+      setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
+    } else if(this.isRepeatData) {
+      setTimeout(function fn(){ this.playRepeatWords(); }.bind(this), this.timeOut);
     }
   }
+}
 
   showAnswer () {
     const DIFFICULTY_BUTTONS = document.querySelector('.difficulty__buttons');
@@ -281,6 +279,7 @@ class TrainingGame {
   }
 
   async updateWord() {
+    this.sound.pause();
     updateAmountOfTodayLearnedWordsSettings();
     let difficultyCoef;
     switch (this.wordDifficulty) {
