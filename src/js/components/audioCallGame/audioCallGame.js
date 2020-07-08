@@ -1,6 +1,6 @@
 import renderStartPage from './renderStartPage';
 import StatisticsAPI from '../../API/statisticsAPI';
-import renderSwitch from './renderSwitch';
+import renderSwitch from '../gameSwitcher/renderSwitch';
 import { renderDropdown, renderGamePage } from './renderGamePage';
 import { getRoundData } from '../../API/dataAPI';
 import { getPartSpeech } from './partOfSpeech';

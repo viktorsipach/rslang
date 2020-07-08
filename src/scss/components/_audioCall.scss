@@ -441,24 +441,3 @@
     top: 11rem;
   }
 }
-.games-switcher input:checked + .slider::before {
-  content: "Вкл";
-}
-.games-switcher .slider::before {
-  content: "Выкл";
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  width: 4.6rem;
-}
-.games-switcher__title {
-  text-transform: uppercase;
-  font-size: 2.5rem;
-  color: #ffffffc7;
-  margin-bottom: 1rem;
-}
-.games-switcher .switch {
-  width: 8rem;
-}
