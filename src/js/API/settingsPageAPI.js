@@ -9,6 +9,7 @@ class SettingsPageAPI {
             "wordsPerDay": 10,
             "optional": {}
         };
+        this.hide = 'hidden';
     }
 
     async getSettingsPage() {
@@ -39,7 +40,7 @@ class SettingsPageAPI {
         NEW_WORDS_PER_DAY.value = settings.wordsPerDay;
         MAX_CARDS_PER_DAY.value = settings.optional.training.settingsPage.maxCardsPerDay;
         AUTO_PRONUNCIATION_CHECKBOX.checked = settings.optional.training.settingsPage.autoPronunciation;
-        SHOW_SENTENCES_TRANSLATIONS__CHECKBOX.checked =settings.optional.training.settingsPage.showSentencesTranslation;
+        SHOW_SENTENCES_TRANSLATIONS__CHECKBOX.checked = settings.optional.training.settingsPage.showSentencesTranslation;
         I_DONT_KNOW_BUTTON_CHECKBOX.checked = settings.optional.training.settingsPage.showIDontKnowButton;
         DELETE_BUTTON_CHECKBOX.checked = settings.optional.training.settingsPage.showDeleteButton;
         HARD_BUTTON_CHECKBOX.checked = settings.optional.training.settingsPage.showHardButton;
@@ -50,6 +51,8 @@ class SettingsPageAPI {
         SHOW_ASSOCIATED_PICTURE_CHECKBOX.checked = settings.optional.training.settingsPage.cardSettings.showAssociatedPicture;
         NEW_WORDS_ONLY_BUTTON_CHECKBOX.checked = settings.optional.training.settingsPage.newWordsOnly;
         LEARNED_WORDS_ONLY_BUTTON_CHECKBOX.checked = settings.optional.training.settingsPage.learnedWordsOnly;
+
+        this.CardExample(settings);
 
         if (sendSettings) this.putSett({settings});
     }
@@ -62,6 +65,37 @@ class SettingsPageAPI {
         settings.wordsPerDay = userSettings.globalSettings.newWordsPerDay;
         settings.optional.training.settingsPage = userSettings.settingsPage;
         this.putSett({settings})
+    }
+
+    CardExample(settings) {
+        const CARD_TRANSLATION = document.querySelector('.card__translation');
+        const CARD_EXPLANATION_SENTENCE = document.querySelector('.card__explanation-sentence');
+        const CARD_EXAMPLE_SENTENCE = document.querySelector('.card__example-sentence');
+        const CARD_TRANSCRIPTION = document.querySelector('.card__transcription');
+        const CARD_IMG_CONTAINER =  document.querySelector('.card-img__container');
+        const CARD_EXPLANATION_SENTENCE_TRANSLATION = document.querySelector('.card__explanation-sentence-translation');
+        const CARD_EXAMPLE_SENTENCE_TRANSLATION = document.querySelector('.card__example-sentence-translation');
+
+        if (!settings.optional.training.settingsPage.cardSettings.showTranslation) {
+            CARD_TRANSLATION.classList.add(this.hide);
+        }
+        if (!settings.optional.training.settingsPage.cardSettings.showExplanationSentence) {
+            CARD_EXPLANATION_SENTENCE.classList.add(this.hide);
+        }
+        if (!settings.optional.training.settingsPage.cardSettings.showExampleSentence) {
+            CARD_EXAMPLE_SENTENCE.classList.add(this.hide);
+        }
+        if (!settings.optional.training.settingsPage.cardSettings.showTranscription) {
+            CARD_TRANSCRIPTION.classList.add(this.hide);
+        }
+        if (!settings.optional.training.settingsPage.cardSettings.showAssociatedPicture) {
+            CARD_IMG_CONTAINER.classList.add(this.hide);
+        }
+        if (!settings.optional.training.settingsPage.showSentencesTranslation) {
+            CARD_EXPLANATION_SENTENCE_TRANSLATION.classList.add(this.hide);
+            CARD_EXAMPLE_SENTENCE_TRANSLATION.classList.add(this.hide);
+        }
+        
     }
 }
 
