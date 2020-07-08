@@ -1,0 +1,14 @@
+.team-promo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30rem;
+  background: linear-gradient($color-transparent-shadow, $color-transparent-shadow), url('../assets/img/team/other/marvin-meyer-unsplash.jpg');
+  padding-top: 5rem;
+  text-align: center;
+
+  &__title {
+    font-size: 5rem;
+    color: $color-light;
+  }
+}

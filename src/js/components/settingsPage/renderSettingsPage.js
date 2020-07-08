@@ -57,6 +57,9 @@ function createMainSettingsFragment() {
   const showDeleteButton = createToggleSwitchElement('main-settings__field deleteButton', 'Возможность удалять слова из изучения');
   const showHardButton = createToggleSwitchElement('main-settings__field hardButton', 'Возможность добавлять слова в сложные');
 
+  const newWordsOnlyButton = createToggleSwitchElement('main-settings__field newWordsOnlyButton', 'Только новые слова');
+  const learnedWordsOnly = createToggleSwitchElement('main-settings__field learnedWordsOnlyButton', 'Только изучаемые слова');
+
   const submitButton = createDOMElement('button', 'button setting-submit__button');
   submitButton.type = 'submit';
   submitButton.textContent = 'Сохранить настройки';
@@ -69,6 +72,8 @@ function createMainSettingsFragment() {
   mainSettings.append(showIDontKnowButton);
   mainSettings.append(showDeleteButton);
   mainSettings.append(showHardButton);
+  mainSettings.append(newWordsOnlyButton);
+  mainSettings.append(learnedWordsOnly);
   mainSettings.append(submitButton);
   return mainSettings;
 }
