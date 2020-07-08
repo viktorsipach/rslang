@@ -2,20 +2,27 @@ import renderStatistics from './renderStatistics';
 import { disableButton, enableButton } from './utils';
 import getTrainingGameData from './IntervalRepetitionTechnique';
 import { updateUserWord, getUserWord } from '../../API/userWordsAPI';
-import { updateLevelRoundDateSettings } from '../../API/userSettingsAPI';
+import { updateLevelRoundDateSettings, updateAmountOfTodayLearnedWordsSettings, putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
 import renderTrainingModal from './renderTrainingModal';
 
-export default class TrainingGame {
-  constructor({ settings }) {
+import initialSettings from './initialSetting';
+
+
+ 
+class TrainingGame {
+  // constructor({ settings }) {
+  constructor() {
     // this.settings = settings;
     // this.newWordsPerDay = this.settings.optional.training.newWordsPerDay;
-    this.trainingSettings = settings.optional.training;
-    this.newWordsPerDay = settings.wordsPerDay;
-    this.maxCardsPerDay = this.trainingSettings.maxCardsPerDay;
-    this.cardSettings = this.trainingSettings.cardSettings;
-    this.autoPronunciation = this.trainingSettings.autoPronunciation;
-    this.showDeleteButton = this.trainingSettings.showDeleteButton;
-    this.showHardButton = this.trainingSettings.showHardButton;
+    // this.trainingSettings = settings.optional.training;
+    // this.trainingMainSettings = this.trainingSettings.mainSettings;
+    // this.newWordsPerDay = settings.wordsPerDay;
+    // this.maxCardsPerDay = this.trainingMainSettings.maxCardsPerDay;
+    // this.amountOfLearnedWordsPerDay = this.trainingMainSettings.amountOfLearnedWordsPerDay;
+    // this.cardSettings = this.trainingSettings.cardSettings;
+    // this.autoPronunciation = this.trainingSettings.autoPronunciation;
+    // this.showDeleteButton = this.trainingSettings.showDeleteButton;
+    // this.showHardButton = this.trainingSettings.showHardButton;
     this.timeOut = 2500;
     this.repeatData = [];
     this.isRepeatData = false;
@@ -24,6 +31,33 @@ export default class TrainingGame {
     this.wordDifficulty = 'easy';
     this.date = (new Date()).toLocaleString();
   }
+
+  async initGame() {
+    let settings = await getUserSettings();
+    if (settings === undefined) {
+      const initialWordsPerDay = 10;
+      await putUserSettings({ 
+        settings: {
+          'wordsPerDay': initialWordsPerDay,
+          'optional': initialSettings
+        }
+      });
+      settings = await getUserSettings();
+    }
+    this.settings = settings;
+    this.newWordsPerDay = this.settings.optional.training.newWordsPerDay;
+    this.trainingSettings = settings.optional.training;
+    this.trainingMainSettings = this.trainingSettings.mainSettings;
+    this.newWordsPerDay = settings.wordsPerDay;
+    this.maxCardsPerDay = this.trainingMainSettings.maxCardsPerDay;
+    this.amountOfLearnedWordsPerDay = this.trainingMainSettings.amountOfLearnedWordsPerDay;
+    this.cardSettings = this.trainingSettings.cardSettings;
+    this.autoPronunciation = this.trainingSettings.autoPronunciation;
+    this.showDeleteButton = this.trainingSettings.showDeleteButton;
+    this.showHardButton = this.trainingSettings.showHardButton;
+  }
+   
+  
 
   async getData() {
     this.data = await getTrainingGameData();
@@ -35,7 +69,7 @@ export default class TrainingGame {
   async start() {
     if (this.data === undefined || this.amountsOfCards === 0) {
       console.log('no words to learn today!')
-      document.querySelector('.page').append(renderTrainingModal());
+      // document.querySelector('.page').append(renderTrainingModal());
     } else {
       this.currentCardNumber = 0;
       this.correctAnswersAmount = 0;
@@ -255,13 +289,16 @@ export default class TrainingGame {
     const statisticsData = {
       amountOfWords: this.amountsOfCards,
       amountOfCorrectAnswers: this.correctAnswersAmount,
-      amountOfNewWords: this.settings.optional.training.newWordsPerDay,
+      amountOfNewWords: this.newWordsPerDay,
       longestSeriesOfCorrectAnswers: this.longestSeriesOfCorrectAnswers
     }
     document.querySelector('.page').append(renderStatistics(statisticsData)); 
   }
 
   async updateWord() {
+    // this.amountOfLearnedWordsPerDay += 1;
+    // console.log(this.amountOfLearnedWordsPerDay);
+    updateAmountOfTodayLearnedWordsSettings();
     let difficultyCoef;
     switch (this.wordDifficulty) {
       case 'easy':
@@ -443,4 +480,6 @@ export default class TrainingGame {
     INPUT.setAttribute('placeholder', this.data[this.currentCardNumber].word);
     INPUT.focus();
   }
-}   
+}  
+
+export default new TrainingGame();

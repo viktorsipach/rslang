@@ -1,28 +1,15 @@
 import renderTrainingGamePage from './renderTrainingGamePage';
 import TrainingGame from './TrainingGame';
-import { putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
-import initialSettings from './initialSetting';
 
 export default async function initTrainingGame() {
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderTrainingGamePage());
  
-  let settings = await getUserSettings();
-  if (settings === undefined) {
-    const initialWordsPerDay = 10;
-    await putUserSettings({ 
-      settings: {
-        'wordsPerDay': initialWordsPerDay,
-        'optional': initialSettings
-      }
-    });
-    settings = await getUserSettings();
-  } 
-
-  const trainingGame = new TrainingGame({ settings });
+  const trainingGame = TrainingGame;
+  await TrainingGame.initGame();
   await trainingGame.getData();
-  // trainingGame.start();
+  trainingGame.start();
 
   document.querySelector('.game__buttons.training-game').addEventListener('click', (event) => {
     if (event.target.classList.contains('next')) {
