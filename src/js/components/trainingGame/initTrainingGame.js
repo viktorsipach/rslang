@@ -39,6 +39,9 @@ export default async function initTrainingGame() {
   document.querySelector('.dictionary__buttons').addEventListener('click', (event) => {
     if (event.target.classList.contains('delete')) {
       trainingGame.wordStatus = 'delete';
+      trainingGame.showWordWithoutTraining();
+      trainingGame.wordDifficulty = 'hard';
+      trainingGame.updateWord();
     } else if (event.target.classList.contains('tricky')) {
       trainingGame.wordStatus = 'tricky';
     }
