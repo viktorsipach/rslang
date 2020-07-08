@@ -4,7 +4,6 @@ import getTrainingGameData from './IntervalRepetitionTechnique';
 import { updateUserWord, getUserWord } from '../../API/userWordsAPI';
 import { updateLevelRoundDateSettings, updateAmountOfTodayLearnedWordsSettings, putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
 import renderTrainingModal from './renderTrainingModal';
-
 import initialSettings from './initialSetting';
  
 class TrainingGame {
@@ -23,7 +22,7 @@ class TrainingGame {
 
   async initGame() {
     let settings = await getUserSettings();
-    if (settings === undefined) {
+    if (settings === undefined || settings.optional.training === undefined) {
       const initialWordsPerDay = 10;
       await putUserSettings({ 
         settings: {
@@ -32,6 +31,7 @@ class TrainingGame {
         }
       });
       settings = await getUserSettings();
+      
     }
     this.settings = settings;
     this.newWordsPerDay = this.settings.wordsPerDay;
