@@ -7,7 +7,7 @@ export default async function initTrainingGame() {
   PAGECONTAINER.append(renderTrainingGamePage());
  
   const trainingGame = TrainingGame;
-  await TrainingGame.initGame();
+  await trainingGame.initGame();
   await trainingGame.getData();
   trainingGame.start();
 

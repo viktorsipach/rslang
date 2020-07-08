@@ -97,4 +97,23 @@ async function updateAmountOfTodayLearnedWordsSettings() {
   }); 
 }
 
-export { putUserSettings, getUserSettings, updateLevelRoundDateSettings, updateAmountOfTodayLearnedWordsSettings }
+async function resetTodayProgressSettings() {
+  console.log('resetTodayProgressSettings');
+  const settings = await getUserSettings();
+  const {optional} = settings;
+  const {wordsPerDay} = settings;
+  const trainingMainSettings = optional.training.mainSettings;
+  let {amountOfLearnedWordsPerDay} = trainingMainSettings;
+  amountOfLearnedWordsPerDay = 0;
+  trainingMainSettings.amountOfLearnedWordsPerDay = amountOfLearnedWordsPerDay;
+
+  optional.training.mainSettings = trainingMainSettings;
+  await putUserSettings({ 
+    settings: {
+      'wordsPerDay': wordsPerDay,
+      'optional': optional,
+    }
+  }); 
+}
+
+export { putUserSettings, getUserSettings, updateLevelRoundDateSettings, updateAmountOfTodayLearnedWordsSettings, resetTodayProgressSettings }

@@ -57,7 +57,7 @@ function  renderCardTop() {
 
   const imgContainer = document.createElement('div');
   imgContainer.className = 'card-img__container';
-  
+
   const cardTop = document.createElement('div');
   cardTop.className = 'card__top';
   cardTop.append(cardTranslation);
@@ -111,6 +111,22 @@ function  renderTrainingCard() {
   card.className = 'training__card';
   card.append(renderCardTop());
   card.append(renderCardBottom());
+
+  const spinner = document.createElement('div');
+  spinner.className = 'spinner';
+  spinner.innerHTML = 
+  `<div class="lds-roller">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+  </div>`;
+
+  card.append(spinner);
   return card;  
 }
 
