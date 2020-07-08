@@ -1,25 +1,13 @@
 import renderTrainingGamePage from './renderTrainingGamePage';
 import TrainingGame from './TrainingGame';
-import { putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
-import initialSettings from './initialSetting';
 
 export default async function initTrainingGame() {
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderTrainingGamePage());
  
-  let settings = await getUserSettings();
-  if (settings === undefined) {
-    await putUserSettings({ 
-      settings: {
-        'wordsPerDay': 10,
-        'optional': initialSettings
-      }
-    });
-    settings = await getUserSettings();
-  } 
-
-  const trainingGame = new TrainingGame({ settings });
+  const trainingGame = TrainingGame;
+  await trainingGame.initGame();
   await trainingGame.getData();
   trainingGame.start();
 
@@ -51,28 +39,34 @@ export default async function initTrainingGame() {
   document.querySelector('.dictionary__buttons').addEventListener('click', (event) => {
     if (event.target.classList.contains('delete')) {
       trainingGame.wordStatus = 'delete';
+      trainingGame.showWordWithoutTraining();
+      trainingGame.wordDifficulty = 'hard';
+      trainingGame.updateWord();
     } else if (event.target.classList.contains('tricky')) {
       trainingGame.wordStatus = 'tricky';
     }
   })
 
   function keyBoardHelper(event) {
-    if(!document.querySelector('.game__buttons.training-game').classList.contains('hidden')) {
-      if (event.code === 'Enter' && document.querySelector('.game__training')) {
-        trainingGame.checkInput(trainingGame.data);
-      }
-      else {
-        trainingGame.checkInputLength();
-        trainingGame.hideAnswer();
+    if (trainingGame.data.length > 0) {
+      if(!document.querySelector('.game__buttons.training-game').classList.contains('hidden')) {
+        if (event.code === 'Enter' && document.querySelector('.game__training')) {
+          trainingGame.checkInput(trainingGame.data);
+        }
+        else {
+          trainingGame.checkInputLength();
+          trainingGame.hideAnswer();
+        }
       }
     }
+   
   }
 
-  document.addEventListener('keypress', keyBoardHelper);
+  document.addEventListener('keypress', keyBoardHelper); 
 
   const CLOSE_BUTTON = document.querySelector('.close-btn');
   CLOSE_BUTTON.addEventListener('click', () => {
-    document.removeEventListener('keypress', trainingGame.keyBoardHelper);
+    document.removeEventListener('keypress', keyBoardHelper);
   });
 
   document.querySelector('.card__input').addEventListener('click', () => {

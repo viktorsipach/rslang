@@ -2,18 +2,12 @@ import renderStatistics from './renderStatistics';
 import { disableButton, enableButton } from './utils';
 import getTrainingGameData from './IntervalRepetitionTechnique';
 import { updateUserWord, getUserWord } from '../../API/userWordsAPI';
-import { updateLevelRoundDateSettings } from '../../API/userSettingsAPI';
+import { updateLevelRoundDateSettings, updateAmountOfTodayLearnedWordsSettings, putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
 import renderTrainingModal from './renderTrainingModal';
-
-export default class TrainingGame {
-  constructor({ settings }) {
-    this.settings = settings;
-    this.newWordsPerDay = this.settings.optional.training.newWordsPerDay;
-    this.maxCardsPerDay = this.settings.optional.training.maxCardsPerDay;
-    this.cardSettings = this.settings.optional.training.cardSettings;
-    this.autoPronunciation = settings.optional.training.autoPronunciation;
-    this.showDeleteButton = settings.optional.training.showDeleteButton;
-    this.showHardButton = settings.optional.training.showHardButton;
+import initialSettings from './initialSetting';
+ 
+class TrainingGame {
+  constructor() {
     this.timeOut = 2500;
     this.repeatData = [];
     this.isRepeatData = false;
@@ -21,12 +15,93 @@ export default class TrainingGame {
     this.wordStatus = 'repeat';
     this.wordDifficulty = 'easy';
     this.date = (new Date()).toLocaleString();
+    this.correctAnswersAmount = 0;
+    this.seriesOfCorrectAnswers = 0;
+    this.longestSeriesOfCorrectAnswers = 0;
+    this.sound = new Audio();
   }
 
+  async initGame() {
+    let settings = await getUserSettings();
+    if (settings === undefined || settings.optional.training === undefined) {
+      const initialWordsPerDay = 10;
+      await putUserSettings({ 
+        settings: {
+          'wordsPerDay': initialWordsPerDay,
+          'optional': initialSettings
+        }
+      });
+      settings = await getUserSettings();
+    }
+
+    this.settings = settings;
+    this.newWordsPerDay = this.settings.wordsPerDay || 10;
+
+    this.trainingSettings = this.settings.optional.training ;
+    if (this.trainingSettings === undefined) {    
+      await this.initTrainingSettings();
+    }
+
+    this.trainingMainSettings = this.trainingSettings.mainSettings;
+    if (this.trainingMainSettings === undefined) {
+      await this.initTrainingMainSettings();
+    }
+
+    this.settingsPage = this.trainingSettings.settingsPage;
+    if (this.settingsPage === undefined) {
+      await this.initTrainingSettingsPage();
+    }
+    this.amountOfLearnedWordsPerDay = this.trainingMainSettings.amountOfLearnedWordsPerDay;
+    this.maxCardsPerDay = this.settingsPage.maxCardsPerDay;
+    this.cardSettings = this.settingsPage.cardSettings;
+    this.autoPronunciation = this.settingsPage.autoPronunciation;
+    this.showDeleteButton = this.settingsPage.showDeleteButton;
+    this.showHardButton = this.settingsPage.showHardButton;
+  }
+
+  async initTrainingSettings() {
+    const initialWordsPerDay = 10;
+      await putUserSettings({ 
+        settings: {
+          'wordsPerDay': initialWordsPerDay,
+          'optional': initialSettings
+        }
+      });
+      this.settings = await getUserSettings();
+      this.trainingSettings = this.settings.optional.training ;
+  }
+
+  async initTrainingMainSettings() {
+    const initialWordsPerDay = 10;
+      await putUserSettings({ 
+        settings: {
+          'wordsPerDay': initialWordsPerDay,
+          'optional': initialSettings
+        }
+      });
+      this.settings = await getUserSettings();
+      this.trainingSettings = this.settings.optional.training ;
+      this.trainingMainSettings = this.trainingSettings.mainSettings;
+  }
+
+  async initTrainingSettingsPage() {
+    const initialWordsPerDay = 10;
+      await putUserSettings({ 
+        settings: {
+          'wordsPerDay': initialWordsPerDay,
+          'optional': initialSettings
+        }
+      });
+      this.settings = await getUserSettings();
+      this.trainingSettings = this.settings.optional.training ;
+      this.settingsPage = this.trainingSettings.settingsPage;
+  }
+   
   async getData() {
     this.data = await getTrainingGameData();
     if (this.data) {
       this.amountsOfCards = this.data.length;
+      document.querySelector('.spinner').classList.add('hidden');
     }
   }
 
@@ -36,9 +111,6 @@ export default class TrainingGame {
       document.querySelector('.page').append(renderTrainingModal());
     } else {
       this.currentCardNumber = 0;
-      this.correctAnswersAmount = 0;
-      this.seriesOfCorrectAnswers = 0;
-      this.longestSeriesOfCorrectAnswers = 0;
       this.progress = 0;
       this.cardData = this.data[this.currentCardNumber];
       this.lettersCount = this.data[this.currentCardNumber].word.length;
@@ -133,37 +205,34 @@ export default class TrainingGame {
     this.showAnswer();
   }
 
-  playCardSounds() {
-    if (this.autoPronunciation) {
-      const SOUNDS_SRC = 'https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/';
-      const wordSound = new Audio();
-      wordSound.src = `${SOUNDS_SRC}${this.cardData.audio}`;
-      wordSound.play();
-      wordSound.onended = () => {
-        const meaningSound = new Audio();
-        meaningSound.src = `${SOUNDS_SRC}${this.cardData.audioMeaning}`;
-        meaningSound.play();
-        meaningSound.onended = () => {
-          const exampleSound = new Audio();
-          exampleSound.src = `${SOUNDS_SRC}${this.cardData.audioExample}`;
-          exampleSound.play();
-          exampleSound.onended = () => {
-            if (this.isWordWithoutTraining && !this.isRepeatData) {
-              this.renderCardData();
-            } else if(this.isRepeatData) {
-              this.playRepeatWords();
-            }
+playCardSounds() {
+  if (this.autoPronunciation) {
+    const SOUNDS_SRC = 'https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/';
+    this.sound.src = `${SOUNDS_SRC}${this.cardData.audio}`;
+    this.sound.play();
+    this.sound.onended = () => {
+      this.sound.src = `${SOUNDS_SRC}${this.cardData.audioMeaning}`;
+      this.sound.play();
+      this.sound.onended = () => {
+        this.sound.src = `${SOUNDS_SRC}${this.cardData.audioExample}`;
+        this.sound.play();
+        this.sound.onended = () => {
+          if (this.isWordWithoutTraining && !this.isRepeatData) {
+            this.renderCardData();
+          } else if(this.isRepeatData) {
+            this.playRepeatWords();
           }
         }
       }
-    } else if (!this.autoPronunciation) {
-      if (this.isWordWithoutTraining && !this.isRepeatData) {
-        setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
-      } else if(this.isRepeatData) {
-        setTimeout(function fn(){ this.playRepeatWords(); }.bind(this), this.timeOut);
-      }
+    }
+  } else if (!this.autoPronunciation) {
+    if (this.isWordWithoutTraining && !this.isRepeatData) {
+      setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
+    } else if(this.isRepeatData) {
+      setTimeout(function fn(){ this.playRepeatWords(); }.bind(this), this.timeOut);
     }
   }
+}
 
   showAnswer () {
     const DIFFICULTY_BUTTONS = document.querySelector('.difficulty__buttons');
@@ -253,13 +322,17 @@ export default class TrainingGame {
     const statisticsData = {
       amountOfWords: this.amountsOfCards,
       amountOfCorrectAnswers: this.correctAnswersAmount,
-      amountOfNewWords: this.settings.optional.training.newWordsPerDay,
+      amountOfNewWords: this.newWordsPerDay,
       longestSeriesOfCorrectAnswers: this.longestSeriesOfCorrectAnswers
     }
     document.querySelector('.page').append(renderStatistics(statisticsData)); 
   }
 
   async updateWord() {
+    if(!this.isWordWithoutTraining && this.sound.played) {
+      this.sound.pause();
+    }
+    updateAmountOfTodayLearnedWordsSettings();
     let difficultyCoef;
     switch (this.wordDifficulty) {
       case 'easy':
@@ -390,7 +463,6 @@ export default class TrainingGame {
     } 
   }
 
-
   renderInput() {
     const INPUT = document.querySelector('.card__input');
       INPUT.disabled = false;
@@ -441,4 +513,6 @@ export default class TrainingGame {
     INPUT.setAttribute('placeholder', this.data[this.currentCardNumber].word);
     INPUT.focus();
   }
-}   
+}  
+
+export default new TrainingGame();
