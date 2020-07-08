@@ -7,6 +7,9 @@
 }
 
 .stat {
+    &-append {
+        padding-top: 3rem;
+    }
     &-menu {
         position: absolute;
         bottom: 0;
@@ -27,6 +30,16 @@
         font-weight: bold;
         text-transform: uppercase;
         cursor: pointer;
+        @include media-tablet {
+            font-size: 0;
+        }
+        .fa {
+            display: none;
+            @include media-tablet {
+                display: inline-block;
+                font-size: 1.5rem;
+            }
+        }
     }
     &-game:hover {
         border: 1px solid $color-violet;
@@ -38,20 +51,26 @@
         background-color: #54358e;
         color: $color-light;
     }
+    &-gameName {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
     &-info {
         position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
         height: 100%;
     }
     &-title {
-        margin-right: 10rem;
         font-size: 2rem;
+        text-align: center;
+        @include media-mobile {
+            font-size: 1.5rem;
+        }
     }
 } 
 
-#canvas {
-    border: 1px solid black;
+.chart-container {
+    position: relative;
+    margin: auto;
+    height: 80vh;
+    width: 80vw;
 }

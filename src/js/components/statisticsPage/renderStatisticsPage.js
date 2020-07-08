@@ -12,7 +12,9 @@ class Statistics {
             <p>Оценка дневной и долгосрочной статистики обучения</p>
         </div>
         <div class="stat-schedule">
-            <canvas id="canvas"></canvas>
+            <div class="chart-container">
+                <canvas id="chart"></canvas>
+            </div>
         </div>
         `;
 
@@ -25,10 +27,12 @@ class Statistics {
         statInfo.innerHTML = `
         <div class="stat-title">
             <h2>Название игры: <span class="stat-gameName">${this.nameGame}</span></h2>
-            <p>Здесь вы можете увидеть результаты последних 5 игр </p>
+            <p>Здесь вы можете увидеть результаты последних <span class="stat-number">5</span> игр </p>
         </div>
         <div class="stat-schedule">
-            <canvas id="canvas"></canvas>
+            <div class="chart-container">
+                <canvas id="chart"></canvas>
+            </div>
         </div>
         `;
 
