@@ -1,27 +1,3 @@
-function renderCheckBoxElement(containerClass, textContent) {
-  const input = document.createElement('input');
-  input.type = 'checkbox';
-  input.checked = 'checked';
-
-  const checkMark = document.createElement('span');
-  checkMark.className = 'checkmark';
-
-  const container = document.createElement('label');
-  container.className = `checkbox-container ${containerClass}`;
-  container.textContent = textContent;
-  container.append(input);
-  container.append(checkMark);
-  return container;
-}
-
-function renderMenuSettings() {
-  const  menuSettings = document.createElement('div');
-  menuSettings.className = 'game__settings';
-  menuSettings.append(renderCheckBoxElement('new-words', 'Новые слова'));
-  menuSettings.append(renderCheckBoxElement('known-words', 'Изученные слова'));
-  return menuSettings;
-}
-
 function renderMenuIcon(buttonClass, buttonIconClass) {
   const buttonIcon = document.createElement('icon');
   buttonIcon.className = `icon ${buttonIconClass}`;
@@ -30,6 +6,23 @@ function renderMenuIcon(buttonClass, buttonIconClass) {
   button.className = `button ${buttonClass}`;
   button.append(buttonIcon);
   return button;  
+}
+
+function renderSpinner() {
+  const spinner = document.createElement('div');
+  spinner.className = 'spinner';
+  spinner.innerHTML = 
+  `<div class="lds-roller">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+  </div>`;
+  return spinner;
 }
 
 function renderMenuIcons() {
@@ -43,7 +36,6 @@ function renderMenuIcons() {
 function renderTrainingGameMenu() {
   const menu = document.createElement('div');
   menu.className = 'game__menu trainingGame__menu';
-  menu.append(renderMenuSettings());
   menu.append(renderMenuIcons());
   return menu;
 }
@@ -57,7 +49,7 @@ function  renderCardTop() {
 
   const imgContainer = document.createElement('div');
   imgContainer.className = 'card-img__container';
-  
+
   const cardTop = document.createElement('div');
   cardTop.className = 'card__top';
   cardTop.append(cardTranslation);
@@ -111,6 +103,7 @@ function  renderTrainingCard() {
   card.className = 'training__card';
   card.append(renderCardTop());
   card.append(renderCardBottom());
+  card.append(renderSpinner());
   return card;  
 }
 

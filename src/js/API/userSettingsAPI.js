@@ -48,15 +48,16 @@ async function getUserSettings() {
 async function updateLevelRoundDateSettings() {
   const settings = await getUserSettings();
   const {optional} = settings;
-  const trainingSettings = optional.training;
-  let {level} = trainingSettings;
-  let {round} = trainingSettings;
-  const {newWordsPerDay} = trainingSettings;
+  const {wordsPerDay} = settings;
+  const trainingMainSettings = optional.training.mainSettings;
+
+  let {level} = trainingMainSettings;
+  let {round} = trainingMainSettings;
   const wordsPerSentence = 50;
   const maxLevel = 6;
-  const currentDate = new Date();
+  const currentDate = (new Date()).toLocaleString();
 
-  const roundsInLevel = await getRoundsAmountInLevel(level, wordsPerSentence, newWordsPerDay);
+  const roundsInLevel = await getRoundsAmountInLevel(level, wordsPerSentence, wordsPerDay);
   if (round < roundsInLevel) {
     round += 1;
   } else if (level < maxLevel) {
@@ -65,17 +66,54 @@ async function updateLevelRoundDateSettings() {
   } else {
     console.log('levels, round ends');
   }
-  trainingSettings.level = level;
-  trainingSettings.round = round;
-  trainingSettings.date = currentDate;
+  trainingMainSettings.level = level;
+  trainingMainSettings.round = round;
+  trainingMainSettings.date = currentDate;
 
-  optional.training = trainingSettings;
+  optional.training.mainSettings = trainingMainSettings;
   await putUserSettings({ 
     settings: {
-      'wordsPerDay': 10,
+      'wordsPerDay': wordsPerDay,
       'optional': optional,
     }
   }); 
 }
 
-export { putUserSettings, getUserSettings, updateLevelRoundDateSettings }
+async function updateAmountOfTodayLearnedWordsSettings() {
+  const settings = await getUserSettings();
+  const {optional} = settings;
+  const {wordsPerDay} = settings;
+  const trainingMainSettings = optional.training.mainSettings;
+  let {amountOfLearnedWordsPerDay} = trainingMainSettings;
+  amountOfLearnedWordsPerDay += 1;
+  trainingMainSettings.amountOfLearnedWordsPerDay = amountOfLearnedWordsPerDay;
+
+  optional.training.mainSettings = trainingMainSettings;
+  await putUserSettings({ 
+    settings: {
+      'wordsPerDay': wordsPerDay,
+      'optional': optional,
+    }
+  }); 
+}
+
+async function resetTodayProgressSettings() {
+  console.log('resetTodayProgressSettings');
+  const settings = await getUserSettings();
+  const {optional} = settings;
+  const {wordsPerDay} = settings;
+  const trainingMainSettings = optional.training.mainSettings;
+  let {amountOfLearnedWordsPerDay} = trainingMainSettings;
+  amountOfLearnedWordsPerDay = 0;
+  trainingMainSettings.amountOfLearnedWordsPerDay = amountOfLearnedWordsPerDay;
+
+  optional.training.mainSettings = trainingMainSettings;
+  await putUserSettings({ 
+    settings: {
+      'wordsPerDay': wordsPerDay,
+      'optional': optional,
+    }
+  }); 
+}
+
+export { putUserSettings, getUserSettings, updateLevelRoundDateSettings, updateAmountOfTodayLearnedWordsSettings, resetTodayProgressSettings }

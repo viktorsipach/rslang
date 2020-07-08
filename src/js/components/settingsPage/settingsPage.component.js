@@ -2,6 +2,7 @@ import  { renderSettingsPage } from './renderSettingsPage';
 import initSettingsObject from './initSettingsObject';
 import { getRoundData } from '../../API/dataAPI';
 import { randomIntFromInterval } from './utils';
+import SettingsPageAPI from '../../API/settingsPageAPI';
 import testUserSettings from '../../API/testUserSettings';
 
 async function getRandomCardData() {
@@ -19,6 +20,7 @@ async function getRandomCardData() {
 export default async function initSetting() {
   const cardData = await getRandomCardData();
   renderSettingsPage(cardData);
+  SettingsPageAPI.getSettingsPage();
   initSettingsObject();
   // testUserSettings()
 }

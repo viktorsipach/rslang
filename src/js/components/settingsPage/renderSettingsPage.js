@@ -48,6 +48,7 @@ function createCheckBoxElement(checkboxClass, checkboxTitle) {
 }
 
 function createMainSettingsFragment() {
+  const mainFieldsSubTitle = createDOMElement('div', 'required-fields__subtitle', 'Максимальное количество карточек в день не может быть меньше количества новых слов в день!');
   const newWordsPerDay = createNumberInput('main-settings__field', 'Количество новых слов в день', 'input__number', 'newWordsPerDay', '10', '100');
   const maxCardsPerDay = createNumberInput('main-settings__field', 'Максмальное количество карточек в день', 'input__number', 'maxCardsPerDay', '10', '100');
 
@@ -57,11 +58,15 @@ function createMainSettingsFragment() {
   const showDeleteButton = createToggleSwitchElement('main-settings__field deleteButton', 'Возможность удалять слова из изучения');
   const showHardButton = createToggleSwitchElement('main-settings__field hardButton', 'Возможность добавлять слова в сложные');
 
+  const newWordsOnlyButton = createToggleSwitchElement('main-settings__field newWordsOnlyButton', 'Только новые слова');
+  const learnedWordsOnly = createToggleSwitchElement('main-settings__field learnedWordsOnlyButton', 'Только изучаемые слова');
+
   const submitButton = createDOMElement('button', 'button setting-submit__button');
   submitButton.type = 'submit';
   submitButton.textContent = 'Сохранить настройки';
 
   const mainSettings = createDOMElement('div', 'main-settings');
+  mainSettings.append(mainFieldsSubTitle);
   mainSettings.append(newWordsPerDay);
   mainSettings.append(maxCardsPerDay);
   mainSettings.append(autoPronunciation);
@@ -69,6 +74,8 @@ function createMainSettingsFragment() {
   mainSettings.append(showIDontKnowButton);
   mainSettings.append(showDeleteButton);
   mainSettings.append(showHardButton);
+  mainSettings.append(newWordsOnlyButton);
+  mainSettings.append(learnedWordsOnly);
   mainSettings.append(submitButton);
   return mainSettings;
 }

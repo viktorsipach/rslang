@@ -45,7 +45,7 @@ export default [
   {
     name: 'Евгений Козак',
     position: '- Разработчик -',
-    description: 'Разработка мини-игры "Аудиовызов"',
+    description: 'Разработка мини-игры "Аудиовызов", страницы "Промо"',
     image: eugenePhoto,
     socialLinks: [
       {
