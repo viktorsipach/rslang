@@ -102,14 +102,14 @@ class SettingsPageAPI {
         const autoPronunciationButton = document.querySelector('.auto-pronunciation');
         const showTranslationButton = document.querySelector('.show-translation');
         let settings = await this.getSett();
-
-        delete settings.id;
         
         if (!settings) {
             settings = this.initSettings;
             settings.optional.training = initialSettings.training;
         }
 
+        delete settings.id;
+        
         if (action === 'render') {
             if (settings.optional.training.settingsPage.autoPronunciation) {
                 autoPronunciationButton.classList.add('active');
