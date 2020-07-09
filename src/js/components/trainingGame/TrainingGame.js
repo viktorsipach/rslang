@@ -133,7 +133,7 @@ class TrainingGame {
       this.cardData = this.data[this.currentCardNumber];
       console.log(this.cardData);
       this.renderTranslation();
-      this.renderAutoPronunciationButtonState();
+      // this.renderAutoPronunciationButtonState();
       this.renderTranslationInfoAndButtonState();
       this.renderAssociatedPicture();
       this.renderExplanationSentence();
@@ -413,13 +413,13 @@ playCardSounds() {
 
   renderTranslationInfoAndButtonState() {
     const WORD_TRANSLATION = document.querySelector('.card__translation');
-    const SHOW_TRANSLATION_BUTTON = document.querySelector('.menu__button.show-translation');
+    // const SHOW_TRANSLATION_BUTTON = document.querySelector('.menu__button.show-translation');
     if (this.cardSettings.showTranslation) {
       WORD_TRANSLATION.textContent = this.cardData.wordTranslate;
-      SHOW_TRANSLATION_BUTTON.classList.add('active');
+      // SHOW_TRANSLATION_BUTTON.classList.add('active');
     } else {
       WORD_TRANSLATION.textContent = '';
-      SHOW_TRANSLATION_BUTTON.classList.add('active');
+      // SHOW_TRANSLATION_BUTTON.classList.add('active');
     }
   }
 
