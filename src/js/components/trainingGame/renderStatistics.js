@@ -8,17 +8,22 @@ export default function renderStatisticsModal(statisticsData) {
     <div class="notification-title">УРА!!! На сегодня всё!</div>
     <div class="statistic-container">
       <div class="statistic-item">
-        <span>Карточек завершено:</span>
-        <span>${statisticsData.amountOfWords}</span>
+        <span>Общее количество пройденных карточек за день:</span>
+        <span>${statisticsData.amountOfAllWords}</span>
+      </div>
+      <div class="statistic-item">
+        <span>Количество новых карточек за день:</span>
+        <span>${statisticsData.amountOfLearnedWordsPerDay}</span>
+      </div>
+      <div class="statistic-item">
+        <span>Количество повторенных карточек за день:</span>
+        <span>${statisticsData.amountOfRepeatedWordsPerDay}</span>
       </div>
       <div class="statistic-item">
         <span>Правильные ответы:</span>
-        <span>${statisticsData.amountOfCorrectAnswers}</span>
+        <span>${statisticsData.allCorrectAnswersAmount}</span>
       </div>
-      <div class="statistic-item">
-        <span>Новые слова:</span>
-        <span>${statisticsData.amountOfNewWords}</span>
-      </div>
+      
       <div class="statistic-item">
         <span>Самая длинная серия правильных ответов:</span>
         <span>${statisticsData.longestSeriesOfCorrectAnswers}</span>

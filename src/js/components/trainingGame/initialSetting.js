@@ -24,6 +24,12 @@ const initialSettings = {
       showHardButton: true,
       newWordsOnly: true,
       learnedWordsOnly: true,
+    },
+    trainingProgress: {
+      amountOfRepeatedWordsPerDay: 0,
+      seriesOfCorrectAnswers: 0,
+      longestSeriesOfCorrectAnswers: 0,
+      allCorrectAnswersAmount: 0,
     }
   },
 }

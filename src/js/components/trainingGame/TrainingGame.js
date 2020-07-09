@@ -2,10 +2,11 @@ import renderStatistics from './renderStatistics';
 import { disableButton, enableButton } from './utils';
 import getTrainingGameData from './IntervalRepetitionTechnique';
 import { updateUserWord, getUserWord } from '../../API/userWordsAPI';
-import { updateLevelRoundDateSettings, updateAmountOfTodayLearnedWordsSettings, putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
+import { updateLevelRoundDateSettings, updateTrainingProgressSettings, putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
 import renderTrainingModal from './renderTrainingModal';
 import initialSettings from './initialSetting';
- 
+import StatisticsAPI from '../../API/statisticsAPI';
+
 class TrainingGame {
   constructor() {
     this.timeOut = 2500;
@@ -15,15 +16,12 @@ class TrainingGame {
     this.wordStatus = 'repeat';
     this.wordDifficulty = 'easy';
     this.date = (new Date()).toLocaleString();
-    this.correctAnswersAmount = 0;
-    this.seriesOfCorrectAnswers = 0;
-    this.longestSeriesOfCorrectAnswers = 0;
     this.sound = new Audio();
   }
 
   async initGame() {
     let settings = await getUserSettings();
-    if (settings === undefined || settings.optional.training === undefined) {
+    if (settings === undefined || settings.optional === undefined || settings.optional.training === undefined) {
       const initialWordsPerDay = 10;
       await putUserSettings({ 
         settings: {
@@ -51,12 +49,30 @@ class TrainingGame {
     if (this.settingsPage === undefined) {
       await this.initTrainingSettingsPage();
     }
+
+    this.trainingProgress = this.trainingSettings.trainingProgress;
+    if (this.trainingProgress === undefined) {
+      await this.initTrainingSettingsPage();
+    }
+    this.seriesOfCorrectAnswers = 0;
+    this.correctAnswersAmount = 0;
     this.amountOfLearnedWordsPerDay = this.trainingMainSettings.amountOfLearnedWordsPerDay;
     this.maxCardsPerDay = this.settingsPage.maxCardsPerDay;
     this.cardSettings = this.settingsPage.cardSettings;
     this.autoPronunciation = this.settingsPage.autoPronunciation;
     this.showDeleteButton = this.settingsPage.showDeleteButton;
     this.showHardButton = this.settingsPage.showHardButton;
+
+    this.longestSeriesOfCorrectAnswers = this.trainingProgress.longestSeriesOfCorrectAnswers;
+    this.amountOfRepeatedWordsPerDay = this.trainingProgress.amountOfRepeatedWordsPerDay;
+    this.allCorrectAnswersAmount = this.trainingProgress.allCorrectAnswersAmount;;
+
+    console.log(`amountOfLearnedWordsPerDay ${this.amountOfLearnedWordsPerDay}`);
+    console.log(`amountOfRepeatedWordsPerDay ${this.amountOfRepeatedWordsPerDay}`);
+    console.log(`correctAnswersAmount ${this.correctAnswersAmount}`);
+    console.log(`seriesOfCorrectAnswers ${this.seriesOfCorrectAnswers}`);
+    console.log(`longestSeriesOfCorrectAnswers ${this.longestSeriesOfCorrectAnswers}`);
+    console.log(`allCorrectAnswersAmount ${this.allCorrectAnswersAmount}`);
   }
 
   async initTrainingSettings() {
@@ -100,13 +116,14 @@ class TrainingGame {
   async getData() {
     this.data = await getTrainingGameData();
     if (this.data) {
-      this.amountsOfCards = this.data.length;
+      this.amountOfCards = this.data.length;
+      console.log(`amountOfCards ${this.amountOfCards}`);
       document.querySelector('.spinner').classList.add('hidden');
     }
   }
 
   async start() {
-    if (this.data === undefined || this.amountsOfCards === 0) {
+    if (this.data === undefined || this.amountOfCards === 0) {
       console.log('no words to learn today!')
       document.querySelector('.page').append(renderTrainingModal());
     } else {
@@ -118,7 +135,7 @@ class TrainingGame {
     }
   }
 
-  renderCardData() {
+  async renderCardData() {
     const DIFFICULTY_BUTTONS = document.querySelector('.difficulty__buttons');
     const GAME_BUTTONS = document.querySelector('.game__buttons.training-game');
     DIFFICULTY_BUTTONS.classList.add('hidden');
@@ -128,9 +145,10 @@ class TrainingGame {
     disableButton(NEXTBUTTON_SELECTOR);
     enableButton(IDONTKNOWBUTTON_SELECTOR);
     this.isWordWithoutTraining = false;
-    if (this.currentCardNumber < this.amountsOfCards) {
+    if (this.currentCardNumber < this.amountOfCards) {
       document.querySelector('.letters-container').classList.add('hidden');
       this.cardData = this.data[this.currentCardNumber];
+      console.log(`current word`);
       console.log(this.cardData);
       this.renderTranslation();
       this.renderAutoPronunciationButtonState();
@@ -141,7 +159,7 @@ class TrainingGame {
       this.renderInput();
       this.showProgress();
     } else {
-      updateLevelRoundDateSettings();
+      await updateLevelRoundDateSettings();
       if (this.repeatData.length === 0) {
         this.openStatistics();
       } else {
@@ -175,6 +193,10 @@ class TrainingGame {
       if(!this.isRepeatData) {
         this.showProgress();
         this.seriesOfCorrectAnswers = 0;
+        console.log(`seriesOfCorrectAnswers ${this.seriesOfCorrectAnswers}`);
+        if (this.cardData.userWord.optional.status === 'new') {
+          this.amountOfLearnedWordsPerDay += 1;
+        }
       }
       this.showAnswer();
     } 
@@ -183,20 +205,35 @@ class TrainingGame {
       if (!this.isRepeatData) {
         this.correctAnswersAmount += 1;
         this.seriesOfCorrectAnswers += 1;
+        this.allCorrectAnswersAmount += 1;
+        if (this.cardData.userWord.optional.status === 'new') {
+          this.amountOfLearnedWordsPerDay += 1;
+        }
+        if (this.cardData.userWord.optional.status === 'repeat' || this.cardData.userWord.optional.status === 'tricky') {
+          this.amountOfRepeatedWordsPerDay += 1;
+        }
+        console.log(`amountOfLearnedWordsPerDay ${this.amountOfLearnedWordsPerDay}`);
+        console.log(`amountOfRepeatedWordsPerDay ${this.amountOfRepeatedWordsPerDay}`);
+        console.log(`correctAnswersAmount ${this.correctAnswersAmount}`);
+        console.log(`seriesOfCorrectAnswers ${this.seriesOfCorrectAnswers}`);
+
       }
       if (this.seriesOfCorrectAnswers > this.longestSeriesOfCorrectAnswers) {
         this.longestSeriesOfCorrectAnswers = this.seriesOfCorrectAnswers;
+        console.log(`longestSeriesOfCorrectAnswers ${this.longestSeriesOfCorrectAnswers}`);
+
       }
       this.correctAnswer();
     } else {
       this.seriesOfCorrectAnswers = 0;
+      console.log(`seriesOfCorrectAnswers ${this.seriesOfCorrectAnswers}`);
       this.incorrectAnswer();
     }
   }
 
   correctAnswer() {
     this.isAnswerCorrect = true;
-    this.progress += 100/this.amountsOfCards;
+    this.progress += 100/this.amountOfCards;
     this.showAnswer();
   }
 
@@ -205,34 +242,34 @@ class TrainingGame {
     this.showAnswer();
   }
 
-playCardSounds() {
-  if (this.autoPronunciation) {
-    const SOUNDS_SRC = 'https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/';
-    this.sound.src = `${SOUNDS_SRC}${this.cardData.audio}`;
-    this.sound.play();
-    this.sound.onended = () => {
-      this.sound.src = `${SOUNDS_SRC}${this.cardData.audioMeaning}`;
+  playCardSounds() {
+    if (this.autoPronunciation) {
+      const SOUNDS_SRC = 'https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/';
+      this.sound.src = `${SOUNDS_SRC}${this.cardData.audio}`;
       this.sound.play();
       this.sound.onended = () => {
-        this.sound.src = `${SOUNDS_SRC}${this.cardData.audioExample}`;
+        this.sound.src = `${SOUNDS_SRC}${this.cardData.audioMeaning}`;
         this.sound.play();
         this.sound.onended = () => {
-          if (this.isWordWithoutTraining && !this.isRepeatData) {
-            this.renderCardData();
-          } else if(this.isRepeatData) {
-            this.playRepeatWords();
+          this.sound.src = `${SOUNDS_SRC}${this.cardData.audioExample}`;
+          this.sound.play();
+          this.sound.onended = () => {
+            if (this.isWordWithoutTraining && !this.isRepeatData) {
+              this.renderCardData();
+            } else if(this.isRepeatData) {
+              this.playRepeatWords();
+            }
           }
         }
       }
-    }
-  } else if (!this.autoPronunciation) {
-    if (this.isWordWithoutTraining && !this.isRepeatData) {
-      setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
-    } else if(this.isRepeatData) {
-      setTimeout(function fn(){ this.playRepeatWords(); }.bind(this), this.timeOut);
+    } else if (!this.autoPronunciation) {
+      if (this.isWordWithoutTraining && !this.isRepeatData) {
+        setTimeout(function fn(){ this.renderCardData(); }.bind(this), this.timeOut);
+      } else if(this.isRepeatData) {
+        setTimeout(function fn(){ this.playRepeatWords(); }.bind(this), this.timeOut);
+      }
     }
   }
-}
 
   showAnswer () {
     const DIFFICULTY_BUTTONS = document.querySelector('.difficulty__buttons');
@@ -292,7 +329,7 @@ playCardSounds() {
   showWordWithoutTraining() {
     this.isAnswerCorrect = false;
     this.isWordWithoutTraining = true;
-    this.progress += 100/this.amountsOfCards;
+    this.progress += 100/this.amountOfCards;
     this.checkInput();
   }
 
@@ -315,16 +352,18 @@ playCardSounds() {
     this.renderInput();
     } else {
       this.openStatistics();
-    }
+      }
   }
 
-  openStatistics() {
+  async openStatistics() {
     const statisticsData = {
-      amountOfWords: this.amountsOfCards,
-      amountOfCorrectAnswers: this.correctAnswersAmount,
-      amountOfNewWords: this.newWordsPerDay,
+      amountOfAllWords: this.amountOfLearnedWordsPerDay + this.amountOfRepeatedWordsPerDay,
+      amountOfLearnedWordsPerDay: this.amountOfLearnedWordsPerDay,
+      amountOfRepeatedWordsPerDay: this.amountOfRepeatedWordsPerDay,
+      allCorrectAnswersAmount: this.allCorrectAnswersAmount,
       longestSeriesOfCorrectAnswers: this.longestSeriesOfCorrectAnswers
     }
+    await StatisticsAPI.trainingStat(this.amountOfLearnedWordsPerDay);
     document.querySelector('.page').append(renderStatistics(statisticsData)); 
   }
 
@@ -332,7 +371,8 @@ playCardSounds() {
     if(!this.isWordWithoutTraining && this.sound.played) {
       this.sound.pause();
     }
-    updateAmountOfTodayLearnedWordsSettings();
+
+    await updateTrainingProgressSettings(this.amountOfLearnedWordsPerDay, this.amountOfRepeatedWordsPerDay, this.seriesOfCorrectAnswers, this.longestSeriesOfCorrectAnswers, this.allCorrectAnswersAmount);
     let difficultyCoef;
     switch (this.wordDifficulty) {
       case 'easy':
@@ -388,7 +428,7 @@ playCardSounds() {
   }
 
   showProgress() {
-    document.querySelector('.progress__value').textContent = `${this.currentCardNumber} / ${this.amountsOfCards}`;
+    document.querySelector('.progress__value').textContent = `${this.currentCardNumber} / ${this.amountOfCards}`;
     document.querySelector('.progress__line').style.width = `${this.progress}%`;
   }
 
