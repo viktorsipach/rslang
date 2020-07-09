@@ -62,48 +62,10 @@
   }
 }
 
-.game__close_puzzle {
-  position: absolute;
-  right: 3rem;
-  top: 3rem;
-  width: 3rem;
-  height: 3rem;
-  opacity: 1;
-  &:hover {
-    opacity: 0.3;
-    cursor: pointer;
-  }
-  &::before, 
-  &::after {
-    position: absolute;
-    left: 1.5rem;
-    content: "";
-    height: 3rem;
-    width: 0.5rem;
-  }
-  &::before {
-    transform: rotate(45deg);
-  }
-  &::after {
-    transform: rotate(-45deg);
-  }
-   @include media-tablet {
-      right: 1rem;
-      top: 1rem;
-  }
-}
-
-.puzzle-start {
+.close-btn.close-btn__puzzle {
   &::before, 
   &::after {
     background-color: $color-light;
-  }
-}
-
-.puzzle-main {
-  &::before, 
-  &::after {
-    width: 0.25rem;
-    background-color: $color-primary;
+    width: 0.5rem;
   }
 }
