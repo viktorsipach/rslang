@@ -69,6 +69,8 @@ export default async function getTrainingGameData() {
   const allUserWords = await getAllUserWords();
   console.log(`allUserWords.length ${allUserWords.length}`);
   console.log(allUserWords);
+  const nextDateShift = 1;
+  const dateShiftForNextMonth = -25;
 
   // allUserWords.forEach((word) => {
   //   deleteUserWord({wordId: word.wordId});
@@ -104,7 +106,7 @@ export default async function getTrainingGameData() {
     }
     return gameData;
   }
-  if (daysBetweenLastTriningAndToday >= 1 && daysBetweenLastTriningAndToday > -25) {
+  if (daysBetweenLastTriningAndToday >= nextDateShift && daysBetweenLastTriningAndToday > dateShiftForNextMonth) {
     console.log('NEW DAY');
     await resetTodayProgressSettings();
     const amountOfWordsForMinRequest = 1;
@@ -145,7 +147,7 @@ export default async function getTrainingGameData() {
     const AMOUNT_OF_WORDS_TO_REPEAT = trainingSettingsPage.maxCardsPerDay - settings.wordsPerDay - amountOfRepeatedWordsPerDay;
     console.log(`total Ws = ${trainingSettingsPage.maxCardsPerDay}, learned new Ws = ${trainingMainSettings.amountOfLearnedWordsPerDay}, repeat Ws${AMOUNT_OF_WORDS_TO_REPEAT}`);
     if (trainingSettingsPage.newWordsOnly) {
-      const gameDataNew = await getFilteredUserWords(FILTER_FOR_NEW_WORDS, AMOUNT_OF_LEFT_NEW_WORDS); //
+      const gameDataNew = await getFilteredUserWords(FILTER_FOR_NEW_WORDS, AMOUNT_OF_LEFT_NEW_WORDS);
       console.log(gameDataNew);
       if (gameDataNew) {
         gameDataNew[0].paginatedResults.forEach((el) => {
