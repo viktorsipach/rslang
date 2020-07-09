@@ -1,3 +1,5 @@
+import renderSwitch from '../gameSwitcher/renderSwitch';
+
 function renderDropdownElement(containerClass, titleClass, title, selectClass, selectId) {
   const selectElement = document.createElement('select');
   selectElement.id = selectId;
@@ -81,7 +83,11 @@ function renderMainPageMenu() {
   const menu = document.createElement('div');
   menu.className = 'game__menu'  ;
   menu.append(menuLeft);
+  menu.append(renderSwitch());
   menu.append(menuRight);
+
+  menu.querySelector('.games-switcher').classList.add('games-switcher__puzzle');
+  menu.querySelector('input').classList.add('data-word-checkbox__puzzle');
   return menu;
 }
 
