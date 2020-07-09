@@ -48,26 +48,11 @@ function renderHints() {
   return hints;  
 }
 
-function renderLevelsOptions(selectContainer) {
-  const levels = 6;
-  const SELECTLEVELCONTAINER = selectContainer.querySelector('.select__level>select');
-  const fr = document.createDocumentFragment();
-  for (let i = 1; i <= levels; i += 1) {
-    const opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = i;
-    fr.append(opt);
-  }
-  SELECTLEVELCONTAINER.innerHTML = '';
-  SELECTLEVELCONTAINER.append(fr);
-}
-
 function renderMainPageMenu() {
   const menuLeft = document.createElement('div');
   menuLeft.className = 'menu__left';
   menuLeft.append(renderDropdownElement('menu__level', 'level__title', 'Уровень', 'select__level', 'selectLevel'));
   menuLeft.append(renderDropdownElement('menu__round', 'round__title', 'Раунд', 'select__round', 'selectRound'));
-  renderLevelsOptions(menuLeft);
   
   const menuButtons = document.createElement('div');
   menuButtons.className = 'buttons menu__buttons';

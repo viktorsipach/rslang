@@ -14,7 +14,7 @@ class UserSettingsMiniGame {
         const settings = await this.getSettings();
         const initLevelRound = {level: 1, round: 1};
 
-        if (!settings) return initLevelRound;
+        if (!settings || !settings.optional || !settings.optional[`${nameGame}Settings`]) return initLevelRound;
 
         const levelRound = settings.optional[`${nameGame}Settings`];
 

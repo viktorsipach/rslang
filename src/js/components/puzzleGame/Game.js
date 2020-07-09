@@ -7,10 +7,7 @@ import userSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 import getUserDataForMiniGame from '../../API/testForUserWordsForMiniGames';
 
 export default class Game {
-  // constructor({ level, round }) {
   constructor() {
-    /* this.level = level;
-    this.round = round; */
     this.wordsPerSentence = 10;
     this.wordsPerRound = 10;
     this.isFinished = false;
@@ -297,8 +294,6 @@ export default class Game {
   renderSentencesStatistics() {
     const iDontKnowFragment = document.createDocumentFragment();
     const iKnowFragment = document.createDocumentFragment();
-
-    console.log(this.dataSentencesObjects);
     this.dataSentencesObjects.forEach((element) => {
       if (element.status === 'iDontKnow') {
         const sentence = createStatisticSentence(element);

@@ -1,33 +1,32 @@
 import Game from './Game';
 import renderStartPage from './renderStartPage';
 import renderMainPage from './renderMainPage';
-import { checkActiveHints, checkLocalStorageItem } from './utils';
+import { checkActiveHints, checkLocalStorageItem, renderLevelsOptions } from './utils';
 import userSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 
 let game;
-
 async function startGame(isMyWords) {
+  const SELECTLEVELOPTION = document.getElementById('selectLevel');
+  const SELECTROUNDOPTION = document.getElementById('selectRound');
+
   game = new Game();
   
   if (isMyWords) {
-    console.log('with user words');
     game.isMyWords = true;
+    SELECTLEVELOPTION.disabled = true;
+    SELECTROUNDOPTION.disabled = true;
   } else {
-    console.log('levels, rounds');
+    SELECTLEVELOPTION.disabled = false;
+    SELECTROUNDOPTION.disabled = false;
     const gameName = 'puzzle';
     const gameProgress = await userSettingsMiniGame.getUserSettingsMiniGame(gameName);
     const {level} = gameProgress;
     const {round} = gameProgress;  
     game.isMyWords = false;
+    renderLevelsOptions(document.querySelector('.menu__level'));
     game.initLevelRound({level, round});
   }
   game.startNewLevelRound();
-  /* const gameName = 'puzzle';
-  const gameProgress = await userSettingsMiniGame.getUserSettingsMiniGame(gameName);
-  const {level} = gameProgress;
-  const {round} = gameProgress;
-  game = new Game( { level, round });
-  game.startNewLevelRound(); */
 }
 
 export default function initPuzzleGame() {
@@ -35,24 +34,19 @@ export default function initPuzzleGame() {
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderStartPage());
 
-
   document.querySelector('.start__button').addEventListener('click', () => {
     PAGECONTAINER.innerHTML = '';
-    PAGECONTAINER.append(renderMainPage()); // & await
+    PAGECONTAINER.append(renderMainPage());
     const SELECTLEVELOPTION = document.getElementById('selectLevel');
     const SELECTROUNDOPTION = document.getElementById('selectRound');
-    const USER_DATA_CHECKBOX = document.querySelector('.data-word-checkbox__puzzle');// 
+    const USER_DATA_CHECKBOX = document.querySelector('.data-word-checkbox__puzzle');
 
     let isMyWords = true;
-    USER_DATA_CHECKBOX.addEventListener('click', () => {
-  
-      console.log(USER_DATA_CHECKBOX.checked);
-      if (USER_DATA_CHECKBOX.checked) {
-        isMyWords = true;
-      } else {
-        isMyWords = false;
-      }
-    });
+    if (USER_DATA_CHECKBOX.checked) {
+      isMyWords = true;
+    } else {
+      isMyWords = false;
+    }
 
     startGame(isMyWords);
 
@@ -70,6 +64,15 @@ export default function initPuzzleGame() {
     });
 
     // click events
+    USER_DATA_CHECKBOX.addEventListener('click', () => {
+      if (USER_DATA_CHECKBOX.checked) {
+        isMyWords = true;
+      } else {
+        isMyWords = false;
+      }
+      startGame(isMyWords);
+    });
+
     document.querySelector('.game__puzzle').addEventListener('click', (event) => {
       if (event.target.closest('.menu__button.auto-pronunciation')) {
         checkLocalStorageItem('autoPronunciation');
@@ -103,32 +106,31 @@ export default function initPuzzleGame() {
           if (game.currentSentenceNumber < game.wordsPerRound) {
             game.startSentence();
           } else {
-            game.sendLongTermStatistics();
-            game.updateLevelRound();
-            game.sendLevelRoundInfo();
+            if (!game.isMyWords) {
+              game.sendLongTermStatistics();
+              game.updateLevelRound();
+              game.sendLevelRoundInfo();
+            }
             game.checkGameProgress();
           }
         }
       } else if (event.target.classList.contains('results') && event.target.classList.contains('puzzleGame__button')) {
-       // if (!game.isMyWords) {
+        if (!game.isMyWords) {
           game.sendLongTermStatistics();
-          game.showRoundStatistic();
-          
-          document.querySelector('.puzzle__statistic').addEventListener('click', (eventStatisticPage) => {
-            if (eventStatisticPage.target.classList.contains('continue')) {
-              const statisticElement = document.querySelector('.puzzle__statistic');
-              statisticElement.parentNode.removeChild(statisticElement);
-              if (!game.isFinished) {
-                game.updateLevelRound();
-                game.sendLevelRoundInfo();
-                game.checkGameProgress();
-              }
-            }
-          });
-        /* } else {
-          console.log('some modal with continue button');
         }
-         */
+        game.showRoundStatistic();
+        
+        document.querySelector('.puzzle__statistic').addEventListener('click', (eventStatisticPage) => {
+          if (eventStatisticPage.target.classList.contains('continue')) {
+            const statisticElement = document.querySelector('.puzzle__statistic');
+            statisticElement.parentNode.removeChild(statisticElement);
+            if (!game.isFinished) {
+              game.updateLevelRound();
+              game.sendLevelRoundInfo();
+              game.checkGameProgress();
+            }
+          }
+        });
       }
 
       if (event.target.classList.contains('icon__sound')) {
