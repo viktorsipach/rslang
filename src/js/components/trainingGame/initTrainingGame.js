@@ -1,10 +1,12 @@
 import renderTrainingGamePage from './renderTrainingGamePage';
 import TrainingGame from './TrainingGame';
+import SettingsPageAPI from '../../API/settingsPageAPI';
 
 export default async function initTrainingGame() {
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderTrainingGamePage());
+  SettingsPageAPI.settingsTrainingPage('render');
  
   const trainingGame = TrainingGame;
   await trainingGame.getData();
@@ -78,6 +80,9 @@ export default async function initTrainingGame() {
       const element = event.target.closest('.menu__button') || event.target.closest('.card__button');
       element.classList.toggle('active');
       if (event.target.closest('.auto-pronunciation')) {
+        
+        SettingsPageAPI.settingsTrainingPage('auto-pronunciation');
+
         if (trainingGame.autoPronunciation) {
           trainingGame.autoPronunciation = false;
         } else {
@@ -85,6 +90,9 @@ export default async function initTrainingGame() {
         }
       }
       if (event.target.closest('.show-translation')) {
+
+        SettingsPageAPI.settingsTrainingPage('show-translation');
+
         if (trainingGame.cardSettings.showTranslation) {
           trainingGame.cardSettings.showTranslation = false;
         } else {

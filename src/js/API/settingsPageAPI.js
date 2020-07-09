@@ -97,6 +97,49 @@ class SettingsPageAPI {
         }
         
     }
+
+    async settingsTrainingPage(action) {
+        const autoPronunciationButton = document.querySelector('.auto-pronunciation');
+        const showTranslationButton = document.querySelector('.show-translation');
+        let settings = await this.getSett();
+        
+        if (!settings) {
+            settings = this.initSettings;
+            settings.optional.training = initialSettings.training;
+        }
+
+        delete settings.id;
+        
+        if (action === 'render') {
+            if (settings.optional.training.settingsPage.autoPronunciation) {
+                autoPronunciationButton.classList.add('active');
+            } else {
+                autoPronunciationButton.classList.remove('active');
+            }
+            if (settings.optional.training.settingsPage.showSentencesTranslation) {
+                showTranslationButton.classList.add('active');
+            } else {
+                showTranslationButton.classList.remove('active');
+            }
+        }
+
+        if (action === 'auto-pronunciation') {
+            if (autoPronunciationButton.className.includes('active')) {
+                settings.optional.training.settingsPage.autoPronunciation = true;
+            } else {
+                settings.optional.training.settingsPage.autoPronunciation = false;
+            }
+        }
+        if (action === 'show-translation') {
+            if (showTranslationButton.className.includes('active')) {
+                settings.optional.training.settingsPage.showSentencesTranslation = true;
+            } else {
+                settings.optional.training.settingsPage.showSentencesTranslation = false;
+            }
+        }
+
+        this.putSett({settings});
+    }
 }
 
 export default new SettingsPageAPI();
