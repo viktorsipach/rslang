@@ -4,28 +4,35 @@ import Sentence from './Sentence';
 import renderStatisticsModal from './renderStatistics';
 import StatisticsAPI from '../../API/statisticsAPI';
 import userSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
+import getUserDataForMiniGame from '../../API/testForUserWordsForMiniGames';
 
 export default class Game {
-  constructor({ level, round }) {
-    this.level = level;
-    this.round = round;
+  constructor() {
     this.wordsPerSentence = 10;
     this.wordsPerRound = 10;
     this.isFinished = false;
     this.audio = new Audio();
     this.levelsAmount = 6;
+    this.roundsAmountForRandom = 25;
     this.roundStartIndex = 1;
     this.gameName = 'puzzle';
+  }
+
+  initLevelRound({level, round}) {
+    this.level = level;
+    this.round = round;
   }
 
   async startNewLevelRound() {
     const SELECTROUNDOPTION = document.getElementById('selectRound');
     const SELECTLEVELOPTION = document.getElementById('selectLevel');
     this.isFinished = false;
-    const roundsInLevel = await getRoundsAmountInLevel(this.level, this.wordsPerSentence, this.wordsPerRound);
-    await this.renderRoundOptions(roundsInLevel);
-    SELECTLEVELOPTION.value = this.level;
-    SELECTROUNDOPTION.value = this.round;
+    if (!this.isMyWords) {
+      const roundsInLevel = await getRoundsAmountInLevel(this.level, this.wordsPerSentence, this.wordsPerRound);
+      await this.renderRoundOptions(roundsInLevel);
+      SELECTLEVELOPTION.value = this.level;
+      SELECTROUNDOPTION.value = this.round;
+    }
     this.startRound();
   }
 
@@ -63,30 +70,51 @@ export default class Game {
     CONTINUEBUTTON.classList.add('hidden');
     RESULTBUTTON.classList.add('hidden');
     
-    await this.renderRoundData();
-    const RESULT_SENTENCE_WORDS = document.querySelectorAll('.results-container>.result__sentence');
-    RESULT_SENTENCE_WORDS.forEach((element) => this.resultSentences.push(element));
-    checkActiveHints();
-    this.startSentence();
+    const isResultsAmountEnough = await this.renderRoundData(); 
+    if (isResultsAmountEnough) {
+      const RESULT_SENTENCE_WORDS = document.querySelectorAll('.results-container>.result__sentence');
+      RESULT_SENTENCE_WORDS.forEach((element) => this.resultSentences.push(element));
+      checkActiveHints();
+      this.startSentence();
+    } else {
+      document.querySelector('.hints__sentence').textContent = `Ваших слов для повторения недостаточно! 
+      Чтобы сыграть в мини-игру выключите переключатель "Мои слова" и выберите уровень и раунд.`;
+    }
   }
 
   async renderRoundData() {
     const fragment = document.createDocumentFragment();
-    const roundData = await getSCustomRoundData(this.level, this.round, this.wordsPerSentence, this.wordsPerRound);
-    roundData.forEach((element) => {
-      let sentence = new Sentence(element);
-      this.dataSentencesObjects.push(sentence);
-      sentence.textExample = sentence.textExample.replace(/<b>/, '').replace(/<\/b>/, '');
-      sentence.status = 'iKnow';
-      sentence = sentence.createDataSentence();
-      this.dataSentences.push(sentence);
-      const sentenceContainer = document.createElement('div');
-      sentenceContainer.className = 'sentence result__sentence';
-      fragment.append(sentenceContainer);
-    });
-    const RESULTS_CONTAINER = document.querySelector('.results-container');
-    RESULTS_CONTAINER.innerHTML = '';
-    RESULTS_CONTAINER.append(fragment);
+    if (!this.isMyWords) {
+      this.roundData = await getSCustomRoundData(this.level, this.round, this.wordsPerSentence, this.wordsPerRound);
+    } else {
+      const maxAmountOfUserWords = 3600;
+      const allUserData = (await getUserDataForMiniGame(maxAmountOfUserWords))[0].paginatedResults;
+      if (allUserData.length >= this.wordsPerRound) {
+        allUserData.sort(() => Math.random() - 0.5);
+        this.roundData = allUserData.slice(0, this.wordsPerRound);
+      } else {
+        this.roundData = undefined;
+      }
+    }
+
+    if (this.roundData) {
+      this.roundData.forEach((element) => {
+        let sentence = new Sentence(element);
+        this.dataSentencesObjects.push(sentence);
+        sentence.textExample = sentence.textExample.replace(/<b>/, '').replace(/<\/b>/, '');
+        sentence.status = 'iKnow';
+        sentence = sentence.createDataSentence();
+        this.dataSentences.push(sentence);
+        const sentenceContainer = document.createElement('div');
+        sentenceContainer.className = 'sentence result__sentence';
+        fragment.append(sentenceContainer);
+      });
+      const RESULTS_CONTAINER = document.querySelector('.results-container');
+      RESULTS_CONTAINER.innerHTML = '';
+      RESULTS_CONTAINER.append(fragment);
+      return true;
+    } 
+    return false;
   }
 
   setSentenceWordsBackgroundSetting() {
@@ -200,11 +228,12 @@ export default class Game {
         element.classList.remove('current');
       })
 
-      const pictureInfo = getPaintingInfo(this.level, this.round);
-      document.querySelector('.data-container').textContent = pictureInfo;
-      document.querySelector('.main__data').classList.add('paintingInfo');
-      document.querySelector('.main__hints').classList.add('hidden');
-      this.getRoundResult();
+      if (!this.isMyWords) {
+        const pictureInfo = getPaintingInfo(this.level, this.round);
+        document.querySelector('.data-container').textContent = pictureInfo;
+        document.querySelector('.main__data').classList.add('paintingInfo');
+        document.querySelector('.main__hints').classList.add('hidden');
+      }
     }
   }
 
@@ -238,7 +267,7 @@ export default class Game {
         this.pronounceCurrentSentence();
       }
     }
-    if (localStorage.getItem('bckImage') === 'true') {
+    if (localStorage.getItem('bckImage') === 'true' && !this.isMyWords) {
       this.showCurrentBckImage();
     }
   }
@@ -252,23 +281,34 @@ export default class Game {
         this.pronounceCurrentSentence();
       }
     }
-    if (!this.currentDataSentenceObject.isBckImageHintUsed) {
+    if (!this.currentDataSentenceObject.isBckImageHintUsed && !this.isMyWords) {
       this.showCurrentBckImage();
     }
   }
 
   renderPaintingInfoForStatisticPage() {
-    const paintingSrc = getPaintingImageSrc(this.level, this.round);
+    let paintingSrc;
+    const randomLevel = Math.floor(Math.random() * (this.levelsAmount - 1)) + 1;
+    const randomRound = Math.floor(Math.random() * this.roundsAmountForRandom) + 1;
+    if (this.isMyWords) {
+      paintingSrc = getPaintingImageSrc(randomLevel, randomRound);
+    } else {
+      paintingSrc = getPaintingImageSrc(this.level, this.round);
+    }
     document.querySelector('.painting__image').style.backgroundImage = paintingSrc;
 
-    const paintingInfo = getPaintingInfo(this.level, this.round);
+    let paintingInfo;
+    if (this.isMyWords) {
+      paintingInfo = getPaintingInfo(randomLevel, randomRound);
+    } else {
+      paintingInfo = getPaintingInfo(this.level, this.round);
+    }
     document.querySelector('.painting__info').textContent = paintingInfo;
   }
 
   renderSentencesStatistics() {
     const iDontKnowFragment = document.createDocumentFragment();
     const iKnowFragment = document.createDocumentFragment();
-
     this.dataSentencesObjects.forEach((element) => {
       if (element.status === 'iDontKnow') {
         const sentence = createStatisticSentence(element);
@@ -287,7 +327,10 @@ export default class Game {
 
   showRoundStatistic() {
     document.querySelector('.page'). append(renderStatisticsModal());
-    document.querySelector('.statistic-title').textContent = `Уровень ${this.level} Раунд ${this.round}`;
+    this.getRoundResult();
+    if (!this.isMyWords) {
+      document.querySelector('.statistic-title').textContent = `Уровень ${this.level} Раунд ${this.round}`;
+    }
     this.renderPaintingInfoForStatisticPage();
     this.renderSentencesStatistics();
   }

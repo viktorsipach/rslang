@@ -153,7 +153,21 @@ function getPaintingInfo(level, round) {
   return paintingInfo;
 }
 
+function renderLevelsOptions(selectContainer) {
+  const levels = 6;
+  const SELECTLEVELCONTAINER = selectContainer.querySelector('.select__level>select');
+  const fr = document.createDocumentFragment();
+  for (let i = 1; i <= levels; i += 1) {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = i;
+    fr.append(opt);
+  }
+  SELECTLEVELCONTAINER.innerHTML = '';
+  SELECTLEVELCONTAINER.append(fr);
+}
+
 export {
   createWordElement, createStatisticSentence, getActualSentence, mixSentenceWords,
-  checkActiveHints, checkLocalStorageItem, getPaintingImageSrc, getPaintingInfo
+  checkActiveHints, checkLocalStorageItem, getPaintingImageSrc, getPaintingInfo, renderLevelsOptions
 };

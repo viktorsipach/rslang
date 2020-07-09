@@ -1,3 +1,5 @@
+import renderSwitch from '../gameSwitcher/renderSwitch';
+
 function renderDropdownElement(containerClass, titleClass, title, selectClass, selectId) {
   const selectElement = document.createElement('select');
   selectElement.id = selectId;
@@ -46,26 +48,11 @@ function renderHints() {
   return hints;  
 }
 
-function renderLevelsOptions(selectContainer) {
-  const levels = 6;
-  const SELECTLEVELCONTAINER = selectContainer.querySelector('.select__level>select');
-  const fr = document.createDocumentFragment();
-  for (let i = 1; i <= levels; i += 1) {
-    const opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = i;
-    fr.append(opt);
-  }
-  SELECTLEVELCONTAINER.innerHTML = '';
-  SELECTLEVELCONTAINER.append(fr);
-}
-
 function renderMainPageMenu() {
   const menuLeft = document.createElement('div');
   menuLeft.className = 'menu__left';
   menuLeft.append(renderDropdownElement('menu__level', 'level__title', 'Уровень', 'select__level', 'selectLevel'));
   menuLeft.append(renderDropdownElement('menu__round', 'round__title', 'Раунд', 'select__round', 'selectRound'));
-  renderLevelsOptions(menuLeft);
   
   const menuButtons = document.createElement('div');
   menuButtons.className = 'buttons menu__buttons';
@@ -81,7 +68,11 @@ function renderMainPageMenu() {
   const menu = document.createElement('div');
   menu.className = 'game__menu'  ;
   menu.append(menuLeft);
+  menu.append(renderSwitch());
   menu.append(menuRight);
+
+  menu.querySelector('.games-switcher').classList.add('games-switcher__puzzle');
+  menu.querySelector('input').classList.add('data-word-checkbox__puzzle');
   return menu;
 }
 
@@ -123,9 +114,6 @@ function renderGameButtons() {
 }
 
 export default function renderMainPage() {
-  const closeButton = document.createElement('div');
-  closeButton.className = 'game__close_puzzle puzzle-main close';
-
   const mainPage = document.createElement('div');
   mainPage.className = 'main__page game__puzzle';
   mainPage.append(renderMainPageMenu());
@@ -133,7 +121,6 @@ export default function renderMainPage() {
   mainPage.append(renderGameResults());
   mainPage.append(renderGameData());
   mainPage.append(renderGameButtons());
-  mainPage.append(closeButton);
 
   const mainPageWrapper = document.createElement('div');
   mainPageWrapper.className = 'game__puzzle-wrapper';
