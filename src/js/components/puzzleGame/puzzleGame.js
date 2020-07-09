@@ -30,9 +30,11 @@ async function startGame(isMyWords) {
 }
 
 export default function initPuzzleGame() {
+  const CLOSE_BUTTON = document.querySelector('.close-btn');
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderStartPage());
+  CLOSE_BUTTON.classList.add('close-btn__puzzle');
 
   document.querySelector('.start__button').addEventListener('click', () => {
     PAGECONTAINER.innerHTML = '';
@@ -40,6 +42,7 @@ export default function initPuzzleGame() {
     const SELECTLEVELOPTION = document.getElementById('selectLevel');
     const SELECTROUNDOPTION = document.getElementById('selectRound');
     const USER_DATA_CHECKBOX = document.querySelector('.data-word-checkbox__puzzle');
+    CLOSE_BUTTON.classList.remove('close-btn__puzzle');
 
     let isMyWords = true;
     if (USER_DATA_CHECKBOX.checked) {

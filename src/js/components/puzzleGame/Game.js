@@ -70,11 +70,16 @@ export default class Game {
     CONTINUEBUTTON.classList.add('hidden');
     RESULTBUTTON.classList.add('hidden');
     
-    await this.renderRoundData();
-    const RESULT_SENTENCE_WORDS = document.querySelectorAll('.results-container>.result__sentence');
-    RESULT_SENTENCE_WORDS.forEach((element) => this.resultSentences.push(element));
-    checkActiveHints();
-    this.startSentence();
+    const isResultsAmountEnough = await this.renderRoundData(); 
+    if (isResultsAmountEnough) {
+      const RESULT_SENTENCE_WORDS = document.querySelectorAll('.results-container>.result__sentence');
+      RESULT_SENTENCE_WORDS.forEach((element) => this.resultSentences.push(element));
+      checkActiveHints();
+      this.startSentence();
+    } else {
+      document.querySelector('.hints__sentence').textContent = `Ваших слов для повторения недостаточно! 
+      Чтобы сыграть в мини-игру выключите переключатель "Мои слова" и выберите уровень и раунд.`;
+    }
   }
 
   async renderRoundData() {
@@ -82,24 +87,34 @@ export default class Game {
     if (!this.isMyWords) {
       this.roundData = await getSCustomRoundData(this.level, this.round, this.wordsPerSentence, this.wordsPerRound);
     } else {
-      const allUserData = (await getUserDataForMiniGame(3600))[0].paginatedResults;
-      allUserData.sort(() => Math.random() - 0.5);
-      this.roundData = allUserData.slice(0, this.wordsPerRound);
+      const maxAmountOfUserWords = 3600;
+      const allUserData = (await getUserDataForMiniGame(maxAmountOfUserWords))[0].paginatedResults;
+      if (allUserData.length >= this.wordsPerRound) {
+        allUserData.sort(() => Math.random() - 0.5);
+        this.roundData = allUserData.slice(0, this.wordsPerRound);
+      } else {
+        this.roundData = undefined;
+      }
     }
-    this.roundData.forEach((element) => {
-      let sentence = new Sentence(element);
-      this.dataSentencesObjects.push(sentence);
-      sentence.textExample = sentence.textExample.replace(/<b>/, '').replace(/<\/b>/, '');
-      sentence.status = 'iKnow';
-      sentence = sentence.createDataSentence();
-      this.dataSentences.push(sentence);
-      const sentenceContainer = document.createElement('div');
-      sentenceContainer.className = 'sentence result__sentence';
-      fragment.append(sentenceContainer);
-    });
-    const RESULTS_CONTAINER = document.querySelector('.results-container');
-    RESULTS_CONTAINER.innerHTML = '';
-    RESULTS_CONTAINER.append(fragment);
+
+    if (this.roundData) {
+      this.roundData.forEach((element) => {
+        let sentence = new Sentence(element);
+        this.dataSentencesObjects.push(sentence);
+        sentence.textExample = sentence.textExample.replace(/<b>/, '').replace(/<\/b>/, '');
+        sentence.status = 'iKnow';
+        sentence = sentence.createDataSentence();
+        this.dataSentences.push(sentence);
+        const sentenceContainer = document.createElement('div');
+        sentenceContainer.className = 'sentence result__sentence';
+        fragment.append(sentenceContainer);
+      });
+      const RESULTS_CONTAINER = document.querySelector('.results-container');
+      RESULTS_CONTAINER.innerHTML = '';
+      RESULTS_CONTAINER.append(fragment);
+      return true;
+    } 
+    return false;
   }
 
   setSentenceWordsBackgroundSetting() {
