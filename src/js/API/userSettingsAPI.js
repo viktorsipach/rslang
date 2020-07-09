@@ -15,6 +15,7 @@ async function putUserSettings({ settings }) {
       body: JSON.stringify(settings)
     });
     const content = await rawResponse.json();
+    console.log(`PUT user settings`);
     console.log(content);
     return content;
   } catch (error) {
@@ -36,6 +37,7 @@ async function getUserSettings() {
     });
     if (rawResponse.ok) {
       const content = await rawResponse.json();
+      console.log(`GET user settings`);
       console.log(content);
       return content;
     }
@@ -46,11 +48,11 @@ async function getUserSettings() {
 };
 
 async function updateLevelRoundDateSettings() {
+  console.log(`updateLevelRoundDateSettings`);
   const settings = await getUserSettings();
   const {optional} = settings;
   const {wordsPerDay} = settings;
   const trainingMainSettings = optional.training.mainSettings;
-
   let {level} = trainingMainSettings;
   let {round} = trainingMainSettings;
   const wordsPerSentence = 50;
@@ -58,6 +60,7 @@ async function updateLevelRoundDateSettings() {
   const currentDate = (new Date()).toLocaleString();
 
   const roundsInLevel = await getRoundsAmountInLevel(level, wordsPerSentence, wordsPerDay);
+  console.log(roundsInLevel);
   if (round < roundsInLevel) {
     round += 1;
   } else if (level < maxLevel) {
@@ -79,16 +82,25 @@ async function updateLevelRoundDateSettings() {
   }); 
 }
 
-async function updateAmountOfTodayLearnedWordsSettings() {
+async function updateTrainingProgressSettings(amountOfLearnedWordsPerDay, amountOfRepeatedWordsPerDay, seriesOfCorrectAnswers, longestSeriesOfCorrectAnswers, allCorrectAnswersAmount) {
+  console.log('updateTrainingProgressSettings');
   const settings = await getUserSettings();
   const {optional} = settings;
   const {wordsPerDay} = settings;
   const trainingMainSettings = optional.training.mainSettings;
-  let {amountOfLearnedWordsPerDay} = trainingMainSettings;
-  amountOfLearnedWordsPerDay += 1;
   trainingMainSettings.amountOfLearnedWordsPerDay = amountOfLearnedWordsPerDay;
 
+  const currentDate = (new Date()).toLocaleString();
+  trainingMainSettings.date = currentDate;
   optional.training.mainSettings = trainingMainSettings;
+
+  const trainingProgressSettings = optional.training.trainingProgress;
+  trainingProgressSettings. amountOfRepeatedWordsPerDay = amountOfRepeatedWordsPerDay;
+  trainingProgressSettings.seriesOfCorrectAnswers = seriesOfCorrectAnswers;
+  trainingProgressSettings.longestSeriesOfCorrectAnswers = longestSeriesOfCorrectAnswers;
+  trainingProgressSettings.allCorrectAnswersAmount = allCorrectAnswersAmount;
+  optional.training.trainingProgress = trainingProgressSettings;
+
   await putUserSettings({ 
     settings: {
       'wordsPerDay': wordsPerDay,
@@ -107,6 +119,13 @@ async function resetTodayProgressSettings() {
   amountOfLearnedWordsPerDay = 0;
   trainingMainSettings.amountOfLearnedWordsPerDay = amountOfLearnedWordsPerDay;
 
+  const trainingProgressSettings = optional.training.trainingProgress;
+  trainingProgressSettings. amountOfRepeatedWordsPerDay = 0;
+  trainingProgressSettings.seriesOfCorrectAnswers = 0;
+  trainingProgressSettings.longestSeriesOfCorrectAnswers = 0;
+  trainingProgressSettings.allCorrectAnswersAmount = 0;
+  optional.training.trainingProgress = trainingProgressSettings;
+
   optional.training.mainSettings = trainingMainSettings;
   await putUserSettings({ 
     settings: {
@@ -116,4 +135,4 @@ async function resetTodayProgressSettings() {
   }); 
 }
 
-export { putUserSettings, getUserSettings, updateLevelRoundDateSettings, updateAmountOfTodayLearnedWordsSettings, resetTodayProgressSettings }
+export { putUserSettings, getUserSettings, updateLevelRoundDateSettings, updateTrainingProgressSettings, resetTodayProgressSettings }

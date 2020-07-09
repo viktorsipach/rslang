@@ -12,10 +12,11 @@
 
 .menu__left {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   font-size: 2rem;
   font-weight: 700;
   @include media-tablet {
+    flex-direction: row;
     font-size: 1.5rem;
   }
 }
@@ -33,6 +34,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 1rem;
   @include media-tablet {
     flex-direction: column;
   }
@@ -47,4 +49,22 @@
 .level__title, 
 .round__title {
   padding: 0 1rem;
+}
+
+.games-switcher__puzzle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &>.games-switcher__title {
+    margin: 0;
+    text-transform: none;
+    color: $color-primary;
+    font-weight: 700;
+    padding-right: 1rem;
+    font-size: 2rem;
+    font-weight: 700;
+    @include media-tablet {
+      font-size: 1.5rem;
+    }
+  }
 }

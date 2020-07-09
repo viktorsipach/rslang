@@ -9,21 +9,21 @@ export default async function initTrainingGame() {
   SettingsPageAPI.settingsTrainingPage('render');
  
   const trainingGame = TrainingGame;
-  await trainingGame.initGame();
   await trainingGame.getData();
+  await trainingGame.initGame();
   trainingGame.start();
 
-  document.querySelector('.game__buttons.training-game').addEventListener('click', (event) => {
+  document.querySelector('.game__buttons.training-game').addEventListener('click', async (event) => {
     if (event.target.classList.contains('next')) {
       trainingGame.checkInput(trainingGame.data);
     } else if (event.target.classList.contains('dontKnow')) {
       trainingGame.showWordWithoutTraining();
       trainingGame.wordDifficulty = 'hard';
-      trainingGame.updateWord();
+      await trainingGame.updateWord();
     }
   });
 
-  document.querySelector('.difficulty__buttons').addEventListener('click', (event) => {
+  document.querySelector('.difficulty__buttons').addEventListener('click', async (event) => {
     if (event.target.classList.contains('again')) {
       trainingGame.addCardToRepeatList();
       trainingGame.wordDifficulty = 'hard';
@@ -34,7 +34,7 @@ export default async function initTrainingGame() {
     } else if (event.target.classList.contains('hard')) {
       trainingGame.wordDifficulty = 'hard';
     }
-    trainingGame.updateWord();
+    await trainingGame.updateWord();
     trainingGame.renderCardData();
   });
 

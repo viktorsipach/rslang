@@ -1,32 +1,57 @@
 import Game from './Game';
 import renderStartPage from './renderStartPage';
 import renderMainPage from './renderMainPage';
-import { checkActiveHints, checkLocalStorageItem } from './utils';
+import { checkActiveHints, checkLocalStorageItem, renderLevelsOptions } from './utils';
 import userSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 
 let game;
+async function startGame(isMyWords) {
+  const SELECTLEVELOPTION = document.getElementById('selectLevel');
+  const SELECTROUNDOPTION = document.getElementById('selectRound');
 
-async function startGame() {
-  const gameName = 'puzzle';
-  const gameProgress = await userSettingsMiniGame.getUserSettingsMiniGame(gameName);
-  const {level} = gameProgress;
-  const {round} = gameProgress;
-  game = new Game( { level, round });
+  game = new Game();
+  
+  if (isMyWords) {
+    game.isMyWords = true;
+    SELECTLEVELOPTION.disabled = true;
+    SELECTROUNDOPTION.disabled = true;
+  } else {
+    SELECTLEVELOPTION.disabled = false;
+    SELECTROUNDOPTION.disabled = false;
+    const gameName = 'puzzle';
+    const gameProgress = await userSettingsMiniGame.getUserSettingsMiniGame(gameName);
+    const {level} = gameProgress;
+    const {round} = gameProgress;  
+    game.isMyWords = false;
+    renderLevelsOptions(document.querySelector('.menu__level'));
+    game.initLevelRound({level, round});
+  }
   game.startNewLevelRound();
 }
 
 export default function initPuzzleGame() {
+  const CLOSE_BUTTON = document.querySelector('.close-btn');
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
   PAGECONTAINER.append(renderStartPage());
-
+  CLOSE_BUTTON.classList.add('close-btn__puzzle');
 
   document.querySelector('.start__button').addEventListener('click', () => {
     PAGECONTAINER.innerHTML = '';
     PAGECONTAINER.append(renderMainPage());
     const SELECTLEVELOPTION = document.getElementById('selectLevel');
     const SELECTROUNDOPTION = document.getElementById('selectRound');
-    startGame();
+    const USER_DATA_CHECKBOX = document.querySelector('.data-word-checkbox__puzzle');
+    CLOSE_BUTTON.classList.remove('close-btn__puzzle');
+
+    let isMyWords = true;
+    if (USER_DATA_CHECKBOX.checked) {
+      isMyWords = true;
+    } else {
+      isMyWords = false;
+    }
+
+    startGame(isMyWords);
 
     // change events
     document.querySelector('.menu__left').addEventListener('change', (event) => {
@@ -42,6 +67,15 @@ export default function initPuzzleGame() {
     });
 
     // click events
+    USER_DATA_CHECKBOX.addEventListener('click', () => {
+      if (USER_DATA_CHECKBOX.checked) {
+        isMyWords = true;
+      } else {
+        isMyWords = false;
+      }
+      startGame(isMyWords);
+    });
+
     document.querySelector('.game__puzzle').addEventListener('click', (event) => {
       if (event.target.closest('.menu__button.auto-pronunciation')) {
         checkLocalStorageItem('autoPronunciation');
@@ -75,14 +109,18 @@ export default function initPuzzleGame() {
           if (game.currentSentenceNumber < game.wordsPerRound) {
             game.startSentence();
           } else {
-            game.sendLongTermStatistics();
-            game.updateLevelRound();
-            game.sendLevelRoundInfo();
+            if (!game.isMyWords) {
+              game.sendLongTermStatistics();
+              game.updateLevelRound();
+              game.sendLevelRoundInfo();
+            }
             game.checkGameProgress();
           }
         }
       } else if (event.target.classList.contains('results') && event.target.classList.contains('puzzleGame__button')) {
-        game.sendLongTermStatistics();
+        if (!game.isMyWords) {
+          game.sendLongTermStatistics();
+        }
         game.showRoundStatistic();
         
         document.querySelector('.puzzle__statistic').addEventListener('click', (eventStatisticPage) => {

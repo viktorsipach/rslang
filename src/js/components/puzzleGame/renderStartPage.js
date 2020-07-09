@@ -26,15 +26,11 @@ export default function renderStartPage() {
   const startButton = document.createElement('button');
   startButton.className = 'button start__button start__button_puzzle';
   startButton.textContent = 'Начать игру';
-
-  const closeButton = document.createElement('div');
-  closeButton.className = 'game__close_puzzle puzzle-start close';
   
   const startPage = document.createElement('div');
   startPage.className = 'start__page game__puzzle';
   startPage.append(gameContainerWrapper);
   startPage.append(startButton);
-  startPage.append(closeButton);
 
   fragment.append(startPage);
   return fragment;

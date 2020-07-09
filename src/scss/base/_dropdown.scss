@@ -30,6 +30,9 @@ select {
   padding: 0 2.5rem;
   color: $color-light;
   cursor: pointer;
+  &:disabled {
+    cursor: initial;
+  }
 }
 
 .select::after {
