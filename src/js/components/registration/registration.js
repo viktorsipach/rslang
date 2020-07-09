@@ -6,7 +6,8 @@ import signIn from './userUtils';
 import  getFormData  from './utils';
 import { createUser, getUser } from './userAPI';
 import { addCardsAnimation } from '../mainPage/mainPage.component'
-
+import initialSettings from '../trainingGame/initialSetting';
+import { putUserSettings } from '../../API/userSettingsAPI';
 
 export default async function initRegistration() {
     const userId = localStorage.getItem('userId');
@@ -29,12 +30,19 @@ export default async function initRegistration() {
     }
     });
 
-    LOGIN_SECTION.addEventListener('click', (event) => {
+    LOGIN_SECTION.addEventListener('click', async (event) => {
     document.querySelector('.error-message').innerHTML = '';
     if (event.target.classList.contains('button__signUp')) {
         event.preventDefault();
         const userData = getFormData();
         createUser(userData);
+        const initialWordsPerDay = 10;
+        await putUserSettings({ 
+        settings: {
+            'wordsPerDay': initialWordsPerDay,
+            'optional': initialSettings
+        }
+        });
     } else if (event.target.classList.contains('button__signIn')) {
         event.preventDefault();
         const userData = getFormData();
