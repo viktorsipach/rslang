@@ -6,13 +6,28 @@ import userSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 
 let game;
 
-async function startGame() {
-  const gameName = 'puzzle';
+async function startGame(isMyWords) {
+  game = new Game();
+  
+  if (isMyWords) {
+    console.log('with user words');
+    game.isMyWords = true;
+  } else {
+    console.log('levels, rounds');
+    const gameName = 'puzzle';
+    const gameProgress = await userSettingsMiniGame.getUserSettingsMiniGame(gameName);
+    const {level} = gameProgress;
+    const {round} = gameProgress;  
+    game.isMyWords = false;
+    game.initLevelRound({level, round});
+  }
+  game.startNewLevelRound();
+  /* const gameName = 'puzzle';
   const gameProgress = await userSettingsMiniGame.getUserSettingsMiniGame(gameName);
   const {level} = gameProgress;
   const {round} = gameProgress;
   game = new Game( { level, round });
-  game.startNewLevelRound();
+  game.startNewLevelRound(); */
 }
 
 export default function initPuzzleGame() {
@@ -23,10 +38,23 @@ export default function initPuzzleGame() {
 
   document.querySelector('.start__button').addEventListener('click', () => {
     PAGECONTAINER.innerHTML = '';
-    PAGECONTAINER.append(renderMainPage());
+    PAGECONTAINER.append(renderMainPage()); // & await
     const SELECTLEVELOPTION = document.getElementById('selectLevel');
     const SELECTROUNDOPTION = document.getElementById('selectRound');
-    startGame();
+    const USER_DATA_CHECKBOX = document.querySelector('.data-word-checkbox__puzzle');// 
+
+    let isMyWords = true;
+    USER_DATA_CHECKBOX.addEventListener('click', () => {
+  
+      console.log(USER_DATA_CHECKBOX.checked);
+      if (USER_DATA_CHECKBOX.checked) {
+        isMyWords = true;
+      } else {
+        isMyWords = false;
+      }
+    });
+
+    startGame(isMyWords);
 
     // change events
     document.querySelector('.menu__left').addEventListener('change', (event) => {
@@ -82,20 +110,25 @@ export default function initPuzzleGame() {
           }
         }
       } else if (event.target.classList.contains('results') && event.target.classList.contains('puzzleGame__button')) {
-        game.sendLongTermStatistics();
-        game.showRoundStatistic();
-        
-        document.querySelector('.puzzle__statistic').addEventListener('click', (eventStatisticPage) => {
-          if (eventStatisticPage.target.classList.contains('continue')) {
-            const statisticElement = document.querySelector('.puzzle__statistic');
-            statisticElement.parentNode.removeChild(statisticElement);
-            if (!game.isFinished) {
-              game.updateLevelRound();
-              game.sendLevelRoundInfo();
-              game.checkGameProgress();
+       // if (!game.isMyWords) {
+          game.sendLongTermStatistics();
+          game.showRoundStatistic();
+          
+          document.querySelector('.puzzle__statistic').addEventListener('click', (eventStatisticPage) => {
+            if (eventStatisticPage.target.classList.contains('continue')) {
+              const statisticElement = document.querySelector('.puzzle__statistic');
+              statisticElement.parentNode.removeChild(statisticElement);
+              if (!game.isFinished) {
+                game.updateLevelRound();
+                game.sendLevelRoundInfo();
+                game.checkGameProgress();
+              }
             }
-          }
-        });
+          });
+        /* } else {
+          console.log('some modal with continue button');
+        }
+         */
       }
 
       if (event.target.classList.contains('icon__sound')) {
