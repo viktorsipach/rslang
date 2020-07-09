@@ -2,17 +2,35 @@ import { getRoundData } from '../../API/dataAPI';
 import Image from '../../../assets/img/savanna/savanna-main1.jpg';
 import RenderSavannaMainPage from './renderSavannaMainPage';
 import { startColorGreen, startColorBlue, startColorRed, countHealth, fallWord, savannaHealth, newStart, savannaGameplayMouse, savannaGameplayKeyboard, preloader } from './savannaGameplay';
+import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 
 const maxlevels = 6;
 const maxRoundsPerLevel = 30;
 let changeLevel = false;
 let level = 1;
 let round = 1;
+const nameGame = 'savanna';
+let startGame = true;
 
 async function savannaRoundDataAPI(level, round) {
   const wordsPerRound = 20;
   const data = await getRoundData(level, round, wordsPerRound);
+  return data; 
+}
+
+async function getUserSettings(nameGame) {
+  const getSett = await UserSettingsMiniGame.getUserSettingsMiniGame(nameGame);
+  level = Number(getSett.level);
+  round = Number(getSett.round);
+
+  const data = await savannaRoundDataAPI(level, round);
+  console.log(level, round);
+  // console.log(data);
   return data;
+}
+
+async function setUserSettings(nameGame, level, round) {
+  await UserSettingsMiniGame.updateUserSettingsMiniGame(nameGame, level, round);
 }
 
 const getRandomTranslateAnswer = (data, ind) => {
@@ -61,6 +79,7 @@ const generateHeader = () => {
   }
   selectRounds.innerHTML = '';
   selectRounds.append(frRound);
+  startGame = true;
 }
 
 const generateTemplateMain = (words, idx) => {
@@ -106,21 +125,30 @@ const RenderSavannaShortStatistic = (words) => {
   document.querySelector('#savanna__further').addEventListener('click', () => { 
     if (Number(round) === numberRoundEnd) {
       level += 1;
-      round = 0;
+      round = 1;
+      setUserSettings(nameGame, level, round);
     }
     round += 1;
+    setUserSettings(nameGame, level, round);
     selectLevel.value = `${level}`;
     selectRound.value = `${round}`;
     changeLevel = true;
     newStart();
     preloader();
-    savannaRound(0, level, round);
+    // setTimeout(() => savannaRound(0), 1000);
+    savannaRound(0, level, round, startGame);
     savanna.style.cssText = `background: linear-gradient(180deg, rgba(${startColorRed}, ${startColorGreen}, ${startColorBlue}, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url(${Image}) center no-repeat; background-size: cover;`;
   }); 
 }
 
-async function savannaRound(index, lev, rou) {
-  const data = await savannaRoundDataAPI(lev, rou);
+async function savannaRound(index, lev, rou, start) {
+  let data = [];
+  if (start) {
+    data = await getUserSettings(nameGame);
+    startGame = false;
+  } else {
+    data = await savannaRoundDataAPI(lev, rou);
+  }
   changeLevel = false;
   generateTemplateMain(data, index);
   savannaHealth(countHealth);
@@ -146,17 +174,19 @@ const changeLevelAndRound = () => {
     if (event.target.closest('.select__round')) {
       round = parseInt(selectRound.value, 10);
       level = parseInt(selectLevel.value, 10);
+      setUserSettings(nameGame, level, round);
     }
     if (event.target.closest('.select__level')) {
       level = parseInt(selectLevel.value, 10);
       round = 1;
       selectRound.value = '1';
+      setUserSettings(nameGame, level, round);
     }
     changeLevel = true;
     newStart();
     preloader();
-    savannaRound(0, level, round);
+    savannaRound(0, level, round, startGame);
   });
 }
 
-export { level, round, changeLevel, generateHeader, generateTemplateMain, savannaRound, changeLevelAndRound, RenderSavannaShortStatistic };
+export { startGame, nameGame, level, round, changeLevel, getUserSettings, generateHeader, generateTemplateMain, savannaRound, changeLevelAndRound, RenderSavannaShortStatistic };
