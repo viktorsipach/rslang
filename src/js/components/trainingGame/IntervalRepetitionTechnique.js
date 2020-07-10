@@ -8,6 +8,8 @@ const FILTER_FOR_TODAY_REPEAT_WORDS = encodeURIComponent('{"$and":[{"$or":[{"use
 const FILTER_FOR_ALL_REPEAT_WORDS = encodeURIComponent('{"$or":[{"userWord.optional.status":"repeat"},{"userWord.optional.status":"tricky"}]}');
 
 async function createTrainingDataForDay(settings, amountOfCards) {
+  console.log('createTrainingDataForDay');
+  console.log(`amountOfCards ${amountOfCards}`);
   const TRAINING_WORDS = [];
   const promises = [];
   const words = await getRoundData(settings.level, settings.round, amountOfCards);
