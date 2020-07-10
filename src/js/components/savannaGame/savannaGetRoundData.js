@@ -31,7 +31,6 @@ async function getUserSettings(nameGame) {
   round = Number(getSett.round);
 
   const data = await savannaRoundDataAPI(level, round);
-  console.log(level, round);
   setLevelAndRound(level, round);
   return data;
 }
@@ -142,7 +141,6 @@ const RenderSavannaShortStatistic = (words) => {
     changeLevel = true;
     newStart();
     preloader();
-    // setTimeout(() => savannaRound(0), 1000);
     savannaRound(0, level, round, startGame);
     savanna.style.cssText = `background: linear-gradient(180deg, rgba(${startColorRed}, ${startColorGreen}, ${startColorBlue}, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url(${Image}) center no-repeat; background-size: cover;`;
   }); 
@@ -175,8 +173,6 @@ async function savannaRound(index, lev, rou, start) {
 const changeLevelAndRound = () => {
   const selectLevel = document.querySelector('#selectLevel');
   const selectRound = document.querySelector('#selectRound');
-  // let round;
-  // let level;
   document.querySelector('.savanna__hints').addEventListener('change', (event) => {
     if (event.target.closest('.select__round')) {
       round = parseInt(selectRound.value, 10);

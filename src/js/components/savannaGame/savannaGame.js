@@ -1,6 +1,6 @@
 import renderSavannaStartPage from './renderSavannaStartPage';
 import Image from '../../../assets/img/savanna/savanna-main1.jpg';
-import { startGame, nameGame, level, round, getUserSettings, savannaRound, generateHeader, changeLevelAndRound } from './savannaGetRoundData';
+import { startGame, nameGame, level, round, savannaRound, generateHeader, changeLevelAndRound } from './savannaGetRoundData';
 import { preloader } from './savannaGameplay';
 
 const initSavannaGame = () => {
@@ -20,7 +20,6 @@ const initSavannaGame = () => {
 
     const start = document.querySelector('.button__savanna');
 
-    // getUserSettings(nameGame);
     start.addEventListener('click', () => {
         savanna.style.cssText = `background: linear-gradient(180deg, rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url(${Image}) center no-repeat; background-size: cover;`;
         savanna.innerHTML = '';        
