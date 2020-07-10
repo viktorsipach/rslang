@@ -117,11 +117,15 @@ function renderButton(buttonClass, buttonText) {
   return button;
 }
 
-function renderDictionaryButtons() {
+function renderDictionaryButtons(settings) {
   const dictionaryButtons = document.createElement('div');
   dictionaryButtons.className = 'buttons dictionary__buttons';
-  dictionaryButtons.append(renderButton('dictionary__button delete', 'Удалить слово'));
-  dictionaryButtons.append(renderButton('dictionary__button tricky', 'Сложное слово'));
+  if (settings.optional.training.settingsPage.showDeleteButton) {
+    dictionaryButtons.append(renderButton('dictionary__button delete', 'Удалить слово'));
+  }
+  if (settings.optional.training.settingsPage.showHardButton) {
+    dictionaryButtons.append(renderButton('dictionary__button tricky', 'Сложное слово'));
+  }
   return dictionaryButtons;
 }
 
