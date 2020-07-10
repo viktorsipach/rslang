@@ -61,14 +61,47 @@
     width: 65%;
     height: 10%;
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     margin-top: 1rem;
+    @include media-laptop {
+        flex-direction: column;
+    }
 }
 
 .menu__speakit {
     align-items: center;
+}
+
+.menu__left_speakit {
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    @include media-tablet {
+        font-size: 1.4rem;
+    }
+}
+
+.games-switcher__speakit {
+    width: 20rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include media-laptop {
+        flex-direction: column;
+    }
+}
+
+.games-switcher__title_speakit {
+    font-size: 2rem;
+    font-weight: 700;
+    @include media-tablet {
+        font-size: 1.4rem;
+    }
+}
+
+.slider-speakit {
+    border-radius: 0.5rem;
 }
 
 .image__container_speakit {
@@ -244,6 +277,10 @@
 
 .wrapper__stars {
     display: flex;
+    height: 4rem;
+    @include media-laptop {
+        margin-top: 3rem;
+     }
 }
 
 .star {
