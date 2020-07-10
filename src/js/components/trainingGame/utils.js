@@ -1,9 +1,13 @@
 function disableButton(buttonSelector) {
- document.querySelector(buttonSelector).disabled = true;
+  if (document.querySelector(buttonSelector) !== null) {
+    document.querySelector(buttonSelector).disabled = true;
+  }
 }
 
 function enableButton(buttonSelector) {
-  document.querySelector(buttonSelector).disabled = false;
+  if (document.querySelector(buttonSelector) !== null) {
+    document.querySelector(buttonSelector).disabled = false;
+  }
 }
 
 export { disableButton, enableButton }

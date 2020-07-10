@@ -1,12 +1,11 @@
 import renderTrainingGamePage from './renderTrainingGamePage';
 import TrainingGame from './TrainingGame';
 import SettingsPageAPI from '../../API/settingsPageAPI';
-import { enableButton } from './utils';
 
 export default async function initTrainingGame() {
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
-  PAGECONTAINER.append(renderTrainingGamePage());
+  PAGECONTAINER.append(await renderTrainingGamePage());
   SettingsPageAPI.settingsTrainingPage('render');
  
   const trainingGame = TrainingGame;
