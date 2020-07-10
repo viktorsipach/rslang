@@ -38,12 +38,6 @@ class TrainingGame {
     this.longestSeriesOfCorrectAnswers = this.trainingProgress.longestSeriesOfCorrectAnswers;
     this.amountOfRepeatedWordsPerDay = this.trainingProgress.amountOfRepeatedWordsPerDay;
     this.allCorrectAnswersAmount = this.trainingProgress.allCorrectAnswersAmount;;
-    console.log(`amountOfLearnedWordsPerDay ${this.amountOfLearnedWordsPerDay}`);
-    console.log(`amountOfRepeatedWordsPerDay ${this.amountOfRepeatedWordsPerDay}`);
-    console.log(`correctAnswersAmount ${this.correctAnswersAmount}`);
-    console.log(`seriesOfCorrectAnswers ${this.seriesOfCorrectAnswers}`);
-    console.log(`longestSeriesOfCorrectAnswers ${this.longestSeriesOfCorrectAnswers}`);
-    console.log(`allCorrectAnswersAmount ${this.allCorrectAnswersAmount}`);
   }
 
   async getData() {
@@ -59,7 +53,6 @@ class TrainingGame {
 
   async start() {
     if (this.data === undefined || this.amountOfCards === 0) {
-      console.log('no words to learn today!')
       document.querySelector('.page').append(renderTrainingModal());
     } else {
       this.currentCardNumber = 0;
@@ -85,8 +78,6 @@ class TrainingGame {
     if (this.currentCardNumber < this.amountOfCards) {
       document.querySelector('.letters-container').classList.add('hidden');
       this.cardData = this.data[this.currentCardNumber];
-      console.log(`current word`);
-      console.log(this.cardData);
       this.renderTranscription();
       this.renderWordTranslationInfoAndButtonState();
       this.renderAssociatedPicture();
@@ -99,7 +90,6 @@ class TrainingGame {
       if (this.repeatData.length === 0) {
         this.openStatistics();
       } else {
-        console.log('repeat again words');
         this.isRepeatData = true;
         this.currentCardNumber = 0;
         this.amountsOfRepeatCards = this.repeatData.length;
@@ -129,7 +119,6 @@ class TrainingGame {
       if(!this.isRepeatData) {
         this.showProgress();
         this.seriesOfCorrectAnswers = 0;
-        console.log(`seriesOfCorrectAnswers ${this.seriesOfCorrectAnswers}`);
         if (this.cardData.userWord.optional.status === 'new') {
           this.amountOfLearnedWordsPerDay += 1;
         }
@@ -148,21 +137,13 @@ class TrainingGame {
         if (this.cardData.userWord.optional.status === 'repeat' || this.cardData.userWord.optional.status === 'tricky') {
           this.amountOfRepeatedWordsPerDay += 1;
         }
-        console.log(`amountOfLearnedWordsPerDay ${this.amountOfLearnedWordsPerDay}`);
-        console.log(`amountOfRepeatedWordsPerDay ${this.amountOfRepeatedWordsPerDay}`);
-        console.log(`correctAnswersAmount ${this.correctAnswersAmount}`);
-        console.log(`seriesOfCorrectAnswers ${this.seriesOfCorrectAnswers}`);
-
       }
       if (this.seriesOfCorrectAnswers > this.longestSeriesOfCorrectAnswers) {
         this.longestSeriesOfCorrectAnswers = this.seriesOfCorrectAnswers;
-        console.log(`longestSeriesOfCorrectAnswers ${this.longestSeriesOfCorrectAnswers}`);
-
       }
       this.correctAnswer();
     } else {
       this.seriesOfCorrectAnswers = 0;
-      console.log(`seriesOfCorrectAnswers ${this.seriesOfCorrectAnswers}`);
       this.incorrectAnswer();
     }
   }
@@ -225,7 +206,6 @@ class TrainingGame {
     } 
     document.querySelector('.letters-container').classList.remove('hidden'); 
     if (this.isWordWithoutTraining) {
-      console.log('isWordWithoutTraining');
       this.currentCardNumber += 1;
       disableButton(NEXTBUTTON_SELECTOR);
       disableButton(IDONTKNOWBUTTON_SELECTOR);
@@ -237,7 +217,6 @@ class TrainingGame {
       } 
       this.playCardSounds();
     } else if (this.isAnswerCorrect) {
-      console.log('correct answer');
       this.currentCardNumber += 1
       INPUT.disabled = true;
       this.showWordTranslations();
@@ -249,7 +228,6 @@ class TrainingGame {
       } 
       this.playCardSounds();
     } else if (!this.isAnswerCorrect) {
-      console.log('INcorrect answer');
       disableButton(NEXTBUTTON_SELECTOR);
       INPUT.disabled = false;
       INPUT.focus();
@@ -266,7 +244,6 @@ class TrainingGame {
   playRepeatWords() {
     if (this.currentCardNumber < this.amountsOfRepeatCards) {
     this.cardData = this.repeatData[this.currentCardNumber];
-    console.log(this.cardData);
     const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
     disableButton(NEXTBUTTON_SELECTOR);
     this.isWordWithoutTraining = false;
@@ -368,15 +345,6 @@ class TrainingGame {
     } 
   }
 
-  /* renderAutoPronunciationButtonState() {
-    const AUTO_PRONUNCIATION_BUTTON = document.querySelector('.menu__button.auto-pronunciation');
-    if (this.autoPronunciation) {
-      AUTO_PRONUNCIATION_BUTTON.classList.add('active');
-    } else {
-      AUTO_PRONUNCIATION_BUTTON.classList.remove('active');
-    }
-  } */
-
   renderWordTranslationInfoAndButtonState() {
     const WORD_TRANSLATION = document.querySelector('.card__translation');
     if (this.cardSettings.showTranslation && (this.isAnswerCorrect || this.isWordWithoutTraining)) {
@@ -387,10 +355,8 @@ class TrainingGame {
   }
 
   renderSentencesTranslationInfoAndButtonState() {
-    console.log(`renderSentencesTranslationInfoAndButtonState`);
     const EXPLANATION_SENTENCE_TRANSLATION = document.querySelector('.card__explanation-sentence-translation');
     const EXAMPLE_SENTENCE_TRANSLATION = document.querySelector('.card__example-sentence-translation');
-
     if (this.cardSettings.showExplanationSentence) {
       document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
     }
@@ -447,12 +413,12 @@ class TrainingGame {
 
   renderInput() {
     const INPUT = document.querySelector('.card__input');
-      INPUT.disabled = false;
-      INPUT.value = '';
-      INPUT.setAttribute('placeholder', this.cardData.word);
-      INPUT.setAttribute('size', this.cardData.word.length);
-      INPUT.setAttribute('maxlength', this.cardData.word.length);
-      INPUT.focus();
+    INPUT.disabled = false;
+    INPUT.value = '';
+    INPUT.setAttribute('placeholder', this.cardData.word);
+    INPUT.setAttribute('size', this.cardData.word.length);
+    INPUT.setAttribute('maxlength', this.cardData.word.length);
+    INPUT.focus();
   }
 
   checkInputLength() {

@@ -49,7 +49,6 @@ async function getUserSettings() {
 };
 
 async function updateLevelRoundDateSettings() {
-  console.log(`updateLevelRoundDateSettings`);
   const settings = await getUserSettings();
   const {optional} = settings;
   const {wordsPerDay} = settings;
@@ -66,9 +65,7 @@ async function updateLevelRoundDateSettings() {
   } else if (level < maxLevel) {
     level += 1;
     round = 1;
-  } else {
-    console.log('levels, round ends');
-  }
+  } 
   trainingMainSettings.level = level;
   trainingMainSettings.round = round;
   trainingMainSettings.date = currentDate;
