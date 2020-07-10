@@ -124,6 +124,7 @@ export default async function getTrainingGameData() {
     console.log(`total Ws = ${trainingSettingsPage.maxCardsPerDay}, new Ws = ${settings.wordsPerDay}, repeat Ws${AMOUNT_OF_WORDS_TO_REPEAT}`);
 
     if (trainingSettingsPage.newWordsOnly) {
+      console.log(`newWordsOnly`);
       await createTrainingDataForDay(trainingMainSettings, settings.wordsPerDay);
       const gameDataNew = await getFilteredUserWords(FILTER_FOR_NEW_WORDS, settings.wordsPerDay);
       console.log(gameDataNew);
@@ -134,6 +135,7 @@ export default async function getTrainingGameData() {
       }
     }
     if (trainingSettingsPage.learnedWordsOnly) {
+      console.log(`learnedWordsOnly`);
       const gameDataRepeat = await getFilteredUserWords(FILTER_FOR_TODAY_REPEAT_WORDS, AMOUNT_OF_WORDS_TO_REPEAT);
       console.log(gameDataRepeat);
       if (gameDataRepeat) {

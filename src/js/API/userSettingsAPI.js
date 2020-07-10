@@ -63,8 +63,11 @@ async function updateLevelRoundDateSettings() {
   const roundsInLevel = await getRoundsAmountInLevel(level, wordsPerSentence, wordsPerDay);
   console.log(roundsInLevel);
   if (round < roundsInLevel) {
+    console.log('round += 1');
     round += 1;
   } else if (level < maxLevel) {
+    console.log('level += 1');
+    console.log('round = 1');
     level += 1;
     round = 1;
   } else {
