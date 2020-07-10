@@ -1,6 +1,7 @@
 import renderTrainingGamePage from './renderTrainingGamePage';
 import TrainingGame from './TrainingGame';
 import SettingsPageAPI from '../../API/settingsPageAPI';
+import { enableButton } from './utils';
 
 export default async function initTrainingGame() {
   const PAGECONTAINER = document.querySelector('.page');
@@ -61,7 +62,6 @@ export default async function initTrainingGame() {
         }
       }
     }
-   
   }
 
   document.addEventListener('keypress', keyBoardHelper); 
@@ -83,8 +83,11 @@ export default async function initTrainingGame() {
         SettingsPageAPI.settingsTrainingPage('auto-pronunciation');
         if (trainingGame.autoPronunciation) {
           trainingGame.autoPronunciation = false;
+          trainingGame.sound.pause();
+          trainingGame.renderCardData();
         } else {
           trainingGame.autoPronunciation = true;
+          trainingGame.sound.play();
         }
       }
 
