@@ -95,7 +95,67 @@ class SettingsPageAPI {
             CARD_EXPLANATION_SENTENCE_TRANSLATION.classList.add(this.hide);
             CARD_EXAMPLE_SENTENCE_TRANSLATION.classList.add(this.hide);
         }
+
+    }
+
+    async settingsTrainingPage(action) {
+        const autoPronunciationButton = document.querySelector('.auto-pronunciation');
+        const showTranslationButton = document.querySelector('.show-translation');
+        const showSentencesTranslationButton = document.querySelector('.show-sentences-translation');
+        let settings = await this.getSett();
         
+        if (!settings) {
+            settings = this.initSettings;
+            settings.optional.training = initialSettings.training;
+        }
+
+        delete settings.id;
+        
+        if (action === 'render') {
+            if (settings.optional.training.settingsPage.autoPronunciation) {
+                autoPronunciationButton.classList.add('active');
+            } else {
+                autoPronunciationButton.classList.remove('active');
+            }
+
+            if (settings.optional.training.settingsPage.cardSettings.showTranslation) {
+                showTranslationButton.classList.add('active');
+            } else {
+                showTranslationButton.classList.remove('active');
+            }
+
+            if (settings.optional.training.settingsPage.showSentencesTranslation) {
+                showSentencesTranslationButton.classList.add('active');
+            } else {
+                showSentencesTranslationButton.classList.remove('active');
+            }
+        }
+
+        if (action === 'auto-pronunciation') {
+            if (autoPronunciationButton.className.includes('active')) {
+                settings.optional.training.settingsPage.autoPronunciation = true;
+            } else {
+                settings.optional.training.settingsPage.autoPronunciation = false;
+            }
+        }
+
+        if (action === 'show-translation') {
+            if (showTranslationButton.className.includes('active')) {
+                settings.optional.training.settingsPage.cardSettings.showTranslation = true;
+            } else {
+                settings.optional.training.settingsPage.cardSettings.showTranslation = false;
+            }
+        }
+
+        if (action === 'show-sentences-translation') {
+            if (showSentencesTranslationButton.className.includes('active')) {
+                settings.optional.training.settingsPage.showSentencesTranslation = true;
+            } else {
+                settings.optional.training.settingsPage.showSentencesTranslation = false;
+            }
+        }
+
+        this.putSett({settings});
     }
 }
 

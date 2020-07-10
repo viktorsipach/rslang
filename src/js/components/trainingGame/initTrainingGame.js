@@ -1,27 +1,29 @@
 import renderTrainingGamePage from './renderTrainingGamePage';
 import TrainingGame from './TrainingGame';
+import SettingsPageAPI from '../../API/settingsPageAPI';
 
 export default async function initTrainingGame() {
   const PAGECONTAINER = document.querySelector('.page');
   PAGECONTAINER.innerHTML = '';
-  PAGECONTAINER.append(renderTrainingGamePage());
+  PAGECONTAINER.append(await renderTrainingGamePage());
+  SettingsPageAPI.settingsTrainingPage('render');
  
   const trainingGame = TrainingGame;
-  await trainingGame.initGame();
   await trainingGame.getData();
+  await trainingGame.initGame();
   trainingGame.start();
 
-  document.querySelector('.game__buttons.training-game').addEventListener('click', (event) => {
+  document.querySelector('.game__buttons.training-game').addEventListener('click', async (event) => {
     if (event.target.classList.contains('next')) {
       trainingGame.checkInput(trainingGame.data);
     } else if (event.target.classList.contains('dontKnow')) {
       trainingGame.showWordWithoutTraining();
       trainingGame.wordDifficulty = 'hard';
-      trainingGame.updateWord();
+      await trainingGame.updateWord();
     }
   });
 
-  document.querySelector('.difficulty__buttons').addEventListener('click', (event) => {
+  document.querySelector('.difficulty__buttons').addEventListener('click', async (event) => {
     if (event.target.classList.contains('again')) {
       trainingGame.addCardToRepeatList();
       trainingGame.wordDifficulty = 'hard';
@@ -32,7 +34,7 @@ export default async function initTrainingGame() {
     } else if (event.target.classList.contains('hard')) {
       trainingGame.wordDifficulty = 'hard';
     }
-    trainingGame.updateWord();
+    await trainingGame.updateWord();
     trainingGame.renderCardData();
   });
 
@@ -59,7 +61,6 @@ export default async function initTrainingGame() {
         }
       }
     }
-   
   }
 
   document.addEventListener('keypress', keyBoardHelper); 
@@ -78,17 +79,46 @@ export default async function initTrainingGame() {
       const element = event.target.closest('.menu__button') || event.target.closest('.card__button');
       element.classList.toggle('active');
       if (event.target.closest('.auto-pronunciation')) {
+        SettingsPageAPI.settingsTrainingPage('auto-pronunciation');
         if (trainingGame.autoPronunciation) {
           trainingGame.autoPronunciation = false;
+          trainingGame.sound.pause();
+          trainingGame.renderCardData();
         } else {
           trainingGame.autoPronunciation = true;
+          trainingGame.sound.play();
         }
       }
+
       if (event.target.closest('.show-translation')) {
+        SettingsPageAPI.settingsTrainingPage('show-translation');
         if (trainingGame.cardSettings.showTranslation) {
+          document.querySelector('.card__translation').textContent = '';
           trainingGame.cardSettings.showTranslation = false;
         } else {
           trainingGame.cardSettings.showTranslation = true;
+          if (trainingGame.isAnswerCorrect || trainingGame.isWordWithoutTraining) {
+            document.querySelector('.card__translation').textContent = trainingGame.cardData.wordTranslate;
+          }
+        }
+      }
+
+      if (event.target.closest('.show-sentences-translation')) {
+        SettingsPageAPI.settingsTrainingPage('show-sentences-translation');
+        const EXPLANATION_SENTENCE_TRANSLATION = document.querySelector('.card__explanation-sentence-translation');
+        const EXAMPLE_SENTENCE_TRANSLATION = document.querySelector('.card__example-sentence-translation');
+        if (trainingGame.showSentencesTranslation) {
+          trainingGame.showSentencesTranslation = false;
+          EXPLANATION_SENTENCE_TRANSLATION.classList.add('hidden');
+          EXAMPLE_SENTENCE_TRANSLATION.classList.add('hidden');
+        } else {
+          trainingGame.showSentencesTranslation = true;
+          if (trainingGame.cardSettings.showExampleSentence && (trainingGame.isAnswerCorrect || trainingGame.isWordWithoutTraining)) {
+            EXAMPLE_SENTENCE_TRANSLATION.classList.remove('hidden');
+          }
+          if (trainingGame.cardSettings.showExplanationSentence && (trainingGame.isAnswerCorrect || trainingGame.isWordWithoutTraining)) {
+            EXPLANATION_SENTENCE_TRANSLATION.classList.remove('hidden');
+          }
         }
       }
     }

@@ -259,7 +259,7 @@ input:checked + .slider:before {
     &>.input__container {
       margin: 0.5rem auto;
       @include media-laptop {
-        margin: 0 auto;
+        margin: 1rem auto;
       }
       &>.card__input {
         font-size: 1.5rem;

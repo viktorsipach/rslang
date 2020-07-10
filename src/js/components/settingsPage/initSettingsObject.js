@@ -38,6 +38,7 @@ export default function initSettingsObject() {
   const NEW_WORDS_ONLY_BUTTON_CHECKBOX = document.querySelector('.newWordsOnlyButton input');
   const LEARNED_WORDS_ONLY_BUTTON_CHECKBOX = document.querySelector('.learnedWordsOnlyButton input');
   const SUBMIT_BUTTON = document.querySelector('.setting-submit__button');
+  const minDifference = 5;
  
   SHOW_TRANSLATION_CHECKBOX.addEventListener('change', () => {
     elementClassToggle(CARD_TRANSLATION, 'hidden');
@@ -68,8 +69,8 @@ export default function initSettingsObject() {
    
   SUBMIT_BUTTON.addEventListener('click', (event)=> {
     event.preventDefault();
-    if (MAX_CARDS_PER_DAY.value < NEW_WORDS_PER_DAY.value) {
-      renderSettingsModal('Максимальное количество карточек в день не может быть меньше количества новых слов в день!');
+    if (MAX_CARDS_PER_DAY.value - NEW_WORDS_PER_DAY.value < minDifference) {
+      renderSettingsModal(`Максимальное количество карточек должно быть больше количества новых слов минимум на ${minDifference}!`);
       settingsModalAddEventListener();
     } else if (SHOW_TRANSLATION_CHECKBOX.checked || SHOW_EXPLANATION_SENTENCE_CHECKBOX.checked || SHOW_EXAMPLE_SENTENCE_CHECKBOX.checked) {
       const userSettings = {
