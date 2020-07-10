@@ -61,13 +61,9 @@ async function updateLevelRoundDateSettings() {
   const currentDate = (new Date()).toLocaleString();
 
   const roundsInLevel = await getRoundsAmountInLevel(level, wordsPerSentence, wordsPerDay);
-  console.log(roundsInLevel);
   if (round < roundsInLevel) {
-    console.log('round += 1');
     round += 1;
   } else if (level < maxLevel) {
-    console.log('level += 1');
-    console.log('round = 1');
     level += 1;
     round = 1;
   } else {
@@ -87,7 +83,6 @@ async function updateLevelRoundDateSettings() {
 }
 
 async function updateTrainingProgressSettings(amountOfLearnedWordsPerDay, amountOfRepeatedWordsPerDay, seriesOfCorrectAnswers, longestSeriesOfCorrectAnswers, allCorrectAnswersAmount) {
-  console.log('updateTrainingProgressSettings');
   const settings = await getUserSettings();
   const {optional} = settings;
   const {wordsPerDay} = settings;
@@ -114,7 +109,6 @@ async function updateTrainingProgressSettings(amountOfLearnedWordsPerDay, amount
 }
 
 async function resetTodayProgressSettings() {
-  console.log('resetTodayProgressSettings');
   const settings = await getUserSettings();
   const {optional} = settings;
   const {wordsPerDay} = settings;
@@ -139,7 +133,7 @@ async function resetTodayProgressSettings() {
   }); 
 }
 
-async function checkAndUpdateOptional(settings, initialWordsPerDay) {
+async function checkAndUpdateOptional(settings, wordsPerDay) {
   const { optional } = settings;
   let trainingSettings = settings.optional.training;
   if (trainingSettings === undefined) {    
@@ -147,14 +141,14 @@ async function checkAndUpdateOptional(settings, initialWordsPerDay) {
     optional.training = trainingSettings;
     await putUserSettings({ 
       settings: {
-        'wordsPerDay': initialWordsPerDay,
+        'wordsPerDay': wordsPerDay,
         'optional': optional,
       }
     });
   }
 }
 
-async function checkAndUpdateMainSettings(settings, initialWordsPerDay) {
+async function checkAndUpdateMainSettings(settings, wordsPerDay) {
   const { optional } = settings;
   let { mainSettings } = settings.optional.training;
   if (mainSettings === undefined) {
@@ -162,7 +156,7 @@ async function checkAndUpdateMainSettings(settings, initialWordsPerDay) {
     optional.training.mainSettings = mainSettings;
     await putUserSettings({ 
       settings: {
-        'wordsPerDay': initialWordsPerDay,
+        'wordsPerDay': wordsPerDay,
         'optional': optional,
       }
     });
@@ -184,14 +178,14 @@ async function checkAndUpdateMainSettings(settings, initialWordsPerDay) {
     optional.training.mainSettings = mainSettings;
     await putUserSettings({ 
       settings: {
-        'wordsPerDay': initialWordsPerDay,
+        'wordsPerDay': wordsPerDay,
         'optional': optional,
       }
     });
   }
 }
 
-async function checkAndUpdateSettingsPage(settings, initialWordsPerDay) {
+async function checkAndUpdateSettingsPage(settings, wordsPerDay) {
   const { optional } = settings;
   let { settingsPage } = settings.optional.training;
   if (settingsPage === undefined) {
@@ -199,7 +193,7 @@ async function checkAndUpdateSettingsPage(settings, initialWordsPerDay) {
     optional.training.settingsPage = settingsPage;
     await putUserSettings({ 
       settings: {
-        'wordsPerDay': initialWordsPerDay,
+        'wordsPerDay': wordsPerDay,
         'optional': optional,
       }
     });
@@ -218,7 +212,7 @@ async function checkAndUpdateSettingsPage(settings, initialWordsPerDay) {
     optional.training.settingsPage = settingsPage;
     await putUserSettings({ 
       settings: {
-        'wordsPerDay': initialWordsPerDay,
+        'wordsPerDay': wordsPerDay,
         'optional': optional,
       }
     });
@@ -237,7 +231,7 @@ async function checkAndUpdateSettingsPage(settings, initialWordsPerDay) {
     optional.training.settingsPage = settingsPage;
     await putUserSettings({ 
       settings: {
-        'wordsPerDay': initialWordsPerDay,
+        'wordsPerDay': wordsPerDay,
         'optional': optional,
       }
     });
@@ -253,14 +247,14 @@ async function checkAndUpdateSettingsPage(settings, initialWordsPerDay) {
     optional.training.settingsPage = settingsPage;
     await putUserSettings({ 
       settings: {
-        'wordsPerDay': initialWordsPerDay,
+        'wordsPerDay': wordsPerDay,
         'optional': optional,
       }
     });
   }
 }
 
-async function checkAndUpdateCardSettings(settings, initialWordsPerDay) {
+async function checkAndUpdateCardSettings(settings, wordsPerDay) {
   const { optional } = settings;
   let { cardSettings } = settings.optional.training.settingsPage;
   if (cardSettings === undefined) {
@@ -268,7 +262,7 @@ async function checkAndUpdateCardSettings(settings, initialWordsPerDay) {
     optional.training.settingsPage.cardSettings = cardSettings;
     await putUserSettings({ 
       settings: {
-        'wordsPerDay': initialWordsPerDay,
+        'wordsPerDay': wordsPerDay,
         'optional': optional,
       }
     });
@@ -294,14 +288,14 @@ async function checkAndUpdateCardSettings(settings, initialWordsPerDay) {
     optional.training.settingsPage.cardSettings = cardSettings;
     await putUserSettings({ 
       settings: {
-        'wordsPerDay': initialWordsPerDay,
+        'wordsPerDay': wordsPerDay,
         'optional': optional,
       }
     });
   }
 }
 
-async function checkAndUpdateTrainingProgress(settings, initialWordsPerDay) {
+async function checkAndUpdateTrainingProgress(settings, wordsPerDay) {
   const { optional } = settings;
   let { trainingProgress } = settings.optional.training;
   if (trainingProgress === undefined) {
@@ -309,7 +303,7 @@ async function checkAndUpdateTrainingProgress(settings, initialWordsPerDay) {
     optional.training.trainingProgress = trainingProgress;
     await putUserSettings({ 
       settings: {
-        'wordsPerDay': initialWordsPerDay,
+        'wordsPerDay': wordsPerDay,
         'optional': optional,
       }
     });
@@ -332,7 +326,7 @@ async function checkAndUpdateTrainingProgress(settings, initialWordsPerDay) {
     optional.training.trainingProgress = trainingProgress;
     await putUserSettings({ 
       settings: {
-        'wordsPerDay': initialWordsPerDay,
+        'wordsPerDay': wordsPerDay,
         'optional': optional,
       }
     });
@@ -340,10 +334,9 @@ async function checkAndUpdateTrainingProgress(settings, initialWordsPerDay) {
 }
 
 async function checkAndUpdateUserSettings() {
-  console.log('checkAndUpdateUserSettings');
   const initialWordsPerDay = 10;
   let settings = await getUserSettings();
-  if (settings === undefined || settings.optional === undefined) {
+  if (settings === undefined) {
     await putUserSettings({ 
       settings: {
         'wordsPerDay': initialWordsPerDay,
@@ -352,11 +345,33 @@ async function checkAndUpdateUserSettings() {
     });
     settings = await getUserSettings();
   }
-  await checkAndUpdateOptional(settings, initialWordsPerDay);
-  await checkAndUpdateMainSettings(settings, initialWordsPerDay);
-  await checkAndUpdateSettingsPage(settings, initialWordsPerDay);
-  await checkAndUpdateCardSettings(settings, initialWordsPerDay);
-  await checkAndUpdateTrainingProgress(settings, initialWordsPerDay);
+  const { wordsPerDay } = settings;
+
+  if (wordsPerDay === undefined) {
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': initialSettings
+      }
+    });
+    settings = await getUserSettings();
+  }
+
+  if (settings.optional === undefined) {
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': wordsPerDay,
+        'optional': initialSettings
+      }
+    });
+    settings = await getUserSettings();
+  }
+
+  await checkAndUpdateOptional(settings, wordsPerDay);
+  await checkAndUpdateMainSettings(settings, wordsPerDay);
+  await checkAndUpdateSettingsPage(settings, wordsPerDay);
+  await checkAndUpdateCardSettings(settings, wordsPerDay);
+  await checkAndUpdateTrainingProgress(settings, wordsPerDay);
 }
 
 export { putUserSettings, getUserSettings, updateLevelRoundDateSettings, 

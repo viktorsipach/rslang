@@ -95,7 +95,7 @@ class SettingsPageAPI {
             CARD_EXPLANATION_SENTENCE_TRANSLATION.classList.add(this.hide);
             CARD_EXAMPLE_SENTENCE_TRANSLATION.classList.add(this.hide);
         }
-        
+
     }
 
     async settingsTrainingPage(action) {
