@@ -48,7 +48,8 @@ function createCheckBoxElement(checkboxClass, checkboxTitle) {
 }
 
 function createMainSettingsFragment() {
-  const mainFieldsSubTitle = createDOMElement('div', 'required-fields__subtitle', 'Максимальное количество карточек в день не может быть меньше количества новых слов в день!');
+  const minDifference = 5;
+  const mainFieldsSubTitle = createDOMElement('div', 'required-fields__subtitle', `Максимальное количество карточек должно быть больше количества новых слов минимум на ${minDifference}!`);
   const newWordsPerDay = createNumberInput('main-settings__field', 'Количество новых слов в день', 'input__number', 'newWordsPerDay', '10', '100');
   const maxCardsPerDay = createNumberInput('main-settings__field', 'Максмальное количество карточек в день', 'input__number', 'maxCardsPerDay', '10', '100');
 
