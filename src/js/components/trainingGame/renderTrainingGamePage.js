@@ -30,7 +30,7 @@ function renderMenuIcons() {
   menuIcons.className = 'menu__icons';
   menuIcons.append(renderMenuIcon('menu__button training-icon auto-pronunciation ', 'icon__auto-pronunciation'));
   menuIcons.append(renderMenuIcon('menu__button training-icon show-translation ', 'icon__show-translation'));
-  menuIcons.append(renderMenuIcon('menu__button training-icon show-sentences-translation ', 'icon__show-sentences-translation'));
+  menuIcons.append(renderMenuIcon('menu__button training-icon show-sentences-translation', 'icon__show-sentences-translation'));
   return menuIcons;
 }
 

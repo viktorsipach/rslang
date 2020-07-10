@@ -388,8 +388,13 @@ class TrainingGame {
     console.log(`renderSentencesTranslationInfoAndButtonState`);
     const EXPLANATION_SENTENCE_TRANSLATION = document.querySelector('.card__explanation-sentence-translation');
     const EXAMPLE_SENTENCE_TRANSLATION = document.querySelector('.card__example-sentence-translation');
-    document.querySelector('.card__example-sentence>span').classList.remove('hidden');
-    document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
+
+    if (this.cardSettings.showExplanationSentence) {
+      document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
+    }
+    if (this.cardSettings.showExampleSentence) {
+      document.querySelector('.card__example-sentence>span').classList.remove('hidden');
+    }
     if (this.cardSettings.showExplanationSentence && this.showSentencesTranslation && (this.isAnswerCorrect || this.isWordWithoutTraining)) {
       EXPLANATION_SENTENCE_TRANSLATION.classList.remove('hidden');
     }

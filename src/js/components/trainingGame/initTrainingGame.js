@@ -111,9 +111,11 @@ export default async function initTrainingGame() {
           EXAMPLE_SENTENCE_TRANSLATION.classList.add('hidden');
         } else {
           trainingGame.showSentencesTranslation = true;
-          if (trainingGame.isAnswerCorrect || trainingGame.isWordWithoutTraining) {
-            EXPLANATION_SENTENCE_TRANSLATION.classList.remove('hidden');
+          if (trainingGame.cardSettings.showExampleSentence && (trainingGame.isAnswerCorrect || trainingGame.isWordWithoutTraining)) {
             EXAMPLE_SENTENCE_TRANSLATION.classList.remove('hidden');
+          }
+          if (trainingGame.cardSettings.showExplanationSentence && (trainingGame.isAnswerCorrect || trainingGame.isWordWithoutTraining)) {
+            EXPLANATION_SENTENCE_TRANSLATION.classList.remove('hidden');
           }
         }
       }
