@@ -18,6 +18,13 @@ async function savannaRoundDataAPI(level, round) {
   return data; 
 }
 
+const setLevelAndRound = (level, round) => {
+  const selectLevel = document.querySelector('#selectLevel');
+  const selectRound = document.querySelector('#selectRound');
+  selectLevel.value = `${level}`;
+  selectRound.value = `${round}`;
+}
+
 async function getUserSettings(nameGame) {
   const getSett = await UserSettingsMiniGame.getUserSettingsMiniGame(nameGame);
   level = Number(getSett.level);
@@ -25,7 +32,7 @@ async function getUserSettings(nameGame) {
 
   const data = await savannaRoundDataAPI(level, round);
   console.log(level, round);
-  // console.log(data);
+  setLevelAndRound(level, round);
   return data;
 }
 
