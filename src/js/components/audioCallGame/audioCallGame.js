@@ -6,18 +6,22 @@ import { getRoundData } from '../../API/dataAPI';
 import { getPartSpeech } from './partOfSpeech';
 import { statisticsWords } from './statistics';
 import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
+import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
+
 
 const arrTrueAnswer = [];
 const arrFalseAnswer = [];
 const progressStep = 5;
 let option = true;
 let arrAllWordsOption = [];
+let myDataWords = [];
 let numberWordCount = 0;
 let levelGame = 1;
 let roundGame = 1;
 let progressHeight = 0;
 let progressWidth = 0;
-
+let switchOption = false;
+let checkCheckBox = true;
 
 function progressBar(height, width) {
   const bodyGame = document.querySelector('.game-progress');
@@ -163,7 +167,7 @@ function keyPressCheck(event) {
   }
 
   if (keyPress === 'Enter' && gameBtn.outerText === 'ДАЛЕЕ') {
-    startGame();
+    startGame(checkCheckBox);
   } else {
     gameNumber.forEach(number => {
       if (number.firstChild.outerText === keyPress) {
@@ -205,11 +209,43 @@ async function setUserSettings(nameGame, level, round) {
   await UserSettingsMiniGame.updateUserSettingsMiniGame(nameGame, level, round);
 }
 
+async function getUserDataForMiniGame(amountOfWords) {
+  const FILTER_FOR_MINI_GAME_WORDS = encodeURIComponent('{"$and":[{"$or":[{"userWord.optional.status":"repeat"},{"userWord.optional.status":"tricky"}],"userWord.optional.daysLeftToRepeat":0}]}');
+  const miniGameData = await getFilteredUserWords(FILTER_FOR_MINI_GAME_WORDS, amountOfWords);
+  return miniGameData;
+}
 
-function startGame() {
+function checkCheckBoxOption() {
+  numberWordCount = 0;
+  progressHeight = 0;
+  progressWidth = 0;
+  clearAnswers();
+  const checkCheckBoxBtn = document.querySelector('.game__audioCall_option-switch');
+  if (checkCheckBoxBtn.checked) {
+    checkCheckBox = true;
+    startGame(checkCheckBox);
+  } else {
+    checkCheckBox = false;
+    startGame(checkCheckBox);
+  }
+}
 
-  const newArrObjectWords = arrAllWordsOption;
-  const objectGameWords = getWords(newArrObjectWords);
+async function startGame(checkOptionCheckBox) {
+  checkCheckBox = checkOptionCheckBox;
+  let objectGameWords = [];
+  let newArrObjectWords = [];
+
+  if (checkCheckBox && myDataWords.length !== 0) {
+    newArrObjectWords = myDataWords;
+    shuffleWords(newArrObjectWords);
+    objectGameWords = getWords(newArrObjectWords);
+  } else {
+    newArrObjectWords = arrAllWordsOption;
+    objectGameWords = getWords(newArrObjectWords);
+  }
+
+  
+  
   const nameGame = 'audiocall';
 
   getUserSettings(nameGame);
@@ -228,16 +264,19 @@ function startGame() {
       numberWordCount = 0;
       progressHeight = 0;
       progressWidth = 0;
-      console.log(roundGame);
-      console.log(levelGame);
-      if (Number(roundGame) === numberRoundEnd) {
-        levelGame += 1;
-        roundGame = 0;
-        setUserSettings(nameGame, levelGame, roundGame);
-      }
+
+      if (checkCheckBox) {
+        startGame(checkCheckBox);
+      } else {
+        if (Number(roundGame) === numberRoundEnd) {
+          levelGame += 1;
+          roundGame = 0;
+          setUserSettings(nameGame, levelGame, roundGame);
+        }
       roundGame += 1;
       getDataSelectAPI(levelGame, roundGame);
       setUserSettings(nameGame, levelGame, roundGame);
+      }
     });
 
   } else {
@@ -263,11 +302,32 @@ function startGame() {
     shuffleWords(arrWordsRus);
   
     document.querySelector('.game').remove();
-  
     const pageContent = document.querySelector('.page');
     pageContent.append(renderGamePage(arrWordsRus, wordEn, voiceEn, imageEn, wordRus));
     pageContent.append(renderDropdown());
-    pageContent.append(renderSwitch());
+    
+    if (!switchOption) {
+      pageContent.append(renderSwitch());
+      document.querySelector('.games-switcher').classList.add('game__audioCall_switch');
+      document.querySelector('.game__audioCall_switch input').classList.add('game__audioCall_option-switch');
+      switchOption = true;
+    }
+
+    if (myDataWords.length === 0) {
+      const checkBoxOff = document.querySelector('.game__audioCall_option-switch');
+      const title = document.querySelector('.games-switcher__title');
+      title.innerText = 'У Вас нету слов';
+      checkBoxOff.removeAttribute('checked');
+      checkBoxOff.setAttribute('disabled', '');
+      checkCheckBox = false;
+    }
+
+    if (checkCheckBox) {
+      const numberLever = document.getElementById('lvl-select');
+      const numberRound = document.getElementById('rnd-select');
+      numberLever.setAttribute('disabled', '');
+      numberRound.setAttribute('disabled', '');
+    }
 
     progressBar(progressHeight, progressWidth);
 
@@ -277,12 +337,15 @@ function startGame() {
     const gameWords = document.querySelector('.game__words');
     const gameBtn = document.querySelector('.game .game__btn.button');
     const soundImg = document.querySelector('.game__iconSound');
+    const checkCheckBoxBtn = document.querySelector('.game__audioCall_option-switch');
   
     if (option) {
       soundImg.classList.remove('active');
     } else {
       soundImg.classList.add('active');
     }
+
+    checkCheckBoxBtn.addEventListener('click', checkCheckBoxOption);
   
     soundImg.addEventListener('click', (event) => {
       option = !option;
@@ -299,7 +362,7 @@ function startGame() {
         optionAnswer(event, wordRus, wordEn, option);
         numberWordCount += 1;
       } else {
-        startGame();
+        startGame(checkCheckBox);
       }
     });
   
@@ -400,9 +463,16 @@ export default async function initAudioCallGame() {
   numberWordCount = 0;
   progressHeight = 0;
   progressWidth = 0;
+  switchOption = false;
+  checkCheckBox = true;
+  myDataWords = await getUserDataForMiniGame(3600);
+  myDataWords = myDataWords[0].paginatedResults;
   await getUserSettings(nameGame);
   clearAnswers();
-  document.querySelector('.game__start').addEventListener('click', startGame);
+  document.querySelector('.game__start').addEventListener('click', () => {
+    startGame(checkCheckBox);
+  });
 }
+  
 
 export { getDataAPI }
