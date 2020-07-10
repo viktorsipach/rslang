@@ -83,7 +83,8 @@ class TrainingGame {
       this.cardData = this.data[this.currentCardNumber];
       console.log(`current word`);
       console.log(this.cardData);
-      this.renderTranslation();
+      // this.renderTranslation();
+      this.renderTranscription();
       // this.renderAutoPronunciationButtonState();
       this.renderTranslationInfoAndButtonState();
       this.renderAssociatedPicture();
@@ -284,8 +285,9 @@ class TrainingGame {
     this.isWordWithoutTraining = false;
     document.querySelector('.letters-container').classList.add('hidden');
       
-    this.renderTranslation();
-    this.renderAutoPronunciationButtonState();
+    // this.renderTranslation();
+    this.renderTranscription();
+    // this.renderAutoPronunciationButtonState(); // delete
     this.renderTranslationInfoAndButtonState();
     this.renderAssociatedPicture();
     this.renderExplanationSentence();
@@ -377,7 +379,8 @@ class TrainingGame {
     this.repeatData.push(this.data[this.currentCardNumber - 1]);
   }
 
-  renderTranslation() {
+  // renderTranslation() {
+  renderTranscription() {
     if (this.cardSettings.showTranscription) {
       document.querySelector('.card__transcription').textContent = this.cardData.transcription;
     } 
