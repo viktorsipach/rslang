@@ -69,10 +69,12 @@ const updateResults = () => {
 };
 
 async function getDataGame() {
+    const wrapper = document.querySelector('.wrapper__cards_speakit');
     const USER_DATA_CHECKBOX = document.querySelector('.data-word-checkbox__speakit');
     const MAX_AMOUNT_OF_USER_WORDS = 3600;
     const level = document.getElementById('selectLevel');
     const round = document.getElementById('selectRound');
+    wrapper.innerText = '';
     if (USER_DATA_CHECKBOX.checked) {
         const allUserData = (await getUserDataForMiniGame(MAX_AMOUNT_OF_USER_WORDS))[CHILDREN.FIRST].paginatedResults.sort(() => { return Math.random() - 0.5});
         if (allUserData.length > properties.wordsPerRound) {
@@ -80,7 +82,7 @@ async function getDataGame() {
             getDataCards(necessaryUserData)
             updateResults()
         } else if (allUserData.length === 0) {
-            document.querySelector('.wrapper__cards_speakit').innerText = `Ваших слов для повторения недостаточно! 
+            wrapper.innerText = `Ваших слов для повторения недостаточно! 
             Чтобы сыграть в мини-игру выключите переключатель "Мои слова" и выберите уровень и раунд.`
         } else {
             getDataCards(allUserData)
@@ -89,7 +91,8 @@ async function getDataGame() {
         level.disabled = true;
         round.disabled = true;
     } else {
-        getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json))
+        getRoundData(properties.level, properties.round, properties.wordsPerRound).then(json => getDataCards(json));
+        updateResults()
         level.disabled = false;
         round.disabled = false;
     }
@@ -210,13 +213,8 @@ const restart = () => {
     const translate = document.querySelector('.translate__speakit')
     const btnSpeak = document.querySelector('.btn-speak__speakit');
     const resultSpeaking = document.querySelector('.result-speak__speakit')
-    const counterError = document.querySelector('.error__speakit_curr');
-    const counterCorrect = document.querySelector('.correct__speakit_curr');
     const recognition = new webkitSpeechRecognition();
 
-    counterCorrect.innerText = 0
-    counterError.innerText =  10
-   
     btnSpeak.classList.remove('btn-active')
     resultSpeaking.classList.add('hidden')
     btnSpeak.innerText = 'Говорить'
@@ -382,6 +380,8 @@ async function startSetting() {
     properties.level = Number(level.value);
     round.value = startData.round;
     properties.round = Number(round.value);
+    level.disabled = true;
+    round.disabled = true;
     getDataGame()  
 };
 
@@ -391,7 +391,7 @@ const changeUserDataCheckboxHandler = () => {
         removeCards()
         removeCardsResults()
         restart()
-        startSetting()
+        startSetting()   
     })
 };
 

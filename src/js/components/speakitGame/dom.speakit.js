@@ -69,9 +69,9 @@ export const renderDom = () => {
 }
 
 export const addCard = (word, transcription, wordTranslate, img, audio) => {
-    const wrapper = document.querySelector('.wrapper__cards_speakit')
-    const card = document.createElement('div')
-    card.classList = 'card-speakit'
+    const wrapper = document.querySelector('.wrapper__cards_speakit');
+    const card = document.createElement('div');
+    card.classList = 'card-speakit';
     card.id = word
     card.innerHTML = ` <img src="./assets/img/icon-audio.png" class="icon icon__speakit" alt="icon">
     <div class='card-speakit__audio'>${LINKS.LINK__AUDIO}${audio}</div>
