@@ -93,7 +93,7 @@ export default async function initTrainingGame() {
 
         SettingsPageAPI.settingsTrainingPage('show-translation');
 
-        if (trainingGame.cardSettings.showTranslation) {
+        if (trainingGame.cardSettings.showTranslation) { //ToDo перевод изучаемого слова и предложений
           trainingGame.cardSettings.showTranslation = false;
         } else {
           trainingGame.cardSettings.showTranslation = true;

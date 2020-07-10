@@ -227,8 +227,12 @@ class TrainingGame {
       disableButton(NEXTBUTTON_SELECTOR);
       disableButton(IDONTKNOWBUTTON_SELECTOR);
       INPUT.disabled = true;
-      document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
-      document.querySelector('.card__example-sentence>span').classList.remove('hidden');
+      if (this.cardSettings.showExampleSentence) {
+        document.querySelector('.card__example-sentence>span').classList.remove('hidden');
+      }
+      if (this.cardSettings.showExplanationSentence) {
+        document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
+      }
       if (this.cardSettings.showTranslation)   {
         this.showSentencesTranslations();
       }
@@ -240,8 +244,12 @@ class TrainingGame {
       console.log('correct answer');
       this.currentCardNumber += 1
       INPUT.disabled = true;
-      document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
-      document.querySelector('.card__example-sentence>span').classList.remove('hidden');
+      if (this.cardSettings.showExampleSentence) {
+        document.querySelector('.card__example-sentence>span').classList.remove('hidden');
+      }
+      if (this.cardSettings.showExplanationSentence) {
+        document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
+      }
       if (this.cardSettings.showTranslation) {
         this.showSentencesTranslations();
       }
