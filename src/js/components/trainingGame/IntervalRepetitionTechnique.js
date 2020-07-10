@@ -1,4 +1,4 @@
-import { createUserWord, updateUserWord, deleteUserWord, getUserWord, getAllUserWords } from '../../API/userWordsAPI';
+import { createUserWord, updateUserWord, getUserWord, getAllUserWords } from '../../API/userWordsAPI';
 import { getRoundData } from '../../API/dataAPI';
 import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
 import { getUserSettings, resetTodayProgressSettings } from '../../API/userSettingsAPI';
@@ -74,10 +74,6 @@ export default async function getTrainingGameData() {
   const nextDateShift = 1;
   const dateShiftForNextMonth = -25;
 
-  // allUserWords.forEach((word) => {
-  //   deleteUserWord({wordId: word.wordId});
-  // });
-
   const settings = await getUserSettings();
   const trainingMainSettings = settings.optional.training.mainSettings;
   const trainingSettingsPage = settings.optional.training.settingsPage;
@@ -86,10 +82,10 @@ export default async function getTrainingGameData() {
 
   const {amountOfRepeatedWordsPerDay} = settings.optional.training.trainingProgress;
 
-  // const today = new Date('07/11/2020');
   const today = new Date();
 
   const daysBetweenLastTriningAndToday = today.getDate() - lastGameDate.getDate();
+  console.log(`daysBetweenLastTriningAndToday ${daysBetweenLastTriningAndToday}`);
   const gameData = [];
 
   if (allUserWords.length === 0) {
@@ -108,7 +104,7 @@ export default async function getTrainingGameData() {
     }
     return gameData;
   }
-  if (daysBetweenLastTriningAndToday >= nextDateShift || daysBetweenLastTriningAndToday > dateShiftForNextMonth) {
+  if (daysBetweenLastTriningAndToday !== 0 && (daysBetweenLastTriningAndToday >= nextDateShift || daysBetweenLastTriningAndToday > dateShiftForNextMonth)) {
     console.log('NEW DAY');
     await resetTodayProgressSettings();
     const amountOfWordsForMinRequest = 1;

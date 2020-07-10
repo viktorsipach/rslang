@@ -47,11 +47,13 @@ class TrainingGame {
   }
 
   async getData() {
+    const CLOSE_BUTTON = document.querySelector('.close-btn');
+    CLOSE_BUTTON.classList.add('hidden');
     this.data = await getTrainingGameData();
     if (this.data) {
       this.amountOfCards = this.data.length;
-      console.log(`amountOfCards ${this.amountOfCards}`);
       document.querySelector('.spinner').classList.add('hidden');
+      CLOSE_BUTTON.classList.remove('hidden');
     }
   }
 
