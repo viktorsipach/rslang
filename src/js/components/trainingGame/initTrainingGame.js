@@ -80,23 +80,41 @@ export default async function initTrainingGame() {
       const element = event.target.closest('.menu__button') || event.target.closest('.card__button');
       element.classList.toggle('active');
       if (event.target.closest('.auto-pronunciation')) {
-        
         SettingsPageAPI.settingsTrainingPage('auto-pronunciation');
-
         if (trainingGame.autoPronunciation) {
           trainingGame.autoPronunciation = false;
         } else {
           trainingGame.autoPronunciation = true;
         }
       }
+
       if (event.target.closest('.show-translation')) {
-
         SettingsPageAPI.settingsTrainingPage('show-translation');
-
-        if (trainingGame.cardSettings.showTranslation) { //ToDo перевод изучаемого слова и предложений
+        if (trainingGame.cardSettings.showTranslation) {
+          document.querySelector('.card__translation').textContent = '';
           trainingGame.cardSettings.showTranslation = false;
         } else {
           trainingGame.cardSettings.showTranslation = true;
+          if (trainingGame.isAnswerCorrect || trainingGame.isWordWithoutTraining) {
+            document.querySelector('.card__translation').textContent = trainingGame.cardData.wordTranslate;
+          }
+        }
+      }
+
+      if (event.target.closest('.show-sentences-translation')) {
+        SettingsPageAPI.settingsTrainingPage('show-sentences-translation');
+        const EXPLANATION_SENTENCE_TRANSLATION = document.querySelector('.card__explanation-sentence-translation');
+        const EXAMPLE_SENTENCE_TRANSLATION = document.querySelector('.card__example-sentence-translation');
+        if (trainingGame.showSentencesTranslation) {
+          trainingGame.showSentencesTranslation = false;
+          EXPLANATION_SENTENCE_TRANSLATION.classList.add('hidden');
+          EXAMPLE_SENTENCE_TRANSLATION.classList.add('hidden');
+        } else {
+          trainingGame.showSentencesTranslation = true;
+          if (trainingGame.isAnswerCorrect || trainingGame.isWordWithoutTraining) {
+            EXPLANATION_SENTENCE_TRANSLATION.classList.remove('hidden');
+            EXAMPLE_SENTENCE_TRANSLATION.classList.remove('hidden');
+          }
         }
       }
     }
