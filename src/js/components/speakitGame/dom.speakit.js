@@ -14,7 +14,7 @@ export const renderDom = () => {
     </div>
     <div class="main__speakit hidden">
         <div class="header__speakit">
-            <div class="menu__left">
+            <div class="menu__left_speakit">
                 <div class="menu__level menu__speakit">
                     <span class="level__title">Уровень</span>
                     <div class="select select__level">
@@ -36,8 +36,15 @@ export const renderDom = () => {
                     </div>
                 </div>
             </div>
-            <div class="wrapper__stars"><img class="star hidden" src="./assets/img/star-win.svg"></div>
+            <div class="games-switcher games-switcher__speakit">
+                <div class="games-switcher__title_speakit">Мои слова</div> 
+                <label class="switch">
+                    <input type="checkbox" checked="" class="data-word-checkbox__speakit">
+                    <span class="slider slider-speakit"></span>
+                </label>
+            </div>
         </div>
+        <div class="wrapper__stars"><img class="star hidden" src="./assets/img/star-win.svg"></div>
         <div class="image__container_speakit"></div>
         <div class="translate__speakit"></div>
         <div class="result-speak__speakit hidden"></div>
@@ -62,9 +69,9 @@ export const renderDom = () => {
 }
 
 export const addCard = (word, transcription, wordTranslate, img, audio) => {
-    const wrapper = document.querySelector('.wrapper__cards_speakit')
-    const card = document.createElement('div')
-    card.classList = 'card-speakit'
+    const wrapper = document.querySelector('.wrapper__cards_speakit');
+    const card = document.createElement('div');
+    card.classList = 'card-speakit';
     card.id = word
     card.innerHTML = ` <img src="./assets/img/icon-audio.png" class="icon icon__speakit" alt="icon">
     <div class='card-speakit__audio'>${LINKS.LINK__AUDIO}${audio}</div>
