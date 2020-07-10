@@ -202,9 +202,9 @@ async function checkAndUpdateSettingsPage(settings, initialWordsPerDay) {
     });
   }
 
-  if (!settingsPage.maCardsPerDay || !settingsPage.autoPronunciation || !settingsPage.showSentencesTranslation) {
-    if (!settingsPage.maCardsPerDay) {
-      settingsPage.maCardsPerDay = true;
+  if (!settingsPage.maxCardsPerDay || !settingsPage.autoPronunciation || !settingsPage.showSentencesTranslation) {
+    if (!settingsPage.maxCardsPerDay) {
+      settingsPage.maxCardsPerDay = true;
     }
     if (!settingsPage.autoPronunciation) {
       settingsPage.autoPronunciation = true;

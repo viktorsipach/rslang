@@ -4,7 +4,6 @@ import getTrainingGameData from './IntervalRepetitionTechnique';
 import { updateUserWord, getUserWord } from '../../API/userWordsAPI';
 import { updateLevelRoundDateSettings, updateTrainingProgressSettings, putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
 import renderTrainingModal from './renderTrainingModal';
-import initialSettings from './initialSetting';
 import StatisticsAPI from '../../API/statisticsAPI';
 
 class TrainingGame {
