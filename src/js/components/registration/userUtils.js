@@ -1,5 +1,6 @@
 import { loginUser } from './userAPI';
 import { LOGIN_SECTION, MAIN_SECTION, HEADER } from './constants';
+import { checkAndUpdateUserSettings } from '../../API/userSettingsAPI';
 
 export default async function signIn(userData) {
   const loginResult = await loginUser(userData);
@@ -9,5 +10,6 @@ export default async function signIn(userData) {
     LOGIN_SECTION.classList.add('hidden');
     MAIN_SECTION.classList.remove('hidden');
     HEADER.classList.remove('hidden');
+    await checkAndUpdateUserSettings();
   }
 }
