@@ -20,40 +20,13 @@ class TrainingGame {
   }
 
   async initGame() {
-    let settings = await getUserSettings();
-    if (settings === undefined || settings.optional === undefined || settings.optional.training === undefined) {
-      const initialWordsPerDay = 10;
-      await putUserSettings({ 
-        settings: {
-          'wordsPerDay': initialWordsPerDay,
-          'optional': initialSettings
-        }
-      });
-      settings = await getUserSettings();
-    }
-
+    const settings = await getUserSettings();
     this.settings = settings;
-    this.newWordsPerDay = this.settings.wordsPerDay || 10;
-
+    this.newWordsPerDay = this.settings.wordsPerDay;
     this.trainingSettings = this.settings.optional.training ;
-    if (this.trainingSettings === undefined) {    
-      await this.initTrainingSettings();
-    }
-
     this.trainingMainSettings = this.trainingSettings.mainSettings;
-    if (this.trainingMainSettings === undefined) {
-      await this.initTrainingMainSettings();
-    }
-
     this.settingsPage = this.trainingSettings.settingsPage;
-    if (this.settingsPage === undefined) {
-      await this.initTrainingSettingsPage();
-    }
-
     this.trainingProgress = this.trainingSettings.trainingProgress;
-    if (this.trainingProgress === undefined) {
-      await this.initTrainingSettingsPage();
-    }
     this.seriesOfCorrectAnswers = 0;
     this.correctAnswersAmount = 0;
     this.amountOfLearnedWordsPerDay = this.trainingMainSettings.amountOfLearnedWordsPerDay;
@@ -62,11 +35,9 @@ class TrainingGame {
     this.autoPronunciation = this.settingsPage.autoPronunciation;
     this.showDeleteButton = this.settingsPage.showDeleteButton;
     this.showHardButton = this.settingsPage.showHardButton;
-
     this.longestSeriesOfCorrectAnswers = this.trainingProgress.longestSeriesOfCorrectAnswers;
     this.amountOfRepeatedWordsPerDay = this.trainingProgress.amountOfRepeatedWordsPerDay;
     this.allCorrectAnswersAmount = this.trainingProgress.allCorrectAnswersAmount;;
-
     console.log(`amountOfLearnedWordsPerDay ${this.amountOfLearnedWordsPerDay}`);
     console.log(`amountOfRepeatedWordsPerDay ${this.amountOfRepeatedWordsPerDay}`);
     console.log(`correctAnswersAmount ${this.correctAnswersAmount}`);
@@ -75,44 +46,6 @@ class TrainingGame {
     console.log(`allCorrectAnswersAmount ${this.allCorrectAnswersAmount}`);
   }
 
-  async initTrainingSettings() {
-    const initialWordsPerDay = 10;
-      await putUserSettings({ 
-        settings: {
-          'wordsPerDay': initialWordsPerDay,
-          'optional': initialSettings
-        }
-      });
-      this.settings = await getUserSettings();
-      this.trainingSettings = this.settings.optional.training ;
-  }
-
-  async initTrainingMainSettings() {
-    const initialWordsPerDay = 10;
-      await putUserSettings({ 
-        settings: {
-          'wordsPerDay': initialWordsPerDay,
-          'optional': initialSettings
-        }
-      });
-      this.settings = await getUserSettings();
-      this.trainingSettings = this.settings.optional.training ;
-      this.trainingMainSettings = this.trainingSettings.mainSettings;
-  }
-
-  async initTrainingSettingsPage() {
-    const initialWordsPerDay = 10;
-      await putUserSettings({ 
-        settings: {
-          'wordsPerDay': initialWordsPerDay,
-          'optional': initialSettings
-        }
-      });
-      this.settings = await getUserSettings();
-      this.trainingSettings = this.settings.optional.training ;
-      this.settingsPage = this.trainingSettings.settingsPage;
-  }
-   
   async getData() {
     this.data = await getTrainingGameData();
     if (this.data) {

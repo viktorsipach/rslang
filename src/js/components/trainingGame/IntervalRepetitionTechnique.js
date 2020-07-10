@@ -84,8 +84,8 @@ export default async function getTrainingGameData() {
 
   const {amountOfRepeatedWordsPerDay} = settings.optional.training.trainingProgress;
 
-  const today = new Date('07/11/2020');
-  // const today = new Date();
+  // const today = new Date('07/11/2020');
+  const today = new Date();
 
   const daysBetweenLastTriningAndToday = today.getDate() - lastGameDate.getDate();
   const gameData = [];
@@ -106,17 +106,20 @@ export default async function getTrainingGameData() {
     }
     return gameData;
   }
-  if (daysBetweenLastTriningAndToday >= nextDateShift && daysBetweenLastTriningAndToday > dateShiftForNextMonth) {
+  if (daysBetweenLastTriningAndToday >= nextDateShift || daysBetweenLastTriningAndToday > dateShiftForNextMonth) {
     console.log('NEW DAY');
     await resetTodayProgressSettings();
     const amountOfWordsForMinRequest = 1;
     let allRepeatWords = await getFilteredUserWords(FILTER_FOR_ALL_REPEAT_WORDS, amountOfWordsForMinRequest);
-    const allRepeatWordsCount = allRepeatWords[0].totalCount[0].count;
-    allRepeatWords = await getFilteredUserWords(FILTER_FOR_ALL_REPEAT_WORDS, allRepeatWordsCount);
-    console.log(allRepeatWordsCount);
     console.log(allRepeatWords);
-    await decreaseRepeatUserWordLeftDaysAmount(allRepeatWords[0].paginatedResults);   
-
+    console.log(allRepeatWords[0].totalCount[0]); 
+    if (allRepeatWords[0].totalCount[0]) {
+      const allRepeatWordsCount = allRepeatWords[0].totalCount[0].count;
+      allRepeatWords = await getFilteredUserWords(FILTER_FOR_ALL_REPEAT_WORDS, allRepeatWordsCount);
+      console.log(allRepeatWordsCount);
+      console.log(allRepeatWords);
+      await decreaseRepeatUserWordLeftDaysAmount(allRepeatWords[0].paginatedResults); 
+    }
     const AMOUNT_OF_WORDS_TO_REPEAT = trainingSettingsPage.maxCardsPerDay - settings.wordsPerDay;
     console.log(`total Ws = ${trainingSettingsPage.maxCardsPerDay}, new Ws = ${settings.wordsPerDay}, repeat Ws${AMOUNT_OF_WORDS_TO_REPEAT}`);
 

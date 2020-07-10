@@ -1,4 +1,5 @@
 import { getRoundsAmountInLevel } from './dataAPI';
+import initialSettings from '../components/trainingGame/initialSetting';
 
 async function putUserSettings({ settings }) {
   const token = localStorage.getItem('userToken');
@@ -135,4 +136,225 @@ async function resetTodayProgressSettings() {
   }); 
 }
 
-export { putUserSettings, getUserSettings, updateLevelRoundDateSettings, updateTrainingProgressSettings, resetTodayProgressSettings }
+async function checkAndUpdateOptional(settings, initialWordsPerDay) {
+  const { optional } = settings;
+  let trainingSettings = settings.optional.training;
+  if (trainingSettings === undefined) {    
+    trainingSettings = initialSettings.training;
+    optional.training = trainingSettings;
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': optional,
+      }
+    });
+  }
+}
+
+async function checkAndUpdateMainSettings(settings, initialWordsPerDay) {
+  const { optional } = settings;
+  let { mainSettings } = settings.optional.training;
+  if (mainSettings === undefined) {
+    mainSettings = initialSettings.training.mainSettings;
+    optional.training.mainSettings = mainSettings;
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': optional,
+      }
+    });
+  }
+  
+  if (!mainSettings.level || !mainSettings.round || !mainSettings.amountOfLearnedWordsPerDay || !mainSettings.date) {
+    if (!mainSettings.level) {
+      mainSettings.level = 1;
+    }
+    if (!mainSettings.round) {
+      mainSettings.round = 1;
+    }
+    if (!mainSettings.amountOfLearnedWordsPerDay) {
+      mainSettings.amountOfLearnedWordsPerDay = 0
+    }
+    if (!mainSettings.date) {
+      mainSettings.date = (new Date()).toLocaleDateString();
+    }
+    optional.training.mainSettings = mainSettings;
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': optional,
+      }
+    });
+  }
+}
+
+async function checkAndUpdateSettingsPage(settings, initialWordsPerDay) {
+  const { optional } = settings;
+  let { settingsPage } = settings.optional.training;
+  if (settingsPage === undefined) {
+    settingsPage = initialSettings.training.settingsPage;
+    optional.training.settingsPage = settingsPage;
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': optional,
+      }
+    });
+  }
+
+  if (!settingsPage.maCardsPerDay || !settingsPage.autoPronunciation || !settingsPage.showSentencesTranslation) {
+    if (!settingsPage.maCardsPerDay) {
+      settingsPage.maCardsPerDay = true;
+    }
+    if (!settingsPage.autoPronunciation) {
+      settingsPage.autoPronunciation = true;
+    }
+    if (!settingsPage.showSentencesTranslation) {
+      settingsPage.showSentencesTranslation = true;
+    }
+    optional.training.settingsPage = settingsPage;
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': optional,
+      }
+    });
+  }
+
+  if (!settingsPage.showIDontKnowButton || !settingsPage.showDeleteButton || !settingsPage.showHardButton) {
+    if (!settingsPage.showIDontKnowButton) {
+      settingsPage.showIDontKnowButton = true;
+    }
+    if (!settingsPage.showDeleteButton) {
+      settingsPage.showDeleteButton = true;
+    }
+    if (!settingsPage.showHardButton) {
+      settingsPage.showHardButton = true;
+    }
+    optional.training.settingsPage = settingsPage;
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': optional,
+      }
+    });
+  }
+
+  if (!settingsPage.newWordsOnly || !settingsPage.learnedWordsOnly) {
+    if (!settingsPage.newWordsOnly) {
+      settingsPage.newWordsOnly = true;
+    }
+    if (!settingsPage.learnedWordsOnly) {
+      settingsPage.learnedWordsOnly = true;
+    }
+    optional.training.settingsPage = settingsPage;
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': optional,
+      }
+    });
+  }
+}
+
+async function checkAndUpdateCardSettings(settings, initialWordsPerDay) {
+  const { optional } = settings;
+  let { cardSettings } = settings.optional.training.settingsPage;
+  if (cardSettings === undefined) {
+    cardSettings = initialSettings.training.settingsPage.cardSettings;
+    optional.training.settingsPage.cardSettings = cardSettings;
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': optional,
+      }
+    });
+  }
+
+   if (!cardSettings.showTranslation || !cardSettings.showExplanationSentence || !cardSettings.showExampleSentence 
+    || !cardSettings.showTranscription || cardSettings.showAssociatedPicture) {
+      if (!cardSettings.showTranslation) {
+        cardSettings.showTranslation = true;
+      }
+      if (!cardSettings.showExplanationSentence) {
+        cardSettings.showExplanationSentence = true;
+      }
+      if (!cardSettings.showExampleSentence) {
+        cardSettings.showExampleSentence = true;
+      }
+      if (!cardSettings.showTranscription) {
+        cardSettings.showTranscription = true;
+      }
+      if (!cardSettings.showAssociatedPicture) {
+        cardSettings.showAssociatedPicture = true;
+      }
+    optional.training.settingsPage.cardSettings = cardSettings;
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': optional,
+      }
+    });
+  }
+}
+
+async function checkAndUpdateTrainingProgress(settings, initialWordsPerDay) {
+  const { optional } = settings;
+  let { trainingProgress } = settings.optional.training;
+  if (trainingProgress === undefined) {
+    trainingProgress = initialSettings.training.trainingProgress;
+    optional.training.trainingProgress = trainingProgress;
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': optional,
+      }
+    });
+  }
+
+  if (!trainingProgress.amountOfRepeatedWordsPerDay || !trainingProgress.seriesOfCorrectAnswers || 
+    !trainingProgress.longestSeriesOfCorrectAnswers || !trainingProgress.allCorrectAnswersAmount) {
+    if (!trainingProgress.amountOfRepeatedWordsPerDay) {
+      trainingProgress.amountOfRepeatedWordsPerDay = 0;
+    }
+    if (!trainingProgress.seriesOfCorrectAnswers) {
+      trainingProgress.seriesOfCorrectAnswers = 0;
+    }
+    if (!trainingProgress.longestSeriesOfCorrectAnswers) {
+      trainingProgress.longestSeriesOfCorrectAnswers = 0;
+    }
+    if (!trainingProgress.allCorrectAnswersAmount) {
+      trainingProgress.allCorrectAnswersAmount = 0;
+    }
+    optional.training.trainingProgress = trainingProgress;
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': optional,
+      }
+    });
+  }
+}
+
+async function checkAndUpdateUserSettings() {
+  console.log('checkAndUpdateUserSettings');
+  const initialWordsPerDay = 10;
+  let settings = await getUserSettings();
+  if (settings === undefined || settings.optional === undefined) {
+    await putUserSettings({ 
+      settings: {
+        'wordsPerDay': initialWordsPerDay,
+        'optional': initialSettings
+      }
+    });
+    settings = await getUserSettings();
+  }
+  await checkAndUpdateOptional(settings, initialWordsPerDay);
+  await checkAndUpdateMainSettings(settings, initialWordsPerDay);
+  await checkAndUpdateSettingsPage(settings, initialWordsPerDay);
+  await checkAndUpdateCardSettings(settings, initialWordsPerDay);
+  await checkAndUpdateTrainingProgress(settings, initialWordsPerDay);
+}
+
+export { putUserSettings, getUserSettings, updateLevelRoundDateSettings, 
+  updateTrainingProgressSettings, resetTodayProgressSettings, checkAndUpdateUserSettings }
