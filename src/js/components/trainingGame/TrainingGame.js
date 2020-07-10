@@ -2,7 +2,7 @@ import renderStatistics from './renderStatistics';
 import { disableButton, enableButton } from './utils';
 import getTrainingGameData from './IntervalRepetitionTechnique';
 import { updateUserWord, getUserWord } from '../../API/userWordsAPI';
-import { updateLevelRoundDateSettings, updateTrainingProgressSettings, putUserSettings, getUserSettings } from '../../API/userSettingsAPI';
+import { updateLevelRoundDateSettings, updateTrainingProgressSettings, getUserSettings } from '../../API/userSettingsAPI';
 import renderTrainingModal from './renderTrainingModal';
 import StatisticsAPI from '../../API/statisticsAPI';
 
@@ -30,6 +30,7 @@ class TrainingGame {
     this.correctAnswersAmount = 0;
     this.amountOfLearnedWordsPerDay = this.trainingMainSettings.amountOfLearnedWordsPerDay;
     this.maxCardsPerDay = this.settingsPage.maxCardsPerDay;
+    this.showSentencesTranslation = this.settingsPage.showSentencesTranslation;
     this.cardSettings = this.settingsPage.cardSettings;
     this.autoPronunciation = this.settingsPage.autoPronunciation;
     this.showDeleteButton = this.settingsPage.showDeleteButton;
@@ -37,26 +38,21 @@ class TrainingGame {
     this.longestSeriesOfCorrectAnswers = this.trainingProgress.longestSeriesOfCorrectAnswers;
     this.amountOfRepeatedWordsPerDay = this.trainingProgress.amountOfRepeatedWordsPerDay;
     this.allCorrectAnswersAmount = this.trainingProgress.allCorrectAnswersAmount;;
-    console.log(`amountOfLearnedWordsPerDay ${this.amountOfLearnedWordsPerDay}`);
-    console.log(`amountOfRepeatedWordsPerDay ${this.amountOfRepeatedWordsPerDay}`);
-    console.log(`correctAnswersAmount ${this.correctAnswersAmount}`);
-    console.log(`seriesOfCorrectAnswers ${this.seriesOfCorrectAnswers}`);
-    console.log(`longestSeriesOfCorrectAnswers ${this.longestSeriesOfCorrectAnswers}`);
-    console.log(`allCorrectAnswersAmount ${this.allCorrectAnswersAmount}`);
   }
 
   async getData() {
+    const CLOSE_BUTTON = document.querySelector('.close-btn');
+    CLOSE_BUTTON.classList.add('hidden');
     this.data = await getTrainingGameData();
     if (this.data) {
       this.amountOfCards = this.data.length;
-      console.log(`amountOfCards ${this.amountOfCards}`);
       document.querySelector('.spinner').classList.add('hidden');
+      CLOSE_BUTTON.classList.remove('hidden');
     }
   }
 
   async start() {
     if (this.data === undefined || this.amountOfCards === 0) {
-      console.log('no words to learn today!')
       document.querySelector('.page').append(renderTrainingModal());
     } else {
       this.currentCardNumber = 0;
@@ -68,6 +64,8 @@ class TrainingGame {
   }
 
   async renderCardData() {
+    this.isAnswerCorrect = false;
+    this.isWordWithoutTraining = false;
     const DIFFICULTY_BUTTONS = document.querySelector('.difficulty__buttons');
     const GAME_BUTTONS = document.querySelector('.game__buttons.training-game');
     DIFFICULTY_BUTTONS.classList.add('hidden');
@@ -80,11 +78,8 @@ class TrainingGame {
     if (this.currentCardNumber < this.amountOfCards) {
       document.querySelector('.letters-container').classList.add('hidden');
       this.cardData = this.data[this.currentCardNumber];
-      console.log(`current word`);
-      console.log(this.cardData);
-      this.renderTranslation();
-      // this.renderAutoPronunciationButtonState();
-      this.renderTranslationInfoAndButtonState();
+      this.renderTranscription();
+      this.renderWordTranslationInfoAndButtonState();
       this.renderAssociatedPicture();
       this.renderExplanationSentence();
       this.renderExampleSentence();
@@ -95,7 +90,6 @@ class TrainingGame {
       if (this.repeatData.length === 0) {
         this.openStatistics();
       } else {
-        console.log('repeat again words');
         this.isRepeatData = true;
         this.currentCardNumber = 0;
         this.amountsOfRepeatCards = this.repeatData.length;
@@ -125,7 +119,6 @@ class TrainingGame {
       if(!this.isRepeatData) {
         this.showProgress();
         this.seriesOfCorrectAnswers = 0;
-        console.log(`seriesOfCorrectAnswers ${this.seriesOfCorrectAnswers}`);
         if (this.cardData.userWord.optional.status === 'new') {
           this.amountOfLearnedWordsPerDay += 1;
         }
@@ -144,21 +137,13 @@ class TrainingGame {
         if (this.cardData.userWord.optional.status === 'repeat' || this.cardData.userWord.optional.status === 'tricky') {
           this.amountOfRepeatedWordsPerDay += 1;
         }
-        console.log(`amountOfLearnedWordsPerDay ${this.amountOfLearnedWordsPerDay}`);
-        console.log(`amountOfRepeatedWordsPerDay ${this.amountOfRepeatedWordsPerDay}`);
-        console.log(`correctAnswersAmount ${this.correctAnswersAmount}`);
-        console.log(`seriesOfCorrectAnswers ${this.seriesOfCorrectAnswers}`);
-
       }
       if (this.seriesOfCorrectAnswers > this.longestSeriesOfCorrectAnswers) {
         this.longestSeriesOfCorrectAnswers = this.seriesOfCorrectAnswers;
-        console.log(`longestSeriesOfCorrectAnswers ${this.longestSeriesOfCorrectAnswers}`);
-
       }
       this.correctAnswer();
     } else {
       this.seriesOfCorrectAnswers = 0;
-      console.log(`seriesOfCorrectAnswers ${this.seriesOfCorrectAnswers}`);
       this.incorrectAnswer();
     }
   }
@@ -221,29 +206,21 @@ class TrainingGame {
     } 
     document.querySelector('.letters-container').classList.remove('hidden'); 
     if (this.isWordWithoutTraining) {
-      console.log('isWordWithoutTraining');
       this.currentCardNumber += 1;
       disableButton(NEXTBUTTON_SELECTOR);
       disableButton(IDONTKNOWBUTTON_SELECTOR);
       INPUT.disabled = true;
-      document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
-      document.querySelector('.card__example-sentence>span').classList.remove('hidden');
-      if (this.cardSettings.showTranslation)   {
-        this.showSentencesTranslations();
-      }
+      this.showWordTranslations();
+      this.renderSentencesTranslationInfoAndButtonState();
       if (!this.isRepeatData) {
         this.showProgress();
       } 
       this.playCardSounds();
     } else if (this.isAnswerCorrect) {
-      console.log('correct answer');
       this.currentCardNumber += 1
       INPUT.disabled = true;
-      document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
-      document.querySelector('.card__example-sentence>span').classList.remove('hidden');
-      if (this.cardSettings.showTranslation) {
-        this.showSentencesTranslations();
-      }
+      this.showWordTranslations();
+      this.renderSentencesTranslationInfoAndButtonState();
       if (!this.isRepeatData) {
         DIFFICULTY_BUTTONS.classList.remove('hidden');
         GAME_BUTTONS.classList.add('hidden');
@@ -251,7 +228,6 @@ class TrainingGame {
       } 
       this.playCardSounds();
     } else if (!this.isAnswerCorrect) {
-      console.log('INcorrect answer');
       disableButton(NEXTBUTTON_SELECTOR);
       INPUT.disabled = false;
       INPUT.focus();
@@ -268,23 +244,19 @@ class TrainingGame {
   playRepeatWords() {
     if (this.currentCardNumber < this.amountsOfRepeatCards) {
     this.cardData = this.repeatData[this.currentCardNumber];
-    console.log(this.cardData);
-
     const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
     disableButton(NEXTBUTTON_SELECTOR);
     this.isWordWithoutTraining = false;
     document.querySelector('.letters-container').classList.add('hidden');
-      
-    this.renderTranslation();
-    this.renderAutoPronunciationButtonState();
-    this.renderTranslationInfoAndButtonState();
+    this.renderTranscription();
+    this.renderWordTranslationInfoAndButtonState();
     this.renderAssociatedPicture();
     this.renderExplanationSentence();
     this.renderExampleSentence();
     this.renderInput();
     } else {
       this.openStatistics();
-      }
+    }
   }
 
   async openStatistics() {
@@ -355,8 +327,7 @@ class TrainingGame {
           errorsCount,
         }
       }
-    })
-    
+    });
   }
 
   showProgress() {
@@ -368,30 +339,35 @@ class TrainingGame {
     this.repeatData.push(this.data[this.currentCardNumber - 1]);
   }
 
-  renderTranslation() {
+  renderTranscription() {
     if (this.cardSettings.showTranscription) {
       document.querySelector('.card__transcription').textContent = this.cardData.transcription;
     } 
   }
 
-  renderAutoPronunciationButtonState() {
-    const AUTO_PRONUNCIATION_BUTTON = document.querySelector('.menu__button.auto-pronunciation');
-    if (this.autoPronunciation) {
-      AUTO_PRONUNCIATION_BUTTON.classList.add('active');
+  renderWordTranslationInfoAndButtonState() {
+    const WORD_TRANSLATION = document.querySelector('.card__translation');
+    if (this.cardSettings.showTranslation && (this.isAnswerCorrect || this.isWordWithoutTraining)) {
+      WORD_TRANSLATION.textContent = this.cardData.wordTranslate;
     } else {
-      AUTO_PRONUNCIATION_BUTTON.classList.remove('active');
+      WORD_TRANSLATION.textContent = '';
     }
   }
 
-  renderTranslationInfoAndButtonState() {
-    const WORD_TRANSLATION = document.querySelector('.card__translation');
-    // const SHOW_TRANSLATION_BUTTON = document.querySelector('.menu__button.show-translation');
-    if (this.cardSettings.showTranslation) {
-      WORD_TRANSLATION.textContent = this.cardData.wordTranslate;
-      // SHOW_TRANSLATION_BUTTON.classList.add('active');
-    } else {
-      WORD_TRANSLATION.textContent = '';
-      // SHOW_TRANSLATION_BUTTON.classList.add('active');
+  renderSentencesTranslationInfoAndButtonState() {
+    const EXPLANATION_SENTENCE_TRANSLATION = document.querySelector('.card__explanation-sentence-translation');
+    const EXAMPLE_SENTENCE_TRANSLATION = document.querySelector('.card__example-sentence-translation');
+    if (this.cardSettings.showExplanationSentence) {
+      document.querySelector('.card__explanation-sentence>span').classList.remove('hidden');
+    }
+    if (this.cardSettings.showExampleSentence) {
+      document.querySelector('.card__example-sentence>span').classList.remove('hidden');
+    }
+    if (this.cardSettings.showExplanationSentence && this.showSentencesTranslation && (this.isAnswerCorrect || this.isWordWithoutTraining)) {
+      EXPLANATION_SENTENCE_TRANSLATION.classList.remove('hidden');
+    }
+    if (this.cardSettings.showExampleSentence && this.showSentencesTranslation && (this.isAnswerCorrect || this.isWordWithoutTraining)) {
+      EXAMPLE_SENTENCE_TRANSLATION.classList.remove('hidden');
     }
   }
 
@@ -437,12 +413,12 @@ class TrainingGame {
 
   renderInput() {
     const INPUT = document.querySelector('.card__input');
-      INPUT.disabled = false;
-      INPUT.value = '';
-      INPUT.setAttribute('placeholder', this.cardData.word);
-      INPUT.setAttribute('size', this.cardData.word.length);
-      INPUT.setAttribute('maxlength', this.cardData.word.length);
-      INPUT.focus();
+    INPUT.disabled = false;
+    INPUT.value = '';
+    INPUT.setAttribute('placeholder', this.cardData.word);
+    INPUT.setAttribute('size', this.cardData.word.length);
+    INPUT.setAttribute('maxlength', this.cardData.word.length);
+    INPUT.focus();
   }
 
   checkInputLength() {
@@ -471,10 +447,8 @@ class TrainingGame {
     return fragment;
   }
 
-  showSentencesTranslations() {
+  showWordTranslations() {
     if (this.cardSettings.showTranslation) {
-      document.querySelector('.card__explanation-sentence-translation').classList.remove('hidden');
-      document.querySelector('.card__example-sentence-translation').classList.remove('hidden');
       document.querySelector('.card__translation').textContent = this.cardData.wordTranslate;
     }
   }
