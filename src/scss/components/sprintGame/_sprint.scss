@@ -11,6 +11,7 @@
 @import './components/game-controls';
 @import './components/error-popup';
 @import './components/accordion';
+@import './components/games-switcher';
 
 .sprint {
   * {
@@ -30,11 +31,11 @@
       display: flex;
       flex-wrap: wrap;
       width: 100%;
-      
+
       @include media-tablet {
         flex-direction: column-reverse;
       }
-      
+
       @include media-mobile {
         flex-direction: column;
       }
@@ -44,24 +45,24 @@
       display: flex;
       justify-content: center;
       width: 20%;
-      
+
       @include media-tablet {
         width: 100%;
         justify-content: center;
       }
     }
-    
+
     &_right {
       position: relative;
       width: 80%;
       display: flex;
       justify-content: flex-end;
-      
+
       @include media-tablet {
         width: 100%;
         justify-content: space-between;
       }
-      
+
       @include media-mobile {
         top: 2rem;
         justify-content: center;
@@ -103,7 +104,7 @@
       top: 1rem;
       right: 5rem;
     }
-    
+
     @include media-mobile {
       position: absolute;
       left: -2rem;
