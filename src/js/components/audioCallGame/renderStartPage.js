@@ -10,7 +10,7 @@ export default function renderStartPage() {
 
     const startGameDescription = document.createElement('div');
     startGameDescription.className = 'game__description';
-    startGameDescription.innerText = 'Звучит произношение слова на английском языке, нужно выбрать перевод слова из пяти предложенных вариантов ответа';
+    startGameDescription.innerText = 'Звучит произношение слова на английском языке, нужно выбрать перевод слова из пяти предложенных вариантов ответа. Для игры в "мои слова" в словаре изучаемых слов должно быть не менее 20.';
 
     const startGameButton = document.createElement('div');
     startGameButton.className = 'game__start button';
