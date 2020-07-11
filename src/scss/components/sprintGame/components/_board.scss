@@ -84,6 +84,7 @@
   &__button {
     width: 15rem;
     height: 4rem;
+    outline: none;
 
     @include media-mobile {
       width: 11rem;

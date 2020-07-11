@@ -1,0 +1,9 @@
+.border {
+  &__correct {
+    border-color: $color-correct;
+  }
+
+  &__wrong {
+    border-color: $color-wrong;
+  }
+}

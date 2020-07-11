@@ -28,8 +28,11 @@ class Sprint {
     this.maxStack = 4;
     this.gameDuration = 60000;
     this.gameDelay = 3000;
+    this.highlightDuration = 200;
     this.audioCorrect = new Audio(CorrectSound);
     this.audioWrong = new Audio(ErrorSound);
+    this.highlightClassCorrect = 'border__correct';
+    this.highlightClassWrong = 'border__wrong';
   }
 
   init(parentSelector = '.page') {
@@ -44,7 +47,8 @@ class Sprint {
       document.removeEventListener('keydown', this.keyboardListener);
       if (controlPanel) controlPanel.removeEventListener('click', this.soundControlButtonListener);
       if (reloadButton) reloadButton.removeEventListener('click', this.reloadButtonListener);
-      if (myWordsSwitch) myWordsSwitch.removeEventListener('click', this.myWordsSwitchListener);;
+      if (myWordsSwitch) myWordsSwitch.removeEventListener('click', this.myWordsSwitchListener);
+      if (this.board) this.board.removeEventListener('click', this.boardButtonsListener);
       clearTimeout(this.currentTimer);
     };
     closeButton.classList.add('exit');
@@ -143,10 +147,10 @@ class Sprint {
 
   startGame() {
     const sprintPanel = document.querySelector('.sprint__panel');
-    const board = document.querySelector('.sprint__board');
-    const buttonTrue = board.querySelector('.board__button_true');
-    const buttonFalse = board.querySelector('.board__button_false');
-    const buttonRepeat = board.querySelector('.repeat-button__icon');
+    this.board = document.querySelector('.sprint__board');
+    const buttonTrue = this.board.querySelector('.board__button_true');
+    const buttonFalse = this.board.querySelector('.board__button_false');
+    const buttonRepeat = this.board.querySelector('.repeat-button__icon');
     const controlPanel = document.querySelector('.sprint__panel_right');
     const soundControlButtonOn = controlPanel.querySelector('.sound-control__icon_on');
     const soundControlButtonOff = controlPanel.querySelector('.sound-control__icon_off');
@@ -209,7 +213,7 @@ class Sprint {
 
     this.startTimer('.sprint__timer', this.gameTimerStartPoint);
     if (this.soundIsEnabled) wordAudio.play();
-    board.addEventListener('click', this.boardButtonsListener);
+    this.board.addEventListener('click', this.boardButtonsListener);
 
     this.currentTimer = setTimeout(() => {
       this.endGame(this.boardButtonsListener, this.keyboardListener);
@@ -219,10 +223,12 @@ class Sprint {
   correctButtonPress() {
     if (this.isRandom) {
       if (this.soundIsEnabled) this.audioWrong.play();
+      this.highlightElement(this.board, this.highlightClassWrong);
       this.wrongWords.push(this.currentWord);
       this.gameProgressHandler(false);
     } else {
       if (this.soundIsEnabled) this.audioCorrect.play();
+      this.highlightElement(this.board, this.highlightClassCorrect);
       this.correctWords.push(this.currentWord);
       this.gameProgressHandler(true);
     }
@@ -231,13 +237,22 @@ class Sprint {
   wrongButtonPress() {
     if (this.isRandom) {
       if (this.soundIsEnabled) this.audioCorrect.play();
+      this.highlightElement(this.board, this.highlightClassCorrect);
       this.correctWords.push(this.currentWord);
       this.gameProgressHandler(true);
     } else {
       if (this.soundIsEnabled) this.audioWrong.play();
+      this.highlightElement(this.board, this.highlightClassWrong);
       this.wrongWords.push(this.currentWord);
       this.gameProgressHandler(false);
     }
+  }
+
+  highlightElement(element, highlightClass) {
+    element.classList.add(highlightClass);
+    setTimeout(() => {
+      element.classList.remove(highlightClass);
+    }, this.highlightDuration);
   }
 
   startKeyboardHandler(event) {
@@ -387,6 +402,7 @@ class Sprint {
       this.currentStack = 0;
       this.currentRewardPoints *= 2;
       this.reward.textContent = `+${this.currentRewardPoints}`;
+      this.highlightElement(this.reward, this.highlightClassCorrect);
       this.stack.querySelectorAll('.stack__element').forEach((element) => {
         element.classList.remove('stack__element_active');
       });
@@ -394,12 +410,13 @@ class Sprint {
   }
 
   resetStack() {
+    if (this.currentRewardPoints > 10) this.highlightElement(this.reward, this.highlightClassWrong);
     this.currentRewardPoints = 10;
     this.currentStack = 0;
-      this.reward.textContent = `+${this.currentRewardPoints}`;
-      this.stack.querySelectorAll('.stack__element').forEach((element) => {
-        element.classList.remove('stack__element_active');
-      });
+    this.reward.textContent = `+${this.currentRewardPoints}`;
+    this.stack.querySelectorAll('.stack__element').forEach((element) => {
+      element.classList.remove('stack__element_active');
+    });
   }
 
   gameProgressHandler(answerIsCorrect) {
