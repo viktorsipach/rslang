@@ -234,6 +234,7 @@ class RenderFindWordsGame {
         this.createElement('div', 'statistics__controls', '', 'statistics__modal');
         this.createElement('div', 'button statistics__repeat-button', 'Повторить раунд', 'statistics__controls');
         this.createElement('div', 'button statistics__next-button', 'Следующий раунд', 'statistics__controls');
+        if (this.userWordsOn) document.querySelector('.statistics__next-button').style.display = 'none';
         if (level === 6 && round === 60) {
             document.querySelector('.statistics__next-button').style.display = 'none';
             document.querySelector('.statistics__header').innerHTML = 'Поздравляем!<br><p>Игра завершена!<br>Статистика Раунда';
@@ -250,7 +251,7 @@ class RenderFindWordsGame {
         }
 
         StatisticsAPI.miniGameStat('findWords', `${stat.total} steps`);
-        if (!this.userWordsOn) UserSettingsMiniGame.updateUserSettingsMiniGame('findWords', level, round);       
+        if (!this.userWordsOn) UserSettingsMiniGame.updateUserSettingsMiniGame('findWords', level, round);
 
         document.querySelector('.find-words').dispatchEvent(event);
     }
