@@ -334,6 +334,7 @@ export const initMainPage = () => {
     addClickCardsHandler();
     showHeader();
     addClickLogoHandler();
+    removeActiveClassNav();
 }
 
 
