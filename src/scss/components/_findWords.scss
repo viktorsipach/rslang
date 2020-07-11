@@ -82,7 +82,7 @@ $color-exit: #ffffffc7;
 }
 .game-info {
     width: fit-content;
-    padding: 15px;
+    padding: 1,5rem;
     margin: 0 auto;
     position: relative;
     top: 30vh;
@@ -93,11 +93,11 @@ $color-exit: #ffffffc7;
     height: 25rem;
     user-select: none;
     background-color: $color-find-words-overlay;
-    border-radius: 20px;
+    border-radius: 2rem;
     text-align: center;
     color: $color-light;
     transition: 1s;
-    box-shadow: 0 0 10px 2px $color-box-shadow-common;
+    box-shadow: 0 0 1rem .2rem $color-box-shadow-common;
     &.hide-game-info {
         opacity: 0;
     }
@@ -133,7 +133,7 @@ $color-exit: #ffffffc7;
     text-align: center;
     line-height: 3rem;
     font-size: 3rem;
-    padding: 5px 10px;
+    padding: .5rem 1rem;
     @include media-tablet {
         font-size: 2.4rem;
     }
@@ -158,13 +158,13 @@ $color-exit: #ffffffc7;
     width: 90%;
     margin-bottom: 2rem;
     background-color: $color-find-words-overlay;
-    border-radius: 10px;
+    border-radius: 1rem;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     flex-wrap: wrap;
     color: $color-light;
-    box-shadow: 0 0 10px 2px $color-box-shadow-common;
+    box-shadow: 0 0 1rem .2rem $color-box-shadow-common;
 }
 .controls__level,
 .controls__page,
@@ -172,7 +172,7 @@ $color-exit: #ffffffc7;
 .controls__userWords {
     display: flex;
     align-items: center;
-    margin: 10px 10px;
+    margin: 1rem 1rem;
     &.event-none {
         pointer-events: none;
         mix-blend-mode: soft-light;
@@ -183,7 +183,7 @@ $color-exit: #ffffffc7;
 .sound__head,
 .userWords__head {
     font-size: 3rem;
-    margin-right: 10px;
+    margin-right: 1rem;
     @include media-tablet {
         font-size: 2.4rem;
     }
@@ -201,7 +201,7 @@ $color-exit: #ffffffc7;
     width: 4rem;
     height: 3rem;
     transform: scale(0.8);
-    border-radius: 5px;
+    border-radius: .5rem;
     position: relative;
     transition: 0.3s;
     background-image: url('../assets/img/icon-audio.png');
@@ -219,7 +219,7 @@ $color-exit: #ffffffc7;
     width: 4rem;
     height: 3rem;
     transform: scale(0.8);
-    border-radius: 5px;
+    border-radius: .5rem;
     position: relative;
     transition: 0.3s;
     background-image: url('../assets/img/icon-on_off.png');
@@ -240,7 +240,7 @@ $color-exit: #ffffffc7;
     margin-bottom: 2rem;
     background-color: $color-find-words-overlay;
     border-radius: 1rem;
-    box-shadow: 0 0 10px 2px $color-box-shadow-common;
+    box-shadow: 0 0 1rem .2rem $color-box-shadow-common;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -267,12 +267,12 @@ $color-exit: #ffffffc7;
     width: 90%;
     margin-bottom: 2rem;
     background-color: $color-find-words-overlay;
-    border-radius: 10px;
+    border-radius: 1rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: center;
-    box-shadow: 0 0 10px 2px $color-box-shadow-common;
+    box-shadow: 0 0 1rem .2rem $color-box-shadow-common;
     &.event-none {
         pointer-events: none;
     }
@@ -280,10 +280,10 @@ $color-exit: #ffffffc7;
 .game-field__card-eng,
 .game-field__card-ru {
     font-size: 2rem;
-    border-radius: 10px;
+    border-radius: 1rem;
     width: 20rem;
     height: 14rem;
-    margin: 10px;
+    margin: 1rem;
     transform-style: preserve-3d;
     transition: 0.5s;
     opacity: 0;
@@ -292,13 +292,13 @@ $color-exit: #ffffffc7;
         transform: rotateY(180deg);
     }
     &:hover {
-        box-shadow: 0 0 10px 2px $color-box-shadow-common;
+        box-shadow: 0 0 1rem .2rem $color-box-shadow-common;
     }
     &.correct {
-        box-shadow: 0 0 10px 2px $color-correct;
+        box-shadow: 0 0 1rem .2rem $color-correct;
     }
     &.error {
-        box-shadow: 0 0 10px 2px $color-error;
+        box-shadow: 0 0 1rem .2rem $color-error;
     }
     &.visible {
         opacity: 1;
@@ -316,7 +316,7 @@ $color-exit: #ffffffc7;
 }
 .card-eng__front,
 .card-ru__front {
-    border-radius: 10px;
+    border-radius: 1rem;
     position: absolute;
     width: inherit;
     height: inherit;
@@ -333,7 +333,7 @@ $color-exit: #ffffffc7;
 }
 .card-eng__back,
 .card-ru__back {
-    border-radius: 10px;
+    border-radius: 1rem;
     position: absolute;
     width: inherit;
     height: inherit;
