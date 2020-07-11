@@ -131,9 +131,10 @@
   }
 
   &__timer {
-    top: 3rem;
+    top: 2rem;
 
     @include media-laptop {
+      top: 3rem;
       left: 2rem;
     }
 

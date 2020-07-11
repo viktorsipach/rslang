@@ -37,6 +37,10 @@
       font-size: 2rem;
       text-transform: initial;
       color: $color-light;
+
+      @include media-tablet {
+        font-size: 1.5rem;
+      }
     }
 
     .switch {
@@ -51,13 +55,14 @@
         border-radius: 1rem;
 
         &:before {
-          width: 5rem;
-          height: 3rem;
           left: 0;
-          bottom: 0;
+          bottom: -2px;
+          height: 3.2rem;
+          width: 5rem;
           border-radius: 0.7rem;
 
           @include media-tablet {
+            bottom: 0;
             height: 2.5rem;
             font-size: 1.3rem;
           }
