@@ -91,9 +91,16 @@ class ContentBuilder {
 
     this.gameGetReadyText = 'Приготовьтесь!';
 
+    this.gameGetReadyWithWarningText = `Недостаточно изучаемых слов для игры в режиме "Мои слова". Игра в режиме уровней и раундов. </br> Приготовьтесь!`;
+
     this.getReadyMarkup = `
       <div class="curtain__timer timer"></div>
       <div class="curtain__get-ready">${this.gameGetReadyText}</div>
+    `;
+
+    this.getReadyMarkupWithWarning = `
+      <div class="curtain__timer timer"></div>
+      <div class="curtain__get-ready curtain__get-ready_warning">${this.gameGetReadyWithWarningText}</div>
     `;
 
     this.errorMessageMarkup = `
@@ -160,9 +167,9 @@ class ContentBuilder {
     return this;
   }
 
-  addGetReadyContent(parentSelector) {
+  addGetReadyContent(parentSelector, warning) {
     const parent = document.querySelector(parentSelector);
-    parent.innerHTML = this.getReadyMarkup;
+    parent.innerHTML = warning ? this.getReadyMarkupWithWarning : this.getReadyMarkup;
     return this;
   }
 

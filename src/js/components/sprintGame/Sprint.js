@@ -61,8 +61,10 @@ class Sprint {
       if (wordsApiArray[0].paginatedResults.length > this.wordsPerRound) {
         const randomIndex = Sprint.getRandomInteger(wordsApiArray[0].paginatedResults.length - 1 - this.wordsPerRound);
         wordsApiArray = wordsApiArray[0].paginatedResults.slice(randomIndex, randomIndex + this.wordsPerRound);
+        this.enoughWords = true;
       } else {
         this.isMyWords = !this.isMyWords;
+        this.enoughWords = false;
         const { level, round } = await UserSettingsMiniGame.getUserSettingsMiniGame('sprint');
         this.gameLevel = level;
         this.gameRound = round;
@@ -73,6 +75,7 @@ class Sprint {
       this.gameLevel = level;
       this.gameRound = round;
       wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
+      this.enoughWords = true;
     }
     if (wordsApiArray.error) {
       ContentBuilder.showErrorMessage('.sprint__curtain');
@@ -87,7 +90,17 @@ class Sprint {
         wordsArray.push({word, audio, wordTranslate});
       });
       this.wordsArray = wordsArray;
-      ContentBuilder.addGetReadyContent('.sprint__curtain');
+      if (this.enoughWords) {
+        ContentBuilder.addGetReadyContent('.sprint__curtain', false);
+        this.curtainTimerStartPoint = 3;
+        this.gameDelay = 3000;
+      } else {
+        ContentBuilder.addGetReadyContent('.sprint__curtain', true);
+        this.curtainTimerStartPoint = 6;
+        this.gameDelay = 6000;
+
+      }
+
       this.gameIsActive = true;
       this.startTimer('.curtain__timer', this.curtainTimerStartPoint);
       setTimeout(() => {
