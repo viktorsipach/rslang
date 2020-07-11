@@ -30,7 +30,7 @@
   &__title {
     padding: 0 1.5rem;
 
-    @include media-tablet {
+    @include media-laptop {
       padding: 0 0.8rem;
     }
   }
@@ -43,7 +43,7 @@
     border-radius: 4rem;
     flex-grow: 0;
 
-    @include media-tablet {
+    @include media-laptop {
       padding: 1rem 1.4rem;
       font-size: 1.5rem;
     }
@@ -57,7 +57,7 @@
     width: 10rem;
     cursor: pointer;
 
-    @include media-tablet {
+    @include media-laptop {
       width: 8rem;
     }
   }
