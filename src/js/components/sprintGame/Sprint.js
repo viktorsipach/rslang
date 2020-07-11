@@ -35,10 +35,16 @@ class Sprint {
   init(parentSelector = '.page') {
     const parent = document.querySelector(parentSelector);
     const closeButton = document.querySelector('.close-btn');
+    const controlPanel = document.querySelector('.sprint__panel_right');
+    const reloadButton = document.querySelector('.game-controls__reload');
+    const myWordsSwitch = document.querySelector('.sprint__panel_right .slider');
     const clearGameFeatures = () => {
       closeButton.classList.remove('exit');
       closeButton.removeEventListener('click', clearGameFeatures);
       document.removeEventListener('keydown', this.keyboardListener);
+      if (controlPanel) controlPanel.removeEventListener('click', this.soundControlButtonListener);
+      if (reloadButton) reloadButton.removeEventListener('click', this.reloadButtonListener);
+      if (myWordsSwitch) myWordsSwitch.removeEventListener('click', this.myWordsSwitchListener);;
       clearTimeout(this.currentTimer);
     };
     closeButton.classList.add('exit');
@@ -176,17 +182,15 @@ class Sprint {
       this.launchGame();
     };
 
-    controlPanel.addEventListener('click', (event) => {
+    this.soundControlButtonListener = (event) => {
       if (event.target === soundControlButtonOn || event.target === soundControlButtonOff) {
         this.soundIsEnabled = !this.soundIsEnabled;
         soundControlButtonOn.classList.toggle('sound-control__icon_active');
         soundControlButtonOff.classList.toggle('sound-control__icon_active');
       }
-    });
+    }
 
-    reloadButton.addEventListener('click', this.reloadButtonListener);
-
-    myWordsSwitch.addEventListener('click', () => {
+    this.myWordsSwitchListener = () => {
       this.isMyWords = !this.isMyWords;
       gameControls.classList.toggle('disabled');
       if (!this.isMyWords) {
@@ -196,8 +200,11 @@ class Sprint {
         levelSelector.setAttribute('disabled', 'disabled');
         roundSelector.setAttribute('disabled', 'disabled');
       }
-    });
+    }
 
+    controlPanel.addEventListener('click', this.soundControlButtonListener);
+    reloadButton.addEventListener('click', this.reloadButtonListener);
+    myWordsSwitch.addEventListener('click', this.myWordsSwitchListener);
     document.addEventListener('keydown', this.keyboardListener);
 
     this.startTimer('.sprint__timer', this.gameTimerStartPoint);
