@@ -3,7 +3,19 @@
   height: 6rem;
   font-size: 2rem;
   color: $color-light;
-  
+
+  &.disabled {
+
+    .game-controls__level,
+    .game-controls__round {
+      opacity: 0.7;
+    }
+
+    .game-controls__select {
+      cursor: auto;
+    }
+  }
+
   @include media-tablet {
     font-size: 1.5rem;
   }
@@ -17,8 +29,8 @@
 
   &__title {
     padding: 0 1.5rem;
-    
-    @include media-tablet {
+
+    @include media-laptop {
       padding: 0 0.8rem;
     }
   }
@@ -30,8 +42,8 @@
     border: 2px solid $color-light !important;
     border-radius: 4rem;
     flex-grow: 0;
-    
-    @include media-tablet {
+
+    @include media-laptop {
       padding: 1rem 1.4rem;
       font-size: 1.5rem;
     }
@@ -44,8 +56,8 @@
   &__reload {
     width: 10rem;
     cursor: pointer;
-    
-    @include media-tablet {
+
+    @include media-laptop {
       width: 8rem;
     }
   }

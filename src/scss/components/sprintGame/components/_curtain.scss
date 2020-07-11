@@ -47,6 +47,15 @@
     text-align: center;
     color: $color-word;
 
+    &_warning {
+      width: 55rem;
+
+      @include media-tablet {
+        width: 90%;
+        rfont-size: 2.5rem;
+      }
+    }
+
   }
 
   &__button {

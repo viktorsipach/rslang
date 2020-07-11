@@ -4,6 +4,7 @@ import RepeatImg from '../../../../assets/img/sprint/repeat.svg';
 import ReloadImg from '../../../../assets/img/sprint/reload.svg';
 import Background from './BackgroundHandler';
 import Accordion from '../components/Accordion';
+import renderMyWordsSwitcher from '../../gameSwitcher/renderSwitch';
 
 class ContentBuilder {
   constructor() {
@@ -44,7 +45,7 @@ class ContentBuilder {
         <span class="game-controls__title">
           Уровень:
         </span>
-        <select class="game-controls__select game-controls__select_level">
+        <select class="game-controls__select game-controls__select_level" disabled>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -57,7 +58,7 @@ class ContentBuilder {
         <span class="game-controls__title">
           Раунд:
         </span>
-        <select class="game-controls__select game-controls__select_round">
+        <select class="game-controls__select game-controls__select_round" disabled>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -90,9 +91,16 @@ class ContentBuilder {
 
     this.gameGetReadyText = 'Приготовьтесь!';
 
+    this.gameGetReadyWithWarningText = `Недостаточно изучаемых слов для игры в режиме "Мои слова". Игра в режиме уровней и раундов. </br> Приготовьтесь!`;
+
     this.getReadyMarkup = `
       <div class="curtain__timer timer"></div>
       <div class="curtain__get-ready">${this.gameGetReadyText}</div>
+    `;
+
+    this.getReadyMarkupWithWarning = `
+      <div class="curtain__timer timer"></div>
+      <div class="curtain__get-ready curtain__get-ready_warning">${this.gameGetReadyWithWarningText}</div>
     `;
 
     this.errorMessageMarkup = `
@@ -125,7 +133,11 @@ class ContentBuilder {
     this.addElementToFragment(panelLeft, this.timerMarkup, 'sprint__timer', 'timer');
     this.addElementToFragment(panelMain, this.counterMarkup, 'sprint__counter', 'counter');
     this.addElementToFragment(panelMain, this.boardMarkup, 'sprint__board', 'board');
-    this.addElementToFragment(panelRight, this.panelRightMarkup, 'game-controls', 'sprint__game-controls');
+    this.addElementToFragment(panelRight, this.panelRightMarkup, 'game-controls', 'sprint__game-controls', 'disabled');
+
+    panelRight.prepend(renderMyWordsSwitcher());
+    const myWordsSwitcher = panelRight.querySelector('.games-switcher');
+    myWordsSwitcher.classList.add('games-switcher__sprint');
 
     const soundControlElement = document.createElement('div');
     soundControlElement.classList.add('sprint__sound-control', 'sound-control');
@@ -155,18 +167,22 @@ class ContentBuilder {
     return this;
   }
 
-  addGetReadyContent(parentSelector) {
+  addGetReadyContent(parentSelector, warning) {
     const parent = document.querySelector(parentSelector);
-    parent.innerHTML = this.getReadyMarkup;
+    parent.innerHTML = warning ? this.getReadyMarkupWithWarning : this.getReadyMarkup;
     return this;
   }
 
   addElementToFragment(parent, markup, ...classes) {
     const element = document.createElement('div');
-    const [class1, class2] = classes;
+    const [class1, class2, class3] = classes;
     if (class1) {
       if (class2) {
-        element.classList.add(class1, class2);
+        if (class3) {
+          element.classList.add(class1, class2, class3);
+        } else {
+          element.classList.add(class1, class2);
+        }
       } else {
         element.classList.add(class1);
       }

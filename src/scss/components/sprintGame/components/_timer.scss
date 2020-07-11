@@ -10,7 +10,7 @@
   color: $color-light;
   font-size: 3rem;
 
-  @include media-tablet {
+  @include media-laptop {
     width: 6rem;
     height: 6rem;
     font-size: 3rem;

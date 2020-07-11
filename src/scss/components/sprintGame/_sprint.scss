@@ -11,6 +11,7 @@
 @import './components/game-controls';
 @import './components/error-popup';
 @import './components/accordion';
+@import './components/games-switcher';
 
 .sprint {
   * {
@@ -30,12 +31,12 @@
       display: flex;
       flex-wrap: wrap;
       width: 100%;
-      
+
       @include media-tablet {
         flex-direction: column-reverse;
       }
-      
-      @include media-mobile {
+
+      @include media-tablet-small {
         flex-direction: column;
       }
     }
@@ -44,25 +45,29 @@
       display: flex;
       justify-content: center;
       width: 20%;
-      
+
+      @include media-laptop {
+        justify-content: initial;
+      }
+
       @include media-tablet {
         width: 100%;
         justify-content: center;
       }
     }
-    
+
     &_right {
       position: relative;
       width: 80%;
       display: flex;
       justify-content: flex-end;
-      
+
       @include media-tablet {
         width: 100%;
         justify-content: space-between;
       }
-      
-      @include media-mobile {
+
+      @include media-tablet-small {
         top: 2rem;
         justify-content: center;
       }
@@ -76,7 +81,12 @@
       justify-content: flex-start;
       flex-direction: column;
       padding-top: 5rem;
+
+      @include media-tablet-small {
+        padding-top: 9rem;
+      }
     }
+
   }
 
   &__counter {
@@ -86,11 +96,16 @@
   &__game-controls {
     position: relative;
     top: 3rem;
-    right: 5rem;
+    right: 4rem;
+
+    @include media-laptop {
+      right: 3rem;
+    }
 
     @include media-tablet {
       top: 2rem;
       right: 0;
+      left:1rem;
     }
   }
 
@@ -99,12 +114,16 @@
     top: 2rem;
     right: 7rem;
 
+    @include media-laptop {
+      right: 6rem;
+    }
+
     @include media-tablet {
       top: 1rem;
       right: 5rem;
     }
-    
-    @include media-mobile {
+
+    @include media-tablet-small {
       position: absolute;
       left: -2rem;
       top: -7.2rem;
@@ -113,5 +132,14 @@
 
   &__timer {
     top: 2rem;
+
+    @include media-laptop {
+      top: 3rem;
+      left: 2rem;
+    }
+
+    @include media-tablet {
+      left: 0;
+    }
   }
 }
