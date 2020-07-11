@@ -30,8 +30,14 @@ class ContentBuilder {
         <div class="board__body_translated-word"></div>
       </div>
       <div class="board__control">
-      <button class="button board__button board__button_true">Верно</button>
-      <button class="button board__button board__button_false">Неверно</button>
+        <div class="board__control_left">
+          <button class="button board__button board__button_true">Верно</button>
+          <i class="fa fa-arrow-left board__button_icon"></i>
+        </div>
+        <div class="board__control_right">
+          <button class="button board__button board__button_false">Неверно</button>
+          <i class="fa fa-arrow-right board__button_icon"></i>
+        </div>
       </div>
     `;
 

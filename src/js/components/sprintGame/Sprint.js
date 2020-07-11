@@ -26,7 +26,7 @@ class Sprint {
     this.maxRewardPoints = 160;
     this.currentStack = 0;
     this.maxStack = 4;
-    this.gameDuration = 60000;
+    this.gameDuration = 600000;
     this.gameDelay = 3000;
   }
 

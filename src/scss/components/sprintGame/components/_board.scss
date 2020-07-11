@@ -73,8 +73,16 @@
   }
 
   &__control {
-    text-align: center;
+    display: flex;
+    justify-content: space-evenly;
     height: 24%;
+
+    &_left,
+    &_right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   }
 
   &__button {
@@ -95,7 +103,6 @@
     }
 
     &_false {
-      margin-left: 5rem;
       background-color: $color-wrong;
 
       &:active,
@@ -106,6 +113,15 @@
       @include media-tablet {
         margin-left: 1rem;
       }
+    }
+
+    &_icon {
+      padding: 1rem;
+      margin-top: 1.5rem;
+      font-size: 2rem;
+      font-weight: normal;
+      border: 1px solid $color-light;
+      border-radius: 1rem;
     }
   }
 }
