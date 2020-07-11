@@ -5,9 +5,10 @@
     justify-content: space-around;
     align-items: center;
     width: 50rem;
-    height: 55rem;
+    min-height: 25rem;
     box-sizing: border-box;
     padding: 10px;
+    border: 1px solid $color-primary;
     border-radius: 2rem;
     background-color: $color-light;
 
@@ -24,6 +25,7 @@
   &__header {
     width: 100%;
     height: 10%;
+    padding: 2rem 0;
   }
 
   &__main {
@@ -34,6 +36,7 @@
   &__footer {
     width: 100%;
     height: 8%;
+    padding: 3rem 0 1rem;
     text-align: center;
   }
 
@@ -78,7 +81,7 @@
   }
 
   &__list {
-    max-height: 13rem;
+    max-height: 18rem;
     padding: 1rem 0;
     overflow-y: scroll;
 

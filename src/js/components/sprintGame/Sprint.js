@@ -26,7 +26,7 @@ class Sprint {
     this.maxRewardPoints = 160;
     this.currentStack = 0;
     this.maxStack = 4;
-    this.gameDuration = 600000;
+    this.gameDuration = 60000;
     this.gameDelay = 3000;
   }
 
@@ -98,7 +98,6 @@ class Sprint {
         ContentBuilder.addGetReadyContent('.sprint__curtain', true);
         this.curtainTimerStartPoint = 6;
         this.gameDelay = 6000;
-
       }
 
       this.gameIsActive = true;
@@ -184,7 +183,7 @@ class Sprint {
     board.addEventListener('click', this.boardButtonsListener);
 
     this.currentTimer = setTimeout(() => {
-      this.endGame(this.boardButtonsListener, this.keyboardListener, this.reloadButtonListener);
+      this.endGame(this.boardButtonsListener, this.keyboardListener);
     }, this.gameDuration);
   }
 
@@ -235,15 +234,13 @@ class Sprint {
     return this;
   }
 
-  async endGame(boardButtonsListener, keyboardListener, reloadButtonListener) {
+  async endGame(boardButtonsListener, keyboardListener) {
     const score = document.querySelector('.counter__value');
     const board = document.querySelector('.sprint__board');
-    const reloadButton = document.querySelector('.game-controls__reload');
     this.gameIsActive = false;
     this.score = score.textContent;
     board.removeEventListener('click', boardButtonsListener);
     document.removeEventListener('keydown', keyboardListener);
-    reloadButton.removeEventListener('click', reloadButtonListener);
     ContentBuilder.showCurrentGameStatistics('.sprint__panel_main', this.getStatisticsElement());
     StatisticsAPI.miniGameStat('sprint', this.score);
     await UserSettingsMiniGame.updateUserSettingsMiniGame('sprint', this.gameLevel, this.gameRound);
