@@ -131,6 +131,7 @@ async function statData() {
     StatisticsAPI.initIdToken();
     const st = await StatisticsAPI.getStatistics();
     statGameChoiсe(st.optional);
+    // console.log(st.optional);
 }
 
 const initStatistics = () => {
