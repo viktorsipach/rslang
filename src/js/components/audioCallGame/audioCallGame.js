@@ -8,9 +8,9 @@ import { statisticsWords } from './statistics';
 import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
 
-
 const arrTrueAnswer = [];
 const arrFalseAnswer = [];
+const reserveArr = ['больница', 'дверь', 'команда', 'нога', 'животное', 'оплата', 'компромисс', 'невинность', 'скорость', 'бремя'];
 const progressStep = 5;
 let option = true;
 let arrAllWordsOption = [];
@@ -159,6 +159,7 @@ function keyPressCheck(event) {
   const keyPress = event.key;
   const soundImg = document.querySelector('.game__iconSound');
   const gameBtn = document.querySelector('.game .game__btn.button');
+  const game = document.querySelector('.game_audioCall');
 
   if (option) {
     soundImg.classList.remove('active');
@@ -168,7 +169,9 @@ function keyPressCheck(event) {
 
   if (keyPress === 'Enter' && gameBtn.outerText === 'ДАЛЕЕ') {
     startGame(checkCheckBox);
-  } else {
+  }
+
+  if (!game.classList.contains('active')) {
     gameNumber.forEach(number => {
       if (number.firstChild.outerText === keyPress) {
         numberWordCount += 1;
@@ -178,7 +181,7 @@ function keyPressCheck(event) {
         numberWordCount += 1;
       }
     });
-  }
+  }  
 }
 
 function pressKeyBoard() {
@@ -234,8 +237,9 @@ async function startGame(checkOptionCheckBox) {
   checkCheckBox = checkOptionCheckBox;
   let objectGameWords = [];
   let newArrObjectWords = [];
+  const numberGameUserWords = 20;
 
-  if (checkCheckBox && myDataWords.length !== 0) {
+  if (checkCheckBox && myDataWords.length > numberGameUserWords) {
     newArrObjectWords = myDataWords;
     shuffleWords(newArrObjectWords);
     objectGameWords = getWords(newArrObjectWords);
@@ -244,8 +248,6 @@ async function startGame(checkOptionCheckBox) {
     objectGameWords = getWords(newArrObjectWords);
   }
 
-  
-  
   const nameGame = 'audiocall';
 
   getUserSettings(nameGame);
@@ -294,10 +296,17 @@ async function startGame(checkOptionCheckBox) {
         arrWordsRus.push(newArrObjectWords[i].wordTranslate);
       }
     }
-  
-    shuffleWords(arrWordsRus);
-    arrWordsRus = arrWordsRus.slice(0, endIndexWords);
-  
+
+    if (arrWordsRus.length < endIndexWords) {
+      shuffleWords(reserveArr);
+      reserveArr.forEach(e => arrWordsRus.push(e));
+      arrWordsRus = arrWordsRus.slice(0, endIndexWords);
+      shuffleWords(arrWordsRus);
+    } else {
+      shuffleWords(arrWordsRus);
+      arrWordsRus = arrWordsRus.slice(0, endIndexWords);
+    }
+
     arrWordsRus.push(wordRus);
     shuffleWords(arrWordsRus);
   
@@ -316,7 +325,7 @@ async function startGame(checkOptionCheckBox) {
     if (myDataWords.length === 0) {
       const checkBoxOff = document.querySelector('.game__audioCall_option-switch');
       const title = document.querySelector('.games-switcher__title');
-      title.innerText = 'У Вас нету слов';
+      title.innerText = 'У Вас нет слов';
       checkBoxOff.removeAttribute('checked');
       checkBoxOff.setAttribute('disabled', '');
       checkCheckBox = false;
@@ -330,7 +339,6 @@ async function startGame(checkOptionCheckBox) {
     }
 
     progressBar(progressHeight, progressWidth);
-
     setLevelAndRound(levelGame, roundGame);
   
     const audioBtn = document.querySelector('.game__voice');
@@ -380,10 +388,9 @@ async function startGame(checkOptionCheckBox) {
 }
 
 async function getPartOfSpeech(objectWords) {
-
   arrAllWordsOption = objectWords;
-
   const promises = [];
+
   if (objectWords) {
     objectWords.forEach((value, index) => {
       const wordCheck = objectWords[index].word;
@@ -407,7 +414,6 @@ async function getDataAPI() {
   data = await getRoundData(level, round, wordsPerRound);
 
   let objectWords = [];
-
   objectWords = data;
 
   getPartOfSpeech(objectWords);
@@ -426,7 +432,6 @@ async function getDataSelectAPI() {
   if (levelGame || roundGame ) setTimeout(startGame, 1000);
 
   let objectWords = [];
-
   objectWords = data;
 
   getPartOfSpeech(objectWords);
@@ -473,6 +478,5 @@ export default async function initAudioCallGame() {
     startGame(checkCheckBox);
   });
 }
-  
 
 export { getDataAPI }
