@@ -14,6 +14,7 @@ class RenderFindWordsGame {
         this.soundOn = true;
         this.userWordsOn = true;
         this.one = 1;
+        this.exitClass = 'find-words__exit';
     }
 
     createElement(tag, className, textContent, target = this.target, index = 0) {
@@ -22,6 +23,10 @@ class RenderFindWordsGame {
         if (textContent) elem.textContent = textContent;
 
         document.querySelectorAll(`.${target}`)[index].append(elem);
+    }
+
+    closeButtonSetClass() {
+        document.querySelector('.close-btn').classList.add(this.exitClass);
     }
 
     renderStartPage() {
@@ -40,7 +45,6 @@ class RenderFindWordsGame {
         const event = new Event('mainPageLoad');
 
         this.createElement('div', 'game-container hide-game-container', '', 'find-words');
-        this.createElement('div', 'find-words__exit close', '', 'find-words');
         this.createElement('div', 'find-words__title', 'НАЙДИ СЛОВА', 'find-words');
         this.createElement('div', 'game-container__controls controls', '', 'game-container');
         this.createElement('div', 'game-container__progress-bar progress-bar', '', 'game-container');
@@ -161,7 +165,7 @@ class RenderFindWordsGame {
         }
 
         if (wordsCount < wordsPerRound) {
-            this.createElement('div', 'find-words__message', message, 'find-words');
+            this.createElement('div', 'game-field__message', message, 'game-field');
             gameField.classList.add('event-none');
             return
         }
