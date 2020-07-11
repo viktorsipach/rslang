@@ -58,20 +58,8 @@ class RenderFindWordsGame {
         const settings = await UserSettingsMiniGame.getUserSettingsMiniGame('findWords');
         const maxLevel = 6;
         const maxRound = 60;
-        const increment = 1;
-        const startValue = 1;
 
-        if (settings.level === maxLevel && settings.round === maxRound) {
-            settings.level = startValue;
-            settings.round = startValue;
-        } else if (settings.round === maxRound) {
-            settings.level += increment;
-            settings.round = startValue;
-        } else {
-            settings.round += increment;
-        }
-
-        
+        console.log(settings)
 
         this.createElement('div', 'controls__level level', '', 'controls');
         this.createElement('div', 'level__head', 'Уровень', 'controls__level');
@@ -217,8 +205,12 @@ class RenderFindWordsGame {
         const event = new Event('statLoad');
         const cards = document.querySelectorAll('.card-eng__front');
         const base = 10;
-        const level = parseInt(document.querySelector('.level-select').value, base);
-        const round = parseInt(document.querySelector('.page-select').value, base);
+        let level = parseInt(document.querySelector('.level-select').value, base);
+        let round = parseInt(document.querySelector('.page-select').value, base);
+        const maxLevel = 6;
+        const maxRound = 60;
+        const increment = 1;
+        const startValue = 1;
 
         this.createElement('div', 'statistics', '', 'find-words');
         this.createElement('div', 'statistics__modal', '', 'statistics');
@@ -247,6 +239,16 @@ class RenderFindWordsGame {
         if (level === 6 && round === 60) {
             document.querySelector('.statistics__next-button').style.display = 'none';
             document.querySelector('.statistics__header').innerHTML = 'Поздравляем!<br><p>Игра завершена!<br>Статистика Раунда';
+        }
+
+        if (level === maxLevel && round === maxRound) {
+            level = startValue;
+            round = startValue;
+        } else if (round === maxRound) {
+            level += increment;
+            round = startValue;
+        } else {
+            round += increment;
         }
 
         StatisticsAPI.miniGameStat('findWords', `${stat.total} steps`);
