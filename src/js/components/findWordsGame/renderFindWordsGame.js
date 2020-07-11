@@ -59,8 +59,6 @@ class RenderFindWordsGame {
         const maxLevel = 6;
         const maxRound = 60;
 
-        console.log(settings)
-
         this.createElement('div', 'controls__level level', '', 'controls');
         this.createElement('div', 'level__head', 'Уровень', 'controls__level');
         this.createElement('div', 'select level__select', '', 'controls__level');

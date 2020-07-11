@@ -7,7 +7,19 @@ class ActionFindWordsGame {
         this.click = 'click';
         this.stackCard = [];
         this.stackClassCards = [];
-        this.coupleStat = {};
+        this.coupleStat = {
+            couple0: 0,
+            couple1: 0,
+            couple2: 0,
+            couple3: 0,
+            couple4: 0,
+            couple5: 0,
+            couple6: 0,
+            couple7: 0,
+            couple8: 0,
+            couple9: 0,
+            total: 0
+        };
         this.reset = 0;
         this.soundOn = this.renderFindWordsGame.soundOn;
         this.userWordsOn = this.renderFindWordsGame.userWordsOn;
