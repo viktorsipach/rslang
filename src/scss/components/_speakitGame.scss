@@ -67,6 +67,9 @@
     @include media-laptop {
         flex-direction: column;
     }
+    @include media-tablet {
+        height: 20%;
+    }
 }
 
 .menu__speakit {
@@ -219,6 +222,7 @@
     flex-wrap: wrap;
     justify-content: center;
     transition: all 200ms ease-in-out;
+    text-align: center;
     @include media-tablet {
         width: 98%;
     }
@@ -280,7 +284,10 @@
     height: 4rem;
     @include media-laptop {
         margin-top: 3rem;
-     }
+    }
+    @include media-tablet {
+        margin-top: 0;
+    }
 }
 
 .star {

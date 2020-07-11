@@ -387,7 +387,7 @@ async function startSetting() {
 
 const changeUserDataCheckboxHandler = () => {
     const USER_DATA_CHECKBOX = document.querySelector('.data-word-checkbox__speakit');
-    USER_DATA_CHECKBOX.addEventListener('change', () => {
+    USER_DATA_CHECKBOX.addEventListener('click', () => {
         removeCards()
         removeCardsResults()
         restart()
