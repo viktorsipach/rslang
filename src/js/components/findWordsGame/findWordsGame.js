@@ -8,6 +8,7 @@ class FindWordsGame {
     }
 
     initFindWordsGame() {
+        this.renderFindWordsGame.closeButtonSetClass();
         this.renderFindWordsGame.renderStartPage();
         this.actionFindWordsGame.startGame();
         this.actionFindWordsGame.clickCard();

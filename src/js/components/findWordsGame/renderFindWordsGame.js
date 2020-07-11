@@ -14,6 +14,7 @@ class RenderFindWordsGame {
         this.soundOn = true;
         this.userWordsOn = true;
         this.one = 1;
+        this.exitClass = 'find-words__exit';
     }
 
     createElement(tag, className, textContent, target = this.target, index = 0) {
@@ -22,6 +23,10 @@ class RenderFindWordsGame {
         if (textContent) elem.textContent = textContent;
 
         document.querySelectorAll(`.${target}`)[index].append(elem);
+    }
+
+    closeButtonSetClass() {
+        document.querySelector('.close-btn').classList.add(this.exitClass);
     }
 
     renderStartPage() {
@@ -40,7 +45,6 @@ class RenderFindWordsGame {
         const event = new Event('mainPageLoad');
 
         this.createElement('div', 'game-container hide-game-container', '', 'find-words');
-        this.createElement('div', 'find-words__exit close', '', 'find-words');
         this.createElement('div', 'find-words__title', 'НАЙДИ СЛОВА', 'find-words');
         this.createElement('div', 'game-container__controls controls', '', 'game-container');
         this.createElement('div', 'game-container__progress-bar progress-bar', '', 'game-container');
@@ -58,20 +62,6 @@ class RenderFindWordsGame {
         const settings = await UserSettingsMiniGame.getUserSettingsMiniGame('findWords');
         const maxLevel = 6;
         const maxRound = 60;
-        const increment = 1;
-        const startValue = 1;
-
-        if (settings.level === maxLevel && settings.round === maxRound) {
-            settings.level = startValue;
-            settings.round = startValue;
-        } else if (settings.round === maxRound) {
-            settings.level += increment;
-            settings.round = startValue;
-        } else {
-            settings.round += increment;
-        }
-
-        
 
         this.createElement('div', 'controls__level level', '', 'controls');
         this.createElement('div', 'level__head', 'Уровень', 'controls__level');
@@ -175,7 +165,7 @@ class RenderFindWordsGame {
         }
 
         if (wordsCount < wordsPerRound) {
-            this.createElement('div', 'find-words__message', message, 'find-words');
+            this.createElement('div', 'game-field__message', message, 'game-field');
             gameField.classList.add('event-none');
             return
         }
@@ -217,8 +207,12 @@ class RenderFindWordsGame {
         const event = new Event('statLoad');
         const cards = document.querySelectorAll('.card-eng__front');
         const base = 10;
-        const level = parseInt(document.querySelector('.level-select').value, base);
-        const round = parseInt(document.querySelector('.page-select').value, base);
+        let level = parseInt(document.querySelector('.level-select').value, base);
+        let round = parseInt(document.querySelector('.page-select').value, base);
+        const maxLevel = 6;
+        const maxRound = 60;
+        const increment = 1;
+        const startValue = 1;
 
         this.createElement('div', 'statistics', '', 'find-words');
         this.createElement('div', 'statistics__modal', '', 'statistics');
@@ -244,13 +238,24 @@ class RenderFindWordsGame {
         this.createElement('div', 'statistics__controls', '', 'statistics__modal');
         this.createElement('div', 'button statistics__repeat-button', 'Повторить раунд', 'statistics__controls');
         this.createElement('div', 'button statistics__next-button', 'Следующий раунд', 'statistics__controls');
+        if (this.userWordsOn) document.querySelector('.statistics__next-button').style.display = 'none';
         if (level === 6 && round === 60) {
             document.querySelector('.statistics__next-button').style.display = 'none';
             document.querySelector('.statistics__header').innerHTML = 'Поздравляем!<br><p>Игра завершена!<br>Статистика Раунда';
         }
 
+        if (level === maxLevel && round === maxRound) {
+            level = startValue;
+            round = startValue;
+        } else if (round === maxRound) {
+            level += increment;
+            round = startValue;
+        } else {
+            round += increment;
+        }
+
         StatisticsAPI.miniGameStat('findWords', `${stat.total} steps`);
-        UserSettingsMiniGame.updateUserSettingsMiniGame('findWords', level, round);
+        if (!this.userWordsOn) UserSettingsMiniGame.updateUserSettingsMiniGame('findWords', level, round);
 
         document.querySelector('.find-words').dispatchEvent(event);
     }
