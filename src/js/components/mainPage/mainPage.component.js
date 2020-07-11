@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import initAudioCallGame from '../audioCallGame/audioCallGame';
 import initPuzzleGame from '../puzzleGame/puzzleGame';
 import FindWordsGame from '../findWordsGame/findWordsGame';
@@ -322,9 +323,17 @@ export const addClickNavHandler = () => {
     })
 }
 
+const addClickLogoHandler = () => {
+    const logo = document.querySelector('.logo');
+    logo.addEventListener('click',initMainPage)
+}
+
 export const initMainPage = () => {
     renderMainPage();
     addCardsAnimation();
     addClickCardsHandler();
     showHeader();
+    addClickLogoHandler();
 }
+
+
