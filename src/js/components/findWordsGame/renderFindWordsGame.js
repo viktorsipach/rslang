@@ -1,6 +1,7 @@
 import {getRoundData} from '../../API/dataAPI';
 import StatisticsAPI from '../../API/statisticsAPI';
 import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
+import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
 
 class RenderFindWordsGame {
     constructor() {
@@ -11,6 +12,8 @@ class RenderFindWordsGame {
         this.delayCards = 20;
         this.middle = 0.5;
         this.soundOn = true;
+        this.userWordsOn = true;
+        this.one = 1;
     }
 
     createElement(tag, className, textContent, target = this.target, index = 0) {
@@ -88,6 +91,11 @@ class RenderFindWordsGame {
         document.querySelector('.level-select').value = settings.level;
         document.querySelector('.page-select').value = settings.round;
 
+        this.createElement('div', 'controls__userWords userWords', '', 'controls');
+        this.createElement('div', 'userWords__head', 'Мои слова', 'userWords');
+        this.createElement('div', 'userWords__toggle-cont button', '', 'userWords');
+        this.createElement('div', 'userWords__toggle on', '', 'userWords__toggle-cont');
+
         this.createElement('div', 'controls__sound sound', '', 'controls');
         this.createElement('div', 'sound__head', 'Звук', 'controls__sound');
         this.createElement('div', 'sound__toggle-cont button', '', 'controls__sound');
@@ -133,10 +141,44 @@ class RenderFindWordsGame {
     }
 
     async renderMainPageWords() {
-        const level = document.querySelector('.level-select').value;
-        const round = document.querySelector('.page-select').value;
+        const level = document.querySelector('.level-select');
+        const round = document.querySelector('.page-select');
+        const levelCont = document.querySelector('.controls__level');
+        const roundCont = document.querySelector('.controls__page');
+        const toggle = document.querySelector('.userWords__toggle');
+        const gameField = document.querySelector('.game-field');
         const wordsPerRound = 10;
-        const data = await this.getWords(level, round, wordsPerRound);
+        const amountOfWords = 3600;
+        const filterForMiniGame = encodeURIComponent('{"$and":[{"$or":[{"userWord.optional.status":"repeat"},{"userWord.optional.status":"tricky"}],"userWord.optional.daysLeftToRepeat":0}]}');
+        const message = 'Ваших слов для повторения недостаточно! Чтобы сыграть в мини-игру выключите переключатель "Мои слова" и выберите уровень и раунд.';
+        let data;
+        let wordsCount;
+        this.userWordsOn = toggle.className.includes('on');
+
+        if (this.userWordsOn) {
+            const userWordsData = await getFilteredUserWords(filterForMiniGame, amountOfWords);
+            wordsCount = userWordsData[0].paginatedResults.length;
+            data = userWordsData[0].paginatedResults.sort(() => Math.random() - this.middle);
+            data.length = wordsPerRound;
+            levelCont.classList.add('event-none');
+            roundCont.classList.add('event-none');
+        } else {
+            data = await this.getWords(level.value, round.value, wordsPerRound);
+            wordsCount = data.length;
+            levelCont.classList.remove('event-none');
+            roundCont.classList.remove('event-none');
+        }
+
+        if (wordsCount >= wordsPerRound && document.querySelector('.find-words__message')) {
+            document.querySelector('.find-words__message').remove();
+            gameField.classList.remove('event-none');
+        }
+
+        if (wordsCount < wordsPerRound) {
+            this.createElement('div', 'find-words__message', message, 'find-words');
+            gameField.classList.add('event-none');
+            return
+        }
 
         this.words = [];
         data.forEach((elem) => {

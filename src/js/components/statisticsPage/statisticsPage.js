@@ -27,14 +27,22 @@ const statLayout = () => {
 }
 
 const graph = (namesGame, idx, isStatNum) => {
+    let namelabel;
     let axisX = [];
     let axisY = [];
     for (let key in namesGame[idx]) {
         if (key !== '#') {
-            axisX.push(key.substring(0, key.length - 9));
-            axisY.push(namesGame[idx][key].substring(0, namesGame[idx][key].length - 1));
+            if (idx !== 'training') {
+                axisX.push(key.substring(0, key.length - 9));
+                axisY.push(namesGame[idx][key].substring(0, namesGame[idx][key].length - 1));
+                namelabel = 'Ваш результат в %';
+
+            } else {
+                axisX.push(key.substring(0, key.length - 11));
+                axisY.push(namesGame[idx][key]);
+                namelabel = 'Количество изученных слов за день';
+            }
         }
-        
     }
     if (isStatNum) {
         const number = document.querySelector('.stat-number');
@@ -44,7 +52,7 @@ const graph = (namesGame, idx, isStatNum) => {
     let data = {
         labels: axisX,
         datasets: [{
-          label: "Ваш результат в %",
+          label: namelabel,
           backgroundColor: "rgba(84,53,142,0.2)",
           borderColor: "rgba(84,53,142,1)",
           borderWidth: 2,

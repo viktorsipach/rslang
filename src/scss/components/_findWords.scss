@@ -69,6 +69,17 @@ $color-exit: #ffffffc7;
         font-size: 2.5rem;
     }
 }
+.find-words__message {
+    position: absolute;
+    color: $color-light;
+    width: 70%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    font-size: 3rem;
+    text-align: center;
+    line-height: 5rem;
+}
 .game-info {
     width: fit-content;
     padding: 15px;
@@ -157,14 +168,20 @@ $color-exit: #ffffffc7;
 }
 .controls__level,
 .controls__page,
-.controls__sound {
+.controls__sound,
+.controls__userWords {
     display: flex;
     align-items: center;
     margin: 10px 10px;
+    &.event-none {
+        pointer-events: none;
+        mix-blend-mode: soft-light;
+    }
 }
 .level__head,
 .page__head,
-.sound__head {
+.sound__head,
+.userWords__head {
     font-size: 3rem;
     margin-right: 10px;
     @include media-tablet {
@@ -174,7 +191,8 @@ $color-exit: #ffffffc7;
         font-size: 2rem;
     }
 }
-.sound__toggle-cont {
+.sound__toggle-cont,
+.userWords__toggle-cont {
     width: 8rem;
     height: 3rem;
     background-color: $color-violet;
@@ -190,6 +208,25 @@ $color-exit: #ffffffc7;
     background-color: $color-light;
     background-position: center;
     background-size: cover;
+    left: 4rem;
+    mix-blend-mode: soft-light;
+    &.on {
+        left: 0rem;
+        mix-blend-mode: normal;
+    }
+}
+.userWords__toggle {
+    width: 4rem;
+    height: 3rem;
+    transform: scale(0.8);
+    border-radius: 5px;
+    position: relative;
+    transition: 0.3s;
+    background-image: url('../assets/img/icon-on_off.png');
+    background-color: $color-light;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
     left: 4rem;
     mix-blend-mode: soft-light;
     &.on {

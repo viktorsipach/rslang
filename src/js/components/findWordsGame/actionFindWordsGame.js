@@ -10,6 +10,7 @@ class ActionFindWordsGame {
         this.coupleStat = {};
         this.reset = 0;
         this.soundOn = this.renderFindWordsGame.soundOn;
+        this.userWordsOn = this.renderFindWordsGame.userWordsOn;
     }
 
     startGame() {
@@ -227,6 +228,29 @@ class ActionFindWordsGame {
                 if (!this.soundOn) {
                     toggle.classList.add('on');
                     this.soundOn = true;
+                }
+            })
+        })
+    }
+
+    userWordsButton() {
+        document.querySelector('.find-words').addEventListener('mainPageLoad', () => {
+            const userWordsButton = document.querySelector('.userWords__toggle-cont');
+            const toggle = document.querySelector('.userWords__toggle');
+
+            userWordsButton.addEventListener(this.click, () => {
+                if (this.userWordsOn) {
+                    this.progressReset();
+                    toggle.classList.remove('on');
+                    this.userWordsOn = false
+                    this.changeCards();
+                    return;
+                } 
+                if (!this.userWordsOn) {
+                    this.progressReset();
+                    toggle.classList.add('on');
+                    this.userWordsOn = true;
+                    this.changeCards();
                 }
             })
         })

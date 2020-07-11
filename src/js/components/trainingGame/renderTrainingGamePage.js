@@ -1,3 +1,5 @@
+import { getUserSettings } from '../../API/userSettingsAPI';
+
 function renderMenuIcon(buttonClass, buttonIconClass) {
   const buttonIcon = document.createElement('icon');
   buttonIcon.className = `icon ${buttonIconClass}`;
@@ -30,6 +32,7 @@ function renderMenuIcons() {
   menuIcons.className = 'menu__icons';
   menuIcons.append(renderMenuIcon('menu__button training-icon auto-pronunciation ', 'icon__auto-pronunciation'));
   menuIcons.append(renderMenuIcon('menu__button training-icon show-translation ', 'icon__show-translation'));
+  menuIcons.append(renderMenuIcon('menu__button training-icon show-sentences-translation', 'icon__show-sentences-translation'));
   return menuIcons;
 }
 
@@ -114,18 +117,24 @@ function renderButton(buttonClass, buttonText) {
   return button;
 }
 
-function renderDictionaryButtons() {
+function renderDictionaryButtons(settings) {
   const dictionaryButtons = document.createElement('div');
   dictionaryButtons.className = 'buttons dictionary__buttons';
-  dictionaryButtons.append(renderButton('dictionary__button delete', 'Удалить слово'));
-  dictionaryButtons.append(renderButton('dictionary__button tricky', 'Сложное слово'));
+  if (settings.optional.training.settingsPage.showDeleteButton) {
+    dictionaryButtons.append(renderButton('dictionary__button delete', 'Удалить слово'));
+  }
+  if (settings.optional.training.settingsPage.showHardButton) {
+    dictionaryButtons.append(renderButton('dictionary__button tricky', 'Сложное слово'));
+  }
   return dictionaryButtons;
 }
 
-function renderGameButtons() {
+function renderGameButtons(settings) {
   const gameButtons = document.createElement('div');
   gameButtons.className = 'buttons game__buttons training-game';
-  gameButtons.append(renderButton('trainingGame__button dontKnow', 'Не знаю'));
+  if (settings.optional.training.settingsPage.showIDontKnowButton) {
+    gameButtons.append(renderButton('trainingGame__button dontKnow', 'Не знаю'));
+  }
   gameButtons.append(renderButton('trainingGame__button next', 'Далее'));
   return gameButtons;
 }
@@ -162,13 +171,14 @@ function renderProgressBar() {
   return progressBarContainer;
 }
 
-export default function  renderTrainingGamePage() {
+export default async function renderTrainingGamePage() {
+  const settings = await getUserSettings();
   const mainPage = document.createElement('div');
   mainPage.className = 'game__training';
   mainPage.append(renderTrainingGameMenu());
   mainPage.append(renderTrainingCard());
-  mainPage.append(renderDictionaryButtons());
-  mainPage.append(renderGameButtons());
+  mainPage.append(renderDictionaryButtons(settings));
+  mainPage.append(renderGameButtons(settings));
   mainPage.append(renderDifficultyButtons());
   mainPage.append(renderProgressBar());
 

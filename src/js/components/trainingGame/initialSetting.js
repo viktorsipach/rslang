@@ -3,9 +3,9 @@ const currentDate = (new Date()).toLocaleString();
 const initialSettings = {
   training: {
     mainSettings: {
-      level: 1,
+      level: 1, 
       round: 1,
-      amountOfLearnedWordsPerDay: 0,
+      amountOfLearnedWordsPerDay: 10,
       date: currentDate,
     },
     settingsPage: {
