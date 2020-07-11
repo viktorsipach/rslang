@@ -105,6 +105,7 @@
     position: relative;
     top: 3rem;
     right: 4rem;
+    z-index: 2;
 
     @include media-laptop {
       right: 3rem;

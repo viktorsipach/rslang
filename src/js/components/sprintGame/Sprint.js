@@ -2,6 +2,7 @@ import ContentBuilder from './modules/ContentBuilder';
 import { getRoundData } from '../../API/dataAPI';
 import ErrorSound from '../../../assets/audio/error.mp3';
 import CorrectSound from '../../../assets/audio/correct.mp3';
+import GameEndSound from '../../../assets/audio/game-end.mp3';
 import StatisticsAPI from '../../API/statisticsAPI';
 import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
@@ -31,6 +32,7 @@ class Sprint {
     this.highlightDuration = 200;
     this.audioCorrect = new Audio(CorrectSound);
     this.audioWrong = new Audio(ErrorSound);
+    this.gameEnd = new Audio(GameEndSound);
     this.highlightClassCorrect = 'border__correct';
     this.highlightClassWrong = 'border__wrong';
   }
@@ -285,6 +287,7 @@ class Sprint {
   }
 
   async endGame(boardButtonsListener, keyboardListener) {
+    if (this.soundIsEnabled) this.gameEnd.play();
     const score = document.querySelector('.counter__value');
     const board = document.querySelector('.sprint__board');
     this.gameIsActive = false;
