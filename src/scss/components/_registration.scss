@@ -1,9 +1,9 @@
 .login-page {
   display: block;
-  height: 100vh;
-  background-image: url('../assets/img/bg-registration.jpg');
-	background-size: cover;
-	background-repeat: no-repeat;
+  min-height: 100vh;
+  background-image: url('/assets/img/bg-main-page.jpg');
+  background-size: cover;
+  background-position: center;
   &.hidden {
     display: none;
   }
@@ -84,6 +84,7 @@
   align-items: center;
   justify-content: space-evenly;
   margin-top: 5rem;
+  padding-bottom: 5rem;
   @include media-mobile {
     height: 12rem;
     flex-direction: column;
