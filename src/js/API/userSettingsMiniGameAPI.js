@@ -31,7 +31,7 @@ class UserSettingsMiniGame {
         };
         if (settings.id) delete settings.id;
 
-        settings.optional = {[`${nameGame}Settings`]: settingsMiniGame};
+        settings.optional[`${nameGame}Settings`] = settingsMiniGame;
         this.putSettings({settings});
         return settings;
     }
