@@ -250,7 +250,7 @@ class RenderFindWordsGame {
         }
 
         StatisticsAPI.miniGameStat('findWords', `${stat.total} steps`);
-        UserSettingsMiniGame.updateUserSettingsMiniGame('findWords', level, round);
+        if (!this.userWordsOn) UserSettingsMiniGame.updateUserSettingsMiniGame('findWords', level, round);       
 
         document.querySelector('.find-words').dispatchEvent(event);
     }
