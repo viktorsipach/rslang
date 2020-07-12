@@ -21,9 +21,11 @@
 .logo {
     display: flex;
     font-size: 2.2rem;
+    font-family: 'Bangers', cursive;
     align-items: center;
     color: white;
     font-weight: 900;
+    cursor: pointer;
   
     @include media-laptop {
        position: absolute;
@@ -33,7 +35,10 @@
     @include media-mobile {
         position: absolute;
         left: calc(100vw/2 - 15%);
-     }
+    }
+    &:hover {
+        text-shadow: 2px 2px #db5d9c;
+    }
 }
 
 .navbar {
@@ -153,9 +158,15 @@
 .btn-logout {
     margin: 1%;
     font-size: 1.8rem;
-    background-color: darken($color: $color-violet, $amount: 15);
+    display: inline-block;
+    background-color: $color-violet;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: $color-light;
+    
     &:hover { 
-        background-color: $color-violet;
+        text-shadow: 2px 2px #db5d9c;
     }
 
     @include media-mobile {
