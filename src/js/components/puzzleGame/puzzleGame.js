@@ -87,7 +87,9 @@ export default function initPuzzleGame() {
         checkLocalStorageItem('bckImage');
       }
       checkActiveHints();
-
+      if (!document.querySelector('.menu__button.auto-pronunciation').classList.contains('active')) {
+        game.audio.pause();
+      }
       if (event.target.closest('.data__sentence') && event.target.closest('.data__word')) {
         let element = event.target;
         if (element.classList.contains('left') || element.classList.contains('right') || element.classList.contains('text')) {
@@ -109,27 +111,26 @@ export default function initPuzzleGame() {
           if (game.currentSentenceNumber < game.wordsPerRound) {
             game.startSentence();
           } else {
+            game.sendLongTermStatistics();
             if (!game.isMyWords) {
-              game.sendLongTermStatistics();
               game.updateLevelRound();
               game.sendLevelRoundInfo();
             }
             game.checkGameProgress();
           }
         }
-      } else if (event.target.classList.contains('results') && event.target.classList.contains('puzzleGame__button')) {
-        if (!game.isMyWords) {
-          game.sendLongTermStatistics();
-        }
+      } else if (event.target.classList.contains('results') && event.target.classList.contains('puzzleGame__button')) {    
+        game.sendLongTermStatistics();
         game.showRoundStatistic();
-        
+        if (!game.isMyWords) {
+          game.updateLevelRound(); 
+          game.sendLevelRoundInfo();
+        } 
         document.querySelector('.puzzle__statistic').addEventListener('click', (eventStatisticPage) => {
           if (eventStatisticPage.target.classList.contains('continue')) {
             const statisticElement = document.querySelector('.puzzle__statistic');
             statisticElement.parentNode.removeChild(statisticElement);
             if (!game.isFinished) {
-              game.updateLevelRound();
-              game.sendLevelRoundInfo();
               game.checkGameProgress();
             }
           }

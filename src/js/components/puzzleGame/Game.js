@@ -327,7 +327,6 @@ export default class Game {
 
   showRoundStatistic() {
     document.querySelector('.page'). append(renderStatisticsModal());
-    this.getRoundResult();
     if (!this.isMyWords) {
       document.querySelector('.statistic-title').textContent = `Уровень ${this.level} Раунд ${this.round}`;
     }
@@ -364,6 +363,7 @@ export default class Game {
   }
 
   sendLongTermStatistics() {
+    this.getRoundResult();
     const result = `${this.iKnowSentencesCount/this.wordsPerRound*100} %`;
     StatisticsAPI.miniGameStat(this.gameName, result);
   }
