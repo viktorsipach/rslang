@@ -72,8 +72,9 @@
   font-family: 'Quicksand', sans-serif;
   font-size: 2rem;
   padding-left: 1rem;
-  border: 0;
+  border: 3px solid $color-violet;
   border-radius: 5px;
+  outline: none;
   @include media-laptop {
     font-size: 1.8rem;
   }
