@@ -19,17 +19,22 @@ const playSound = (src) => {
 }
 
 const preloader = () => {
+    let timerValue = 3;
     const timer = document.querySelector('.savanna');
     const load = document.createElement('div');
     const numberLoader = document.createElement('span');
     const main = document.querySelector('.savanna__main');
     const stat = document.querySelector('.savanna__short-statistics');
-    load.className = 'savanna__preloader';
+    const attention = document.createElement('span');
+    load.className = 'savanna__preloader-start';
+    numberLoader.classList = 'savanna__preloader';
+    attention.className = 'savanna__attention';
+    attention.textContent = 'Приготовьтесь!';
     timer.append(load);
     load.append(numberLoader);
+    load.append(attention);
     main.style.opacity = '0';
     stat.classList.remove('savanna-active');
-    let timerValue = 3;
     numberLoader.textContent = timerValue;
     const interval = setInterval(() => {
       timerValue -= 1;
@@ -37,8 +42,8 @@ const preloader = () => {
         clearInterval(interval);
         main.style.opacity = '1';
         main.classList.remove('savanna-hidden');
-        
-        load.style.border = 'none';
+        numberLoader.style.border = 'none';
+        attention.innerHTML = '';
         numberLoader.innerHTML = '';
       } else {
         numberLoader.textContent = timerValue;
@@ -118,7 +123,7 @@ const savannaBullet = () => {
 const savannaHealth = (hp) => {
     const health = ['<span><i class="fa fa-heart"></i></span>', '<span><i class="fa fa-heart"></i></span>', '<span><i class="fa fa-heart"></i></span>', '<span><i class="fa fa-heart"></i></span>', '<span><i class="fa fa-heart"></i></span>'];
     // const savannaHealths = document.createElement('div');
-    const savannaHealths = document.querySelector('.savanna__health');
+    const savannaHealths = document.querySelector('.savanna__health_active');
     savannaHealths.innerHTML = health.slice(0, hp).join('');
 }
 
