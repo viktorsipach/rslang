@@ -2,3 +2,11 @@
 @import 'team-member';
 @import 'team-promo';
 @import 'social-link';
+
+.team {
+  &__wrapper {
+    background: url('/assets/img/bg-main-page.jpg');
+    background-size: cover;
+    min-height: calc(100vh - 35rem);
+  }
+}
