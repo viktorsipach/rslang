@@ -62,22 +62,24 @@ async function setUserSettings(nameGame, level, round) {
 }
 
 const getRandomTranslateAnswer = (data, ind) => {
-  const arrTranslate = [];
-  data.forEach(el => {
-    arrTranslate.push(el.wordTranslate);
-  })
+  if (data.length >= 11) {
+    const arrTranslate = [];
+    data.forEach(el => {
+      arrTranslate.push(el.wordTranslate);
+    })
 
-  let randomAnswer = arrTranslate.sort(() => .5 - Math.random()).slice(0,4);
+    let randomAnswer = arrTranslate.sort(() => .5 - Math.random()).slice(0,4);
 
-  if (randomAnswer.indexOf(data[ind].wordTranslate) !== -1) {
+    if (randomAnswer.indexOf(data[ind].wordTranslate) !== -1) {
+      return randomAnswer;
+    } else {
+        randomAnswer.splice(0,1);
+        randomAnswer.splice(0,0,data[ind].wordTranslate);
+        randomAnswer = randomAnswer.sort(() => .5 - Math.random());
+    }
+
     return randomAnswer;
-  } else {
-      randomAnswer.splice(0,1);
-      randomAnswer.splice(0,0,data[ind].wordTranslate);
-      randomAnswer = randomAnswer.sort(() => .5 - Math.random());
-  }
-
-  return randomAnswer;
+  }  
 }
 
 const generateHeader = () => {
@@ -120,19 +122,23 @@ const generateHeader = () => {
 }
 
 const generateTemplateMain = (words, idx) => {
-  let resultTranslateAnswer = getRandomTranslateAnswer(words, idx);
-  const templateMain = new RenderSavannaMainPage(words[idx].word, words[idx].wordTranslate, resultTranslateAnswer);
-  const savannaPlay = document.querySelector('.savanna__play');
-  savannaPlay.innerHTML = '';
-  savannaPlay.append(templateMain.renderMain());
+  if (words.length >= 11) {
+    let resultTranslateAnswer = getRandomTranslateAnswer(words, idx);
+    const templateMain = new RenderSavannaMainPage(words[idx].word, words[idx].wordTranslate, resultTranslateAnswer);
+    const savannaPlay = document.querySelector('.savanna__play');
+    savannaPlay.innerHTML = '';
+    savannaPlay.append(templateMain.renderMain());
+  }
 }
 
 const generateWordsRound = (data) => {
-  let roundWords = [];
-  data.forEach(elem => {
-    roundWords.push(new RenderSavannaMainPage(elem.word, elem.wordTranslate))
-  })
-  return roundWords;
+  if (data.length >= 11) {
+    let roundWords = [];
+    data.forEach(elem => {
+      roundWords.push(new RenderSavannaMainPage(elem.word, elem.wordTranslate))
+    })
+    return roundWords;
+  }
 }
 
 const RenderSavannaShortStatistic = (words) => {
@@ -156,9 +162,12 @@ const RenderSavannaShortStatistic = (words) => {
   
   const savannaWords = document.querySelector('.savanna__words');
 
-  generateWordsRound(words).forEach(el => {
-    savannaWords.append(el.renderResults());
-  });
+  if (words.length >= 11) {
+    generateWordsRound(words).forEach(el => {
+      savannaWords.append(el.renderResults());
+    });
+  }
+  
   document.querySelector('#savanna__further').addEventListener('click', () => { 
     if (Number(round) === numberRoundEnd) {
       level += 1;
@@ -182,6 +191,11 @@ async function savannaRound(index, lev, rou, start, changeSwitch) {
   if (changeSwitch) {
     let dataAPI = await getUserDataForMiniGame(3600);
     data = dataAPI[0].paginatedResults;
+    if (dataAPI[0].paginatedResults.length < 11) {
+      const savannaPlay = document.querySelector('.savanna__play');
+      savannaPlay.innerHTML = '<span class="savanna__play_title">У вас не достаточно изученных слов для игры. Нажмите на кнопку "мои слова" и выберите уровень и раунд.</span>';
+    }
+    // console.log(dataAPI[0].paginatedResults.length);
   } else {
     if (start) {
       data = await getUserSettings(nameGame);
@@ -193,9 +207,9 @@ async function savannaRound(index, lev, rou, start, changeSwitch) {
   changeLevel = false;
   generateTemplateMain(data, index);
   savannaHealth(countHealth);
-  setTimeout(() => {
-    fallWord(data);
-  }, 2950);
+  // setTimeout(() => {
+  //   fallWord(data);
+  // }, 2950);
   
   RenderSavannaShortStatistic(data);
   savannaGameplayMouse(data);
