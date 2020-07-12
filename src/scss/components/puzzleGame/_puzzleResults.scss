@@ -11,6 +11,11 @@
   display: flex;
   flex-direction: column;
   border: 2px solid $color-primary;
+  background-image: url(/assets/img/puzzle/startPageBackground.jpg);
+  border-radius: 1rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   border-radius: 1rem;
   @include media-laptop {
     width: 67rem;
