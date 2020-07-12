@@ -15,7 +15,7 @@
     height: 3.5rem;
     margin-left: 1rem;
     &:disabled {
-      background-color: $color-violet;
+      opacity: 0.5;
       cursor: default;
     }
   } 
