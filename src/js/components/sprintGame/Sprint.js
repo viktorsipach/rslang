@@ -4,6 +4,7 @@ import ErrorSound from '../../../assets/audio/error.mp3';
 import CorrectSound from '../../../assets/audio/correct.mp3';
 import StatisticsAPI from '../../API/statisticsAPI';
 import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
+import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
 
 class Sprint {
   constructor() {
@@ -12,9 +13,11 @@ class Sprint {
     `;
     this.gameContainerSelector = '.sprint__panel';
     this.gameName = 'Спринт';
+    this.isMyWords = true;
     this.gameLevel = 1;
     this.gameRound = 1;
     this.wordsPerRound = 100;
+    this.wordsMaxAmount = 3600;
     this.filesUrlPrefix = 'https://raw.githubusercontent.com/DenisKhatsuk/rslang-data/master/';
     this.soundIsEnabled = true;
     this.curtainTimerStartPoint = 3;
@@ -51,10 +54,29 @@ class Sprint {
   }
 
   async launchGame() {
-    const { level, round } = await UserSettingsMiniGame.getUserSettingsMiniGame('sprint');
-    this.gameLevel = level;
-    this.gameRound = round;
-    const wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
+    let wordsApiArray = {};
+    if (this.isMyWords) {
+      const FILTER_FOR_MINI_GAME_WORDS = encodeURIComponent('{"$and":[{"$or":[{"userWord.optional.status":"repeat"},{"userWord.optional.status":"tricky"}],"userWord.optional.daysLeftToRepeat":0}]}');
+      wordsApiArray = await getFilteredUserWords(FILTER_FOR_MINI_GAME_WORDS, this.wordsMaxAmount);
+      if (wordsApiArray[0].paginatedResults.length > this.wordsPerRound) {
+        const randomIndex = Sprint.getRandomInteger(wordsApiArray[0].paginatedResults.length - 1 - this.wordsPerRound);
+        wordsApiArray = wordsApiArray[0].paginatedResults.slice(randomIndex, randomIndex + this.wordsPerRound);
+        this.enoughWords = true;
+      } else {
+        this.isMyWords = !this.isMyWords;
+        this.enoughWords = false;
+        const { level, round } = await UserSettingsMiniGame.getUserSettingsMiniGame('sprint');
+        this.gameLevel = level;
+        this.gameRound = round;
+        wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
+      }
+    } else {
+      const { level, round } = await UserSettingsMiniGame.getUserSettingsMiniGame('sprint');
+      this.gameLevel = level;
+      this.gameRound = round;
+      wordsApiArray = await getRoundData(this.gameLevel, this.gameRound, this.wordsPerRound);
+      this.enoughWords = true;
+    }
     if (wordsApiArray.error) {
       ContentBuilder.showErrorMessage('.sprint__curtain');
     } else {
@@ -68,11 +90,32 @@ class Sprint {
         wordsArray.push({word, audio, wordTranslate});
       });
       this.wordsArray = wordsArray;
-      ContentBuilder.addGetReadyContent('.sprint__curtain');
+      if (this.enoughWords) {
+        ContentBuilder.addGetReadyContent('.sprint__curtain', false);
+        this.curtainTimerStartPoint = 3;
+        this.gameDelay = 3000;
+      } else {
+        ContentBuilder.addGetReadyContent('.sprint__curtain', true);
+        this.curtainTimerStartPoint = 6;
+        this.gameDelay = 6000;
+
+      }
+
       this.gameIsActive = true;
       this.startTimer('.curtain__timer', this.curtainTimerStartPoint);
       setTimeout(() => {
         ContentBuilder.addMainPageContent(this.gameContainerSelector, this.gameLevel, this.gameRound);
+        const switcherCheckbox = document.querySelector('.switch > input');
+        const gameControls = document.querySelector('.sprint__game-controls');
+        const levelSelector = document.querySelector('.game-controls__select_level');
+        const roundSelector = document.querySelector('.game-controls__select_round');
+
+        if (!this.isMyWords) {
+          switcherCheckbox.removeAttribute('checked');
+          gameControls.classList.remove('disabled');
+          levelSelector.removeAttribute('disabled');
+          roundSelector.removeAttribute('disabled');
+        }
         this.startGame();
       }, this.gameDelay);
     }
@@ -87,9 +130,11 @@ class Sprint {
     const controlPanel = document.querySelector('.sprint__panel_right');
     const soundControlButtonOn = controlPanel.querySelector('.sound-control__icon_on');
     const soundControlButtonOff = controlPanel.querySelector('.sound-control__icon_off');
+    const gameControls = controlPanel.querySelector('.sprint__game-controls');
     const reloadButton = controlPanel.querySelector('.game-controls__reload');
     const levelSelector = controlPanel.querySelector('.game-controls__select_level');
     const roundSelector = controlPanel.querySelector('.game-controls__select_round');
+    const myWordsSwitch = controlPanel.querySelector('.slider');
     const wordAudio = this.setNewWord(this.wordsArray);
     this.wrongWords = [];
     this.correctWords = [];
@@ -99,20 +144,36 @@ class Sprint {
     this.keyboardListener = (event) => {
       this.startKeyboardHandler(event);
     };
-    controlPanel.addEventListener('click', async (event) => {
+    this.reloadButtonListener = async () => {
+      if (!this.isMyWords) {
+        this.gameLevel = levelSelector.value;
+        this.gameRound = roundSelector.value;
+        await UserSettingsMiniGame.updateUserSettingsMiniGame('sprint', this.gameLevel, this.gameRound);
+      }
+      clearTimeout(this.currentTimer);
+      sprintPanel.innerHTML = `<div class="sprint__curtain curtain"></div>`;
+      document.removeEventListener('keydown', this.keyboardListener);
+      controlPanel.removeEventListener('click', this.levelRoundListener);
+      this.launchGame();
+    };
+    controlPanel.addEventListener('click', (event) => {
       if (event.target === soundControlButtonOn || event.target === soundControlButtonOff) {
         this.soundIsEnabled = !this.soundIsEnabled;
         soundControlButtonOn.classList.toggle('sound-control__icon_active');
         soundControlButtonOff.classList.toggle('sound-control__icon_active');
       }
-      if (event.target === reloadButton) {
-        this.gameLevel = levelSelector.value;
-        this.gameRound = roundSelector.value;
-        await UserSettingsMiniGame.updateUserSettingsMiniGame('sprint', this.gameLevel, this.gameRound);
-        clearTimeout(this.currentTimer);
-        sprintPanel.innerHTML = `<div class="sprint__curtain curtain"></div>`;
-        document.removeEventListener('keydown', this.keyboardListener);
-        this.launchGame();
+    });
+    reloadButton.addEventListener('click', this.reloadButtonListener);
+
+    myWordsSwitch.addEventListener('click', () => {
+      this.isMyWords = !this.isMyWords;
+      gameControls.classList.toggle('disabled');
+      if (!this.isMyWords) {
+        levelSelector.removeAttribute('disabled');
+        roundSelector.removeAttribute('disabled');
+      } else {
+        levelSelector.setAttribute('disabled', 'disabled');
+        roundSelector.setAttribute('disabled', 'disabled');
       }
     });
 
@@ -123,7 +184,7 @@ class Sprint {
     board.addEventListener('click', this.boardButtonsListener);
 
     this.currentTimer = setTimeout(() => {
-      this.endGame(this.boardButtonsListener, this.keyboardListener);
+      this.endGame(this.boardButtonsListener, this.keyboardListener, this.reloadButtonListener);
     }, this.gameDuration);
   }
 
@@ -174,13 +235,15 @@ class Sprint {
     return this;
   }
 
-  async endGame(boardButtonsListener, keyboardListener) {
+  async endGame(boardButtonsListener, keyboardListener, reloadButtonListener) {
     const score = document.querySelector('.counter__value');
     const board = document.querySelector('.sprint__board');
+    const reloadButton = document.querySelector('.game-controls__reload');
     this.gameIsActive = false;
     this.score = score.textContent;
     board.removeEventListener('click', boardButtonsListener);
     document.removeEventListener('keydown', keyboardListener);
+    reloadButton.removeEventListener('click', reloadButtonListener);
     ContentBuilder.showCurrentGameStatistics('.sprint__panel_main', this.getStatisticsElement());
     StatisticsAPI.miniGameStat('sprint', this.score);
     await UserSettingsMiniGame.updateUserSettingsMiniGame('sprint', this.gameLevel, this.gameRound);
