@@ -31,10 +31,7 @@
 
 .game__puzzle-wrapper {
   position: relative;
-  background-image: url('/assets/img/puzzle/mainPageBackground.jpg');
-  background-position: center;
-  background-size: 16rem 10rem;
-  background-repeat: repeat;
+  background-image: linear-gradient(315deg,#d8dede,#e5bdf6 74%);
 }
 
 .gameContainer-wrapper__puzzle {
