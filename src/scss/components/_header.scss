@@ -226,8 +226,8 @@
 
 .menuToggle input:checked ~ span {
   opacity: 1;
-  transform: rotate(-45deg) translate(-2px, -1px);
-  background: #232323;
+  transform: rotate(-45deg) translate(-1px, -1px);
+  background: #cdcdcd;
 }
 
 .menuToggle input:checked ~ span:nth-last-child(2) {
