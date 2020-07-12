@@ -17,6 +17,7 @@ let startGame = true;
 let changeCheckBox = true;
 let userWords = true;
 const wordsPerRound = 20;
+const timeToFallWord = 2950;
 
 async function savannaRoundDataAPI(level, round) {
   // const wordsPerRound = 20;
@@ -205,7 +206,7 @@ async function savannaRound(index, lev, rou, start, changeSwitch) {
       savannaHealth(countHealth);
       setTimeout(() => {
         fallWord(data);
-      }, 2950);
+      }, timeToFallWord);
       RenderSavannaShortStatistic(data);
       savannaGameplayMouse(data);
     }
@@ -222,7 +223,7 @@ async function savannaRound(index, lev, rou, start, changeSwitch) {
     savannaHealth(countHealth);
     setTimeout(() => {
       fallWord(data);
-    }, 2950);
+    }, timeToFallWord);
     
     RenderSavannaShortStatistic(data);
     savannaGameplayMouse(data);
