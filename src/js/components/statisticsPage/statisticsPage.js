@@ -16,7 +16,7 @@ const statLayout = () => {
             <li class="stat-game" id="savanna" data-name="саванна"><i class="fa fa-tint"></i>саванна</li>
             <li class="stat-game" id="audiocall" data-name="аудиовызов"><i class="fa fa-headphones"></i>аудиовызов</li>
             <li class="stat-game" id="sprint" data-name="спринт"><i class="fa fa-flag-checkered"></i>спринт</li>
-            <li class="stat-game" id="findwords" data-name="найди слова"><i class="fa fa-search"></i>найди слова</li>
+            <li class="stat-game" id="findWords" data-name="найди слова"><i class="fa fa-search"></i>найди слова</li>
         </ul>
     </div>
     <div class="stat-append"></div>
@@ -32,15 +32,22 @@ const graph = (namesGame, idx, isStatNum) => {
     let axisY = [];
     for (let key in namesGame[idx]) {
         if (key !== '#') {
-            if (idx !== 'training') {
-                axisX.push(key.substring(0, key.length - 9));
-                axisY.push(namesGame[idx][key].substring(0, namesGame[idx][key].length - 1));
-                namelabel = 'Ваш результат в %';
-
-            } else {
+            if (idx === 'training') {
                 axisX.push(key.substring(0, key.length - 11));
                 axisY.push(namesGame[idx][key]);
                 namelabel = 'Количество изученных слов за день';
+            } else if (idx === 'findWords') {
+                axisX.push(key.substring(0, key.length - 9));
+                axisY.push(namesGame[idx][key].substring(0, namesGame[idx][key].length - 6));
+                namelabel = 'Ваш результат в шагах';
+            } else if (idx === 'sprint') {
+                axisX.push(key.substring(0, key.length - 9));
+                axisY.push(namesGame[idx][key]);
+                namelabel = 'Ваш результат в баллах';
+            } else {
+                axisX.push(key.substring(0, key.length - 9));
+                axisY.push(namesGame[idx][key].substring(0, namesGame[idx][key].length - 1));
+                namelabel = 'Ваш результат в %';
             }
         }
     }
@@ -49,6 +56,10 @@ const graph = (namesGame, idx, isStatNum) => {
         number.textContent = `${axisX.length}`;
     }
     
+    if (axisX.length === 0) {
+        namelabel = 'Вы еще не играли в эту игру';
+    }
+
     let data = {
         labels: axisX,
         datasets: [{
