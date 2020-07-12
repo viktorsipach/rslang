@@ -47,27 +47,32 @@ export default async function initTrainingGame() {
     } else if (event.target.classList.contains('tricky')) {
       trainingGame.wordStatus = 'tricky';
     }
-  })
+  });
+
+  document.querySelector('.card__input').addEventListener('input', ()=> {
+    if (trainingGame.data.length > 0) {
+      if(!document.querySelector('.game__buttons.training-game').classList.contains('hidden')) {
+        trainingGame.checkInputLength();
+        trainingGame.hideAnswer();
+      }
+    }
+  });
 
   function keyBoardHelper(event) {
     if (trainingGame.data.length > 0) {
       if(!document.querySelector('.game__buttons.training-game').classList.contains('hidden')) {
-        if (event.code === 'Enter' && document.querySelector('.game__training')) {
+        if ((event.code === 'Enter' || event.keyCode === 13) && document.querySelector('.game__training')) {
           trainingGame.checkInput(trainingGame.data);
-        }
-        else {
-          trainingGame.checkInputLength();
-          trainingGame.hideAnswer();
         }
       }
     }
   }
 
-  document.addEventListener('keypress', keyBoardHelper); 
+  document.addEventListener('keydown', keyBoardHelper); 
 
   const CLOSE_BUTTON = document.querySelector('.close-btn');
   CLOSE_BUTTON.addEventListener('click', () => {
-    document.removeEventListener('keypress', keyBoardHelper);
+    document.removeEventListener('keydown', keyBoardHelper);
   });
 
   document.querySelector('.card__input').addEventListener('click', () => {
