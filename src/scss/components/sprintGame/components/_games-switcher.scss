@@ -1,12 +1,13 @@
 .games-switcher {
   &__sprint {
     position: relative;
-    top: 2rem;
+    top: 3rem;
     right: 5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 20rem;
+    height: 6rem;
 
     @include media-laptop {
       width: 19rem;
