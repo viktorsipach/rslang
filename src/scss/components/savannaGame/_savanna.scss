@@ -19,10 +19,23 @@
     &__header {
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
+        @include media-tablet {
+            margin-bottom: 4rem;
+        }
+        @include media-mobile {
+            justify-content: center;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
     }
     &__hints {
         display: flex;
         font-size: 1.5rem;
+        @include media-tablet {
+            width: 31rem;
+            justify-content: space-between;
+        }
     }
     &-switcher {
         position: absolute;
@@ -30,6 +43,14 @@
         left: 0;
         display: flex;
         align-items: center;
+        @include media-tablet {
+            top: 6rem;
+            width: 31rem;
+        }
+        @include media-mobile {
+            left: 50%;
+            transform: translateX(-50%);
+        }
         &__title {
             padding: 0 1rem;
             margin-bottom: 0 !important;
@@ -81,6 +102,9 @@
         transform: translate(-50%, -50%);
         text-align: center;
         font-size: 2rem;
+        @include media-mobile {
+            width: 25rem;
+        }
     }
     &__hidden-word {
         position: absolute;
@@ -95,21 +119,42 @@
     &__health {
         padding-top: 1rem;
         padding-right: 3rem;
+        @include media-mobile {
+            width: 30rem;
+            margin-top: 5rem;
+            padding-top: 0;
+            padding-right: 0;
+            text-align: center;
+        }
         &_disabled, &_active {
             display: inline-block;
             text-align: right;
             width: 150px;
+            @include media-mobile {
+                text-align: center;
+            }
             span {
                 width: 25px;
                 height: 25px;
                 margin-left: 20px;
             }
+            span:first-child {
+                margin-left: 0;
+            }
         }
         &_disabled {
             position: absolute;
             right: 3rem;
+            @include media-mobile {
+                position: relative;
+                right: 0;
+                top: -1rem;
+            }
             span {
                 margin-left: 17.5px;
+            }
+            span:first-child {
+                margin-left: 0;
             }
         }
     } 
@@ -117,8 +162,11 @@
         display: flex;
         justify-content: space-between;
         width: 500px;
+        @include media-tablet {
+            margin-top: 10rem;
+        }
         @include media-mobile {
-            width: 300px;
+            width: 30rem;
         }
         span {
             display: flex;
@@ -132,7 +180,7 @@
             cursor: pointer;
             box-sizing: border-box;
             @include media-mobile {
-                padding: 10px;
+                padding: .5rem;
                 font-size: 1rem;
             }
         }
@@ -178,7 +226,9 @@
     &-button__icon {
         width: 3rem;
         height: 3rem;
-        margin-right: 5px;
+        @include media-tablet {
+            margin-top: 1.5rem;
+        }
     }
     &__preloader-start {
         position: absolute;

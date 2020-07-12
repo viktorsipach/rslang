@@ -9,10 +9,13 @@ class RenderSavannaMainPage  {
     renderHeader() {
         const savannaMain = document.createElement('div');
         savannaMain.className = 'savanna__main';
-
+        /* <i class="fa fa-bell-slash-o"></i> */
         savannaMain.innerHTML = `
         <div class="savanna__header">
             <div class="savanna__hints">
+                <button class="button savanna-button__icon">
+                    <i class="fa fa-bell-o"></i>
+                </button>
                 <div class="menu__level">
                     <span class="level__title">уровень</span>
                     <div class="select select__level">
