@@ -1,8 +1,10 @@
 import { getRoundData } from '../../API/dataAPI';
 import Image from '../../../assets/img/savanna/savanna-main1.jpg';
 import RenderSavannaMainPage from './renderSavannaMainPage';
+import renderSwitch from '../gameSwitcher/renderSwitch';
 import { startColorGreen, startColorBlue, startColorRed, countHealth, fallWord, savannaHealth, newStart, savannaGameplayMouse, savannaGameplayKeyboard, preloader } from './savannaGameplay';
 import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
+import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
 
 const maxlevels = 6;
 const maxRoundsPerLevel = 30;
@@ -11,6 +13,7 @@ let level = 1;
 let round = 1;
 const nameGame = 'savanna';
 let startGame = true;
+let changeCheckBox = true;
 
 async function savannaRoundDataAPI(level, round) {
   const wordsPerRound = 20;
@@ -18,11 +21,30 @@ async function savannaRoundDataAPI(level, round) {
   return data; 
 }
 
+async function getUserDataForMiniGame(amountOfWords) {
+  const FILTER_FOR_MINI_GAME_WORDS = encodeURIComponent('{"$and":[{"$or":[{"userWord.optional.status":"repeat"},{"userWord.optional.status":"tricky"}],"userWord.optional.daysLeftToRepeat":0}]}');
+  const miniGameData = await getFilteredUserWords(FILTER_FOR_MINI_GAME_WORDS, amountOfWords);
+  return miniGameData;
+}
+
 const setLevelAndRound = (level, round) => {
   const selectLevel = document.querySelector('#selectLevel');
   const selectRound = document.querySelector('#selectRound');
   selectLevel.value = level;
   selectRound.value = round;
+}
+
+const disabledLevelAndRound = (change) => {
+  const selectLevel = document.querySelector('#selectLevel');
+  const selectRound = document.querySelector('#selectRound');
+  if (change) {
+    selectLevel.setAttribute('disabled', '');
+    selectRound.setAttribute('disabled', '');
+  } else {
+    selectLevel.removeAttribute('disabled');
+    selectRound.removeAttribute('disabled');
+  }
+  
 }
 
 async function getUserSettings(nameGame) {
@@ -67,6 +89,7 @@ const generateHeader = () => {
   const selectLevels = document.querySelector('#selectLevel');
   const selectRounds = document.querySelector('#selectRound');
   const frLevel = document.createDocumentFragment();
+  const savannaCheck = document.querySelector('.savanna__hints');
   for (let i = 1; i <= maxlevels; i += 1) {
     const optLev = document.createElement('option');
     optLev.value = i;
@@ -85,7 +108,15 @@ const generateHeader = () => {
   }
   selectRounds.innerHTML = '';
   selectRounds.append(frRound);
+  savannaCheck.after(renderSwitch());
+  document.querySelector('.games-switcher').classList.add('savanna-switcher');
+  document.querySelector('.games-switcher__title').classList.add('savanna-switcher__title');
+  document.querySelector('.games-switcher__title').textContent = 'выберите играть в мои слова';
+  document.querySelector('.switch').classList.add('savanna-switch');
+  document.querySelector('.slider').classList.add('savanna-slider');
   startGame = true;
+  changeCheckBox = true;
+  disabledLevelAndRound(changeCheckBox);
 }
 
 const generateTemplateMain = (words, idx) => {
@@ -141,18 +172,23 @@ const RenderSavannaShortStatistic = (words) => {
     changeLevel = true;
     newStart();
     preloader();
-    savannaRound(0, level, round, startGame);
+    savannaRound(0, level, round, startGame, changeCheckBox);
     savanna.style.cssText = `background: linear-gradient(180deg, rgba(${startColorRed}, ${startColorGreen}, ${startColorBlue}, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url(${Image}) center no-repeat; background-size: cover;`;
   }); 
 }
 
-async function savannaRound(index, lev, rou, start) {
+async function savannaRound(index, lev, rou, start, changeSwitch) {
   let data = [];
-  if (start) {
-    data = await getUserSettings(nameGame);
-    startGame = false;
+  if (changeSwitch) {
+    let dataAPI = await getUserDataForMiniGame(3600);
+    data = dataAPI[0].paginatedResults;
   } else {
-    data = await savannaRoundDataAPI(lev, rou);
+    if (start) {
+      data = await getUserSettings(nameGame);
+      startGame = false;
+    } else {
+      data = await savannaRoundDataAPI(lev, rou);
+    }
   }
   changeLevel = false;
   generateTemplateMain(data, index);
@@ -168,6 +204,26 @@ async function savannaRound(index, lev, rou, start) {
   //   savannaGameplayKeyboard(data);
   // }
   // document.addEventListener('keyup', foo);
+}
+
+const changeUserWords = () => {
+  const switchCheck = document.querySelector('.savanna-switch input');
+  switchCheck.addEventListener('click', () => {
+    if (!switchCheck.checked) {
+      changeCheckBox = false;
+      newStart();
+      preloader();
+      savannaRound(0, level, round, startGame, changeCheckBox);
+      disabledLevelAndRound(changeCheckBox);
+    } else {
+      changeCheckBox = true;
+      newStart();
+      preloader();
+      savannaRound(0, level, round, startGame, changeCheckBox);
+      disabledLevelAndRound(changeCheckBox);
+    }
+    
+  })
 }
 
 const changeLevelAndRound = () => {
@@ -188,8 +244,8 @@ const changeLevelAndRound = () => {
     changeLevel = true;
     newStart();
     preloader();
-    savannaRound(0, level, round, startGame);
+    savannaRound(0, level, round, startGame, changeCheckBox);
   });
 }
 
-export { startGame, nameGame, level, round, changeLevel, getUserSettings, generateHeader, generateTemplateMain, savannaRound, changeLevelAndRound, RenderSavannaShortStatistic };
+export { changeCheckBox, startGame, nameGame, level, round, changeLevel, getUserSettings, generateHeader, generateTemplateMain, savannaRound, changeLevelAndRound, RenderSavannaShortStatistic, changeUserWords };

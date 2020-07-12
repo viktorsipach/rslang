@@ -30,13 +30,15 @@ class RenderSavannaMainPage  {
                     </div>
                  </div>
             </div>
-            <div class="savanna__health"></div>
-            <div class="savanna__health_disabled">
-                <span><i class="fa fa-heart-o"></i></span>
-                <span><i class="fa fa-heart-o"></i></span>
-                <span><i class="fa fa-heart-o"></i></span>
-                <span><i class="fa fa-heart-o"></i></span>
-                <span><i class="fa fa-heart-o"></i></span>
+            <div class="savanna__health"> 
+                <div class="savanna__health_active"></div>
+                <div class="savanna__health_disabled">
+                    <span><i class="fa fa-heart-o"></i></span>
+                    <span><i class="fa fa-heart-o"></i></span>
+                    <span><i class="fa fa-heart-o"></i></span>
+                    <span><i class="fa fa-heart-o"></i></span>
+                    <span><i class="fa fa-heart-o"></i></span>
+                </div>
             </div>
         </div>
         <div class="savanna__play"></div>
