@@ -60,6 +60,8 @@
     padding: 0 2rem;
     line-height: 2.5rem;
     box-shadow: 0 0.2rem 0.5rem 0 rgba(0,0,0,.4);
+    color: $color-light;
+    background: #7752be7a;
     @include media-tablet {
         width: 100%;
         padding: 0;
