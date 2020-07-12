@@ -237,7 +237,7 @@ async function startGame(checkOptionCheckBox) {
   checkCheckBox = checkOptionCheckBox;
   let objectGameWords = [];
   let newArrObjectWords = [];
-  const numberGameUserWords = 20;
+  const numberGameUserWords = 19;
 
   if (checkCheckBox && myDataWords.length > numberGameUserWords) {
     newArrObjectWords = myDataWords;
@@ -322,7 +322,7 @@ async function startGame(checkOptionCheckBox) {
       switchOption = true;
     }
 
-    if (myDataWords.length === 0) {
+    if (myDataWords.length < numberGameUserWords) {
       const checkBoxOff = document.querySelector('.game__audioCall_option-switch');
       const title = document.querySelector('.games-switcher__title');
       title.innerText = 'У Вас нет слов';
