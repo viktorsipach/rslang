@@ -1,11 +1,16 @@
 export default function renderPage() {
     const page = document.querySelector('.page');
     const promo = document.createElement('div');
+    const linkVideo = 'https://www.youtube.com/embed/g9iAUYv-m1E';
     promo.classList = 'promo';
 
     promo.innerHTML = `
+        <div class="promo-page">
+          <div class="promo__title">
+            Попробуй методику интервального повторения с нашим приложением!
+          </div>
+        </div>
         <div class="promo__information">
-            <div class="promo__title">Попробуй методику интервального повторения с нашим приложением!</div>
             <div class="promo__description">
                 <p>Для заучивания слов все новые слова, которые учит пользователь сохраняются как userWords.</p>
                 <pre>
@@ -80,18 +85,12 @@ export default function renderPage() {
                     Cтатус слова для повторения может быть repeat или hard, daysLeftToRepeat 0.
                 </p>
             </div>
-        </div>
-        <div class="promo__media">
-            <div class="promo__video">тут видос, видосики</div>
+            <div class="promo__media">
+                <div class="promo__video">
+                <iframe src="${linkVideo}"</iframe>
+                </div>
+            </div>
         </div>`
     
     page.append(promo);
-
-    // const description = document.createElement('p');
-    // description.textContent = 'Для заучивания слов все новые слова, которые учит пользователь сохраняются как userWords.';
-
-    // const 
-
-    // const promoDescription = document.querySelector('.promo__description');
-    // promoDescription.append(description);
 }

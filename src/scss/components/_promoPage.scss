@@ -1,96 +1,72 @@
 .promo {
-    display: flex;
     position: relative;
     width: 100%;
     min-height: 100vh;
     background-image: url(/assets/img/bg-main-page.jpg);
     background-size: cover;
     background-position: 50%;
-    @include media-laptop {
-        flex-direction: column;
-    }
 }
 .promo__title {
-    font-size: 4rem;
-    font-weight: 700;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.17;
-    letter-spacing: 0.1rem;
-    text-align: center;
-    padding: 2rem;
-    color: $color-light;
-    background-size: cover;
-    background: url("../assets/img/bg-main-card.jpg"),
-    $color-light;
-    background-size: cover;
-    position: relative;
-    z-index: 1;
+    font-size: 5rem;
+    color: #fff;
+    padding: 0 3rem;
     @include media-tablet {
+        padding: 0 1rem;
         font-size: 3rem;
     }
-    @include media-mobile {
-        font-size: 2rem;
-    }
 }
-.promo__title::before {
-    position: absolute;
-    content: "";
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    background: #000;
-    opacity: 0.3;
-    z-index: -1;
-
+.promo-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30rem;
+    background: linear-gradient($color-transparent-shadow, $color-transparent-shadow), url('../assets/img/promo/promo-2.jpg');
+    padding-top: 5rem;
+    text-align: center;
+    background-size: cover;
 }
 .promo__information {
-    width: 40%;
-    margin: 15rem 0 0 1rem;
-    padding: 1rem 0 0 5rem;
-    @include media-laptop {
-        width: 80%;
-        padding: 0;
-        margin: 10rem auto 5rem;
-    }
-    @include media-mobile {
-        width: 90%;
-        margin: 7rem auto 3rem;
+    display: flex;
+    padding: 2rem;
+    justify-content: space-between;
+    @include media-tablet {
+        flex-direction: column-reverse;
     }
 }
 .promo__media {
-    width: 60%;
-    display: flex;
-    justify-content: center;
+    width: 47%;
     font-size: 5rem;
-    margin: 16rem 0 0 0;
-    @include media-laptop {
-        width: 80%;
-        margin: 0 auto;
-    }
-    @include media-mobile {
-        width: 90%;
+    max-height: 30vw;
+    @include media-tablet {
+        width: 100%;
+        height: 50vw;
+        margin-bottom: 2rem;
+        max-height: fit-content;
     }
 }
 .promo__video {
     box-shadow: 0 0.2rem 0.5rem 0 rgba(0,0,0,.4);
-    width: 90%;
-    height: 64.5rem;
-    @include media-laptop {
-        width: 100%;
-        height: auto;
-    }
+    height: 100%;
+}
+.promo__video iframe {
+    width: 100%;
+    height: 100%;
 }
 .promo__description {
+    width: 47%;
     font-size: 2rem;
-    margin-top: 2rem;
-    max-height: 40rem;
+    max-height: 30vw;
     overflow: auto;
-    box-shadow: 0 0.2rem 0.5rem 0 rgba(0,0,0,.4);
     padding: 0 2rem;
-    position: relative;
     line-height: 2.5rem;
+    box-shadow: 0 0.2rem 0.5rem 0 rgba(0,0,0,.4);
+    color: $color-light;
+    background: #7752be7a;
+    @include media-tablet {
+        width: 100%;
+        padding: 0;
+        max-height: 50vw;
+    }
     @include media-mobile {
         font-size: 1.5rem;
         line-height: initial;
@@ -98,6 +74,15 @@
 }
 .promo__description p {
     margin: 1rem 0rem;
+    padding: 0 2rem;
+    @include media-tablet {
+        padding: 0 1rem;
+    }
+}
+.promo__description pre {
+    @include media-tablet {
+        padding: 0 1rem;
+    }
 }
 .promo__description::-webkit-scrollbar { 
     width: 0.3rem; 

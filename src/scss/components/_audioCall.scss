@@ -24,6 +24,7 @@
 .container.container_audioCall {
     max-width: 110rem;
     margin: 0 auto;
+    padding-bottom: 1rem;
     @include media-laptop {
       max-width: 76rem;
     }
@@ -154,7 +155,7 @@
       min-height: 8rem;
     }
     @include media-mobile {
-      min-height: 6rem;
+      min-height: 10rem;
     }
 }
 .game__word {
@@ -239,7 +240,7 @@
     
     @include media-tablet {
       margin-bottom: 0;
-      padding: 0 1.5rem;
+      padding: 1rem 1.5rem;
       font-size: 2rem;
     }
 }
