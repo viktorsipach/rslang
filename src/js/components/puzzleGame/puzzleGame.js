@@ -87,7 +87,9 @@ export default function initPuzzleGame() {
         checkLocalStorageItem('bckImage');
       }
       checkActiveHints();
-
+      if (!document.querySelector('.menu__button.auto-pronunciation').classList.contains('active')) {
+        game.audio.pause();
+      }
       if (event.target.closest('.data__sentence') && event.target.closest('.data__word')) {
         let element = event.target;
         if (element.classList.contains('left') || element.classList.contains('right') || element.classList.contains('text')) {
