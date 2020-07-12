@@ -24,6 +24,23 @@
         display: flex;
         font-size: 1.5rem;
     }
+    &-switcher {
+        position: absolute;
+        top: 4rem;
+        left: 0;
+        display: flex;
+        align-items: center;
+        &__title {
+            padding: 0 1rem;
+            margin-bottom: 0 !important;
+            margin-right: 1rem;
+            font-size: 1.2rem !important;
+            color: $color-light !important;
+        }
+    }
+    &-slider, &-slider:before {
+        border-radius: 0.5rem;
+    }
     &__content, &__gameplay {
         position: absolute;
         top: 50%;
@@ -67,23 +84,27 @@
             font-size: 1.5rem;
         }
     }
-    &__health, &__health_disabled {
-        display: inline-block;
-        text-align: right;
-        width: 150px;
-        span {
-            width: 25px;
-            height: 25px;
-            margin-left: 20px;
+    &__health {
+        padding-top: 1rem;
+        padding-right: 3rem;
+        &_disabled, &_active {
+            display: inline-block;
+            text-align: right;
+            width: 150px;
+            span {
+                width: 25px;
+                height: 25px;
+                margin-left: 20px;
+            }
         }
-    }
-    &__health_disabled {
-        position: absolute;
-        right: 0;
-        span {
-            margin-left: 17px;
+        &_disabled {
+            position: absolute;
+            right: 3rem;
+            span {
+                margin-left: 17.5px;
+            }
         }
-    }
+    } 
     &__choise {
         display: flex;
         justify-content: space-between;
@@ -151,19 +172,28 @@
         height: 3rem;
         margin-right: 5px;
     }
-    &__preloader {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    &__preloader-start {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+    }
+    &__preloader {
+        position: absolute;
+        left: 50%;
+        top: -100px;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 7rem;
         height: 7rem;
         border: 3px solid $color-word;
         border-radius: 50%;
         font-size: 5rem;
+    }
+    &__attention {
+        font-size: 3rem;
     }
  }
 
