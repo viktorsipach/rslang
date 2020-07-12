@@ -4,13 +4,6 @@ const renderSavannaStartPage = () => {
 
     savannaStart.innerHTML = `
     <div class="savanna__start">
-        <div class="savanna__header">
-            <div class="savanna__hints">
-                <button class="button savanna-button__icon">
-                    <i class="fa fa-bell-slash-o"></i>
-                </button>
-            </div>
-        </div>
         <div class="savanna__content">
             <h2 class="savanna__name">саванна</h2>
             <p class="savanna__description">Тренировка Саванна развивает словарный запас.</p>

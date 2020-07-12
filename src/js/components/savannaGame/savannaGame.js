@@ -7,7 +7,7 @@ const initSavannaGame = () => {
     const page = document.querySelector('.page');
     const savanna = document.createElement('div');
     const savannaShortStatistics = document.createElement('div');
-    const template = renderSavannaStartPage();
+    const template = renderSavannaStartPage(); 
 
     savanna.className = 'savanna'; 
     savannaShortStatistics.className = 'savanna__short-statistics';

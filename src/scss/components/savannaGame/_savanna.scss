@@ -4,13 +4,13 @@
 .savanna {
     position: relative;
     height: 100vh;
-    padding: 30px 50px;
+    padding: 3rem 5rem;
     background: linear-gradient(180deg, rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url('../assets/img/savanna-start.jpg') center no-repeat;
     background-size: cover;
     box-sizing: border-box;
     color: $color-light;
     @include media-mobile {
-        padding: 20px 20px;
+        padding: 2rem 2rem;
     }
     &__start, &__main {
         position: relative;
@@ -19,10 +19,23 @@
     &__header {
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
+        @include media-tablet {
+            margin-bottom: 4rem;
+        }
+        @include media-mobile {
+            justify-content: center;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
     }
     &__hints {
         display: flex;
         font-size: 1.5rem;
+        @include media-tablet {
+            width: 31rem;
+            justify-content: space-between;
+        }
     }
     &-switcher {
         position: absolute;
@@ -30,6 +43,14 @@
         left: 0;
         display: flex;
         align-items: center;
+        @include media-tablet {
+            top: 6rem;
+            width: 31rem;
+        }
+        @include media-mobile {
+            left: 50%;
+            transform: translateX(-50%);
+        }
         &__title {
             padding: 0 1rem;
             margin-bottom: 0 !important;
@@ -57,21 +78,32 @@
         }
     }
     &__description {
-        margin: 20px 0;
+        margin: 2rem 0;
         text-align: center;
         font-size: 2.5rem;
     }
     &__rules {
         font-size: 1.5rem;
         li:first-child {
-            margin-bottom: 5px;
+            margin-bottom: 0.5rem;
         }
     }
     &__level {
         text-transform: uppercase;
         p {
             display: inline-block;
-            padding-right: 15px;
+            padding-right: 1.5rem;
+        }
+    }
+    &__play_title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        font-size: 2rem;
+        @include media-mobile {
+            width: 25rem;
         }
     }
     &__hidden-word {
@@ -87,44 +119,68 @@
     &__health {
         padding-top: 1rem;
         padding-right: 3rem;
+        @include media-mobile {
+            width: 30rem;
+            margin-top: 5rem;
+            padding-top: 0;
+            padding-right: 0;
+            text-align: center;
+        }
         &_disabled, &_active {
             display: inline-block;
             text-align: right;
-            width: 150px;
+            width: 15rem;
+            @include media-mobile {
+                text-align: center;
+            }
             span {
-                width: 25px;
-                height: 25px;
-                margin-left: 20px;
+                width: 2.5rem;
+                height: 2.5rem;
+                margin-left: 2rem;
+            }
+            span:first-child {
+                margin-left: 0;
             }
         }
         &_disabled {
             position: absolute;
             right: 3rem;
+            @include media-mobile {
+                position: relative;
+                right: 0;
+                top: -1rem;
+            }
             span {
                 margin-left: 17.5px;
+            }
+            span:first-child {
+                margin-left: 0;
             }
         }
     } 
     &__choise {
         display: flex;
         justify-content: space-between;
-        width: 500px;
+        width: 50rem;
+        @include media-tablet {
+            margin-top: 10rem;
+        }
         @include media-mobile {
-            width: 300px;
+            width: 30rem;
         }
         span {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 15px;
+            padding: 1.5rem;
             border: 1px solid $color-primary;
-            border-radius: 5px;
+            border-radius: 0.5rem;
             font-size: 1.5rem;
             text-transform: uppercase;
             cursor: pointer;
             box-sizing: border-box;
             @include media-mobile {
-                padding: 10px;
+                padding: 0.5rem;
                 font-size: 1rem;
             }
         }
@@ -143,20 +199,20 @@
     }
     &__bullet {
         position: absolute;
-        bottom: 30px;
+        bottom: 3rem;
         left: 50%;
         transform: translateX(-50%);
-        width: 5px;
-        height: 20px;
-        box-shadow: 0px 0px 100px 40px #dae1ef;
+        width: 0.5rem;
+        height: 2rem;
+        box-shadow: 0px 0px 10rem 4rem #dae1ef;
     }
     &__footer {
         position: absolute;
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);
-        max-width: 100px;
-        border-radius: 10px;
+        max-width: 10rem;
+        border-radius: 1rem;
         transition: .1s;
         img {
             width: 100%;
@@ -164,13 +220,15 @@
             
         }
         &_active {
-            box-shadow: 0px 0px 120px 100px #dae1ef, 0 0 50px 30px #dae1ef inset;
+            box-shadow: 0px 0px 12rem 10rem #dae1ef, 0 0 5rem 3rem #dae1ef inset;
         }
     }
     &-button__icon {
         width: 3rem;
         height: 3rem;
-        margin-right: 5px;
+        @include media-tablet {
+            margin-top: 1.5rem;
+        }
     }
     &__preloader-start {
         position: absolute;
@@ -181,7 +239,7 @@
     &__preloader {
         position: absolute;
         left: 50%;
-        top: -100px;
+        top: -10rem;
         transform: translateX(-50%);
         display: flex;
         justify-content: center;
@@ -199,9 +257,9 @@
 
  .button__savanna {
     position: absolute;
-    width: 200px;
-    height: 60px;
-    margin-top: 20px;
+    width: 20rem;
+    height: 6rem;
+    margin-top: 2rem;
     left: 50%;
     transform: translateX(-50%);
     font-size: 2.5rem;
@@ -209,5 +267,5 @@
  }
 
  .select__level {
-     margin-right: 5px;
+     margin-right: 0.5rem;
  }
