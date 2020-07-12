@@ -3,8 +3,9 @@
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 0 auto;
-  padding: 6rem 1.5rem;
+  padding: 6rem 1.5rem 2rem;
   width:1170px;
+  height: 100%;
   box-sizing: border-box;
 
   @include media-laptop {

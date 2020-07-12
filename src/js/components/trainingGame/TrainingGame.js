@@ -423,11 +423,15 @@ class TrainingGame {
 
   checkInputLength() {
     const INPUT = document.querySelector('.card__input');
-    const amountOfPrintedLetters = 1;
-    this.lettersCount = this.data[this.currentCardNumber].word.length
-    if (this.lettersCount === INPUT.value.split('').length + amountOfPrintedLetters) {
+    this.lettersCount = this.data[this.currentCardNumber].word.length;
+    if (INPUT.value.length >= this.lettersCount) {
       const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
       enableButton(NEXTBUTTON_SELECTOR);
+      INPUT.value = INPUT.value.substring(0, this.lettersCount);
+    }
+    else {
+      const NEXTBUTTON_SELECTOR = '.trainingGame__button.next';
+      disableButton(NEXTBUTTON_SELECTOR);
     }
   }
   

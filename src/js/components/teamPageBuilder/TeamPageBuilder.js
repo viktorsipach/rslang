@@ -31,14 +31,17 @@ class TeamPageBuilder {
     `;
     teamPage.append(teamPromoElement);
 
-    const teamMembersElement = document.createElement('section');
+    const teamMembersWrapper = document.createElement('section');
+    teamMembersWrapper.classList.add('team__wrapper');
+    const teamMembersElement = document.createElement('div');
     teamMembersElement.classList.add('team-members');
     const teamMembersFragment = document.createDocumentFragment();
     teamMembers.forEach((member) => {
       teamMembersFragment.append(this.addTeamMember(member));
     });
     teamMembersElement.append(teamMembersFragment);
-    teamPage.append(teamMembersElement);
+    teamMembersWrapper.append(teamMembersElement);
+    teamPage.append(teamMembersWrapper);
 
     parent.append(teamPage);
   }

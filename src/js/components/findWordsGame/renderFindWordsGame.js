@@ -159,8 +159,7 @@ class RenderFindWordsGame {
             roundCont.classList.remove('event-none');
         }
 
-        if (wordsCount >= wordsPerRound && document.querySelector('.find-words__message')) {
-            document.querySelector('.find-words__message').remove();
+        if (wordsCount >= wordsPerRound ) {
             gameField.classList.remove('event-none');
         }
 
