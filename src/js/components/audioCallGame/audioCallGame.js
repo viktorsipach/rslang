@@ -41,7 +41,7 @@ function clearAnswers() {
 
 function optionAnswer(event, wordRus, wordEn, optionSound) {
   const gameBtn = document.querySelector('.game .game__btn.button');
-  const getWordRus = event.target.parentElement;
+  const getWordRus = event;
   const getWordRusText = getWordRus.lastElementChild.outerText;
   const allWords = document.querySelectorAll('.words__item');
   const gameActive = document.querySelector('.game');
@@ -376,8 +376,14 @@ async function startGame(checkOptionCheckBox) {
   
     gameWords.addEventListener('click', (event) => {
       if (event.target.parentElement.className === 'words__item') {
+        gameWords.classList.add('active');
         numberWordCount += 1;
-        optionAnswer(event, wordRus, wordEn, option);
+        optionAnswer(event.target.parentElement, wordRus, wordEn, option);
+      }
+      if (event.target.parentElement.className === 'game__words words') {
+        gameWords.classList.add('active');
+        numberWordCount += 1;
+        optionAnswer(event.target, wordRus, wordEn, option);
       }
     });
   
