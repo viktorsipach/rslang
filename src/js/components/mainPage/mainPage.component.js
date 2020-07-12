@@ -127,6 +127,10 @@ export const menuHandler = () => {
             nav.classList.remove('show-nav');
         }
     })
+    checkbox.addEventListener('blur', () => {
+        checkbox.checked = false; 
+        nav.classList.remove('show-nav');
+    })
 }
 
 export const removeActiveClassNav = () => {
