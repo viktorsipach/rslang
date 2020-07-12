@@ -270,13 +270,13 @@ $color-exit: #ffffffc7;
 .game-field__message {
     position: absolute;
     color: $color-light;
-    width: 70%;
+    width: 60%;
     transform: translate(-50%, -50%);
     top: 50vh;
     left: 50%;
     font-size: 2rem;
     text-align: center;
-    line-height: 3rem;
+    line-height: 2rem;
     @include media-tablet {
         font-size: 1.8rem;
     }
