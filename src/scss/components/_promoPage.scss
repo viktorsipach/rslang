@@ -28,11 +28,13 @@
     padding: 7.5rem 0 2.5rem;
     text-align: center;
     background-size: cover;
+    width: 90%;
+    margin: 0 auto;
 }
 .promo__information {
     display: flex;
-    padding: 2rem;
-    justify-content: space-around;
+    padding: 2rem 0;
+    justify-content: space-between;
     flex-direction: row;
     align-items: center;
     @include media-laptop{
@@ -120,7 +122,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 5rem;
     flex-direction: row;
     @include media-tablet {
         flex-direction: column;
