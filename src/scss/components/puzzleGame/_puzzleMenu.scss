@@ -67,4 +67,10 @@
       font-size: 1.5rem;
     }
   }
+  &>.switch>.slider {
+    border-radius: 0.5rem;
+    &:before {
+      border-radius: 0.5rem;
+    }
+  }
 }
