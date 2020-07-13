@@ -73,7 +73,6 @@ export default async function initTrainingGame() {
   const CLOSE_BUTTON = document.querySelector('.close-btn');
   CLOSE_BUTTON.addEventListener('click', () => {
     document.removeEventListener('keydown', keyBoardHelper);
-    trainingGame.sound.pause();
   });
 
   document.querySelector('.card__input').addEventListener('click', () => {
