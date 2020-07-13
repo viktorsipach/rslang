@@ -2,51 +2,59 @@
     position: relative;
     width: 100%;
     min-height: 100vh;
-    background-image: url(/assets/img/bg-main-page.jpg);
+    background: linear-gradient($color-transparent-shadow, $color-transparent-shadow), url('../assets/img/promo/promo-2.jpg');
     background-size: cover;
     background-position: 50%;
 }
 .promo__title {
-    font-size: 5rem;
+    font-size: 4rem;
     color: #fff;
-    padding: 0 3rem;
+    @include media-laptop {
+        padding: 0 2rem;
+        font-size: 3rem;
+    }
     @include media-tablet {
         padding: 0 1rem;
-        font-size: 3rem;
+        font-size: 2.5rem;
+        padding-bottom: 2rem;
+    }
+    @include media-mobile {
+        font-size: 2rem;
     }
 }
 .promo-page {
-    display: flex;
     justify-content: center;
     align-items: center;
-    height: 30rem;
-    background: linear-gradient($color-transparent-shadow, $color-transparent-shadow), url('../assets/img/promo/promo-2.jpg');
-    padding-top: 5rem;
+    padding: 7.5rem 0 2.5rem;
     text-align: center;
     background-size: cover;
 }
 .promo__information {
     display: flex;
     padding: 2rem;
-    justify-content: space-between;
-    @include media-tablet {
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+    @include media-laptop{
         flex-direction: column-reverse;
-    }
-}
-.promo__media {
-    width: 47%;
-    font-size: 5rem;
-    max-height: 30vw;
-    @include media-tablet {
-        width: 100%;
-        height: 50vw;
-        margin-bottom: 2rem;
-        max-height: fit-content;
     }
 }
 .promo__video {
     box-shadow: 0 0.2rem 0.5rem 0 rgba(0,0,0,.4);
-    height: 100%;
+    width: 50rem;
+    height: 30rem;
+    @include media-laptop {
+        width: 40rem;
+        height: 25rem;   
+    }
+    @include media-tablet {
+        width: 38rem;
+        height: 24rem;   
+    }
+    @include media-mobile {
+        width: 28rem;
+        height: 16rem;   
+    }
 }
 .promo__video iframe {
     width: 100%;
@@ -54,36 +62,28 @@
 }
 .promo__description {
     width: 47%;
-    font-size: 2rem;
-    max-height: 30vw;
+    font-size: 1.5rem;
+    text-align: justify;
+    max-height: 32rem;
     overflow: auto;
     padding: 0 2rem;
-    line-height: 2.5rem;
+    line-height: 2rem;
     box-shadow: 0 0.2rem 0.5rem 0 rgba(0,0,0,.4);
     color: $color-light;
-    background: #7752be7a;
-    @include media-tablet {
-        width: 100%;
-        padding: 0;
-        max-height: 50vw;
+    background-color: rgba(80, 80, 80, 0.75);
+    @include media-laptop {
+        width:  90%;
+        margin-bottom: 2rem;
     }
-    @include media-mobile {
-        font-size: 1.5rem;
-        line-height: initial;
+    @include media-tablet {
+        font-size: 1.25rem;
+        line-height: 1.5rem;
     }
 }
 .promo__description p {
     margin: 1rem 0rem;
-    padding: 0 2rem;
-    @include media-tablet {
-        padding: 0 1rem;
-    }
 }
-.promo__description pre {
-    @include media-tablet {
-        padding: 0 1rem;
-    }
-}
+
 .promo__description::-webkit-scrollbar { 
     width: 0.3rem; 
     height: 0.3rem;
@@ -99,6 +99,30 @@
     background-color: $color-primary; 
     border-radius: 0.3rem;
 }
-.promo pre {
-    white-space: pre-wrap;
+.promo__graph {
+    background-image: url('../assets/img/promo/IRT.png');
+    width: 50rem;
+    height: 32rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    @include media-tablet {
+        width:  38rem;
+        height: 24rem;
+    }
+    @include media-mobile {
+        width:  28rem;
+        height: 16rem;
+    }
+}
+
+.promo__high {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5rem;
+    flex-direction: row;
+    @include media-tablet {
+        flex-direction: column;
+    }
 }
