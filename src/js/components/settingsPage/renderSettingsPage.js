@@ -7,7 +7,7 @@ function createDOMElement(type, classes, textContent) {
 
 function createNumberInput(inputContainer, labelText, inputClass, inputName, minValue, maxValue) {
   const numberInputContainer = createDOMElement('div', inputContainer);
-  numberInputContainer.innerHTML = 
+  numberInputContainer.innerHTML =
   ` <label for="${inputName}">${labelText}:</label>
   <input class="${inputClass} ${inputName}" type="number" name="${inputName}" min="${minValue}" max="${maxValue}" value="${minValue}">`;
   return numberInputContainer;
@@ -18,7 +18,7 @@ function createToggleSwitchElement(containerClass, switchTitle) {
   switchTitleElement.textContent = switchTitle;
 
   const switchElement = createDOMElement('label', 'switch');
-  switchElement.innerHTML = 
+  switchElement.innerHTML =
   `<input type="checkbox" checked>
   <span class="slider"></span>`;
 
@@ -53,6 +53,10 @@ function createMainSettingsFragment() {
   const newWordsPerDay = createNumberInput('main-settings__field', 'Количество новых слов в день', 'input__number', 'newWordsPerDay', '10', '100');
   const maxCardsPerDay = createNumberInput('main-settings__field', 'Максмальное количество карточек в день', 'input__number', 'maxCardsPerDay', '10', '100');
 
+  const bookmarkIcon = document.createElement('i');
+  bookmarkIcon.classList.add('fa', 'fa-bookmark', 'subtitle__icon');
+  mainFieldsSubTitle.prepend(bookmarkIcon);
+
   const autoPronunciation = createToggleSwitchElement('main-settings__field autoPronunciation', 'Автопроизношение аудио');
   const showSentencesTranslations = createToggleSwitchElement('main-settings__field showSentencesTranslations', 'Показать перевод предложений');
   const showIDontKnowButton = createToggleSwitchElement('main-settings__field iDontKnowButton', 'Переход к следующему слову без его ввода');
@@ -67,9 +71,9 @@ function createMainSettingsFragment() {
   submitButton.textContent = 'Сохранить настройки';
 
   const mainSettings = createDOMElement('div', 'main-settings');
-  mainSettings.append(mainFieldsSubTitle);
   mainSettings.append(newWordsPerDay);
   mainSettings.append(maxCardsPerDay);
+  mainSettings.append(mainFieldsSubTitle);
   mainSettings.append(autoPronunciation);
   mainSettings.append(showSentencesTranslations);
   mainSettings.append(showIDontKnowButton);
@@ -84,7 +88,10 @@ function createMainSettingsFragment() {
 function createCardRequiredFields() {
   const requiredFieldsTitle = createDOMElement('div', 'required-fields__title', 'Основные поля');
 
-  const requiredFieldsSubTitle = createDOMElement('div', 'required-fields__subtitle', '!!! Хотя бы один пункт должен быть отмечен');
+  const requiredFieldsSubTitle = createDOMElement('div', 'required-fields__subtitle', `Хотя бы один пункт должен быть отмечен!`);
+  const bookmarkIcon = document.createElement('i');
+  bookmarkIcon.classList.add('fa', 'fa-bookmark', 'subtitle__icon');
+  requiredFieldsSubTitle.prepend(bookmarkIcon);
 
   const showTranslation = createCheckBoxElement('showTranslation', 'Перевод слова');
   const showExplanationSentence = createCheckBoxElement('showExplanationSentence', 'Предложение с объяснением значения слова');
@@ -92,10 +99,10 @@ function createCardRequiredFields() {
 
   const requiredFields = createDOMElement('div', 'required-fields');
   requiredFields.append(requiredFieldsTitle);
-  requiredFields.append(requiredFieldsSubTitle);
   requiredFields.append(showTranslation);
   requiredFields.append(showExplanationSentence);
   requiredFields.append(showExampleSentence);
+  requiredFields.append(requiredFieldsSubTitle);
   return requiredFields;
 }
 
@@ -115,7 +122,7 @@ function createCardOptionalFields() {
 function createCardElement(cardData) {
   const IMAGES_SRC = 'https://raw.githubusercontent.com/yekaterinakarakulina/rslang-data/master/';
   const card = createDOMElement('div', 'training__card training__card_example');
-  card.innerHTML = 
+  card.innerHTML =
   `<div class="card__top">
     <div class="card__translation">${cardData[0].wordTranslate}</div>
     <div class="card__transcription">${cardData[0].transcription}</div>
@@ -159,7 +166,7 @@ function renderSettingsPage(cardData) {
 }
 function renderSettingsModal(message) {
   const modalWrapper = createDOMElement('div', 'settings__modal');
-  modalWrapper.innerHTML = 
+  modalWrapper.innerHTML =
   `<div class="settings__modal-message">${message}</div>
   <div class="settings__modal-close-btn close-btn"></div>`;
   document.querySelector('.page').append(modalWrapper);

@@ -69,10 +69,10 @@
   margin: 10rem auto 0;
   @include media-tablet {
     position: absolute;
-    bottom: 2rem;    
+    bottom: 2rem;
     left: calc(50% - 6rem);
   }
-} 
+}
 
 .input__number {
   height: 3rem;
@@ -85,7 +85,7 @@
   height: 3.4rem;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -147,6 +147,9 @@ input:checked + .slider:before {
       font-size: 1.25rem;
     }
   }
+  .checkbox-container {
+    line-height: 2rem;
+  }
 }
 
 .required-fields {
@@ -155,17 +158,18 @@ input:checked + .slider:before {
   }
 }
 
-.required-fields__title, 
+.required-fields__title,
 .optional-fields__title {
   font-size: 2rem;
   font-weight: 700;
+  padding-bottom: 1rem;
   @include media-laptop {
     font-size: 1.4rem;
   }
 }
 
 .optional-fields__title {
-  padding-bottom: 1rem;  
+  padding-bottom: 1rem;
   padding-top: 5rem;
   @include media-laptop {
     padding-top: 2rem;
@@ -173,8 +177,17 @@ input:checked + .slider:before {
 }
 
 .required-fields__subtitle {
-  font-size: 1rem;
-  padding: 1rem 0;
+  font-size: 1.3rem;
+  line-height: 2rem;
+  padding: 1rem;
+  border: 1px solid $color-violet;
+  border-radius: 1rem;
+  margin-top: 1rem;
+}
+
+.subtitle__icon {
+  padding-right: 1rem;
+  color: $color-violet;
 }
 
 .training__card_example {
@@ -189,7 +202,7 @@ input:checked + .slider:before {
     margin: 2.5rem auto 10rem;
     min-height: 35rem;
   }
-  
+
   &>.card__top {
     min-height: 8rem;
     @include media-laptop {
@@ -238,8 +251,8 @@ input:checked + .slider:before {
       }
       @include media-mobile {
         width: 15rem;
-        height: 12rem;   
-        margin-left: calc(50% - 4rem);     
+        height: 12rem;
+        margin-left: calc(50% - 4rem);
       }
     }
   }
