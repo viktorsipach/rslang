@@ -17,6 +17,9 @@ const maxPositionXHiddenWord = 60;
 const numberStartWords = 20;
 let option = true;
 
+let count2 = 0;
+
+
 const playSound = (src) => {
     const audio = new Audio(src);
     audio.play();
@@ -155,6 +158,7 @@ const savannaHealth = (hp) => {
 
 const newStart = () => {
     count = 0;
+    count2 = 0;
     countCorrect = 0;
     countHealth = 5;
     startColorGreen = 15;
@@ -272,6 +276,25 @@ const savannaGameplayMouse = (words) => {
     })
 }
 
+const fa = () => {
+    console.log(event.key);
+    if (event.key === '1') {
+        count2 += 1;
+        console.log(count2);
+    }
+}
+
+function pressKeyBoard() {
+    document.addEventListener('keydown', fa);
+}
+  
+function removeListenerClose() {
+    const close = document.querySelector('.close-btn');
+    close.addEventListener('click', () => {
+        document.removeEventListener('keydown', fa);
+    });
+}
+
 const savannaGameplayKeyboard = (words) => {
     document.addEventListener('keyup', (event) => {
         event.preventDefault();
@@ -334,4 +357,4 @@ const savannaGameplayKeyboard = (words) => {
     })
 }
 
-export { startColorGreen, startColorBlue, startColorRed, countHealth, playSoundGame, preloader, fallWord, savannaHealth, newStart, savannaGameplayMouse, savannaGameplayKeyboard } ;
+export { pressKeyBoard, removeListenerClose, fa, startColorGreen, startColorBlue, startColorRed, countHealth, playSoundGame, preloader, fallWord, savannaHealth, newStart, savannaGameplayMouse, savannaGameplayKeyboard } ;

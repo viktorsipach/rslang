@@ -29,7 +29,6 @@ const initSavannaGame = () => {
         changeLevelAndRound();
         preloader();
     })
-    
 }
 
 export default initSavannaGame;

@@ -3,7 +3,7 @@ import { getRoundData } from '../../API/dataAPI';
 import Image from '../../../assets/img/savanna/savanna-main1.jpg';
 import RenderSavannaMainPage from './renderSavannaMainPage';
 import renderSwitch from '../gameSwitcher/renderSwitch';
-import { startColorGreen, startColorBlue, startColorRed, countHealth, fallWord, savannaHealth, newStart, savannaGameplayMouse, savannaGameplayKeyboard, preloader, playSoundGame } from './savannaGameplay';
+import { pressKeyBoard, removeListenerClose, fa, startColorGreen, startColorBlue, startColorRed, countHealth, fallWord, savannaHealth, newStart, savannaGameplayMouse, savannaGameplayKeyboard, preloader, playSoundGame } from './savannaGameplay';
 import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
 
@@ -183,6 +183,7 @@ const RenderSavannaShortStatistic = (words) => {
   }); 
   const closeBtn = document.querySelector('#savanna__close');
   closeBtn.addEventListener('click', () => {
+    document.removeEventListener('keydown', fa);
     setUserSettings(nameGame, level, round);
     removeActiveClassNav();
     initMainPage();
@@ -232,7 +233,8 @@ async function savannaRound(index, lev, rou, start, changeSwitch) {
   // function foo() {
   //   savannaGameplayKeyboard(data);
   // }
-  // document.addEventListener('keyup', foo);
+  pressKeyBoard();
+  removeListenerClose();
 }
 
 const changeUserWords = () => {
@@ -259,6 +261,7 @@ const changeUserWords = () => {
 }
 
 const changeLevelAndRound = () => {
+  const savanna = document.querySelector('.savanna');
   const selectLevel = document.querySelector('#selectLevel');
   const selectRound = document.querySelector('#selectRound');
   document.querySelector('.savanna__hints').addEventListener('change', (event) => {
@@ -266,17 +269,22 @@ const changeLevelAndRound = () => {
       round = parseInt(selectRound.value, 10);
       level = parseInt(selectLevel.value, 10);
       setUserSettings(nameGame, level, round);
+      selectLevel.blur();
+      selectRound.blur();
     }
     if (event.target.closest('.select__level')) {
       level = parseInt(selectLevel.value, 10);
       round = 1;
       selectRound.value = '1';
       setUserSettings(nameGame, level, round);
+      selectLevel.blur();
+      selectRound.blur();
     }
     changeLevel = true;
     newStart();
     preloader();
     savannaRound(0, level, round, startGame, changeCheckBox);
+    savanna.style.cssText = `background: linear-gradient(180deg, rgba(${startColorRed}, ${startColorGreen}, ${startColorBlue}, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url(${Image}) center no-repeat; background-size: cover;`;
   });
 }
 
