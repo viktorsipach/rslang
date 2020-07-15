@@ -1,9 +1,6 @@
 import { putUserSettings, getUserSettings } from './userSettingsAPI';
 
 export default async function testUserSettings() {
-    console.log(`userID ${localStorage.getItem('userId')}`);
-    console.log(`userToken ${localStorage.getItem('userToken')}`);
-
     const mainSettings = {
         newWordsPerDay: 20,
         maxCardsPerDay: 20,
@@ -57,6 +54,5 @@ export default async function testUserSettings() {
     })
 
     const data = await getUserSettings();
-    console.log(data);
 
 } 

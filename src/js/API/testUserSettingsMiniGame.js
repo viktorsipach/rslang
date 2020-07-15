@@ -6,8 +6,6 @@ export default async function test() {
     const round = 999;
 
     const getSett = await UserSettingsMiniGame.getUserSettingsMiniGame(nameGame);
-    console.log(getSett);
 
     const putSett = await UserSettingsMiniGame.updateUserSettingsMiniGame(nameGame, level, round);
-    console.log(putSett);
 }
