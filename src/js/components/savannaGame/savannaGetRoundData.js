@@ -3,7 +3,7 @@ import { getRoundData } from '../../API/dataAPI';
 import Image from '../../../assets/img/savanna/savanna-main1.jpg';
 import RenderSavannaMainPage from './renderSavannaMainPage';
 import renderSwitch from '../gameSwitcher/renderSwitch';
-import { startColorGreen, startColorBlue, startColorRed, countHealth, fallWord, savannaHealth, newStart, savannaGameplayMouse, savannaGameplayKeyboard, preloader, playSoundGame } from './savannaGameplay';
+import { startColorGreen, startColorBlue, startColorRed, countHealth, fallWord, savannaHealth, newStart, savannaGameplayMouse, preloader, playSoundGame } from './savannaGameplay';
 import UserSettingsMiniGame from '../../API/userSettingsMiniGameAPI';
 import getFilteredUserWords from '../../API/userAggregatedWordsAPI';
 
@@ -229,11 +229,6 @@ async function savannaRound(index, lev, rou, start, changeSwitch) {
     RenderSavannaShortStatistic(data);
     savannaGameplayMouse(data);
   }
-  // savannaGameplayKeyboard(data);
-  // function foo() {
-  //   savannaGameplayKeyboard(data);
-  // }
-  // document.addEventListener('keyup', foo);
 }
 
 const changeUserWords = () => {

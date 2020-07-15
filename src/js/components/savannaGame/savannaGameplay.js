@@ -264,4 +264,4 @@ const savannaGameplayMouse = (words) => {
     })
 }
 
-export { startColorGreen, startColorBlue, startColorRed, countHealth, playSoundGame, preloader, fallWord, savannaHealth, newStart, savannaGameplayMouse, /*savannaGameplayKeyboard*/ } ;
+export { startColorGreen, startColorBlue, startColorRed, countHealth, playSoundGame, preloader, fallWord, savannaHealth, newStart, savannaGameplayMouse } ;
