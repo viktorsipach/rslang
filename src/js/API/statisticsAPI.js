@@ -32,7 +32,6 @@ class StatisticsApi {
             return res.status;
         }
         if (res.status === 401) {
-            console.log('Access token is missing or invalid');
             return res.status;
         }
         const data = await res.json();
@@ -91,8 +90,6 @@ class StatisticsApi {
         await this.getStatistics();
         this.statisticsDataTrainingGame(result);
         await this.putStatistics(this.statistics);
-        
-        console.log(await this.getStatistics());  /* можно убрать если мешает */
     }
 
     async miniGameStat(nameGame, result) {
@@ -100,8 +97,6 @@ class StatisticsApi {
         await this.getStatistics();
         this.statisticsDataMiniGame(nameGame, result);
         await this.putStatistics(this.statistics);
-        
-        console.log(await this.getStatistics());  /* можно убрать если мешает */
     }
 }
 
