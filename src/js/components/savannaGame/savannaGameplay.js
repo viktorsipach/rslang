@@ -98,7 +98,6 @@ const fallWord = (words) => {
                 if (option) {
                     setTimeout(() => playSound(FailureSound), 500);
                 }
-                // setTimeout(() => savanna.innerHTML = '', 500);
             } else {
                 if (option) {
                     playSound(WrongSound);
@@ -128,7 +127,6 @@ const goOutWord = (correct) => {
                 while (posX < maxPositionXHiddenWord) {
                     posX += 1;
                     elem.style.left = `${posX}%`; 
-                    // console.log(elem.style.left);
                 }
             }
         }
@@ -148,7 +146,6 @@ const savannaBullet = () => {
 
 const savannaHealth = (hp) => {
     const health = ['<span><i class="fa fa-heart"></i></span>', '<span><i class="fa fa-heart"></i></span>', '<span><i class="fa fa-heart"></i></span>', '<span><i class="fa fa-heart"></i></span>', '<span><i class="fa fa-heart"></i></span>'];
-    // const savannaHealths = document.createElement('div');
     const savannaHealths = document.querySelector('.savanna__health_active');
     savannaHealths.innerHTML = health.slice(0, hp).join('');
 }
@@ -198,8 +195,6 @@ const savannaGameplayMouse = (words) => {
     clickBtn.forEach(elem => {
         elem.addEventListener('click', () => {
             count += 1;
-            // console.log(count);
-            // console.log(elem.innerText);
             if (count < numberStartWords) {
                 if (elem.innerText === words[count - 1].wordTranslate.toUpperCase()) {
                     span[count - 1].innerHTML = '+';
@@ -229,7 +224,6 @@ const savannaGameplayMouse = (words) => {
                         goOutWord(false);
                         savanna.style.cssText = `background: linear-gradient(180deg, rgba(${startColorRed}, ${startColorGreen}, ${startColorBlue}, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url(${Image}) center no-repeat; background-size: cover;`;
                         setTimeout(() => savannaShortStatistics(), 500);
-                        // setTimeout(() => savanna.innerHTML = '', 500);
                     } else {
                         savannaHealth(countHealth);
                         elem.classList.add('wrong');
@@ -256,7 +250,6 @@ const savannaGameplayMouse = (words) => {
                     span[count - 1].innerHTML = '+';
                     countCorrect += 1;
                     setTimeout(() => savannaShortStatistics(), 500);
-                    // setTimeout(() => savanna.innerHTML = '', 500);
                 } else {
                     elem.classList.add('wrong');
                     actionForRound();
@@ -265,73 +258,10 @@ const savannaGameplayMouse = (words) => {
                     }
                     goOutWord(false);
                     setTimeout(() => savannaShortStatistics(), 500);
-                    // setTimeout(() => savanna.innerHTML = '', 500);
                 }
             }
         })
     })
 }
 
-const savannaGameplayKeyboard = (words) => {
-    document.addEventListener('keyup', (event) => {
-        event.preventDefault();
-        const span = document.querySelectorAll('*[data-word]');
-        const hiddenWord = document.querySelector('.savanna__hidden-word');
-        if (event.code === 'Digit1' || event.code === 'Digit2' || event.code === 'Digit3' || event.code === 'Digit4') {
-            count += 1;
-            console.log(count);
-            if (count < numberStartWords) {
-                if (document.getElementById(event.code).innerText === hiddenWord.id.toUpperCase()) {
-                    document.getElementById(event.code).classList.add('correct');
-                    actionForRound();
-                    playSound('assets/audio/correct.mp3');
-                    setTimeout(() => goOutWord(true), 250);
-                    span[count - 1].innerHTML = '+';
-                    countCorrect += 1;
-                    setTimeout(() => generateTemplateMain(words, count), 500);
-                    setTimeout(() => fallWord(words), 500);
-                    setTimeout(() => savannaGameplayMouse(words), 500);
-                } else {
-                    countHealth -= 1;
-                    if (countHealth === 0) {
-                        document.getElementById(event.code).classList.add('wrong');
-                        actionForRound();
-                        playSound('assets/audio/error.mp3');
-                        goOutWord(false);
-                        setTimeout(() => savannaShortStatistics(), 500);
-                        setTimeout(() => savanna.innerHTML = '', 500);
-                    } else {
-                        savannaHealth(countHealth);
-                        document.getElementById(event.code).classList.add('wrong');
-                        actionForRound();
-                        playSound('assets/audio/error.mp3');
-                        goOutWord(false);
-                        setTimeout(() => generateTemplateMain(words, count), 500);
-                        setTimeout(() => fallWord(words), 500);
-                        setTimeout(() => savannaGameplayMouse(words), 500);
-                    }
-                }                
-            } else {
-                if (document.getElementById(event.code).innerText === hiddenWord.id.toUpperCase()) {
-                    document.getElementById(event.code).classList.add('correct');
-                    actionForRound();
-                    playSound('assets/audio/correct.mp3');
-                    setTimeout(() => goOutWord(true), 250);
-                    span[count - 1].innerHTML = '+';
-                    countCorrect += 1;
-                    setTimeout(() => savannaShortStatistics(), 500);
-                    setTimeout(() => savanna.innerHTML = '', 500);
-                } else {
-                    document.getElementById(event.code).classList.add('wrong');
-                    actionForRound();
-                    playSound('assets/audio/error.mp3');
-                    goOutWord(false);
-                    setTimeout(() => savannaShortStatistics(), 500);
-                    setTimeout(() => savanna.innerHTML = '', 500);
-                }
-            }   
-        }
-    })
-}
-
-export { startColorGreen, startColorBlue, startColorRed, countHealth, playSoundGame, preloader, fallWord, savannaHealth, newStart, savannaGameplayMouse, savannaGameplayKeyboard } ;
+export { startColorGreen, startColorBlue, startColorRed, countHealth, playSoundGame, preloader, fallWord, savannaHealth, newStart, savannaGameplayMouse, /*savannaGameplayKeyboard*/ } ;

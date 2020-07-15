@@ -193,13 +193,14 @@ async function savannaRound(index, lev, rou, start, changeSwitch) {
   let data = [];
   if (changeSwitch) {
     let dataAPI = await getUserDataForMiniGame(3600);
-    data = dataAPI[0].paginatedResults;
-    console.log(dataAPI[0].paginatedResults.length);
+    // data = dataAPI[0].paginatedResults;
+    console.log(dataAPI[0]);
     if (dataAPI[0].paginatedResults.length < wordsPerRound) {
       userWords = true;
       const savannaPlay = document.querySelector('.savanna__play');
       savannaPlay.innerHTML = '<span class="savanna__play_title">У вас не достаточно изученных слов для игры. Нажмите на кнопку "мои слова" и выберите уровень и раунд.</span>';
     } else {
+      data = dataAPI[0].paginatedResults.sort(() => 0.5 - Math.random()).slice(0,20);
       changeLevel = false;
       userWords = false;
       generateTemplateMain(data, index);
@@ -236,17 +237,20 @@ async function savannaRound(index, lev, rou, start, changeSwitch) {
 }
 
 const changeUserWords = () => {
+  const savanna = document.querySelector('.savanna');
   const switchCheck = document.querySelector('.savanna-switch input');
   const savannaPlay = document.querySelector('.savanna__play');
   switchCheck.addEventListener('click', () => {
     if (!switchCheck.checked) {
       changeCheckBox = false;
       savannaPlay.innerHTML = '';
+      userWords = true;
       newStart();
       preloader();
       savannaRound(0, level, round, startGame, changeCheckBox);
       disabledLevelAndRound(changeCheckBox);
     } else {
+      userWords = true;
       changeCheckBox = true;
       savannaPlay.innerHTML = '';
       newStart();
@@ -254,7 +258,7 @@ const changeUserWords = () => {
       savannaRound(0, level, round, startGame, changeCheckBox);
       disabledLevelAndRound(changeCheckBox);
     }
-    
+    savanna.style.cssText = `background: linear-gradient(180deg, rgba(${startColorRed}, ${startColorGreen}, ${startColorBlue}, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%), url(${Image}) center no-repeat; background-size: cover;`;
   })
 }
 
