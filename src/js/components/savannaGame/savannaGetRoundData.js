@@ -193,8 +193,6 @@ async function savannaRound(index, lev, rou, start, changeSwitch) {
   let data = [];
   if (changeSwitch) {
     let dataAPI = await getUserDataForMiniGame(3600);
-    // data = dataAPI[0].paginatedResults;
-    console.log(dataAPI[0]);
     if (dataAPI[0].paginatedResults.length < wordsPerRound) {
       userWords = true;
       const savannaPlay = document.querySelector('.savanna__play');
