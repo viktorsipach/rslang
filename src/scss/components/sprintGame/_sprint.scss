@@ -1,0 +1,154 @@
+@import './components/curtain';
+@import './components/board';
+@import './components/counter';
+@import './components/exit';
+@import './components/sound-control';
+@import './components/timer';
+@import './components/stack';
+@import './components/repeat-button';
+@import './components/game-statistics';
+@import './components/divider';
+@import './components/game-controls';
+@import './components/error-popup';
+@import './components/accordion';
+@import './components/games-switcher';
+@import './components/border';
+
+.sprint {
+  * {
+    box-sizing: border-box;
+  }
+
+  &__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position:  top center;
+
+    &_header {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      height: 12rem;
+
+      @include media-tablet {
+        height: 15rem;
+        flex-direction: column-reverse;
+      }
+
+      @include media-tablet-small {
+        flex-direction: column;
+      }
+    }
+
+    &_left {
+      display: flex;
+      justify-content: center;
+      width: 20%;
+
+      @include media-laptop {
+        justify-content: initial;
+      }
+
+      @include media-tablet {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    &_right {
+      position: relative;
+      width: 80%;
+      display: flex;
+      justify-content: flex-end;
+
+      @include media-tablet {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      @include media-tablet-small {
+        top: 2rem;
+        justify-content: center;
+      }
+    }
+
+    &_main {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-direction: column;
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+
+      @include media-tablet {
+        padding-top: 5rem;
+      }
+
+      @include media-tablet-small {
+        padding-top: 9rem;
+      }
+    }
+
+  }
+
+  &__counter {
+    margin-bottom: 2rem;
+  }
+
+  &__game-controls {
+    position: relative;
+    top: 3rem;
+    right: 4rem;
+    z-index: 2;
+
+    @include media-laptop {
+      right: 3rem;
+    }
+
+    @include media-tablet {
+      top: 2rem;
+      right: 0;
+      left:1rem;
+    }
+  }
+
+  &__sound-control {
+    position: relative;
+    top: 2rem;
+    right: 7rem;
+
+    @include media-laptop {
+      right: 6rem;
+    }
+
+    @include media-tablet {
+      top: 1rem;
+      right: 5rem;
+    }
+
+    @include media-tablet-small {
+      position: absolute;
+      left: -2rem;
+      top: -7.2rem;
+    }
+  }
+
+  &__timer {
+    top: 2rem;
+
+    @include media-laptop {
+      top: 3rem;
+      left: 2rem;
+    }
+
+    @include media-tablet {
+      left: 0;
+    }
+  }
+}

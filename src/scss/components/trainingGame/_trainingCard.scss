@@ -1,0 +1,182 @@
+.training__card {
+  width: 74rem;
+  min-height: 40rem;
+  margin: 2rem auto;
+  border: 3px solid $color-violet;
+  box-shadow: 0 0 20px $color-shadow;
+  border-radius: 5px;
+  position: relative;
+  @include media-laptop {
+    width: 68rem;
+    margin-top: 7rem;
+  }
+  @include media-tablet {
+    width: 36rem;
+  }
+  @include media-mobile {
+    width: 26rem;
+  }
+  &>.card__top {
+    width: fit-content;
+    min-height: 15rem;
+    margin: 3rem 0;
+    margin-left: calc(50% - 19rem);
+    @include media-tablet {
+      margin: 2rem auto 4rem;
+    }
+    &>.card__word {
+      font-size: 5rem;
+      width: fit-content;
+      margin: 0 auto;
+      margin-bottom: 1rem;
+      @include media-tablet {
+        font-size: 4rem;
+      }
+      @include media-mobile {
+        font-size: 2.5rem;
+      }
+    }
+    &>.card__transcription {
+      width: fit-content;
+      margin: 0 auto;
+      font-size: 2rem;
+      opacity: 0.5;
+      @include media-tablet {
+        font-size: 1.5rem;
+      }
+      @include media-mobile {
+        font-size: 1.25rem;
+      }
+    }
+    &>.card__translation {
+      width: fit-content;
+      margin: 1rem auto;
+      font-size: 2.5rem;
+    }
+    &>.card-img__container {
+      position: absolute;
+      top: 1rem;
+      right: 3rem;
+      width: 25rem;
+      height: 20rem;
+      border-radius: 5rem;
+      background-size: cover;
+      background-position: center;
+      @include media-tablet{
+        position: relative;
+        margin-left: calc(50% - 9.5rem);
+      }
+      @include media-mobile{
+        position: relative;
+        margin-left: calc(50% - 7rem);
+        width: 20rem;
+        height: 16rem;
+      }
+    }
+  }
+  &>.card__bottom {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    @include media-tablet {
+      flex-direction: column-reverse;
+    }
+    &>.sentences__container {
+      @include media-tablet {
+        padding: 2rem 0;
+      }
+      &>.card__explanation-sentence>span,
+      &>.card__example-sentence>span {
+        display: inline;
+        font-weight: 700;
+        color: $color-light;
+        box-shadow: 0 0 20px $color-shadow;
+
+        &.hidden {
+          color: transparent;
+          text-decoration: none;
+          border-bottom: 2px solid $color-violet;
+        }
+      }
+
+      &>.card__explanation-sentence-translation,
+      &>.card__example-sentence-translation {
+        display: inline-block;
+        min-height: 2rem;
+        &.hidden {
+          display: none;
+        }
+      }
+      &>* {
+        font-size: 1.75rem;
+        padding: 0.5rem 0;
+        @include media-tablet {
+          font-size: 1rem;  
+          line-height: 1.5rem;      
+        }
+      }
+    }
+    &>.input__container {
+      position: relative;
+      width: fit-content;
+      margin: 2rem auto;
+      font-weight: 700;
+      @include media-tablet {
+        margin: 0 auto;
+      }
+      &>.card__input {
+        height: 3rem;
+        font-size: 2rem;
+        font-family: 'Quicksand', sans-serif;
+        @include media-tablet {
+          font-size: 1.5rem;
+          height: 2.5rem;
+        }
+        @include media-mobile {
+          font-size: 1.25rem;
+          height: 2rem;
+        }
+        padding-left: 1rem;
+        &::placeholder {
+          font-size: 2rem;
+          @include media-tablet {
+            font-size: 1.5rem;
+          }
+          @include media-mobile {
+            font-size: 1.25rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.letters-container {
+  height: 3.6rem;
+  font-size: 2rem;
+  padding-left: 1rem;
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  &.hidden {
+    display: none;
+  }
+  @include media-tablet {
+    height: 3.1rem;
+    font-size: 1.5rem;
+  }
+  @include media-mobile {
+    height: 2.6rem;
+    font-size: 1.25rem;
+  }
+  &>*{
+    &[data-is-correct="true"]  {
+      color: $color-green;
+    }
+    &[data-is-correct="false"]  {
+      color: $color-yellow;
+    }
+  }
+}

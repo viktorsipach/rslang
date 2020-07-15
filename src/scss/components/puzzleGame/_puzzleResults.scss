@@ -1,0 +1,27 @@
+.main__results {
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+  margin: 2rem auto;
+}
+
+.results-container {
+  width: 83.2rem;
+  height: 46.8rem;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid $color-primary;
+  border-radius: 1rem;
+  @include media-laptop {
+    width: 67rem;
+    height: 37.8rem;
+  }
+  @include media-tablet {
+    width: 36rem;
+    height: 21.3rem;
+  }
+  @include media-mobile {
+    width: 28rem;
+    height: 16rem;
+  }
+}

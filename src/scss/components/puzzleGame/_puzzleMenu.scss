@@ -1,0 +1,76 @@
+.game__menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+  @include media-tablet {
+    flex-direction: column;
+  }
+}
+
+.menu__left {
+  display: flex;
+  flex-direction: column;
+  font-size: 2rem;
+  font-weight: 700;
+  @include media-tablet {
+    flex-direction: row;
+    font-size: 1.5rem;
+  }
+}
+
+.menu__right {
+  font-size: 2rem;
+  font-weight: 700;
+  @include media-tablet {
+    margin-top: 2rem;
+  }
+}
+
+.menu__level,
+.menu__round {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1rem;
+  @include media-tablet {
+    flex-direction: column;
+  }
+}
+
+.menu__round {
+  @include media-tablet {
+    margin-left: 2rem;
+  }
+}
+
+.level__title, 
+.round__title {
+  padding: 0 1rem;
+}
+
+.games-switcher__puzzle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &>.games-switcher__title {
+    margin: 0;
+    text-transform: none;
+    color: $color-primary;
+    font-weight: 700;
+    padding-right: 1rem;
+    font-size: 2rem;
+    font-weight: 700;
+    @include media-tablet {
+      font-size: 1.5rem;
+    }
+  }
+  &>.switch>.slider {
+    border-radius: 0.5rem;
+    &:before {
+      border-radius: 0.5rem;
+    }
+  }
+}

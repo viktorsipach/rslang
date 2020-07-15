@@ -1,0 +1,108 @@
+.game-statistics {
+  &__popup {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 50rem;
+    min-height: 25rem;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid $color-primary;
+    border-radius: 2rem;
+    background-color: $color-light;
+
+    @include media-tablet {
+      width: 38rem;
+    }
+
+    @include media-mobile {
+      width: 30rem;
+      margin-top: 5rem;
+    }
+  }
+
+  &__header {
+    width: 100%;
+    height: 10%;
+    padding: 2rem 0;
+  }
+
+  &__main {
+    width: 100%;
+    height: 75%;
+  }
+
+  &__footer {
+    width: 100%;
+    height: 8%;
+    padding: 3rem 0 1rem;
+    text-align: center;
+  }
+
+  &__score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 4rem;
+  }
+
+  &__button {
+    &_exit {
+      padding: 1rem 3rem;
+      font-size: 2rem;
+    }
+  }
+
+  &__errors,
+  &__correct-answers {
+
+    &_amount {
+      margin-left: 1rem;
+      padding: 0.5rem 1.5rem;
+      color: $color-light;
+      border-radius: 4rem;
+    }
+  }
+
+  &__errors_amount {
+    background-color: $color-wrong;
+  }
+
+  &__correct-answers_amount {
+    background-color: $color-correct;
+  }
+
+  &__icon {
+    &_caret-down {
+      float: right;
+    }
+  }
+
+  &__list {
+    max-height: 18rem;
+    padding: 1rem 0;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      width: 0.5rem;
+
+      &-thumb {
+        background-color: $color-divider;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__list-item {
+    padding: 1rem 0;
+    font-size: 1.5rem;
+
+    &_icon {
+      padding-right: 1rem;
+      cursor: pointer;
+    }
+  }
+}

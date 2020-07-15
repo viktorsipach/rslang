@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RSLang</title>
+    <link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header class="header hidden">
+    <h2 class="logo">RSLang</h2>
+    <div class="menuToggle">
+      <input class="menu-checkbox" type="checkbox"/>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <nav class="navbar">
+      <p class="nav navbar__words"><i class="fa fa-clone"></i>Учи слова</p>
+      <p class="nav navbar__statistics"><i class="fa fa-bar-chart"></i>Статистика</p>
+      <div class="subnav">
+        <button class="subnavbtn">Словарь<i class="fa fa-caret-down"></i></button>
+        <div class="subnav-content">
+          <p class="nav navbar__studying"><i class="fa fa-book"></i>Изучаемые слова</p>
+          <p class="nav navbar__difficult"><i class="fa fa-file-excel-o"></i>Сложные слова</p>
+          <p class="nav navbar__removed"><i class="fa fa-remove"></i>Удаленные слова</p>
+      </div>
+      </div> 
+      <div class="subnav">
+        <button class="subnavbtn">Мини-игры <i class="fa fa-caret-down"></i></button>
+        <div class="subnav-content">
+          <p class="nav navbar__speakit"><i class="fa fa-microphone"></i>Говори</p>
+          <p class="nav navbar__puzzle"><i class="fa fa-puzzle-piece"></i>Пазл</p>
+          <p class="nav navbar__savanna"><i class="fa fa-tint"></i>Саванна</p>
+          <p class="nav navbar__audioCall"><i class="fa fa-headphones"></i>Аудиовызов</p>
+          <p class="nav navbar__sprint"><i class="fa fa-flag-checkered"></i>Спринт</p>
+          <p class="nav navbar__findWords"><i class="fa fa-search"></i>Найди слова</p>
+        </div>
+      </div>
+      <p class="nav navbar__setting"><i class="fa fa-cog"></i>Настройки</p>
+      <p class="nav navbar__promo">Промо</p>
+      <p class="nav navbar__about">О команде</p>
+      <a href="https://github.com/viktorsipach/rslang" target="_blank" class="project-link"><i class="fa fa-github"></i></a>
+    </nav>
+    <button class="btn-logout">Выйти</button>
+  </header>
+  <section class="login-page hidden">
+    <h1 class="logo-main">RSLang</h1>
+    <div class="error-message"></div>
+    <div class="login__description">
+      <span class="signIn-description">Войдите, чтобы продолжить</span>
+      <span class="signUp-description">Зарегистрируйтесь, чтобы создать аккаунт</span>
+    </div>
+    <form action="POST" class="login__form">
+      <div class="inputs">
+        <input type="text" name="email" id="email" class="email" placeholder="type email" maxlength="50" autocomplete="off">
+        <input type="password" name="password" id="password" class="password" placeholder="type password">
+        <div class="password-message">Пароль должен содержать не менее 8 символов, как минимум одну букву, одну заглавную букву, одно число и один предложеный символ из + -_ @ $!% *? & #.,;: [] {}</div>
+      </div>
+      <div class="buttons login__buttons">
+        <button class="button login__button button__signIn">Войти</button>
+        <button class="button login__button button__signUp">Регистрация</button>
+      </div>
+    </form>
+  </section>      
+  <main class="page hidden"></main>
+  <div class="close-btn hidden"></div>
+  
+  <script src="./js/index.js"></script>
+</body>
+</html>

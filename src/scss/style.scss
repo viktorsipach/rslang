@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merienda+One&display=swap');
+/* ----- base ----- */
+@import './base/base';
+@import './base/constants';
+@import './base/mixins';
+@import './base/buttons';
+@import './base/dropdown';
+@import './base/icons';
+
+/* ----- components ----- */
+@import './components/audioCall';
+@import './components/puzzleGame/puzzleGame';
+@import './components/header';
+@import './components/savannaGame/savanna';
+@import './components/findWords';
+@import './components/trainingGame/trainingGame';
+@import './components/sprintGame/sprint';
+@import './components/speakitGame';
+@import './components/registration';
+@import './components/mainPage';
+@import './components/settingsPage';
+@import './components/closeButton';
+@import './components/dictionaryPage';
+@import './components/statisticsPage';
+@import './components/teamPage/team';
+@import './components/promoPage';
+@import './components/gameSwitcher';

@@ -1,0 +1,124 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 40rem;
+  height: 41rem;
+  background-color: $color-primary;
+  border: 1px solid $color-light;
+  border-radius: 1.2rem;
+  color: $color-light;
+  font-size: 3rem;
+
+  @include media-tablet {
+    width: 38rem;
+  }
+
+  @include media-mobile {
+    width: 28rem;
+    height: 38rem;
+    font-size: 2rem;
+    box-sizing: border-box;
+    padding-bottom: 2rem;
+  }
+
+  &__header {
+    position: relative;
+    height: 18%;
+
+    &_answers-stack {
+      height: 100%;
+    }
+
+    &_repeat {
+      position: absolute;
+      top: 1rem;
+      right: 2rem;
+      height: 4rem;
+      width: 5rem;
+
+      @include media-mobile {
+        top: 1.5rem;
+        right: 2rem;
+        height: 4rem;
+        width: 4rem;
+      }
+    }
+  }
+
+  &__body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 54%;
+
+    &_reward {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 8rem;
+      height: 8rem;
+      font-size: 2.8rem;
+      border-radius: 13rem;
+      border: 3px solid $color-light;
+    }
+
+    &_foreign-word {
+      margin: 3rem 0 1rem;
+    }
+  }
+
+  &__control {
+    display: flex;
+    justify-content: space-evenly;
+    height: 28%;
+
+    &_left,
+    &_right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  &__button {
+    width: 15rem;
+    height: 4rem;
+    outline: none;
+
+    @include media-mobile {
+      width: 11rem;
+    }
+
+    &_true {
+      background-color: $color-correct;
+
+      &:active,
+      &:hover {
+        background-color: $color-correct-shadow;
+      }
+    }
+
+    &_false {
+      background-color: $color-wrong;
+
+      &:active,
+      &:hover {
+        background-color: $color-wrong-shadow;
+      }
+
+      @include media-tablet {
+        margin-left: 1rem;
+      }
+    }
+
+    &_icon {
+      padding: 1rem;
+      margin-top: 1.5rem;
+      font-size: 2rem;
+      font-weight: normal;
+      border: 1px solid $color-light;
+      border-radius: 1rem;
+    }
+  }
+}

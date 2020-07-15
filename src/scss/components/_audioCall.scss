@@ -1,0 +1,512 @@
+.game.game_audioCall {
+    min-height: 100vh;
+    text-align: center;
+    color: #ffffffc7;
+    position: relative;
+}
+.game.game_audioCall_start {
+  min-height: 100vh;
+  background: rgb(141,0,168);
+  background: linear-gradient(180deg,rgba(141, 0, 168, 0.9) 0%,rgba(189,0,83,.5));
+  text-align: center;
+  color: #ffffffc7;
+  position: relative;
+}
+.game__audioCallBlock {
+    min-height: 100vh;
+    background: #8d00a8;
+    background: linear-gradient(180deg,rgba(141,0,168,.9),rgba(189,0,83,.5));
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+}
+.container.container_audioCall {
+    max-width: 110rem;
+    margin: 0 auto;
+    padding-bottom: 1rem;
+    @include media-laptop {
+      max-width: 76rem;
+    }
+    @include media-tablet {
+      max-width: 41rem;
+    }
+    @include media-mobile {
+      max-width: 30rem;
+    }
+}
+.game__title {
+    text-transform: uppercase;
+    font-size: 5rem;
+    padding-top: 30rem;
+    @include media-tablet {
+      font-size: 4.5rem;
+      padding-top: 20vh;
+    }
+    @include media-mobile {
+      font-size: 4rem;
+    }
+}
+.game__description {
+    padding: 5rem;
+    font-size: 2.5rem;
+    line-height: 4rem;
+    @include media-tablet {
+      font-size: 2rem;
+      line-height: 3rem;
+      padding: 5rem 0rem;
+    }
+    @include media-mobile {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+}
+.game__btn,
+.game__start {
+    font-size: 3rem;
+    text-transform: uppercase;
+    padding: 2rem 5rem;
+    letter-spacing: 0.5rem;
+    @include media-tablet {
+      font-size: 2rem;
+      padding: 1rem 3rem;
+    }
+    @include media-mobile {
+      font-size: 1.5rem;
+    }
+}
+.game__close {
+    position: absolute;
+    right: 3rem;
+    top: 3rem;
+    width: 3rem;
+    height: 3rem;
+    opacity: 1;
+    &:hover {
+      opacity: 0.3;
+      cursor: pointer;
+    }
+    &::before, 
+    &::after {
+      position: absolute;
+      left: 1.5rem;
+      content: "";
+      height: 3rem;
+      width: 0.2rem;
+      background-color: #ffffffc7;
+    }
+    &::before {
+      transform: rotate(45deg);
+    }
+    &::after {
+      transform: rotate(-45deg);
+    }
+}
+.game__image {
+  padding: 8rem 0 0rem;
+  min-height: 21rem;
+    @include media-tablet {
+      padding-top: 11vh;
+      min-height: 11rem;
+    }
+    @include media-mobile {
+      padding-top: 10rem;
+      min-height: 10rem;
+    }
+}
+.image.image_audioCall { 
+    width: 20rem;
+    height: 0rem;
+    border-radius: 50%;
+    margin: 0 auto;
+    overflow: hidden;
+    border: .5rem solid $color-light;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transition: 0.2s;
+    @include media-tablet {
+      width: 10rem;
+    }
+    @include media-mobile{
+      width: 8rem;
+    }
+}
+.game.game_audioCall.active .image {
+  opacity: 1;
+  height: 20rem;
+  @include media-tablet {
+    height: 10rem;
+  }
+  @include media-mobile{
+    height: 8rem;
+  }
+}
+.image.image_audioCall img {
+  width: 100%;
+  object-fit: cover;
+}
+.game__voice-word {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 15rem;
+    @include media-tablet {
+      min-height: 8rem;
+    }
+    @include media-mobile {
+      min-height: 10rem;
+    }
+}
+.game__word {
+    font-size: 5rem;
+    text-transform: lowercase;
+    margin-left: 3rem;
+    color: $color-light;
+    font-weight: bold;
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+    @include media-tablet {
+      font-size: 3rem;
+    }
+    @include media-mobile {
+      font-size: 2.5rem;
+      margin-left: 1rem;
+    }
+}
+.game.game_audioCall.active .game__word {
+  opacity: 1;
+  position: initial;
+  z-index: 1;
+}
+.game__voice {
+    background: url(/assets/img/icon-audio.png);
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    width: 15rem;
+    height: 15rem;
+    background-color: hsla(0,0%,100%,.1);
+    border-radius: 50%;
+    transition: 0.2s;
+    cursor: pointer;
+    @include media-mobile {
+      margin: 1rem 0;
+    }
+    &:hover {
+      transform: scale(1.2);
+    }
+    @include media-tablet {
+      width: 8rem;
+      height: 8rem;
+    }
+}
+.game.game_audioCall.active .game__voice {
+  margin-left: -11rem;
+  width: 8rem;
+  height: 8rem;
+  @include media-tablet {
+    margin-left: -7rem;
+    width: 4rem;
+    height: 4rem;
+  }
+  @include media-mobile {
+    margin-left: 0;
+  }
+}
+.game__words {
+    font-size: 2.5rem;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 3rem 0 3rem;
+    flex-wrap: wrap;
+    min-height: 10rem;
+    @include media-tablet {  
+      padding: 1rem 0;
+    }
+}
+.words__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 1rem 2rem;
+    transition: 0.2s;
+
+    &:hover {
+      background: $color-word-active;
+    }
+    
+    @include media-tablet {
+      margin-bottom: 0;
+      padding: 1rem 1.5rem;
+      font-size: 2rem;
+    }
+}
+.words__item.false {
+  opacity: 0.2;
+}
+.words__item.true {
+  opacity: 1;
+  background: $color-word-active;
+}
+.words__item.line-through {
+  text-decoration: line-through;
+}
+.words__name {
+    margin: 0 1rem;
+    @include media-tablet {
+      margin: 0 0.5rem;
+    }
+}
+.game__progress {
+    position: absolute;
+    right: 0;
+    left: 0;
+    width: 0;
+    background: $color-light;
+    height: .3rem;
+}
+.game-progress {
+  position: absolute;
+  width: 100%;
+  height: 0;
+  background: $color-primary;
+  opacity: 0.1;
+  top: 0;
+  z-index: -1;
+}
+.game__dropdown.game__dropdown_audioCall {
+    position: absolute;
+    left: 3rem;
+    top: 3rem;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    @include media-tablet {
+      flex-direction: column;
+      align-items: flex-start;
+      top: 1.5rem;
+      left: 1.5rem;
+    }
+}
+.lvl__title_audioCall,
+.round__title_audioCall {
+    font-size: 2.5rem;
+    margin-right: 1rem;
+    @include media-tablet {
+      font-size: 2rem;
+    }
+}
+.lvl__select_audioCall,
+.round__select_audioCall {
+    font-size: 1.5rem;
+    @include media-tablet {
+      width: 6rem;
+    }
+}
+.lvl__select_audioCall select,
+.round__select_audioCall select {
+  @include media-tablet {
+    padding: 0 1.5rem;
+  } 
+}
+.game__lvl_audioCall,
+.game__round_audioCall {
+    display: flex;
+    text-transform: uppercase;
+    align-items: center;
+}
+.game__round_audioCall {
+    margin-left: 2rem;
+    @include media-tablet {
+      margin-left: 0;
+      margin-top: 1rem;
+    }
+}
+.game__iconSound {
+  position: absolute;
+  left: 3rem;
+  top: 8rem;
+  width: 3rem;
+  height: 3rem;
+  background: url('/../../assets/img/speaker.svg');
+  background-color: $color-violet;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  padding: 1rem;
+  background-size: 65%;
+  background-position: center;
+  background-repeat: no-repeat;
+  &:hover {
+    cursor: pointer;
+    background-color: #54358e;
+  }
+  @include media-tablet {
+    top: 9rem;
+    width: 2rem;
+    height: 2rem;
+    left: 1.5rem;
+  }
+}
+.game__iconSound.active {
+  background: url('/../../assets/img/mute.svg');
+  background: url(/assets/img/mute.svg);
+  background-size: 65%;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-color: $color-violet;
+  &:hover {
+    cursor: pointer;
+    background-color: #54358e;
+  }
+}
+.game__statistics_audioCall {
+	position: absolute;
+  left: 3rem;
+  top: 8rem;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  padding: 2rem 1rem;
+  letter-spacing: 0.5rem;
+  @include media-tablet {
+    top: 11rem;
+    padding: 1.5rem 1rem;
+  }
+}
+.statistics-audioCall {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #00000090;
+}
+.modal-audioCall {
+  width: 80vw;
+  height: auto;
+  max-height: 40vh;
+  border: 3px solid #f2f2f2;
+  vertical-align: middle;
+  background: #8d00a8ab;
+  display: flex;
+  flex-direction: row;
+  color: $color-light;
+  padding: 1rem 1rem 8rem;
+  word-break: break-word;
+  overflow: auto;
+  position: relative;
+  font-size: 2rem;
+  justify-content: space-evenly;
+  @include media-tablet {
+    width: 80vw;
+    max-height: 35vh;
+    justify-content: space-between;
+  }
+}
+.modal-audioCall-hidden {
+  display: none;
+}
+.modal__close {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  width: 3rem;
+  height: 3rem;
+  opacity: 1;
+  &:hover {
+    opacity: 0.3;
+    cursor: pointer;
+  }
+  &::before, 
+  &::after {
+    position: absolute;
+    left: 1.5rem;
+    content: "";
+    height: 3rem;
+    width: 0.2rem;
+    background-color: #ffffffc7;
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
+}
+.statistics-audioCall__false .statistics-audioCall__title {
+  color: $color-wrong;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: $color-light;
+  border-radius: 0.5rem;
+}
+.statistics-audioCall__true .statistics-audioCall__title {
+  color: $color-correct;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: $color-light;
+  border-radius: 0.5rem;
+}
+.statistics-audioCall__words p {
+  margin-bottom: 1rem;
+}
+.modal__btn_audiocallGame {
+  position: fixed;
+  bottom: 5vh;
+  border: 1px solid;
+  padding: 1rem .5rem;
+  cursor: pointer;
+  transition: .6s;
+  width: 80vw;
+  &:hover {
+    transform: scale(1.1);
+    background: rgba(141,0,168,.67);
+  }
+  @include media-tablet {
+    font-size: 1.5rem;
+    position: initial;
+    width: 6rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5%;
+    margin-top: 3.5rem;
+  }
+}
+.game__word_rus {
+  display: none;
+}
+.game__audioCallBlock .game__close,
+.game_audioCall_start .game__close {
+  display: none;
+}
+.game__audioCall_switch {
+  position: absolute;
+  top: 8rem;
+  right: 3rem;
+  z-index: 9;
+  text-align: right;
+  @include media-tablet {
+    top: 1.5rem;
+    right: 5rem;
+  }
+  @include media-mobile {
+    top: 5.5rem;
+    right: 1.5rem;
+  }
+}
+.game__audioCall_switch .games-switcher__title {
+  @include media-tablet {
+    font-size: 1.7rem;
+  }
+}

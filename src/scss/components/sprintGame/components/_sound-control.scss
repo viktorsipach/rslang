@@ -1,0 +1,17 @@
+.sound-control {
+  cursor: pointer;
+
+  &__icon {
+    display: none;
+
+    &_active {
+      display: inline;
+    }
+
+    &_off {
+      position: relative;
+      top: -1.2rem;
+      margin-bottom: -2.4rem;
+    }
+  }
+}

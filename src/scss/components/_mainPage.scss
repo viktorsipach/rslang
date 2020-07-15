@@ -1,0 +1,190 @@
+.wrapper__main-page {
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	background-image: url('/assets/img/bg-main-page.jpg');
+	background-size: cover;
+	background-position: center;
+}
+
+.container__cards {
+	width: 80%;
+	display: flex;
+	margin: 0 auto;
+	justify-content: center;
+	flex-wrap: wrap;
+	padding-top: 10rem;
+	@include media-laptop {
+		width: 100%;
+    }
+}
+
+.card {
+	width: 30rem;
+	height: 20rem;
+	display: flex;
+	position: relative;
+	justify-content: center;
+	align-items: center;
+	background: url("../assets/img/bg-main-card.jpg"),
+		#ffffff;
+	background-position: top;
+	background-repeat: no-repeat;
+	border-radius: 2.5rem;
+	margin: 1rem;
+	transition: all .9s;
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.4);
+	cursor: pointer;
+}
+
+.hide-card {
+	position: absolute;
+    left: -40rem;
+}
+
+.card .overlay {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	height: 20rem;
+	border-radius: 25px;
+	z-index: 1;
+}
+
+
+.card .content {
+	text-align: center;
+}
+
+.hide-content {
+	display: none;
+}
+
+.card .content h4 {
+	font-style: normal;
+	font-weight: bold;
+	font-size: 3rem;
+	color: #f2f2f2;
+	margin-bottom: 1rem;
+	margin-top: 0;
+}
+
+.card .content h6 {
+	font-style: normal;
+	font-weight: 500;
+	font-size: 1.8rem;
+	color: #f2f2f2;
+	margin-bottom: 1rem;
+	margin-top: 0;
+	transition: 0.25s ease-in;
+	opacity: 0;
+}
+
+.card:hover .content h6 {
+	opacity: 1;
+}
+
+.card .fa {
+	position: absolute;
+	top: 2rem;
+	right: 2rem;
+	color: white;
+	font-size: 3rem;
+}
+
+.card:hover {
+	transform: scale(1.05);
+}
+
+.card:hover {
+	background-position: center;
+}
+
+.ani0 {
+	bottom: 43rem;
+	position: absolute;
+	transition: all .9s cubic-bezier(0.68, -.55, .265, 1.50);
+	@include media-laptop {
+		bottom: 45rem;
+    }
+	@include media-tablet {
+		display: none;
+    }
+}
+
+.ani1 {
+	bottom: 43rem;
+	position: absolute;
+	transition: all .9s cubic-bezier(0.68, -.55, .265, 1.50);
+	@include media-laptop {
+		bottom: 45rem;
+    }
+	@include media-tablet {
+		display: none;
+    }
+}
+
+.ani2 {
+	bottom: 43rem;
+	position: absolute;
+	transition: all .9s cubic-bezier(0.68, -.55, .265, 1.50);
+	@include media-laptop {
+		bottom: 45rem;
+    }
+	@include media-tablet {
+		display: none;
+    }
+}
+
+.ani3 {
+	bottom: 43rem;
+	position: absolute;
+	transition: all .9s cubic-bezier(0.68, -.55, .265, 1.50);
+	@include media-laptop {
+		bottom: 45rem;
+    }
+	@include media-tablet {
+		display: none;
+    }
+
+}
+
+.ani4 {
+	bottom: 43rem;
+	position: absolute;
+	transition: all .9s cubic-bezier(0.68, -.55, .265, 1.50);
+	@include media-laptop {
+		bottom: 45rem;
+    }
+	@include media-tablet {
+		display: none;
+    }
+}
+
+.ani5 {
+	bottom: 20rem;
+	position: absolute;
+	transition: all .9s cubic-bezier(0.68, -.55, .265, 1.50);
+	@include media-laptop {
+		bottom: 17rem;
+    }
+	@include media-tablet {
+		display: none;
+    }
+}
+
+.ani6 {
+	bottom: 18rem;
+	position: absolute;
+	transition: all .9s cubic-bezier(0.68, -.55, .265, 1.50);
+	@include media-laptop {
+		bottom: 15rem;
+    }
+	@include media-tablet {
+		display: none;
+    }
+}
+
+
+  

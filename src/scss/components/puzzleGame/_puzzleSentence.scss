@@ -1,0 +1,26 @@
+.sentence {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 4.6rem;
+  flex-grow: 1;
+  background-color: transparent;
+  &.result__sentence {
+    &.current {
+      box-shadow: 0 0 20px $color-violet;
+    }
+    &.active {
+      display: flex;
+    }
+  }
+  @include media-laptop {
+    height: 3.5rem;
+  }
+  @include media-tablet {
+    height: 2.1rem;
+  }
+  @include media-mobile {
+    height: 1.6rem;
+  }
+}

@@ -1,0 +1,11 @@
+@import 'team-members';
+@import 'team-member';
+@import 'team-promo';
+@import 'social-link';
+
+.team {
+  &__wrapper {
+    background-color: $color-team-background;
+    min-height: calc(100vh - 35rem);
+  }
+}

@@ -1,0 +1,71 @@
+.curtain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(50, 55, 70, 0.7);
+
+  &__exit {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+
+    @include media-tablet {
+      top: 2rem;
+      right: 0rem;
+    }
+  }
+
+  &__game-name {
+    padding: 3rem 1rem;
+    font-size: 6rem;
+    color: $color-word;
+    text-transform: uppercase;
+  }
+
+  &__game-description {
+    width: 100rem;
+    padding: 1rem;
+    font-size: 1.5rem;
+    line-height: 3rem;
+    text-align: center;
+    color: $color-word;
+
+    @include media-laptop {
+      width: 80%;
+    }
+
+  }
+
+  &__get-ready {
+    width: 30rem;
+    padding: 5rem 1rem;
+    font-size: 3rem;
+    line-height: 5rem;
+    text-align: center;
+    color: $color-word;
+
+    &_warning {
+      width: 55rem;
+
+      @include media-tablet {
+        width: 90%;
+        rfont-size: 2.5rem;
+      }
+    }
+
+  }
+
+  &__button {
+    margin: 2rem 1rem;
+    padding: 1rem 3rem;
+    font-size: 2rem;
+    outline: none;
+
+    &_close {
+      margin-bottom: 1rem;
+    }
+  }
+}

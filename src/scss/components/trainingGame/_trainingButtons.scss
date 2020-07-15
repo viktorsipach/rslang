@@ -1,0 +1,36 @@
+.button {
+  &.dictionary__button {
+    width: 7rem;
+    height: 10rem;
+    margin-bottom: 2rem;
+    @include media-laptop {
+      width: 10rem;
+      margin-bottom: 0;
+      margin-left: 2rem;
+      height: 4rem;
+    }
+  }
+  &.trainingGame__button {
+    width: 10rem;
+    height: 3.5rem;
+    margin-left: 1rem;
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+  } 
+  &.card__button {
+    padding: 0 2px;
+    width: 3.5rem;
+    height: 3.5rem;
+    @include media-tablet {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+  &.training-icon {
+    &.active {
+      box-shadow: 0 0 1rem $color-shadow;
+    }
+  }
+}

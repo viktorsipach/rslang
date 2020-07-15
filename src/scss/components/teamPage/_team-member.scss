@@ -1,0 +1,74 @@
+.team-member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  padding: 2rem;
+  margin-bottom: 4rem;
+  background-color: $color-light;
+  border-radius: 2rem;
+  box-sizing: border-box;
+
+  @include media-tablet {
+    width: 48%;
+  }
+
+  @include media-tablet-small {
+    width: 100%;
+  }
+
+  &__photo {
+    width: 20rem;
+    height: 20rem;
+    margin-bottom: 3rem;
+    border-radius: 50%;
+    overflow: hidden;
+
+    @include media-tablet {
+      width: 17rem;
+      height: 17rem;
+    }
+
+    &_image {
+      width: 20rem;
+      transition: transform .2s;
+
+      @include media-tablet {
+        width: 17rem;
+      }
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  &__name {
+    font-size: 2.2rem;
+    line-height: 2.5rem;
+    font-weight: bold;
+    color: $color-primary;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  &__position {
+    padding: 1.5rem 0;
+    font-size: 1.5rem;
+    color: $color-violet;
+  }
+
+  &__description {
+    height: 11rem;
+    font-size: 1.3rem;
+    line-height: 1.8rem;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  &__social-links {
+    padding-bottom: 1rem;
+  }
+}

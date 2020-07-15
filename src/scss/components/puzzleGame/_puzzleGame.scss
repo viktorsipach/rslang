@@ -1,0 +1,94 @@
+@import './puzzleIcons';
+@import './puzzleButtons';
+@import './puzzleMenu';
+@import './puzzleWord';
+@import './puzzleSentence';
+@import './puzzleHints';
+@import './puzzleResults';
+@import './puzzleData';
+@import './puzzleStatistics';
+
+.game__puzzle {
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  color: $color-primary;
+  &.start__page {
+    position: relative;
+    background-image: url('/assets/img/puzzle/startPageBackground.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  &.main__page {
+    width: 80%;
+    margin: 0 auto;
+    @include media-laptop {
+      width: 88%;
+    }
+  }
+}
+
+.game__puzzle-wrapper {
+  position: relative;
+  background-image: url('../assets/img/bg-main-page.jpg');
+  background-size: cover;
+  background-position: 50%;
+}
+
+.gameContainer-wrapper__puzzle {
+  padding: 10rem 0;
+}
+
+.gameContainer__puzzle {
+  width: fit-content;
+  height: fit-content;
+  margin: 0 auto ;
+  padding: 5rem;
+  background-color: $color-overlay-dark;
+  color: $color-light;
+  text-shadow: -2px 0 2px $color-primary, 2px 0 2px $color-primary, 0 2px 2px $color-primary;
+  border-radius: 10rem;
+  @include media-tablet {
+    padding: 2.5rem;
+    border-radius: 5rem;
+  }
+  @include media-mobile {
+    padding: 1rem;
+    border-radius: 5rem;
+  }
+}
+
+.game__title_puzzle{
+  width: fit-content;
+  margin: 2rem auto;
+  font-size: 5rem;
+  font-weight: 700;
+  @include media-tablet {
+    font-size: 4rem;
+  }
+  @include media-mobile {
+    font-size: 3rem;
+  }
+}
+
+.game__rules {
+  margin: 0 auto;
+  font-size: 2.5rem;
+  line-height: 4rem;
+  @include media-tablet {
+    font-size: 1.5rem;
+  }
+  @include media-mobile {
+    font-size: 1.2rem;
+  }
+}
+
+.game__buttons {
+  display: flex;
+  justify-content: center;
+  &.puzzle-game {
+    margin-top: 4rem;
+    padding-bottom: 5rem;
+  }
+}
