@@ -5,8 +5,7 @@
 
 .team {
   &__wrapper {
-    background: url('/assets/img/bg-main-page.jpg');
-    background-size: cover;
+    background-color: $color-team-background;
     min-height: calc(100vh - 35rem);
   }
 }
