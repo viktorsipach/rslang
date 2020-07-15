@@ -73,7 +73,7 @@ export default async function initTrainingGame() {
   const CLOSE_BUTTON = document.querySelector('.close-btn');
   CLOSE_BUTTON.addEventListener('click', () => {
     document.removeEventListener('keydown', keyBoardHelper);
-    trainingGame.sound.pause();
+    trainingGame.sound.src = '';
   });
 
   document.querySelector('.card__input').addEventListener('click', () => {
@@ -88,7 +88,7 @@ export default async function initTrainingGame() {
         SettingsPageAPI.settingsTrainingPage('auto-pronunciation');
         if (trainingGame.autoPronunciation) {
           trainingGame.autoPronunciation = false;
-          trainingGame.sound.pause();
+          trainingGame.sound.src = '';
           trainingGame.renderCardData();
         } else {
           trainingGame.autoPronunciation = true;
